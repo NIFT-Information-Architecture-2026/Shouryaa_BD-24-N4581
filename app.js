@@ -1,138 +1,218 @@
 /**
  * CHALKFLOW — Slow Productivity & Botanical Focus Engine
- * Authentic Chalk Botanical Artwork Generator & Interactive Logic
- * Creative Director: Shouryaa (Fashion Communication, NIFT Hyderabad)
- * Technical Architect: Antigravity
+ * Handcrafted Chalk Botanical Growth Stage Engine
+ * Modeled directly on the 5 Reference Illustrations:
+ * 1. Seed & Taproots (Image 2)
+ * 2. Cotyledon Sprout on Soil Mound (Image 1 & 3)
+ * 3. Branching Foliage & Stems (Image 4)
+ * 4. Slender Swelling Bud (Image 4 apex)
+ * 5. Full Hatched Botanical Bloom (Image 5)
  */
 
 // ==========================================================================
-// 1. CHALK BOTANICAL SVG ARTWORK RENDERER
-// (Inspired directly by uploaded reference images: Crocus Bloom & Wildflowers)
+// 1. CHALK BOTANICAL SVG ARTWORK RENDERER (THE 5 GROWTH STAGES)
 // ==========================================================================
 const ChalkBotanicals = {
-  // 1. Blooming Crocus / Lily (Reference Image 4: Layered Lavender & White Petals, Yellow Stamen, Green Stem)
-  renderCrocusBloom(size = 40) {
+
+  // STAGE 0: The Resting Seed & Taproots (Reference Image 2)
+  renderRestingSeed(size = 36) {
     return `
       <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
-        <!-- Stem & Leaves -->
-        <path d="M 50 65 Q 52 82 54 98" stroke="var(--chalk-mint)" stroke-width="3" stroke-linecap="round" fill="none" />
-        <path d="M 52 75 Q 35 78 20 85" stroke="var(--chalk-mint)" stroke-width="2.5" stroke-linecap="round" fill="none" />
-        <path d="M 52 72 Q 68 76 82 82" stroke="var(--chalk-mint)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+        <!-- Soil Baseline & Hatching -->
+        <path d="M 15 72 Q 50 68 85 72" stroke="var(--border-chalk)" stroke-width="2" stroke-dasharray="4,3" fill="none" />
+        <path d="M 25 76 Q 50 73 75 76" stroke="var(--border-chalk)" stroke-width="1.2" stroke-dasharray="2,4" fill="none" opacity="0.6" />
         
-        <!-- Back Petals (Lavender Chalk) -->
-        <path d="M 50 55 C 30 40 22 20 40 12 C 48 18 52 35 50 55 Z" fill="#D4B2D8" opacity="0.85" stroke="var(--border-chalk)" stroke-width="0.8" />
-        <path d="M 50 55 C 70 40 78 20 60 12 C 52 18 48 35 50 55 Z" fill="#D4B2D8" opacity="0.85" stroke="var(--border-chalk)" stroke-width="0.8" />
-        <path d="M 50 55 C 45 30 46 8 50 6 C 54 8 55 30 50 55 Z" fill="#E8A4C8" opacity="0.9" stroke="var(--border-chalk)" stroke-width="0.8" />
-        
-        <!-- Lateral Wing Petals -->
-        <path d="M 50 58 C 25 50 10 35 18 25 C 28 25 40 42 50 58 Z" fill="#E8ECEF" opacity="0.9" />
-        <path d="M 50 58 C 75 50 90 35 82 25 C 72 25 60 42 50 58 Z" fill="#E8ECEF" opacity="0.9" />
+        <!-- Germinating Seed Pod (Textured Chalk Contour & Shading) -->
+        <circle cx="50" cy="50" r="16" fill="var(--bg-surface-elevated)" stroke="#FAF0CA" stroke-width="2.2" stroke-dasharray="25,1.5" />
+        <path d="M 42 44 Q 50 40 56 46" stroke="#FAF0CA" stroke-width="1.2" fill="none" opacity="0.8" />
+        <circle cx="50" cy="50" r="11" fill="none" stroke="var(--chalk-amber)" stroke-width="1" stroke-dasharray="3,2" opacity="0.7" />
 
-        <!-- Front Center Petals (White Chalk with Chalk Hatching) -->
-        <path d="M 50 60 C 36 50 32 30 45 22 C 52 28 54 48 50 60 Z" fill="#FFFFFF" opacity="0.95" stroke="#D4B2D8" stroke-width="0.8" />
-        <path d="M 50 60 C 64 50 68 30 55 22 C 48 28 46 48 50 60 Z" fill="#FFFFFF" opacity="0.95" stroke="#D4B2D8" stroke-width="0.8" />
+        <!-- Exploratory Downward Taproots -->
+        <path d="M 50 66 Q 50 78 48 92" stroke="var(--chalk-amber)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+        <path d="M 49 72 Q 40 76 34 82" stroke="var(--chalk-amber)" stroke-width="1.8" stroke-linecap="round" fill="none" />
+        <path d="M 50 74 Q 60 78 66 84" stroke="var(--chalk-amber)" stroke-width="1.8" stroke-linecap="round" fill="none" />
+        <path d="M 48 80 Q 42 84 38 90" stroke="var(--chalk-amber)" stroke-width="1.5" stroke-linecap="round" fill="none" />
 
-        <!-- Golden Pistils & Stamens (Yellow Chalk) -->
-        <path d="M 50 48 L 47 32 M 50 48 L 50 30 M 50 48 L 53 32" stroke="var(--chalk-amber)" stroke-width="2" stroke-linecap="round" />
-        <circle cx="47" cy="31" r="2" fill="var(--chalk-amber)" />
-        <circle cx="50" cy="29" r="2.2" fill="var(--chalk-amber)" />
-        <circle cx="53" cy="31" r="2" fill="var(--chalk-amber)" />
+        <!-- First Baby Leaf Shoot Peeking Out (Top) -->
+        <path d="M 58 38 Q 72 26 66 18 Q 54 24 54 36 Z" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        <path d="M 56 32 L 64 22" stroke="var(--chalk-mint)" stroke-width="1" fill="none" />
       </svg>
     `;
   },
 
-  // 2. Corner Wildflower / Buttercup (Reference Image 5: Curving Green Stems, Fluted Cream Petals)
-  renderCornerWildflower(size = 40) {
+  // STAGE 1: The Cotyledon Sprout on Soil Mound (Reference Images 1 & 3)
+  renderFirstSprout(size = 36) {
     return `
       <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
-        <!-- Curving Stems & Stylized Foliage (Mint Green Chalk) -->
-        <path d="M 30 95 Q 45 65 42 35" stroke="var(--chalk-mint)" stroke-width="2.5" stroke-linecap="round" fill="none" />
-        <path d="M 30 95 Q 60 80 75 60" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" fill="none" />
-        <path d="M 35 75 Q 18 55 22 40" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" fill="none" />
+        <!-- Soil Mound with Chalk Cross-Hatching (Image 1 Style) -->
+        <path d="M 10 82 Q 50 80 90 82" stroke="var(--text-primary)" stroke-width="2" stroke-dasharray="5,3" fill="none" opacity="0.6" />
+        <path d="M 32 82 Q 50 64 68 82 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="2" />
+        <!-- Mound chalk shading lines -->
+        <path d="M 36 80 L 64 72 M 38 76 L 62 68 M 42 72 L 58 66" stroke="var(--border-chalk)" stroke-width="1.2" opacity="0.75" />
+
+        <!-- Curved Baby Sprout Stem -->
+        <path d="M 50 66 Q 52 50 48 38" stroke="#FAF0CA" stroke-width="2.6" stroke-linecap="round" fill="none" />
         
-        <!-- Curling Leaves -->
-        <path d="M 38 70 Q 55 60 48 45 Q 40 55 38 70" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-        <path d="M 32 82 Q 15 70 20 60 Q 28 68 32 82" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        <!-- Two Wide Heart-Shaped Cotyledon Leaves (Image 1 & 3 Style) -->
+        <!-- Left Leaf -->
+        <path d="M 48 38 C 30 32 18 36 20 48 C 24 54 38 52 48 40 Z" fill="none" stroke="#FAF0CA" stroke-width="2.2" />
+        <path d="M 48 39 Q 34 42 22 46" stroke="var(--chalk-mint)" stroke-width="1.2" fill="none" opacity="0.8" />
         
-        <!-- Top Cream Blossom (Fluted Chalk Petals) -->
-        <g transform="translate(42, 35)">
-          <path d="M 0 0 C -12 -10 -15 -25 -2 -22 C 2 -18 2 -8 0 0 Z" fill="#FAF0CA" opacity="0.9" stroke="var(--border-chalk)" stroke-width="0.8" />
-          <path d="M 0 0 C 12 -10 15 -25 2 -22 C -2 -18 -2 -8 0 0 Z" fill="#FAF0CA" opacity="0.9" stroke="var(--border-chalk)" stroke-width="0.8" />
-          <path d="M 0 0 C -6 -15 0 -30 4 -28 C 6 -20 4 -10 0 0 Z" fill="#FFF" opacity="0.95" />
-          <!-- Calyx -->
-          <path d="M -4 2 Q 0 -4 4 2 Z" fill="var(--chalk-mint)" />
+        <!-- Right Leaf -->
+        <path d="M 48 38 C 66 32 78 36 76 48 C 72 54 58 52 48 40 Z" fill="none" stroke="#FAF0CA" stroke-width="2.2" />
+        <path d="M 48 39 Q 62 42 74 46" stroke="var(--chalk-mint)" stroke-width="1.2" fill="none" opacity="0.8" />
+      </svg>
+    `;
+  },
+
+  // STAGE 2: Branching Foliage & Stems (Reference Image 4)
+  renderBranchingStem(size = 38) {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
+        <!-- Ground Line -->
+        <path d="M 20 90 Q 50 88 80 90" stroke="var(--border-chalk)" stroke-width="1.5" stroke-dasharray="4,3" fill="none" />
+
+        <!-- Slender Curving Main Stalk -->
+        <path d="M 50 90 Q 46 65 50 24" stroke="var(--chalk-mint)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+
+        <!-- Alternating Elongated Willow/Sage Leaves (Image 4 Style) -->
+        <!-- Bottom Left Leaf -->
+        <path d="M 48 76 Q 25 70 12 58 Q 30 60 47 70" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        <!-- Bottom Right Leaf -->
+        <path d="M 49 66 Q 72 58 88 50 Q 70 54 50 60" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        
+        <!-- Mid Left Leaf -->
+        <path d="M 49 52 Q 32 40 34 26 Q 42 36 50 44" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        <!-- Mid Right Leaf -->
+        <path d="M 50 42 Q 68 32 66 18 Q 58 28 50 36" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+
+        <!-- Small Side Bud -->
+        <path d="M 50 66 Q 64 54 62 40" stroke="var(--chalk-mint)" stroke-width="1.5" fill="none" />
+        <path d="M 62 40 C 58 35 60 28 64 26 C 66 30 66 36 62 40 Z" fill="none" stroke="var(--chalk-amber)" stroke-width="1.4" />
+      </svg>
+    `;
+  },
+
+  // STAGE 3: Swelling Teardrop Floral Bud (Reference Image 4 Apex)
+  renderSwellingBud(size = 40) {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
+        <!-- Ground Line -->
+        <path d="M 25 92 Q 50 90 75 92" stroke="var(--border-chalk)" stroke-width="1.5" fill="none" />
+
+        <!-- Elegant Central Stem -->
+        <path d="M 50 90 Q 48 60 50 34" stroke="var(--chalk-mint)" stroke-width="2.4" stroke-linecap="round" fill="none" />
+
+        <!-- Lateral Leaves -->
+        <path d="M 49 72 Q 28 62 20 50 Q 36 54 49 64" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        <path d="M 50 60 Q 72 50 80 38 Q 64 44 50 54" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        <path d="M 49 46 Q 36 34 38 22 Q 44 30 50 40" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+
+        <!-- Swelling Teardrop Chalk Bud at Apex (Image 4 Apex Style) -->
+        <g transform="translate(50, 34)">
+          <!-- Calyx base -->
+          <path d="M -5 0 Q 0 -6 5 0 Z" fill="var(--chalk-mint)" stroke="var(--chalk-mint)" stroke-width="1" />
+          <!-- Bud petals twisting upward -->
+          <path d="M -5 0 C -10 -12 -6 -24 0 -28 C 4 -20 2 -8 0 0 Z" fill="var(--bg-surface-elevated)" stroke="#E8A4C8" stroke-width="1.8" />
+          <path d="M 5 0 C 10 -12 6 -24 0 -28 C -4 -20 -2 -8 0 0 Z" fill="var(--bg-surface-elevated)" stroke="#E8A4C8" stroke-width="1.8" />
+          <path d="M 0 0 Q 0 -18 0 -27" stroke="#FAF0CA" stroke-width="1.2" fill="none" />
         </g>
-
-        <!-- Lower Side Blossom -->
-        <g transform="translate(75, 60)">
-          <path d="M 0 0 C -8 -8 -10 -20 0 -18 C 5 -12 2 -5 0 0 Z" fill="#FAF0CA" opacity="0.85" />
-          <path d="M 0 0 C 8 -8 10 -20 0 -18 C -5 -12 -2 -5 0 0 Z" fill="#FAF0CA" opacity="0.85" />
-          <path d="M -3 1 Q 0 -3 3 1 Z" fill="var(--chalk-mint)" />
-        </g>
       </svg>
     `;
   },
 
-  // 3. Swelling Bud (Stage 3)
-  renderSwellingBud(size = 32) {
-    return `
-      <svg width="${size}" height="${size}" viewBox="0 0 80 80" class="flower-chalk-svg">
-        <path d="M 40 75 Q 40 50 40 38" stroke="var(--chalk-mint)" stroke-width="2.5" stroke-linecap="round" fill="none" />
-        <path d="M 40 55 Q 26 48 20 40" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" fill="none" />
-        <path d="M 40 50 Q 54 44 60 38" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" fill="none" />
-        <!-- Closed Bud Crown -->
-        <path d="M 40 38 C 30 30 32 15 40 12 C 48 15 50 30 40 38 Z" fill="#E8A4C8" stroke="var(--chalk-white)" stroke-width="1" />
-        <path d="M 37 38 Q 40 22 43 38" fill="var(--chalk-mint)" opacity="0.8" />
-      </svg>
-    `;
-  },
+  // STAGE 4: Full Hatched Botanical Chalk Bloom (Reference Image 5 & 4)
+  renderFullBloom(size = 44, day = 1) {
+    if (day % 2 === 0) {
+      // Style A: Botanical Anemone / Peony (Matching Reference Image 5 exactly!)
+      return `
+        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
+          <!-- Central Stately Stem -->
+          <path d="M 50 96 L 50 45" stroke="#FAF0CA" stroke-width="2.5" stroke-linecap="round" fill="none" />
 
-  // 4. Branching Stem (Stage 2)
-  renderBranchingStem(size = 28) {
-    return `
-      <svg width="${size}" height="${size}" viewBox="0 0 60 60" class="flower-chalk-svg">
-        <path d="M 30 58 Q 30 35 30 18" stroke="var(--chalk-mint)" stroke-width="2.5" stroke-linecap="round" fill="none" />
-        <path d="M 30 42 Q 18 36 12 28 Q 20 32 30 38" fill="var(--chalk-mint)" opacity="0.85" />
-        <path d="M 30 32 Q 42 26 48 18 Q 40 22 30 28" fill="var(--chalk-mint)" opacity="0.85" />
-        <circle cx="30" cy="16" r="3" fill="var(--chalk-amber)" />
-      </svg>
-    `;
-  },
+          <!-- Serrated Leaves with Fine Linear Chalk Hatching (Image 5 Style) -->
+          <!-- Lower Left Leaf -->
+          <path d="M 50 80 Q 32 75 22 66 Q 34 62 42 66 Q 36 58 50 68" fill="none" stroke="#FAF0CA" stroke-width="1.5" />
+          <path d="M 48 76 L 30 68 M 46 72 L 36 64" stroke="#FAF0CA" stroke-width="0.8" opacity="0.75" />
 
-  // 5. The First Sprout (Stage 1)
-  renderFirstSprout(size = 24) {
-    return `
-      <svg width="${size}" height="${size}" viewBox="0 0 50 50" class="flower-chalk-svg">
-        <path d="M 25 48 L 25 25" stroke="var(--chalk-mint)" stroke-width="2.2" stroke-linecap="round" fill="none" />
-        <path d="M 25 25 Q 12 18 14 8 Q 22 14 25 25" fill="var(--chalk-mint)" opacity="0.9" />
-        <path d="M 25 25 Q 38 18 36 8 Q 28 14 25 25" fill="var(--chalk-mint)" opacity="0.9" />
-      </svg>
-    `;
-  },
+          <!-- Lower Right Leaf -->
+          <path d="M 50 80 Q 68 75 78 66 Q 66 62 58 66 Q 64 58 50 68" fill="none" stroke="#FAF0CA" stroke-width="1.5" />
+          <path d="M 52 76 L 70 68 M 54 72 L 64 64" stroke="#FAF0CA" stroke-width="0.8" opacity="0.75" />
 
-  // 6. Resting Seed & Soil (Stage 0)
-  renderRestingSeed(size = 22) {
-    return `
-      <svg width="${size}" height="${size}" viewBox="0 0 40 40" class="flower-chalk-svg">
-        <path d="M 5 32 Q 20 30 35 32" stroke="var(--border-chalk)" stroke-width="1.8" stroke-dasharray="3,2" fill="none" />
-        <!-- Sleeping Seed (Amber Chalk) -->
-        <ellipse cx="20" cy="28" rx="5" ry="3.5" transform="rotate(-15 20 28)" fill="var(--chalk-amber)" opacity="0.85" stroke="var(--border-chalk)" stroke-width="0.8" />
-      </svg>
-    `;
-  },
+          <!-- Mid Left Leaf -->
+          <path d="M 50 60 Q 34 52 26 42 Q 38 40 44 46 Q 38 34 50 48" fill="none" stroke="#FAF0CA" stroke-width="1.5" />
+          <path d="M 48 56 L 34 46 M 46 52 L 38 44" stroke="#FAF0CA" stroke-width="0.8" opacity="0.75" />
 
-  // Dynamic selector based on stage
-  getBotanicalSVG(stage, size = 32, day = 1) {
-    if (stage === 4) {
-      return (day % 2 === 0) ? this.renderCornerWildflower(size) : this.renderCrocusBloom(size);
-    } else if (stage === 3) {
-      return this.renderSwellingBud(size);
-    } else if (stage === 2) {
-      return this.renderBranchingStem(size);
-    } else if (stage === 1) {
-      return this.renderFirstSprout(size);
+          <!-- Mid Right Leaf -->
+          <path d="M 50 60 Q 66 52 74 42 Q 62 40 56 46 Q 62 34 50 48" fill="none" stroke="#FAF0CA" stroke-width="1.5" />
+          <path d="M 52 56 L 66 46 M 54 52 L 62 44" stroke="#FAF0CA" stroke-width="0.8" opacity="0.75" />
+
+          <!-- Multi-Layered Hatched Floral Bloom Crown (Image 5) -->
+          <g transform="translate(50, 24)">
+            <!-- Outer Petals Ring -->
+            <path d="M 0 0 C -22 -4 -30 -22 -14 -28 C -4 -22 -4 -8 0 0 Z" fill="var(--bg-surface)" stroke="#FAF0CA" stroke-width="1.6" />
+            <path d="M 0 0 C 22 -4 30 -22 14 -28 C 4 -22 4 -8 0 0 Z" fill="var(--bg-surface)" stroke="#FAF0CA" stroke-width="1.6" />
+            <path d="M 0 0 C -12 -18 -18 -32 0 -34 C 18 -32 12 -18 0 0 Z" fill="var(--bg-surface)" stroke="#FAF0CA" stroke-width="1.6" />
+            
+            <!-- Fine Linear Shading on Petals -->
+            <path d="M -10 -4 L -18 -20 M -6 -6 L -10 -26 M 6 -6 L 10 -26 M 10 -4 L 18 -20 M 0 -8 L 0 -30" stroke="#FAF0CA" stroke-width="0.7" opacity="0.7" />
+
+            <!-- Front Petal Cups -->
+            <path d="M -12 2 C -16 -8 -8 -16 0 -14 C 8 -16 16 -8 12 2 Z" fill="var(--bg-surface-elevated)" stroke="#FAF0CA" stroke-width="1.6" />
+            
+            <!-- Center Stippled Stamen Ring -->
+            <circle cx="0" cy="-8" r="4.5" fill="none" stroke="var(--chalk-amber)" stroke-width="1" stroke-dasharray="2,1.5" />
+            <circle cx="-1.5" cy="-8" r="0.8" fill="var(--chalk-amber)" />
+            <circle cx="1.5" cy="-8" r="0.8" fill="var(--chalk-amber)" />
+            <circle cx="0" cy="-6.5" r="0.8" fill="var(--chalk-amber)" />
+            <circle cx="0" cy="-9.5" r="0.8" fill="var(--chalk-amber)" />
+          </g>
+        </svg>
+      `;
     } else {
-      return this.renderRestingSeed(size);
+      // Style B: Layered Crocus / Wild Lily Bloom (Reference Image 4)
+      return `
+        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
+          <!-- Stem & Side Shoots -->
+          <path d="M 50 65 Q 52 82 54 96" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <path d="M 52 75 Q 35 78 20 85" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" fill="none" />
+          <path d="M 52 72 Q 68 76 82 82" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" fill="none" />
+          
+          <!-- Back Lavender Wing Petals -->
+          <path d="M 50 55 C 30 40 22 20 40 12 C 48 18 52 35 50 55 Z" fill="#D4B2D8" opacity="0.85" stroke="var(--border-chalk)" stroke-width="0.8" />
+          <path d="M 50 55 C 70 40 78 20 60 12 C 52 18 48 35 50 55 Z" fill="#D4B2D8" opacity="0.85" stroke="var(--border-chalk)" stroke-width="0.8" />
+          <path d="M 50 55 C 45 30 46 8 50 6 C 54 8 55 30 50 55 Z" fill="#E8A4C8" opacity="0.9" stroke="var(--border-chalk)" stroke-width="0.8" />
+          
+          <!-- Lateral Wing Petals -->
+          <path d="M 50 58 C 25 50 10 35 18 25 C 28 25 40 42 50 58 Z" fill="#E8ECEF" opacity="0.9" />
+          <path d="M 50 58 C 75 50 90 35 82 25 C 72 25 60 42 50 58 Z" fill="#E8ECEF" opacity="0.9" />
+
+          <!-- Front Center White Petals with Linear Hatching -->
+          <path d="M 50 60 C 36 50 32 30 45 22 C 52 28 54 48 50 60 Z" fill="#FFFFFF" opacity="0.95" stroke="#D4B2D8" stroke-width="0.8" />
+          <path d="M 50 60 C 64 50 68 30 55 22 C 48 28 46 48 50 60 Z" fill="#FFFFFF" opacity="0.95" stroke="#D4B2D8" stroke-width="0.8" />
+
+          <!-- Fine Chalk Petal Vein Shading -->
+          <path d="M 44 48 L 40 32 M 56 48 L 60 32 M 50 48 L 50 24" stroke="#D4B2D8" stroke-width="0.8" opacity="0.8" />
+
+          <!-- Golden Stamens & Pistils -->
+          <path d="M 50 48 L 47 32 M 50 48 L 50 30 M 50 48 L 53 32" stroke="var(--chalk-amber)" stroke-width="2" stroke-linecap="round" />
+          <circle cx="47" cy="31" r="2" fill="var(--chalk-amber)" />
+          <circle cx="50" cy="29" r="2.2" fill="var(--chalk-amber)" />
+          <circle cx="53" cy="31" r="2" fill="var(--chalk-amber)" />
+        </svg>
+      `;
+    }
+  },
+
+  // Dynamic selector for any growth stage (0 to 4)
+  getBotanicalSVG(stage, size = 36, day = 1) {
+    switch (stage) {
+      case 4: return this.renderFullBloom(size, day);
+      case 3: return this.renderSwellingBud(size);
+      case 2: return this.renderBranchingStem(size);
+      case 1: return this.renderFirstSprout(size);
+      case 0:
+      default: return this.renderRestingSeed(size);
     }
   }
 };
@@ -140,7 +220,7 @@ const ChalkBotanicals = {
 // ==========================================================================
 // 2. DATA STATE & LOCAL STORAGE PERSISTENCE
 // ==========================================================================
-const STORAGE_KEY = 'chalkflow_state_v3';
+const STORAGE_KEY = 'chalkflow_state_v4';
 
 const DEFAULT_STATE = {
   theme: 'theme-dark-slate',
@@ -584,7 +664,7 @@ function renderTodaySlate() {
   if (generalTasks.length === 0 && !topPriorityTask) {
     generalTasksList.innerHTML = `
       <div class="chalk-card" style="text-align:center; padding: 24px 16px;">
-        <div style="display:flex; justify-content:center; margin-bottom:6px;">${ChalkBotanicals.renderRestingSeed(28)}</div>
+        <div style="display:flex; justify-content:center; margin-bottom:6px;">${ChalkBotanicals.renderRestingSeed(36)}</div>
         <h4 class="chalk-font" style="font-size: 15px;">A Clean Slate</h4>
         <p style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">Write a task above or enjoy this quiet moment of rest.</p>
       </div>
@@ -613,7 +693,6 @@ function createTaskCardElement(task, isTop) {
   const subtasksCompleted = task.subtasks ? task.subtasks.filter(s => s.completed).length : 0;
   const subtaskPill = subtasksCount > 0 ? `<span class="subtask-count-pill chalk-font">(${subtasksCompleted}/${subtasksCount} steps)</span>` : '';
 
-  // Render Subtasks Drawer (Visible ONLY when task.isExpanded is true)
   let subtasksDrawerHTML = '';
   if (task.isExpanded) {
     const itemsHTML = (task.subtasks || []).map(sub => `
@@ -640,7 +719,6 @@ function createTaskCardElement(task, isTop) {
         <div class="custom-chalk-checkbox">${task.status === 'COMPLETED' ? '✓' : ''}</div>
       </div>
       
-      <!-- Clicking task body toggles inline subtasks -->
       <div class="task-body-interactive" data-toggle-task="${task.id}" title="Click to view/add micro-steps">
         <div class="task-title-line">
           <span class="dot-glyph">${priorityDot}</span>
@@ -666,7 +744,6 @@ function createTaskCardElement(task, isTop) {
     ${subtasksDrawerHTML}
   `;
 
-  // Attach Checkbox Handler
   const checkWrap = card.querySelector('.task-checkbox-wrap');
   checkWrap.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -678,7 +755,6 @@ function createTaskCardElement(task, isTop) {
     updateGlobalGrowthMetrics();
   });
 
-  // Attach Click on Body to Toggle Subtasks
   const bodyToggle = card.querySelector('.task-body-interactive');
   bodyToggle.addEventListener('click', () => {
     task.isExpanded = !task.isExpanded;
@@ -686,14 +762,12 @@ function createTaskCardElement(task, isTop) {
     renderTodaySlate();
   });
 
-  // Attach Focus Button Handler
   const focusBtn = card.querySelector('[data-focus-task]');
   focusBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     navigateToSurface('deep-focus', task.id);
   });
 
-  // Attach Subtask Checkbox Handlers
   card.querySelectorAll('.nested-subtask-item').forEach(subEl => {
     subEl.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -709,7 +783,6 @@ function createTaskCardElement(task, isTop) {
     });
   });
 
-  // Attach Add Subtask Inline Handler
   const miniInput = card.querySelector('.subtask-mini-input');
   const addSubBtn = card.querySelector('[data-action="add-subtask"]');
 
@@ -740,7 +813,6 @@ function createTaskCardElement(task, isTop) {
     });
   }
 
-  // Attach Delete Handler
   card.querySelector('.delete-btn').addEventListener('click', (e) => {
     e.stopPropagation();
     AppState.tasks = AppState.tasks.filter(t => t.id !== task.id);
@@ -851,7 +923,7 @@ function renderUpcomingTasks() {
 }
 
 // --------------------------------------------------------------------------
-// E. PROGRESS GARDEN (BOTANICAL CHALK MEADOW & JOURNAL)
+// E. PROGRESS GARDEN (REALISTIC BOTANICAL CHALK MEADOW & JOURNAL)
 // --------------------------------------------------------------------------
 const BOTANICAL_SPECIMENS_OCTOBER = [
   'Wild Crocus', 'Golden Buttercup', 'Dormant Soil', 'Sweet Violet', 'Alpine Aster',
@@ -905,7 +977,7 @@ function renderProgressGarden() {
     if (dayData.stage === 4) fullBlooms++;
     totalFocusMinutes += dayData.focus;
 
-    const stageNames = ['Resting Seed', 'Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
+    const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
 
     // 1. Calendar Grid Tile with Botanical SVG
     const tile = document.createElement('div');
@@ -915,7 +987,7 @@ function renderProgressGarden() {
         <span class="day-num">${day < 10 ? '0' + day : day}</span>
         <span class="stage-tag">${isToday ? '★ Today' : ''}</span>
       </div>
-      <div class="tile-artwork-svg">${ChalkBotanicals.getBotanicalSVG(dayData.stage, 32, day)}</div>
+      <div class="tile-artwork-svg">${ChalkBotanicals.getBotanicalSVG(dayData.stage, 34, day)}</div>
       <div class="tile-bottom chalk-font">${dayData.specimen}</div>
     `;
 
@@ -930,7 +1002,7 @@ function renderProgressGarden() {
       const flowerItem = document.createElement('div');
       flowerItem.className = 'meadow-flower-item';
       
-      const svgArtwork = ChalkBotanicals.getBotanicalSVG(dayData.stage, 44, day);
+      const svgArtwork = ChalkBotanicals.getBotanicalSVG(dayData.stage, 46, day);
       
       flowerItem.innerHTML = `
         ${svgArtwork}
@@ -956,7 +1028,7 @@ function openGardenDayModal(day, dayData, stageName) {
   const modal = document.getElementById('garden-day-modal');
   document.getElementById('modal-species-name').innerText = `🌸 ${dayData.specimen}`;
   document.getElementById('modal-date-title').innerText = `October ${day}, 2026`;
-  document.getElementById('modal-flower-visual').innerHTML = ChalkBotanicals.getBotanicalSVG(dayData.stage, 68, day);
+  document.getElementById('modal-flower-visual').innerHTML = ChalkBotanicals.getBotanicalSVG(dayData.stage, 72, day);
   document.getElementById('modal-growth-stage').innerText = stageName;
   document.getElementById('modal-tasks-ratio').innerText = `${dayData.tasks} / ${dayData.planned || dayData.tasks} tasks`;
   document.getElementById('modal-focus-time').innerText = `${dayData.focus} mins`;
@@ -1367,7 +1439,7 @@ function updateGlobalGrowthMetrics() {
   const topIcon = document.getElementById('top-flower-icon');
   const topStage = document.getElementById('top-growth-stage');
   const topMeta = document.getElementById('top-growth-meta');
-  if (topIcon) topIcon.innerHTML = ChalkBotanicals.getBotanicalSVG(stage, 26, 8);
+  if (topIcon) topIcon.innerHTML = ChalkBotanicals.getBotanicalSVG(stage, 28, 8);
   if (topStage) topStage.innerText = stageNames[stage];
   if (topMeta) topMeta.innerText = `${completedCount} tasks • ${focusMins}m focus`;
 }
