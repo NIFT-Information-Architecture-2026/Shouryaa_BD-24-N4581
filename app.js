@@ -1140,46 +1140,121 @@ function renderHabitLedger() {
   const growthPercent = Math.min(100, Math.round((totalCompletions / (maxMonthlyTarget || 1)) * 100));
 
   if (progressBar) progressBar.style.width = `${growthPercent}%`;
-  if (progressText) progressText.innerText = `${totalCompletions} habit completions logged this month (${growthPercent}% toward crowning bloom)`;
+  if (progressText) progressText.innerText = `${totalCompletions} habit completions logged this month (${growthPercent}% toward crowning canopy)`;
 
+  // Dynamic 4-Stage Chalk Foliage on Twisted Trunk (Matching Reference Images 1, 2, 3 & 4)
   const foliageGroup = document.getElementById('tree-foliage');
   const blossomsGroup = document.getElementById('tree-blossoms');
+  
   if (foliageGroup && blossomsGroup) {
     foliageGroup.innerHTML = '';
     blossomsGroup.innerHTML = '';
 
-    const leafClusters = [
-      { cx: 130, cy: 90, r: 16 }, { cx: 90, cy: 70, r: 18 }, { cx: 70, cy: 50, r: 14 },
-      { cx: 370, cy: 90, r: 16 }, { cx: 410, cy: 70, r: 18 }, { cx: 430, cy: 50, r: 14 },
-      { cx: 210, cy: 45, r: 18 }, { cx: 250, cy: 35, r: 20 }, { cx: 290, cy: 45, r: 18 },
-      { cx: 170, cy: 65, r: 15 }, { cx: 330, cy: 65, r: 15 }, { cx: 250, cy: 75, r: 16 }
+    // Branch Leaf Coordinates (Sprouting along boughs as in Images 1 & 3)
+    const treeBranchLeaves = [
+      // Left Outer Bough & Twigs
+      { x: 60, y: 30, rot: -45, scale: 0.85, isWhite: true },
+      { x: 80, y: 45, rot: -30, scale: 0.9, isWhite: false },
+      { x: 105, y: 70, rot: -55, scale: 0.85, isWhite: false },
+      { x: 115, y: 24, rot: -35, scale: 0.95, isWhite: true },
+      { x: 145, y: 45, rot: -20, scale: 0.9, isWhite: false },
+      { x: 165, y: 32, rot: 15, scale: 0.85, isWhite: true },
+      { x: 175, y: 75, rot: -40, scale: 0.9, isWhite: false },
+      { x: 200, y: 60, rot: -15, scale: 0.9, isWhite: true },
+
+      // Right Outer Bough & Twigs
+      { x: 480, y: 30, rot: 45, scale: 0.85, isWhite: true },
+      { x: 460, y: 45, rot: 30, scale: 0.9, isWhite: false },
+      { x: 435, y: 70, rot: 55, scale: 0.85, isWhite: false },
+      { x: 425, y: 24, rot: 35, scale: 0.95, isWhite: true },
+      { x: 395, y: 45, rot: 20, scale: 0.9, isWhite: false },
+      { x: 375, y: 32, rot: -15, scale: 0.85, isWhite: true },
+      { x: 365, y: 75, rot: 40, scale: 0.9, isWhite: false },
+      { x: 340, y: 60, rot: 15, scale: 0.9, isWhite: true },
+
+      // Center Crown & Twig Tips
+      { x: 220, y: 12, rot: -20, scale: 0.9, isWhite: false },
+      { x: 245, y: 25, rot: -5, scale: 0.95, isWhite: true },
+      { x: 270, y: 14, rot: 0, scale: 1.0, isWhite: true },
+      { x: 295, y: 25, rot: 5, scale: 0.95, isWhite: true },
+      { x: 320, y: 12, rot: 20, scale: 0.9, isWhite: false },
+
+      // Inner Canopy Twig Nodes
+      { x: 235, y: 55, rot: -30, scale: 0.85, isWhite: false },
+      { x: 270, y: 48, rot: 0, scale: 0.85, isWhite: false },
+      { x: 305, y: 55, rot: 30, scale: 0.85, isWhite: false }
     ];
 
-    leafClusters.forEach((c, idx) => {
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      circle.setAttribute('cx', c.cx);
-      circle.setAttribute('cy', c.cy);
-      circle.setAttribute('r', c.r);
-      circle.setAttribute('fill', 'var(--chalk-mint)');
-      circle.setAttribute('opacity', '0.75');
-      circle.setAttribute('stroke', 'var(--border-chalk)');
-      circle.setAttribute('stroke-width', '1');
-      foliageGroup.appendChild(circle);
+    // STAGE 4 (75%+ Progress): Dense Cloud Foliage Clusters (Image 4 Style)
+    if (growthPercent >= 75) {
+      const cloudClusters = [
+        { cx: 120, cy: 45, rx: 55, ry: 32 },
+        { cx: 170, cy: 30, rx: 48, ry: 28 },
+        { cx: 270, cy: 22, rx: 65, ry: 36 },
+        { cx: 370, cy: 30, rx: 48, ry: 28 },
+        { cx: 420, cy: 45, rx: 55, ry: 32 },
+        { cx: 220, cy: 55, rx: 42, ry: 25 },
+        { cx: 320, cy: 55, rx: 42, ry: 25 }
+      ];
 
-      if (growthPercent > 30 && idx % 3 === 0) {
-        const blossom = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        blossom.setAttribute('cx', c.cx + 5);
-        blossom.setAttribute('cy', c.cy - 5);
-        blossom.setAttribute('r', '6');
-        blossom.setAttribute('fill', 'var(--chalk-pink)');
-        blossomsGroup.appendChild(blossom);
-      }
-    });
+      cloudClusters.forEach(c => {
+        const cloud = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+        cloud.setAttribute('cx', c.cx);
+        cloud.setAttribute('cy', c.cy);
+        cloud.setAttribute('rx', c.rx);
+        cloud.setAttribute('ry', c.ry);
+        cloud.setAttribute('fill', 'rgba(6, 214, 160, 0.18)');
+        cloud.setAttribute('stroke', 'var(--border-chalk)');
+        cloud.setAttribute('stroke-width', '1.2');
+        cloud.setAttribute('stroke-dasharray', '8,4');
+        foliageGroup.appendChild(cloud);
+      });
+    }
 
-    if (growthPercent > 50) {
-      if (stageCaption) stageCaption.innerText = 'Stage 3: Dense Foliage & Crowning Canopy (Days 15–24)';
+    // STAGE 2 & 3 (20%+ Progress): Hand-drawn Pointed Chalk Leaves (Images 1 & 3 Style)
+    if (growthPercent > 10) {
+      const visibleLeafCount = Math.min(
+        treeBranchLeaves.length,
+        Math.max(4, Math.round((growthPercent / 100) * treeBranchLeaves.length * 1.35))
+      );
+
+      treeBranchLeaves.slice(0, visibleLeafCount).forEach((leaf, idx) => {
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('transform', `translate(${leaf.x}, ${leaf.y}) rotate(${leaf.rot}) scale(${leaf.scale})`);
+        
+        const strokeColor = leaf.isWhite ? 'var(--text-primary)' : 'var(--chalk-mint)';
+        const fillColor = leaf.isWhite ? 'rgba(232, 236, 239, 0.22)' : 'rgba(6, 214, 160, 0.25)';
+        
+        // Hand-drawn Oval Chalk Leaf with central rib & side hatch (Image 1 & 3 Style)
+        g.innerHTML = `
+          <path d="M 0 0 C -5 -8 -7 -18 0 -24 C 7 -18 5 -8 0 0 Z" fill="${fillColor}" stroke="${strokeColor}" stroke-width="1.5" />
+          <path d="M 0 0 L 0 -20" stroke="${strokeColor}" stroke-width="1" />
+          <path d="M 0 -6 L -3 -11 M 0 -11 L 3 -16" stroke="${strokeColor}" stroke-width="0.7" opacity="0.8" />
+        `;
+        foliageGroup.appendChild(g);
+
+        // Subtle glowing chalk blossom accents in Stage 3 & 4
+        if (growthPercent > 40 && idx % 3 === 0) {
+          const blossom = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          blossom.setAttribute('transform', `translate(${leaf.x + 3}, ${leaf.y - 3})`);
+          blossom.innerHTML = `
+            <circle cx="0" cy="0" r="3.5" fill="#FF6B6B" stroke="#FAF0CA" stroke-width="0.8" />
+            <circle cx="0" cy="0" r="1.5" fill="#FFD166" />
+          `;
+          blossomsGroup.appendChild(blossom);
+        }
+      });
+    }
+
+    // 4 Stage Milestones Captions
+    if (growthPercent >= 75) {
+      if (stageCaption) stageCaption.innerText = 'Stage 4: Majestic Crowning Canopy in Full Bloom (Days 25–31)';
+    } else if (growthPercent >= 50) {
+      if (stageCaption) stageCaption.innerText = 'Stage 3: Flourishing Branching Foliage (Days 15–24)';
+    } else if (growthPercent >= 25) {
+      if (stageCaption) stageCaption.innerText = 'Stage 2: Sprouting Branches & Leaf Buds (Days 6–14)';
     } else {
-      if (stageCaption) stageCaption.innerText = 'Stage 2: Sturdy Textured Trunk (Days 6–14)';
+      if (stageCaption) stageCaption.innerText = 'Stage 1: Twisted Trunk & Grounding Taproots (Days 1–5)';
     }
   }
 }
