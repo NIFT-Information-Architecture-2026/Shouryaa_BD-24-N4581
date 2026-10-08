@@ -64,10 +64,9 @@
         </button>
       </nav>
 
-      <!-- Bottom Sidebar Controls: Theme Switcher & Daily Growth Mini-Widget -->
+      <!-- Bottom Sidebar Controls: Theme Switcher -->
       <div class="side-nav-footer">
-        
-        <!-- Theme Surface Switcher (Located directly in Sidebar) -->
+        <!-- Theme Surface Switcher -->
         <div class="surface-switcher-panel">
           <span class="section-micro-label chalk-font"><i class="fa-solid fa-palette"></i> Board Surface</span>
           <div class="theme-options-group">
@@ -85,16 +84,6 @@
             </button>
           </div>
         </div>
-
-        <!-- Mini Sprout Status Card -->
-        <div class="nav-sprout-widget" id="sidebar-growth-card">
-          <div class="sprout-preview-graphic" id="sidebar-flower-icon">🌱</div>
-          <div class="sprout-preview-info">
-            <div class="sprout-stage-name chalk-font" id="sidebar-growth-stage">Resting Seed</div>
-            <div class="sprout-sub-info" id="sidebar-growth-score">0 tasks • 0m focus</div>
-          </div>
-        </div>
-
       </div>
     </aside>
 
@@ -109,10 +98,15 @@
           <h2 class="current-screen-title chalk-font" id="page-title">Today's Slate</h2>
           <span class="current-date-badge" id="live-date-str">Tuesday, October 08, 2026</span>
         </div>
+        
+        <!-- Botanical Growth Badge moved to Top Right of Workspace -->
         <div class="header-right">
-          <div class="daily-mantra-pill">
-            <i class="fa-regular fa-compass"></i>
-            <span class="mantra-text chalk-font" id="daily-mantra">"Growth happens below the soil, too."</span>
+          <div class="top-growth-badge" id="top-growth-widget" title="Your daily botanical growth progress">
+            <span class="top-growth-icon" id="top-flower-icon">🌱</span>
+            <div class="top-growth-text">
+              <span class="top-growth-stage chalk-font" id="top-growth-stage">Resting Seed</span>
+              <span class="top-growth-meta" id="top-growth-meta">0 tasks • 0m focus</span>
+            </div>
           </div>
         </div>
       </header>
@@ -122,7 +116,7 @@
       <!-- =============================================================== -->
       <section class="surface-view active" id="view-today-slate">
         
-        <!-- Quick-Add Slate Form -->
+        <!-- Quick-Add Slate Form (Simplified: No subtask button at top) -->
         <div class="chalk-card quick-add-card">
           <form id="today-add-form" class="quick-add-form">
             <div class="input-row-main">
@@ -134,21 +128,21 @@
             </div>
 
             <div class="input-controls-row">
-              <!-- Priority Selector -->
+              <!-- Priority Selector (Discrete Dots) -->
               <div class="control-group">
                 <label class="control-label chalk-font">Priority:</label>
                 <div class="priority-pills">
-                  <label class="priority-pill red-pill">
+                  <label class="priority-pill red-pill" title="High Priority (Red Outline)">
                     <input type="radio" name="task-priority" value="HIGH" checked>
-                    <span class="dot-glyph red-dot">🔴</span> High (Top Focus)
+                    <span class="dot-glyph red-dot">🔴</span>
                   </label>
-                  <label class="priority-pill amber-pill">
+                  <label class="priority-pill amber-pill" title="Medium Priority">
                     <input type="radio" name="task-priority" value="MEDIUM">
-                    <span class="dot-glyph amber-dot">🟡</span> Medium
+                    <span class="dot-glyph amber-dot">🟡</span>
                   </label>
-                  <label class="priority-pill mint-pill">
+                  <label class="priority-pill mint-pill" title="Low Priority">
                     <input type="radio" name="task-priority" value="LOW">
-                    <span class="dot-glyph mint-dot">🟢</span> Low
+                    <span class="dot-glyph mint-dot">🟢</span>
                   </label>
                 </div>
               </div>
@@ -175,25 +169,6 @@
                   <option value="120">2+ hours</option>
                 </select>
               </div>
-
-              <!-- Toggle Sub-tasks builder -->
-              <button type="button" class="text-link-btn chalk-font" id="toggle-subtask-builder">
-                <i class="fa-solid fa-list-check"></i> + Add Micro-Steps
-              </button>
-            </div>
-
-            <!-- Subtask mini builder drawer -->
-            <div class="subtask-builder-drawer" id="subtask-builder-drawer" style="display:none;">
-              <div class="drawer-header chalk-font">Micro-Steps (Lowering Initial Resistance):</div>
-              <div id="subtask-input-list" class="subtask-inputs">
-                <div class="subtask-input-item">
-                  <span class="step-bullet">•</span>
-                  <input type="text" class="subtask-field chalk-input" placeholder="Micro-step 1 (e.g. Collect A3 sheets)">
-                </div>
-              </div>
-              <button type="button" class="micro-add-btn chalk-font" id="add-more-subtask-field">
-                <i class="fa-solid fa-plus"></i> Add another step
-              </button>
             </div>
           </form>
         </div>
@@ -201,23 +176,20 @@
         <!-- Task Groups Container -->
         <div class="slate-task-workspace">
           
-          <!-- Top Priority Section (Bright Red Chalk Accent Anchor) -->
+          <!-- Top Priority Section (Clean header, no stars, uniform color) -->
           <div class="priority-section-wrapper" id="top-priority-container">
             <div class="section-chalk-header">
-              <span class="header-star">★</span>
-              <h3 class="chalk-font red-accent-text">Top Daily Priority</h3>
+              <h3 class="chalk-font">Top Daily Priority</h3>
               <span class="header-line"></span>
-              <span class="helper-note chalk-font">Your anchor for today</span>
             </div>
             <div id="top-priority-list" class="task-card-list">
               <!-- Dynamically Populated -->
             </div>
           </div>
 
-          <!-- Secondary Tasks Section -->
+          <!-- Secondary Tasks Section (Clean header, no star/bullet) -->
           <div class="general-tasks-wrapper">
             <div class="section-chalk-header">
-              <span class="header-star">•</span>
               <h3 class="chalk-font">Other Tasks for Today</h3>
               <span class="header-line"></span>
             </div>
@@ -228,19 +200,11 @@
 
         </div>
 
-        <!-- Bottom Slate Actions (Felt Eraser & Live Botanical Feedback) -->
+        <!-- Bottom Slate Actions: Felt Eraser -->
         <div class="slate-footer-bar">
           <button id="btn-erase-completed" class="felt-eraser-btn chalk-font" title="Wipe completed tasks with felt eraser">
             <span class="eraser-icon">🧹</span> Erase Completed Tasks
           </button>
-          
-          <div class="growth-feedback-banner">
-            <div class="growth-plant-avatar" id="slate-botanical-avatar">🌿</div>
-            <div class="growth-text-block">
-              <span class="growth-title chalk-font" id="slate-growth-status-text">Stage 1: The Sprout</span>
-              <span class="growth-desc" id="slate-growth-desc-text">Keep going — 2 more tasks will swell today's bud.</span>
-            </div>
-          </div>
         </div>
 
       </section>
@@ -254,7 +218,7 @@
           <div class="shelf-icon">📅</div>
           <div class="shelf-text">
             <h3 class="chalk-font">Future Planning Shelf</h3>
-            <p>Offload tomorrow's deadlines and future assignments here so they don't crowd your daily cognitive bandwidth.</p>
+            <p>Offload future assignments and deadlines here so they don't crowd today's workspace.</p>
           </div>
         </div>
 
@@ -273,17 +237,17 @@
               <div class="control-group">
                 <label class="control-label chalk-font">Priority:</label>
                 <div class="priority-pills">
-                  <label class="priority-pill red-pill">
+                  <label class="priority-pill red-pill" title="High Priority">
                     <input type="radio" name="upcoming-priority" value="HIGH">
-                    <span class="dot-glyph red-dot">🔴</span> High
+                    <span class="dot-glyph red-dot">🔴</span>
                   </label>
-                  <label class="priority-pill amber-pill">
+                  <label class="priority-pill amber-pill" title="Medium Priority">
                     <input type="radio" name="upcoming-priority" value="MEDIUM" checked>
-                    <span class="dot-glyph amber-dot">🟡</span> Medium
+                    <span class="dot-glyph amber-dot">🟡</span>
                   </label>
-                  <label class="priority-pill mint-pill">
+                  <label class="priority-pill mint-pill" title="Low Priority">
                     <input type="radio" name="upcoming-priority" value="LOW">
-                    <span class="dot-glyph mint-dot">🟢</span> Low
+                    <span class="dot-glyph mint-dot">🟢</span>
                   </label>
                 </div>
               </div>
@@ -336,17 +300,16 @@
       </section>
 
       <!-- =============================================================== -->
-      <!-- SURFACE 3: PROGRESS GARDEN (TWO-TIER BOTANICAL SANCTUARY)       -->
+      <!-- SURFACE 3: PROGRESS GARDEN (BOTANICAL MEADOW & JOURNAL)         -->
       <!-- =============================================================== -->
       <section class="surface-view" id="view-progress-garden">
         
-        <!-- HERO TIER: Panoramic Monthly Meadow -->
+        <!-- HERO TIER: Realistic Botanical Chalk Meadow Landscape -->
         <div class="hero-meadow-card chalk-card">
           <div class="meadow-header">
             <div class="meadow-title-block">
-              <span class="meadow-badge chalk-font">Curated Season</span>
-              <h3 class="meadow-heading chalk-font" id="current-month-heading">October 2026 — Autumn Hearth Meadow</h3>
-              <p class="meadow-subtext">Every day's effort blooms a unique illustrated botanical specimen into your shared landscape.</p>
+              <h3 class="meadow-heading chalk-font" id="current-month-heading">October 2026 — Autumn Meadow</h3>
+              <p class="meadow-subtext">Completed days take root and bloom in this living chalk meadow landscape.</p>
             </div>
             <div class="meadow-stats-pill">
               <div class="stat-item">
@@ -361,11 +324,16 @@
             </div>
           </div>
 
-          <!-- Illustrated Panoramic Chalk Flora Meadow Canvas Container -->
+          <!-- Realistic Botanical Garden Soil & Meadow Graphic Canvas -->
           <div class="meadow-scenery-container">
-            <div class="meadow-soil-line"></div>
+            <!-- Hand-drawn Chalk Soil Layer -->
+            <div class="meadow-earth-ground">
+              <div class="soil-top-grass"></div>
+              <div class="soil-strata"></div>
+            </div>
+            <!-- Dynamic Growing Flowers Layer -->
             <div class="meadow-flowers-row" id="hero-meadow-flowers">
-              <!-- Filled dynamically with blooming SVG flowers -->
+              <!-- Populated dynamically with rooted chalk flowers -->
             </div>
           </div>
         </div>
@@ -385,79 +353,89 @@
       </section>
 
       <!-- =============================================================== -->
-      <!-- SURFACE 4: HABIT LEDGER (30-DAY LIVING CHALK TREE)              -->
+      <!-- SURFACE 4: HABIT LEDGER (STACKED LAYOUT: TREE TOP, HABITS BELOW)-->
       <!-- =============================================================== -->
       <section class="surface-view" id="view-habit-ledger">
         
-        <div class="habit-ledger-layout">
+        <div class="habit-ledger-stacked-layout">
           
-          <!-- Left Column: The 30-Day Living Chalk Tree Canvas -->
-          <div class="tree-sanctuary-card chalk-card">
+          <!-- TOP: 30-Day Living Chalk Habit Tree Sanctuary -->
+          <div class="tree-sanctuary-card-stacked chalk-card">
             <div class="tree-card-header">
-              <span class="tree-badge chalk-font">Monthly Companion</span>
-              <h3 class="chalk-font" id="habit-tree-title">October Chalk Tree</h3>
+              <h3 class="chalk-font" id="habit-tree-title">October Habit Tree</h3>
               <p class="tree-stage-caption" id="habit-tree-stage-text">Stage 2: Sturdy Trunk (Days 6–14)</p>
             </div>
 
-            <!-- SVG Illustrated Tree Graphic -->
-            <div class="tree-canvas-container" id="tree-canvas-wrapper">
-              <svg id="chalk-tree-svg" viewBox="0 0 400 360" class="chalk-tree-illustration">
-                <!-- Ground Soil -->
-                <path d="M 30 320 Q 200 315 370 320" stroke="var(--border-chalk)" stroke-width="3" stroke-dasharray="6,4" fill="none" />
-                
-                <!-- Taproots -->
-                <g id="tree-roots" class="tree-part" opacity="0.8">
-                  <path d="M 195 320 Q 180 340 160 350" stroke="var(--chalk-amber)" stroke-width="2.5" fill="none" />
-                  <path d="M 205 320 Q 220 340 240 350" stroke="var(--chalk-amber)" stroke-width="2.5" fill="none" />
-                  <path d="M 200 320 Q 200 345 195 355" stroke="var(--chalk-amber)" stroke-width="2" fill="none" />
+            <!-- Rich Realistic Chalk Tree SVG Graphic -->
+            <div class="tree-canvas-container-stacked">
+              <svg id="chalk-tree-svg" viewBox="0 0 500 240" class="chalk-tree-illustration">
+                <!-- Ground Soil Baseline -->
+                <path d="M 20 215 Q 250 210 480 215" stroke="var(--border-chalk)" stroke-width="2.5" stroke-dasharray="8,4" fill="none" />
+                <path d="M 40 222 Q 250 218 460 222" stroke="var(--border-chalk)" stroke-width="1.5" stroke-dasharray="4,6" fill="none" opacity="0.6" />
+
+                <!-- Taproots Structure -->
+                <g id="tree-roots" class="tree-part" opacity="0.85">
+                  <path d="M 245 215 Q 225 230 195 238" stroke="var(--chalk-amber)" stroke-width="2.5" fill="none" />
+                  <path d="M 255 215 Q 275 230 305 238" stroke="var(--chalk-amber)" stroke-width="2.5" fill="none" />
+                  <path d="M 250 215 Q 250 232 245 239" stroke="var(--chalk-amber)" stroke-width="2" fill="none" />
+                  <path d="M 235 220 Q 210 232 180 235" stroke="var(--chalk-amber)" stroke-width="1.5" fill="none" />
+                  <path d="M 265 220 Q 290 232 320 235" stroke="var(--chalk-amber)" stroke-width="1.5" fill="none" />
                 </g>
 
-                <!-- Trunk & Crosshatch Bark -->
+                <!-- Textured Chalk Trunk & Root Flairs -->
                 <g id="tree-trunk" class="tree-part">
-                  <path d="M 185 320 Q 190 220 180 160 L 220 160 Q 210 220 215 320 Z" fill="var(--bg-surface)" stroke="var(--text-primary)" stroke-width="2.5" />
-                  <!-- Bark texture -->
-                  <path d="M 190 280 L 210 270 M 188 240 L 212 235 M 186 200 L 214 195" stroke="var(--border-chalk)" stroke-width="1.5" />
+                  <!-- Trunk body with organic curve -->
+                  <path d="M 232 215 Q 242 150 235 105 L 265 105 Q 258 150 268 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="2.5" />
+                  <!-- Crosshatch chalk bark lines -->
+                  <path d="M 238 190 L 262 184 M 236 165 L 264 158 M 235 140 L 265 134 M 236 118 L 264 114" stroke="var(--border-chalk)" stroke-width="1.5" stroke-dasharray="3,2" />
+                  <path d="M 242 205 L 258 200 M 245 178 L 255 174" stroke="var(--text-primary)" stroke-width="1.2" opacity="0.7" />
                 </g>
 
-                <!-- Lateral Boughs / Branches -->
+                <!-- Natural Curved Lateral Branches -->
                 <g id="tree-branches" class="tree-part">
-                  <path d="M 185 180 Q 130 150 90 120" stroke="var(--text-primary)" stroke-width="3" fill="none" />
-                  <path d="M 215 180 Q 270 150 310 120" stroke="var(--text-primary)" stroke-width="3" fill="none" />
-                  <path d="M 200 160 Q 200 110 200 70" stroke="var(--text-primary)" stroke-width="3" fill="none" />
-                  <path d="M 140 155 Q 110 120 120 80" stroke="var(--text-primary)" stroke-width="2" fill="none" />
-                  <path d="M 260 155 Q 290 120 280 80" stroke="var(--text-primary)" stroke-width="2" fill="none" />
+                  <path d="M 238 130 Q 180 110 130 90 Q 90 75 70 50" stroke="var(--text-primary)" stroke-width="2.5" fill="none" />
+                  <path d="M 262 130 Q 320 110 370 90 Q 410 75 430 50" stroke="var(--text-primary)" stroke-width="2.5" fill="none" />
+                  <path d="M 245 105 Q 230 70 210 40" stroke="var(--text-primary)" stroke-width="2.2" fill="none" />
+                  <path d="M 255 105 Q 270 70 290 40" stroke="var(--text-primary)" stroke-width="2.2" fill="none" />
+                  <path d="M 250 105 L 250 35" stroke="var(--text-primary)" stroke-width="2.2" fill="none" />
+                  <path d="M 180 110 Q 150 80 140 50" stroke="var(--text-primary)" stroke-width="1.8" fill="none" />
+                  <path d="M 320 110 Q 350 80 360 50" stroke="var(--text-primary)" stroke-width="1.8" fill="none" />
                 </g>
 
-                <!-- Leaf Clusters (Mint Chalk) -->
+                <!-- Dense Textured Foliage Clouds (Mint Chalk) -->
                 <g id="tree-foliage" class="tree-part">
-                  <!-- Generated dynamic leaf clouds -->
+                  <!-- Dynamic Leaf Nodes populated by JS -->
                 </g>
 
-                <!-- Crowning Blossoms & Fruit (Petal Pink Chalk) -->
+                <!-- Crowning Blossoms & Fruit Nodes -->
                 <g id="tree-blossoms" class="tree-part">
-                  <!-- Generated dynamic blossom nodes -->
+                  <!-- Dynamic Blossom Nodes populated by JS -->
                 </g>
 
-                <!-- Fallen Leaves at Base (Rest Day indicator) -->
-                <g id="tree-fallen-leaves" class="tree-part" opacity="0.7">
-                  <path d="M 140 316 Q 148 310 156 316 Q 148 322 140 316" fill="var(--chalk-mint)" />
-                  <path d="M 245 317 Q 253 311 261 317 Q 253 323 245 317" fill="var(--chalk-mint)" />
+                <!-- Fallen Leaves at Base (Resting State) -->
+                <g id="tree-fallen-leaves" class="tree-part" opacity="0.75">
+                  <path d="M 170 213 Q 178 208 186 213 Q 178 218 170 213" fill="var(--chalk-mint)" />
+                  <path d="M 310 214 Q 318 209 326 214 Q 318 219 310 214" fill="var(--chalk-mint)" />
+                  <path d="M 210 217 Q 216 212 222 217 Q 216 222 210 217" fill="var(--chalk-mint)" />
                 </g>
               </svg>
             </div>
 
-            <div class="tree-rest-reassurance">
-              <i class="fa-solid fa-heart-pulse"></i>
-              <span class="reassurance-text chalk-font" id="habit-tree-quote">"Roots run deep; growth resumes whenever you are ready."</span>
+            <!-- Habit Tree Progress Meter -->
+            <div class="habit-summary-box-stacked">
+              <div class="summary-bar-wrapper">
+                <div class="summary-fill" id="habit-tree-progress-bar" style="width: 35%;"></div>
+              </div>
+              <div class="summary-text" id="habit-tree-progress-text">14 habit completions logged this month (35% toward crowning bloom)</div>
             </div>
           </div>
 
-          <!-- Right Column: Daily Habits Checklist & Tracker -->
+          <!-- BOTTOM: Daily Habits Checklist & Water Tracker -->
           <div class="habit-manager-card chalk-card">
             <div class="habit-header-row">
               <div>
                 <h3 class="chalk-font">Daily Habit Rhythms</h3>
-                <p class="habit-subtext">Small consistent actions anchor your monthly tree.</p>
+                <p class="habit-subtext">Click any habit to record progress (e.g. click water to add 1 Litre!).</p>
               </div>
               <button class="chalk-btn secondary-btn chalk-font" id="btn-add-habit-modal">
                 <i class="fa-solid fa-plus"></i> New Habit
@@ -466,16 +444,7 @@
 
             <!-- Habit List -->
             <div class="habit-items-container" id="habit-items-list">
-              <!-- Dynamically Populated -->
-            </div>
-
-            <!-- Habit Tree Progress Summary -->
-            <div class="habit-summary-box">
-              <div class="summary-label chalk-font">Monthly Habit Consistency</div>
-              <div class="summary-bar-wrapper">
-                <div class="summary-fill" id="habit-tree-progress-bar" style="width: 35%;"></div>
-              </div>
-              <div class="summary-text" id="habit-tree-progress-text">14 completions logged this month (35% toward crowning bloom)</div>
+              <!-- Dynamically Populated with Interactive Increments -->
             </div>
           </div>
 
@@ -483,34 +452,47 @@
       </section>
 
       <!-- =============================================================== -->
-      <!-- SURFACE 5: DEEP FOCUS STUDIO (ACOUSTIC CHAMBER)                 -->
+      <!-- SURFACE 5: DEEP FOCUS STUDIO (FULL-SCREEN ACOUSTIC SANCTUARY)   -->
       <!-- =============================================================== -->
       <section class="surface-view" id="view-deep-focus">
         
-        <div class="deep-focus-sanctuary">
+        <div class="deep-focus-fullscreen-container chalk-card">
           
-          <!-- Central Chalk Clock & Timer -->
-          <div class="focus-clock-card chalk-card">
-            
+          <!-- Top: Mode Toggle (Deep Focus vs. Gentle Rest) -->
+          <div class="focus-top-bar">
             <div class="focus-mode-toggle">
-              <button class="mode-pill active chalk-font" data-mode="FOCUS">Deep Focus</button>
-              <button class="mode-pill chalk-font" data-mode="REST">Gentle Rest</button>
+              <button class="mode-pill active chalk-font" id="mode-btn-focus" data-mode="FOCUS">
+                <i class="fa-solid fa-brain"></i> Deep Focus
+              </button>
+              <button class="mode-pill chalk-font" id="mode-btn-rest" data-mode="REST">
+                <i class="fa-solid fa-mug-hot"></i> Gentle Rest (5m)
+              </button>
             </div>
 
-            <!-- Round Chalk Clock SVG & Number Display -->
+            <!-- Linked Task Pill -->
+            <div class="linked-task-pill">
+              <span class="chalk-font"><i class="fa-solid fa-link"></i> Focus Anchor:</span>
+              <select id="focus-linked-task-select" class="chalk-select linked-select">
+                <option value="">-- Working without a specific task --</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Center: Minimalist Round Chalk Clock -->
+          <div class="focus-clock-centerpiece">
             <div class="clock-display-wrapper">
-              <svg class="clock-progress-ring" viewBox="0 0 260 260">
-                <circle class="ring-bg" cx="130" cy="130" r="115"></circle>
-                <circle class="ring-progress" id="clock-ring-progress" cx="130" cy="130" r="115"></circle>
+              <svg class="clock-progress-ring" viewBox="0 0 240 240">
+                <circle class="ring-bg" cx="120" cy="120" r="106"></circle>
+                <circle class="ring-progress" id="clock-ring-progress" cx="120" cy="120" r="106"></circle>
               </svg>
               
               <div class="clock-time-content">
-                <div class="time-readout" id="timer-display">45:00</div>
+                <div class="time-readout" id="timer-display">25:00</div>
                 <div class="time-label chalk-font" id="timer-status-label">Ready to begin</div>
               </div>
             </div>
 
-            <!-- Time Adjustment Controls (+ / -) -->
+            <!-- Time Adjustment Controls Row (+ / -) -->
             <div class="timer-adjuster-row">
               <button class="adjust-btn chalk-font" id="btn-time-minus-5" title="Minus 5 minutes">-5m</button>
               <button class="adjust-btn chalk-font" id="btn-time-minus-1" title="Minus 1 minute">-1m</button>
@@ -524,30 +506,18 @@
             <!-- Primary Action Buttons -->
             <div class="timer-action-row">
               <button class="chalk-btn timer-btn play-btn chalk-font" id="btn-timer-toggle">
-                <i class="fa-solid fa-play" id="timer-icon-state"></i> <span id="timer-action-text">Begin Focus Session</span>
+                <i class="fa-solid fa-play" id="timer-icon-state"></i> <span id="timer-action-text">Begin Session</span>
               </button>
               <button class="chalk-btn timer-btn reset-btn chalk-font" id="btn-timer-reset" title="Reset Session">
                 <i class="fa-solid fa-rotate-left"></i> Reset
               </button>
             </div>
-
-            <!-- Linked Task Anchor -->
-            <div class="linked-task-anchor">
-              <span class="anchor-label chalk-font"><i class="fa-solid fa-link"></i> Focus Anchor:</span>
-              <select id="focus-linked-task-select" class="chalk-select linked-select">
-                <option value="">-- Working without a specific task --</option>
-              </select>
-            </div>
-
           </div>
 
-          <!-- Ambient Soundscape Selector Suite (Web Audio API Powered) -->
-          <div class="soundscapes-card chalk-card">
-            <div class="soundscape-header">
-              <div class="sound-title-block">
-                <h3 class="chalk-font"><i class="fa-solid fa-headphones"></i> Acoustic Sanctuary</h3>
-                <p>Natural soundscapes crafted to quiet internal ADHD chatter and deepen immersion.</p>
-              </div>
+          <!-- Bottom: Soundscape Selector Bar with Volume Control -->
+          <div class="focus-soundscapes-bottom-bar">
+            <div class="sound-bar-header">
+              <span class="chalk-font"><i class="fa-solid fa-headphones"></i> Ambient Focus Audio</span>
               <div class="volume-control-wrap">
                 <i class="fa-solid fa-volume-low"></i>
                 <input type="range" id="sound-volume" min="0" max="1" step="0.05" value="0.5" class="chalk-slider">
@@ -555,62 +525,25 @@
               </div>
             </div>
 
-            <div class="soundscapes-pills-grid">
-              
-              <button class="sound-card active" data-sound="rain">
-                <div class="sound-icon">🌧️</div>
-                <div class="sound-meta">
-                  <div class="sound-name chalk-font">Steady Rain</div>
-                  <div class="sound-benefit">Lowers heart rate & street noise</div>
-                </div>
-                <span class="sound-status-badge"><i class="fa-solid fa-circle-play"></i></span>
+            <div class="soundscapes-horizontal-row">
+              <button class="sound-pill active" data-sound="rain">
+                <span class="s-icon">🌧️</span> <span class="s-name chalk-font">Steady Rain</span>
               </button>
-
-              <button class="sound-card" data-sound="campfire">
-                <div class="sound-icon">🔥</div>
-                <div class="sound-meta">
-                  <div class="sound-name chalk-font">Warm Campfire</div>
-                  <div class="sound-benefit">Cozy late-night study crackle</div>
-                </div>
-                <span class="sound-status-badge"><i class="fa-solid fa-circle-play"></i></span>
+              <button class="sound-pill" data-sound="campfire">
+                <span class="s-icon">🔥</span> <span class="s-name chalk-font">Campfire</span>
               </button>
-
-              <button class="sound-card" data-sound="forest">
-                <div class="sound-icon">🌲</div>
-                <div class="sound-meta">
-                  <div class="sound-name chalk-font">Forest Wind</div>
-                  <div class="sound-benefit">Slow breeze through pine canopies</div>
-                </div>
-                <span class="sound-status-badge"><i class="fa-solid fa-circle-play"></i></span>
+              <button class="sound-pill" data-sound="forest">
+                <span class="s-icon">🌲</span> <span class="s-name chalk-font">Forest Wind</span>
               </button>
-
-              <button class="sound-card" data-sound="library">
-                <div class="sound-icon">📚</div>
-                <div class="sound-meta">
-                  <div class="sound-name chalk-font">Quiet Library</div>
-                  <div class="sound-benefit">Soft room presence & distant pages</div>
-                </div>
-                <span class="sound-status-badge"><i class="fa-solid fa-circle-play"></i></span>
+              <button class="sound-pill" data-sound="library">
+                <span class="s-icon">📚</span> <span class="s-name chalk-font">Quiet Library</span>
               </button>
-
-              <button class="sound-card" data-sound="brown-noise">
-                <div class="sound-icon">🌊</div>
-                <div class="sound-meta">
-                  <div class="sound-name chalk-font">Brown Noise</div>
-                  <div class="sound-benefit">Deep waterfall roar for ADHD focus</div>
-                </div>
-                <span class="sound-status-badge"><i class="fa-solid fa-circle-play"></i></span>
+              <button class="sound-pill" data-sound="brown-noise">
+                <span class="s-icon">🌊</span> <span class="s-name chalk-font">Brown Noise</span>
               </button>
-
-              <button class="sound-card sound-mute-card" data-sound="none">
-                <div class="sound-icon">🔇</div>
-                <div class="sound-meta">
-                  <div class="sound-name chalk-font">Silent Studio</div>
-                  <div class="sound-benefit">Complete acoustic stillness</div>
-                </div>
-                <span class="sound-status-badge"><i class="fa-solid fa-check"></i></span>
+              <button class="sound-pill" data-sound="none">
+                <span class="s-icon">🔇</span> <span class="s-name chalk-font">Mute</span>
               </button>
-
             </div>
           </div>
 
@@ -676,7 +609,18 @@
         <div class="modal-body">
           <div class="form-group">
             <label class="chalk-font">Habit Name:</label>
-            <input type="text" id="new-habit-name" class="chalk-input" placeholder="e.g. 30 Mins Sketchbook Drill, Hydrate 4L..." required>
+            <input type="text" id="new-habit-name" class="chalk-input" placeholder="e.g. 30 Mins Sketchbook Drill..." required>
+          </div>
+          <div class="form-group">
+            <label class="chalk-font">Habit Type:</label>
+            <select id="new-habit-type" class="chalk-select">
+              <option value="COUNTER">Counter / Progress (e.g. Litres, Mins, Pages)</option>
+              <option value="CHECK">Simple Daily Checkmark</option>
+            </select>
+          </div>
+          <div class="form-group" id="habit-target-group">
+            <label class="chalk-font">Daily Target Amount:</label>
+            <input type="number" id="new-habit-target" class="chalk-input" value="4" min="1" max="100">
           </div>
           <div class="form-group">
             <label class="chalk-font">Icon Symbol:</label>
@@ -687,13 +631,6 @@
               <option value="🏃">🏃 Exercise / Movement</option>
               <option value="🧘">🧘 Mindfulness / Rest</option>
               <option value="🌿">🌿 Plant Care / Nature</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="chalk-font">Frequency:</label>
-            <select id="new-habit-freq" class="chalk-select">
-              <option value="DAILY">Every Day</option>
-              <option value="WEEKDAYS">Weekdays Only</option>
             </select>
           </div>
         </div>
