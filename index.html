@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chalkflow — Slow Productivity & Botanical Focus Sanctuary</title>
+  <title>Chalkflow — Mindful Productivity & Botanical Focus Sanctuary</title>
   
   <!-- Typography: Kalam (Handwritten Chalk) & Inter (Clean UI Sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +18,7 @@
 <body class="theme-dark-slate">
 
   <!-- Outer Wooden Blackboard Frame Container -->
-  <div class="blackboard-frame-wrapper">
+  <div class="blackboard-frame-wrapper" id="app-frame-wrapper">
     
     <!-- Tactile Chalk Dust & Eraser Smudges Overlay -->
     <div class="chalk-dust-overlay" aria-hidden="true"></div>
@@ -29,12 +29,12 @@
       <!-- ================================================================= -->
       <!-- SIDE NAVIGATION BAR                                               -->
       <!-- ================================================================= -->
-      <aside class="side-nav">
+      <aside class="side-nav" id="main-side-nav">
         <div class="brand-container">
           <div class="brand-icon">🌿</div>
           <div class="brand-text">
             <h1 class="brand-title chalk-font">Chalkflow</h1>
-            <p class="brand-subtitle">Slow Productivity</p>
+            <p class="brand-subtitle">Mindful Productivity</p>
           </div>
         </div>
 
@@ -97,7 +97,7 @@
       <main class="main-content">
         
         <!-- TOP HEADER BAR -->
-        <header class="workspace-header">
+        <header class="workspace-header" id="main-workspace-header">
           <div class="header-left">
             <h2 class="current-screen-title chalk-font" id="page-title">Today's Slate</h2>
             <span class="current-date-badge" id="live-date-str">Tuesday, October 08, 2026</span>
@@ -118,7 +118,7 @@
         </header>
 
         <!-- =============================================================== -->
-        <!-- SURFACE 1: TODAY'S SLATE                                        -->
+        <!-- SURFACE 1: TODAY'S SLATE (UNIFIED HIERARCHY: RED -> YELLOW -> GREEN) -->
         <!-- =============================================================== -->
         <section class="surface-view active" id="view-today-slate">
           
@@ -138,15 +138,15 @@
                 <div class="control-group">
                   <label class="control-label chalk-font">Priority:</label>
                   <div class="priority-pills">
-                    <label class="priority-pill red-pill" title="High Priority (Subtle Red Outline)">
+                    <label class="priority-pill red-pill" title="High Priority (🔴 Auto-floats to top with subtle red outline)">
                       <input type="radio" name="task-priority" value="HIGH" checked>
                       <span class="dot-glyph red-dot">🔴</span>
                     </label>
-                    <label class="priority-pill amber-pill" title="Medium Priority">
+                    <label class="priority-pill amber-pill" title="Medium Priority (🟡 Middle priority)">
                       <input type="radio" name="task-priority" value="MEDIUM">
                       <span class="dot-glyph amber-dot">🟡</span>
                     </label>
-                    <label class="priority-pill mint-pill" title="Low Priority">
+                    <label class="priority-pill mint-pill" title="Low Priority (🟢 Bottom priority)">
                       <input type="radio" name="task-priority" value="LOW">
                       <span class="dot-glyph mint-dot">🟢</span>
                     </label>
@@ -179,31 +179,11 @@
             </form>
           </div>
 
-          <!-- Task Groups Container -->
+          <!-- Unified Task List (Clean Single Stream: Red High -> Yellow Med -> Green Low) -->
           <div class="slate-task-workspace">
-            
-            <!-- Top Priority Section (Discrete Red Outline on card) -->
-            <div class="priority-section-wrapper" id="top-priority-container">
-              <div class="section-chalk-header">
-                <h3 class="chalk-font">Top Daily Priority</h3>
-                <span class="header-line"></span>
-              </div>
-              <div id="top-priority-list" class="task-card-list">
-                <!-- Dynamically Populated -->
-              </div>
+            <div id="unified-today-task-list" class="task-card-list">
+              <!-- Dynamically Populated in strict Priority Order -->
             </div>
-
-            <!-- Secondary Tasks Section -->
-            <div class="general-tasks-wrapper">
-              <div class="section-chalk-header">
-                <h3 class="chalk-font">Other Tasks for Today</h3>
-                <span class="header-line"></span>
-              </div>
-              <div id="general-tasks-list" class="task-card-list">
-                <!-- Dynamically Populated -->
-              </div>
-            </div>
-
           </div>
 
           <!-- Bottom Felt Eraser Action -->
@@ -306,16 +286,16 @@
         </section>
 
         <!-- =============================================================== -->
-        <!-- SURFACE 3: PROGRESS GARDEN (REALISTIC BOTANICAL CHALK MEADOW)   -->
+        <!-- SURFACE 3: PROGRESS GARDEN (RICH WILDFLOWER MEADOW & JOURNAL)   -->
         <!-- =============================================================== -->
         <section class="surface-view" id="view-progress-garden">
           
-          <!-- HERO TIER: Realistic Botanical Chalk Meadow Landscape -->
+          <!-- HERO TIER: Rich Layered Botanical Chalk Wildflower Meadow Canvas -->
           <div class="hero-meadow-card chalk-card">
             <div class="meadow-header">
               <div class="meadow-title-block">
-                <h3 class="meadow-heading chalk-font" id="current-month-heading">October 2026 — Autumn Meadow</h3>
-                <p class="meadow-subtext">Handcrafted chalk flora rooted in the soil, blooming as your daily efforts unfold.</p>
+                <h3 class="meadow-heading chalk-font" id="current-month-heading">October 2026 — Autumn Wildflower Meadow</h3>
+                <p class="meadow-subtext">Every day's effort blooms a unique multi-layered botanical specimen into your shared landscape.</p>
               </div>
               <div class="meadow-stats-pill">
                 <div class="stat-item">
@@ -330,16 +310,23 @@
               </div>
             </div>
 
-            <!-- Authentic Botanical Garden Soil & Chalk Flora Landscape -->
+            <!-- Rich Panoramic Botanical Garden Landscape Container -->
             <div class="meadow-scenery-container">
-              <!-- Hand-drawn Chalk Soil Layer -->
+              <!-- Chalk Bees with Dotted Flight Lines (Inspired by Reference Image 1) -->
+              <div class="meadow-chalk-bees" aria-hidden="true">
+                <span class="chalk-bee bee-1">🐝 <span class="bee-trail">~ ~ ~</span></span>
+                <span class="chalk-bee bee-2"><span class="bee-trail">~ ~ ~</span> 🐝</span>
+              </div>
+
+              <!-- Earth Soil Layer -->
               <div class="meadow-earth-ground">
                 <div class="soil-top-grass"></div>
                 <div class="soil-strata"></div>
               </div>
-              <!-- Rooted Chalk Botanical Flowers Row -->
+
+              <!-- Multi-Height Flourishing Botanical Meadow Flora -->
               <div class="meadow-flowers-row" id="hero-meadow-flowers">
-                <!-- Populated with SVG chalk flowers -->
+                <!-- Dynamically Populated with rich colorful chalk flower SVGs -->
               </div>
             </div>
           </div>
@@ -390,9 +377,7 @@
 
                   <!-- Textured Chalk Trunk & Bark -->
                   <g id="tree-trunk" class="tree-part">
-                    <!-- Trunk outline with organic curves -->
                     <path d="M 242 220 Q 252 150 245 105 L 275 105 Q 268 150 278 220 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="2.5" />
-                    <!-- Crosshatch chalk bark lines -->
                     <path d="M 248 195 L 272 189 M 246 170 L 274 163 M 245 145 L 275 139 M 246 122 L 274 118" stroke="var(--border-chalk)" stroke-width="1.5" stroke-dasharray="3,2" />
                     <path d="M 252 210 L 268 205 M 255 182 L 265 178" stroke="var(--text-primary)" stroke-width="1.2" opacity="0.7" />
                   </g>
@@ -408,7 +393,7 @@
                     <path d="M 335 110 Q 365 80 375 50" stroke="var(--text-primary)" stroke-width="1.8" fill="none" />
                   </g>
 
-                  <!-- Dense Layered Foliage Clouds (Mint Chalk) -->
+                  <!-- Dense Layered Foliage Clouds -->
                   <g id="tree-foliage" class="tree-part">
                     <!-- Dynamic Leaf Nodes populated by JS -->
                   </g>
@@ -458,13 +443,13 @@
         </section>
 
         <!-- =============================================================== -->
-        <!-- SURFACE 5: DEEP FOCUS STUDIO (FULL-SCREEN ACOUSTIC SANCTUARY)   -->
+        <!-- SURFACE 5: DEEP FOCUS (WITH MAXIMIZE / FULLSCREEN OPTION)        -->
         <!-- =============================================================== -->
         <section class="surface-view" id="view-deep-focus">
           
-          <div class="deep-focus-fullscreen-container chalk-card">
+          <div class="deep-focus-fullscreen-container chalk-card" id="deep-focus-panel">
             
-            <!-- Top: Mode Toggle (Deep Focus vs. Gentle Rest) -->
+            <!-- Top: Mode Toggle, Task Anchor & Maximize Option -->
             <div class="focus-top-bar">
               <div class="focus-mode-toggle">
                 <button class="mode-pill active chalk-font" id="mode-btn-focus" data-mode="FOCUS">
@@ -477,11 +462,16 @@
 
               <!-- Linked Task Pill -->
               <div class="linked-task-pill">
-                <span class="chalk-font"><i class="fa-solid fa-link"></i> Focus Anchor:</span>
+                <span class="chalk-font"><i class="fa-solid fa-link"></i> Anchor:</span>
                 <select id="focus-linked-task-select" class="chalk-select linked-select">
-                  <option value="">-- Working without a specific task --</option>
+                  <option value="">-- No specific task --</option>
                 </select>
               </div>
+
+              <!-- Maximize Focus View Button -->
+              <button class="chalk-btn secondary-btn chalk-font maximize-focus-btn" id="btn-focus-maximize" title="Toggle Fullscreen Focus Mode">
+                <i class="fa-solid fa-expand" id="maximize-icon"></i> <span id="maximize-label">Maximize</span>
+              </button>
             </div>
 
             <!-- Center: Minimalist Round Chalk Clock -->
@@ -559,7 +549,7 @@
       </main>
     </div>
 
-    <!-- Wooden Chalk Ledge Tray at Bottom with Resting Chalk Sticks (Inspired by Reference Image 5) -->
+    <!-- Wooden Chalk Ledge Tray at Bottom with Resting Chalk Sticks -->
     <footer class="wooden-chalk-ledge">
       <div class="chalk-stick ivory-chalk" title="Ivory Chalk Stick"></div>
       <div class="chalk-stick mint-chalk" title="Mint Chalk Stick"></div>

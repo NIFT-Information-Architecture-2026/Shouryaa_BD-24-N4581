@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CHALKFLOW — SLOW PRODUCTIVITY & BOTANICAL FOCUS DESIGN SYSTEM
+   CHALKFLOW — MINDFUL PRODUCTIVITY & BOTANICAL FOCUS DESIGN SYSTEM
    Authentic Wooden-Framed Blackboard & Handcrafted Chalk Botanical Stylesheet
    ========================================================================== */
 
@@ -26,13 +26,15 @@
   --wood-frame-highlight: #A06D3B;
   --wood-frame-shadow: #4A2E1B;
   
-  /* Handcrafted Mineral Chalk Colors */
+  /* Handcrafted Mineral Chalk Colors (Matching Reference Meadow Art) */
   --chalk-red: #FF6B6B;
   --chalk-amber: #FFD166;
   --chalk-mint: #06D6A0;
   --chalk-sky: #4CC9F0;
+  --chalk-terracotta: #E07A5F;
   --chalk-pink: #E8A4C8;
-  --chalk-violet: #D4B2D8;
+  --chalk-violet: #B5838D;
+  --chalk-purple: #6D597A;
   --chalk-white: #FAF0CA;
   
   --nav-width: 240px;
@@ -65,8 +67,10 @@ body.theme-vintage-green {
   --chalk-amber: #F2CC8F;
   --chalk-mint: #81B29A;
   --chalk-sky: #A8DADC;
+  --chalk-terracotta: #E29578;
   --chalk-pink: #E9A8C6;
   --chalk-violet: #C3AED6;
+  --chalk-purple: #7E6B8F;
   --chalk-white: #FAF0CA;
 }
 
@@ -93,8 +97,10 @@ body.theme-parchment-cream {
   --chalk-amber: #E29578;
   --chalk-mint: #457B9D;
   --chalk-sky: #3D5A80;
+  --chalk-terracotta: #D08C5D;
   --chalk-pink: #C77DFF;
   --chalk-violet: #A288E3;
+  --chalk-purple: #5A4E72;
   --chalk-white: #1D3557;
 }
 
@@ -126,7 +132,7 @@ body {
   font-family: 'Kalam', cursive, sans-serif;
 }
 
-/* Outer Wooden Frame Container (Matching Reference Images 1, 2 & 5) */
+/* Outer Wooden Frame Container */
 .blackboard-frame-wrapper {
   width: 100%;
   max-width: 1440px;
@@ -143,9 +149,10 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-/* Authentic Chalkboard Smudges & Eraser Swipes (Reference Image 1 & 2) */
+/* Chalk Smudge & Dust Texture */
 .chalk-smudge-texture {
   position: absolute;
   top: 0;
@@ -174,7 +181,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   3. WOODEN CHALK LEDGE & CHALK STICKS (Matching Reference Image 5)
+   3. WOODEN CHALK LEDGE & CHALK STICKS
    -------------------------------------------------------------------------- */
 .wooden-chalk-ledge {
   height: 28px;
@@ -203,17 +210,9 @@ body {
   transform: translateY(-2px);
 }
 
-.ivory-chalk {
-  background: linear-gradient(180deg, #FAF0CA 0%, #E6D8A7 100%);
-}
-
-.mint-chalk {
-  background: linear-gradient(180deg, #81B29A 0%, #5E8F77 100%);
-}
-
-.coral-chalk {
-  background: linear-gradient(180deg, #E07A5F 0%, #C45F45 100%);
-}
+.ivory-chalk { background: linear-gradient(180deg, #FAF0CA 0%, #E6D8A7 100%); }
+.mint-chalk { background: linear-gradient(180deg, #81B29A 0%, #5E8F77 100%); }
+.coral-chalk { background: linear-gradient(180deg, #E07A5F 0%, #C45F45 100%); }
 
 .felt-eraser-wood-block {
   width: 54px;
@@ -252,6 +251,7 @@ body {
   flex-direction: column;
   padding: 18px 14px;
   overflow-y: auto;
+  transition: all 0.3s ease;
 }
 
 .brand-container {
@@ -349,7 +349,6 @@ body {
   100% { transform: scale(0.9); opacity: 0.6; }
 }
 
-/* Sidebar Theme Switcher */
 .side-nav-footer {
   margin-top: 18px;
   border-top: 1px dashed var(--border-chalk);
@@ -414,6 +413,7 @@ body {
   padding: 24px 32px;
   max-width: 1200px;
   overflow-y: auto;
+  transition: all 0.3s ease;
 }
 
 .workspace-header {
@@ -559,7 +559,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   7. SURFACE 1: TODAY'S SLATE SPECIFICS
+   7. SURFACE 1: TODAY'S SLATE (UNIFIED PRIORITY STREAM)
    -------------------------------------------------------------------------- */
 .quick-add-form {
   display: flex;
@@ -626,26 +626,6 @@ body {
   transform: scale(1.1);
 }
 
-.section-chalk-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-  margin-top: 8px;
-}
-
-.section-chalk-header h3 {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.header-line {
-  flex-grow: 1;
-  height: 1px;
-  border-bottom: 1px dashed var(--border-chalk);
-}
-
 .task-card-list {
   display: flex;
   flex-direction: column;
@@ -706,7 +686,6 @@ body {
 
 .task-body-interactive {
   flex-grow: 1;
-  cursor: pointer;
 }
 
 .task-title-line {
@@ -767,6 +746,32 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+/* Dedicated Subtasks Toggle Button */
+.subtasks-toggle-btn {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk);
+  color: var(--chalk-sky);
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.subtasks-toggle-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--chalk-sky);
+}
+
+.subtasks-toggle-btn.expanded {
+  background: var(--bg-hover);
+  border-color: var(--chalk-sky);
+  font-weight: 700;
 }
 
 .focus-task-btn {
@@ -920,7 +925,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   9. SURFACE 3: PROGRESS GARDEN (BOTANICAL CHALK MEADOW & ARTWORKS)
+   9. SURFACE 3: PROGRESS GARDEN (RICH WILDFLOWER MEADOW & BEES)
    -------------------------------------------------------------------------- */
 .hero-meadow-card {
   padding: 20px;
@@ -974,9 +979,9 @@ body {
   background: var(--border-chalk);
 }
 
-/* Ground Scenery with Realistic Earth Strata & Chalk Wildflowers */
+/* Rich Wildflower Scenery with Flying Chalk Bees */
 .meadow-scenery-container {
-  height: 160px;
+  height: 180px;
   position: relative;
   background: var(--bg-surface-elevated);
   border: 1px dashed var(--border-chalk);
@@ -985,6 +990,47 @@ body {
   display: flex;
   align-items: flex-end;
   padding: 0 20px 0 20px;
+}
+
+.meadow-chalk-bees {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.chalk-bee {
+  font-size: 16px;
+  opacity: 0.85;
+}
+
+.bee-trail {
+  font-family: 'Kalam', cursive;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+
+.bee-1 {
+  animation: bee-float-left 4s ease-in-out infinite;
+}
+
+.bee-2 {
+  animation: bee-float-right 5s ease-in-out infinite;
+}
+
+@keyframes bee-float-left {
+  0%, 100% { transform: translate(0, 0) rotate(5deg); }
+  50% { transform: translate(15px, -8px) rotate(-5deg); }
+}
+
+@keyframes bee-float-right {
+  0%, 100% { transform: translate(0, 0) rotate(-5deg); }
+  50% { transform: translate(-15px, -10px) rotate(5deg); }
 }
 
 .meadow-earth-ground {
@@ -1017,7 +1063,6 @@ body {
   padding-bottom: 10px;
 }
 
-/* Chalk Handcrafted Flower Artwork Container */
 .meadow-flower-item {
   display: flex;
   flex-direction: column;
@@ -1183,7 +1228,6 @@ body {
   color: var(--text-muted);
 }
 
-/* Habit Items */
 .habit-header-row {
   display: flex;
   justify-content: space-between;
@@ -1271,7 +1315,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   11. SURFACE 5: DEEP FOCUS STUDIO (FULL-SCREEN ACOUSTIC CONTAINER)
+   11. SURFACE 5: DEEP FOCUS (WITH MAXIMIZE / FULLSCREEN OPTION)
    -------------------------------------------------------------------------- */
 .deep-focus-fullscreen-container {
   display: flex;
@@ -1281,6 +1325,43 @@ body {
   padding: 24px 28px;
   min-height: 520px;
   justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+/* Maximize / True Focus Fullscreen Mode */
+body.focus-maximized #main-side-nav,
+body.focus-maximized #main-workspace-header,
+body.focus-maximized .wooden-chalk-ledge {
+  display: none !important;
+}
+
+body.focus-maximized .main-content {
+  padding: 0;
+  max-width: 100%;
+}
+
+body.focus-maximized .deep-focus-fullscreen-container {
+  min-height: 88vh;
+  padding: 36px 48px;
+  justify-content: space-around;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.maximize-focus-btn {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk);
+  color: var(--text-primary);
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.maximize-focus-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--text-primary);
 }
 
 .focus-top-bar {
