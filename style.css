@@ -1,16 +1,16 @@
 /* ==========================================================================
    CHALKFLOW — SLOW PRODUCTIVITY & BOTANICAL FOCUS DESIGN SYSTEM
-   Refined Production Stylesheet (Balanced Typography & Tactical Ergonomics)
+   Authentic Wooden-Framed Blackboard & Handcrafted Chalk Botanical Stylesheet
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. CSS VARIABLES & THEMES
+   1. CSS VARIABLES & MULTI-SURFACE THEME TOKENS
    -------------------------------------------------------------------------- */
 :root {
-  /* Default: Dark Slate Theme (#181A1B) */
-  --bg-base: #181A1B;
-  --bg-surface: #222527;
-  --bg-surface-elevated: #2A2E31;
+  /* Default: Dark Slate Blackboard with Oak Wood Frame (#181A1B) */
+  --bg-base: #17191A;
+  --bg-surface: #202325;
+  --bg-surface-elevated: #282C2F;
   --bg-hover: #32373B;
   
   --text-primary: #E8ECEF;
@@ -20,28 +20,34 @@
   --border-chalk: rgba(232, 236, 239, 0.12);
   --border-chalk-dashed: rgba(232, 236, 239, 0.22);
   
-  /* Mineral Chalk Functional Colors */
+  /* Wood Frame Colors (Natural Warm Oak) */
+  --wood-frame-outer: #6B4226;
+  --wood-frame-inner: #8B5A2B;
+  --wood-frame-highlight: #A06D3B;
+  --wood-frame-shadow: #4A2E1B;
+  
+  /* Handcrafted Mineral Chalk Colors */
   --chalk-red: #FF6B6B;
   --chalk-amber: #FFD166;
   --chalk-mint: #06D6A0;
   --chalk-sky: #4CC9F0;
-  --chalk-pink: #FF8FAB;
-  --chalk-white: #FFFFFF;
+  --chalk-pink: #E8A4C8;
+  --chalk-violet: #D4B2D8;
+  --chalk-white: #FAF0CA;
   
-  /* Layout Sizing & Typography Scale (Refined & Balanced) */
   --nav-width: 240px;
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
-  --shadow-chalk: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-chalk: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
-/* Theme 2: Vintage Classroom Green (#1B2A20) */
+/* Theme 2: Vintage Classroom Green Blackboard (#1B2A20) */
 body.theme-vintage-green {
-  --bg-base: #1B2A20;
-  --bg-surface: #23382B;
-  --bg-surface-elevated: #2D4737;
-  --bg-hover: #385945;
+  --bg-base: #18281E;
+  --bg-surface: #203427;
+  --bg-surface-elevated: #284232;
+  --bg-hover: #32523E;
   
   --text-primary: #F4F1DE;
   --text-muted: #A3B899;
@@ -50,15 +56,21 @@ body.theme-vintage-green {
   --border-chalk: rgba(244, 241, 222, 0.14);
   --border-chalk-dashed: rgba(244, 241, 222, 0.25);
   
+  --wood-frame-outer: #5C381E;
+  --wood-frame-inner: #7A4E29;
+  --wood-frame-highlight: #966336;
+  --wood-frame-shadow: #3E2412;
+  
   --chalk-red: #E07A5F;
   --chalk-amber: #F2CC8F;
   --chalk-mint: #81B29A;
   --chalk-sky: #A8DADC;
   --chalk-pink: #E9A8C6;
+  --chalk-violet: #C3AED6;
   --chalk-white: #FAF0CA;
 }
 
-/* Theme 3: Parchment / Cream Paper (#F7F4EA) */
+/* Theme 3: Studio Board / Parchment (#F7F4EA) */
 body.theme-parchment-cream {
   --bg-base: #F7F4EA;
   --bg-surface: #EFEAD8;
@@ -72,16 +84,22 @@ body.theme-parchment-cream {
   --border-chalk: rgba(43, 45, 66, 0.12);
   --border-chalk-dashed: rgba(43, 45, 66, 0.22);
   
+  --wood-frame-outer: #A0A5AA;
+  --wood-frame-inner: #D1D5DB;
+  --wood-frame-highlight: #E5E7EB;
+  --wood-frame-shadow: #6B7280;
+  
   --chalk-red: #D64045;
   --chalk-amber: #E29578;
   --chalk-mint: #457B9D;
   --chalk-sky: #3D5A80;
   --chalk-pink: #C77DFF;
+  --chalk-violet: #A288E3;
   --chalk-white: #1D3557;
 }
 
 /* --------------------------------------------------------------------------
-   2. RESET & BASE TYPOGRAPHY (SCALED DOWN FOR BALANCED ERGONOMICS)
+   2. RESET & WOODEN BLACKBOARD FRAME WRAPPER
    -------------------------------------------------------------------------- */
 * {
   box-sizing: border-box;
@@ -92,13 +110,15 @@ body.theme-parchment-cream {
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: var(--bg-base);
+  background-color: #0E1011;
   color: var(--text-primary);
   min-height: 100vh;
   font-size: 14px;
   line-height: 1.45;
-  overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
   position: relative;
 }
 
@@ -106,27 +126,122 @@ body {
   font-family: 'Kalam', cursive, sans-serif;
 }
 
-/* Blackboard grain texture */
-.chalk-dust-overlay {
-  position: fixed;
+/* Outer Wooden Frame Container (Matching Reference Images 1, 2 & 5) */
+.blackboard-frame-wrapper {
+  width: 100%;
+  max-width: 1440px;
+  min-height: 94vh;
+  background-color: var(--bg-base);
+  border: 14px solid var(--wood-frame-inner);
+  border-image: linear-gradient(135deg, var(--wood-frame-highlight) 0%, var(--wood-frame-inner) 40%, var(--wood-frame-outer) 100%) 14;
+  border-radius: 4px;
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.75),
+    inset 0 0 60px rgba(0, 0, 0, 0.7),
+    inset 0 0 120px rgba(0, 0, 0, 0.4);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Authentic Chalkboard Smudges & Eraser Swipes (Reference Image 1 & 2) */
+.chalk-smudge-texture {
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   background-image: 
-    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0),
-    radial-gradient(rgba(255, 255, 255, 0.015) 2px, transparent 0);
-  background-size: 24px 24px, 48px 48px;
-  z-index: 9999;
+    radial-gradient(ellipse at 40% 30%, rgba(255, 255, 255, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 15% 85%, rgba(255, 255, 255, 0.035) 0%, transparent 40%);
+  opacity: 0.9;
+  z-index: 1;
+}
+
+.chalk-dust-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 0);
+  background-size: 24px 24px;
+  z-index: 2;
 }
 
 /* --------------------------------------------------------------------------
-   3. APP LAYOUT & SIDEBAR NAVIGATION
+   3. WOODEN CHALK LEDGE & CHALK STICKS (Matching Reference Image 5)
+   -------------------------------------------------------------------------- */
+.wooden-chalk-ledge {
+  height: 28px;
+  background: linear-gradient(180deg, var(--wood-frame-highlight) 0%, var(--wood-frame-inner) 40%, var(--wood-frame-shadow) 100%);
+  border-top: 2px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 32px;
+  gap: 16px;
+  position: relative;
+  z-index: 20;
+  box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.chalk-stick {
+  width: 44px;
+  height: 10px;
+  border-radius: 3px 5px 5px 3px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.chalk-stick:hover {
+  transform: translateY(-2px);
+}
+
+.ivory-chalk {
+  background: linear-gradient(180deg, #FAF0CA 0%, #E6D8A7 100%);
+}
+
+.mint-chalk {
+  background: linear-gradient(180deg, #81B29A 0%, #5E8F77 100%);
+}
+
+.coral-chalk {
+  background: linear-gradient(180deg, #E07A5F 0%, #C45F45 100%);
+}
+
+.felt-eraser-wood-block {
+  width: 54px;
+  height: 14px;
+  background: #5C381E;
+  border-radius: 2px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.eraser-felt-pad {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #2C2C2C;
+  border-radius: 2px 2px 0 0;
+}
+
+/* --------------------------------------------------------------------------
+   4. APP LAYOUT & SIDEBAR NAVIGATION
    -------------------------------------------------------------------------- */
 .app-layout {
   display: flex;
-  min-height: 100vh;
+  flex-grow: 1;
+  position: relative;
+  z-index: 10;
 }
 
 .side-nav {
@@ -136,11 +251,6 @@ body {
   display: flex;
   flex-direction: column;
   padding: 18px 14px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 100;
   overflow-y: auto;
 }
 
@@ -292,19 +402,18 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
-.dark-slate-swatch { background: #181A1B; }
-.vintage-green-swatch { background: #1B2A20; }
+.dark-slate-swatch { background: #17191A; }
+.vintage-green-swatch { background: #18281E; }
 .parchment-swatch { background: #F7F4EA; border-color: #2B2D42; }
 
 /* --------------------------------------------------------------------------
-   4. MAIN CONTENT & HEADER
+   5. MAIN CONTENT & HEADER
    -------------------------------------------------------------------------- */
 .main-content {
-  margin-left: var(--nav-width);
   flex-grow: 1;
   padding: 24px 32px;
-  min-height: 100vh;
-  max-width: 1180px;
+  max-width: 1200px;
+  overflow-y: auto;
 }
 
 .workspace-header {
@@ -319,7 +428,7 @@ body {
 .current-screen-title {
   font-size: 22px;
   font-weight: 700;
-  color: var(--text-primary); /* Uniform font color */
+  color: var(--text-primary);
   letter-spacing: -0.3px;
 }
 
@@ -342,8 +451,12 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.top-growth-icon {
-  font-size: 22px;
+.top-growth-flower-svg {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .top-growth-stage {
@@ -374,7 +487,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   5. CHALK CARDS & FORM ELEMENTS (BALANCED PADDING)
+   6. CHALK CARDS & FORM ELEMENTS
    -------------------------------------------------------------------------- */
 .chalk-card {
   background: var(--bg-surface);
@@ -446,7 +559,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   6. SURFACE 1: TODAY'S SLATE SPECIFICS
+   7. SURFACE 1: TODAY'S SLATE SPECIFICS
    -------------------------------------------------------------------------- */
 .quick-add-form {
   display: flex;
@@ -513,7 +626,6 @@ body {
   transform: scale(1.1);
 }
 
-/* Section Headings: Clean, No Stars, Uniform Color */
 .section-chalk-header {
   display: flex;
   align-items: center;
@@ -525,7 +637,7 @@ body {
 .section-chalk-header h3 {
   font-size: 16px;
   font-weight: 700;
-  color: var(--text-primary); /* Uniform font color */
+  color: var(--text-primary);
 }
 
 .header-line {
@@ -540,7 +652,7 @@ body {
   gap: 10px;
 }
 
-/* Task Card Styling with Discrete Red Outline for High Priority */
+/* Task Card with Subtle Red Outline for High Priority */
 .task-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-chalk);
@@ -558,7 +670,6 @@ body {
   border-color: var(--border-chalk-dashed);
 }
 
-/* Subtle Red Outline for High Priority */
 .task-card.is-high-priority {
   border: 1px solid rgba(255, 107, 107, 0.45);
   box-shadow: 0 2px 10px rgba(255, 107, 107, 0.08);
@@ -727,7 +838,6 @@ body {
   height: 26px;
 }
 
-/* Bottom Felt Eraser */
 .slate-footer-bar {
   display: flex;
   justify-content: flex-start;
@@ -756,7 +866,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   7. SURFACE 2: UPCOMING TASKS SPECIFICS
+   8. SURFACE 2: UPCOMING TASKS SPECIFICS
    -------------------------------------------------------------------------- */
 .upcoming-header-info {
   display: flex;
@@ -810,7 +920,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   8. SURFACE 3: PROGRESS GARDEN (REALISTIC BOTANICAL MEADOW)
+   9. SURFACE 3: PROGRESS GARDEN (BOTANICAL CHALK MEADOW & ARTWORKS)
    -------------------------------------------------------------------------- */
 .hero-meadow-card {
   padding: 20px;
@@ -864,9 +974,9 @@ body {
   background: var(--border-chalk);
 }
 
-/* Realistic Ground Layer & Blooming Stems */
+/* Ground Scenery with Realistic Earth Strata & Chalk Wildflowers */
 .meadow-scenery-container {
-  height: 150px;
+  height: 160px;
   position: relative;
   background: var(--bg-surface-elevated);
   border: 1px dashed var(--border-chalk);
@@ -882,8 +992,8 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 32px;
-  background: linear-gradient(180deg, rgba(232, 236, 239, 0.08) 0%, rgba(232, 236, 239, 0.15) 100%);
+  height: 28px;
+  background: linear-gradient(180deg, rgba(232, 236, 239, 0.06) 0%, rgba(232, 236, 239, 0.14) 100%);
   border-top: 2px dashed var(--border-chalk);
 }
 
@@ -899,41 +1009,30 @@ body {
 
 .meadow-flowers-row {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   align-items: flex-end;
   z-index: 2;
   overflow-x: auto;
   width: 100%;
-  padding-bottom: 12px;
+  padding-bottom: 10px;
 }
 
+/* Chalk Handcrafted Flower Artwork Container */
 .meadow-flower-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   animation: sprout-up 0.4s ease-out;
 }
 
 .meadow-flower-item:hover {
-  transform: scale(1.15) translateY(-3px);
+  transform: scale(1.15) translateY(-4px);
 }
 
-.flower-stem-graphic {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.flower-petals-top {
-  font-size: 26px;
-  filter: drop-shadow(0 0 5px var(--chalk-pink));
-}
-
-.flower-stalk-svg {
-  width: 14px;
-  height: 40px;
+.flower-chalk-svg {
+  filter: drop-shadow(0 0 4px rgba(232, 164, 200, 0.4));
 }
 
 .flower-tag-label {
@@ -971,10 +1070,11 @@ body {
   border: 1px solid var(--border-chalk);
   border-radius: var(--radius-sm);
   padding: 8px 6px;
-  min-height: 75px;
+  min-height: 80px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -989,16 +1089,20 @@ body {
 }
 
 .tile-top {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   font-size: 11px;
   color: var(--text-muted);
 }
 
-.tile-icon {
-  font-size: 20px;
-  text-align: center;
-  margin: 3px 0;
+.tile-artwork-svg {
+  width: 32px;
+  height: 32px;
+  margin: 2px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tile-bottom {
@@ -1008,10 +1112,11 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 90px;
 }
 
 /* --------------------------------------------------------------------------
-   9. SURFACE 4: HABIT LEDGER (STACKED LAYOUT: TREE TOP, HABITS BELOW)
+   10. SURFACE 4: HABIT LEDGER (STACKED REALISTIC CHALK TREE)
    -------------------------------------------------------------------------- */
 .habit-ledger-stacked-layout {
   display: flex;
@@ -1043,8 +1148,8 @@ body {
 
 .tree-canvas-container-stacked {
   width: 100%;
-  max-width: 500px;
-  height: 220px;
+  max-width: 520px;
+  height: 230px;
 }
 
 .chalk-tree-illustration {
@@ -1140,7 +1245,6 @@ body {
   gap: 8px;
 }
 
-/* Litre & Counter Progress Pill */
 .habit-counter-pill {
   background: var(--bg-hover);
   border: 1px solid var(--border-chalk);
@@ -1167,7 +1271,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   10. SURFACE 5: DEEP FOCUS STUDIO (FULL-SCREEN ACOUSTIC CONTAINER)
+   11. SURFACE 5: DEEP FOCUS STUDIO (FULL-SCREEN ACOUSTIC CONTAINER)
    -------------------------------------------------------------------------- */
 .deep-focus-fullscreen-container {
   display: flex;
@@ -1215,7 +1319,6 @@ body {
   font-weight: 700;
 }
 
-/* Gentle Rest Mode Styling */
 body.mode-gentle-rest .ring-progress {
   stroke: var(--chalk-mint);
 }
@@ -1331,7 +1434,6 @@ body.mode-gentle-rest .ring-progress {
   background: var(--chalk-amber);
 }
 
-/* Soundscapes Bottom Bar */
 .focus-soundscapes-bottom-bar {
   width: 100%;
   border-top: 1px dashed var(--border-chalk);
@@ -1379,7 +1481,7 @@ body.mode-gentle-rest .ring-progress {
 }
 
 /* --------------------------------------------------------------------------
-   11. MODALS & TOASTS
+   12. MODALS & TOASTS
    -------------------------------------------------------------------------- */
 .chalk-modal-backdrop {
   position: fixed;
@@ -1425,8 +1527,9 @@ body.mode-gentle-rest .ring-progress {
 }
 
 .inspection-flower-preview {
-  font-size: 44px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 14px;
 }
 
@@ -1488,8 +1591,8 @@ body.mode-gentle-rest .ring-progress {
 
 .chalk-toast {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 40px;
+  right: 32px;
   background: var(--bg-surface-elevated);
   border: 1px dashed var(--chalk-mint);
   color: var(--text-primary);

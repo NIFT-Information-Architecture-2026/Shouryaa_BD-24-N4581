@@ -1,14 +1,146 @@
 /**
  * CHALKFLOW — Slow Productivity & Botanical Focus Engine
- * Refined Interactive Architecture & Tactical Logic
+ * Authentic Chalk Botanical Artwork Generator & Interactive Logic
  * Creative Director: Shouryaa (Fashion Communication, NIFT Hyderabad)
  * Technical Architect: Antigravity
  */
 
 // ==========================================================================
-// 1. DATA STATE & LOCAL STORAGE PERSISTENCE
+// 1. CHALK BOTANICAL SVG ARTWORK RENDERER
+// (Inspired directly by uploaded reference images: Crocus Bloom & Wildflowers)
 // ==========================================================================
-const STORAGE_KEY = 'chalkflow_state_v2';
+const ChalkBotanicals = {
+  // 1. Blooming Crocus / Lily (Reference Image 4: Layered Lavender & White Petals, Yellow Stamen, Green Stem)
+  renderCrocusBloom(size = 40) {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
+        <!-- Stem & Leaves -->
+        <path d="M 50 65 Q 52 82 54 98" stroke="var(--chalk-mint)" stroke-width="3" stroke-linecap="round" fill="none" />
+        <path d="M 52 75 Q 35 78 20 85" stroke="var(--chalk-mint)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+        <path d="M 52 72 Q 68 76 82 82" stroke="var(--chalk-mint)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+        
+        <!-- Back Petals (Lavender Chalk) -->
+        <path d="M 50 55 C 30 40 22 20 40 12 C 48 18 52 35 50 55 Z" fill="#D4B2D8" opacity="0.85" stroke="var(--border-chalk)" stroke-width="0.8" />
+        <path d="M 50 55 C 70 40 78 20 60 12 C 52 18 48 35 50 55 Z" fill="#D4B2D8" opacity="0.85" stroke="var(--border-chalk)" stroke-width="0.8" />
+        <path d="M 50 55 C 45 30 46 8 50 6 C 54 8 55 30 50 55 Z" fill="#E8A4C8" opacity="0.9" stroke="var(--border-chalk)" stroke-width="0.8" />
+        
+        <!-- Lateral Wing Petals -->
+        <path d="M 50 58 C 25 50 10 35 18 25 C 28 25 40 42 50 58 Z" fill="#E8ECEF" opacity="0.9" />
+        <path d="M 50 58 C 75 50 90 35 82 25 C 72 25 60 42 50 58 Z" fill="#E8ECEF" opacity="0.9" />
+
+        <!-- Front Center Petals (White Chalk with Chalk Hatching) -->
+        <path d="M 50 60 C 36 50 32 30 45 22 C 52 28 54 48 50 60 Z" fill="#FFFFFF" opacity="0.95" stroke="#D4B2D8" stroke-width="0.8" />
+        <path d="M 50 60 C 64 50 68 30 55 22 C 48 28 46 48 50 60 Z" fill="#FFFFFF" opacity="0.95" stroke="#D4B2D8" stroke-width="0.8" />
+
+        <!-- Golden Pistils & Stamens (Yellow Chalk) -->
+        <path d="M 50 48 L 47 32 M 50 48 L 50 30 M 50 48 L 53 32" stroke="var(--chalk-amber)" stroke-width="2" stroke-linecap="round" />
+        <circle cx="47" cy="31" r="2" fill="var(--chalk-amber)" />
+        <circle cx="50" cy="29" r="2.2" fill="var(--chalk-amber)" />
+        <circle cx="53" cy="31" r="2" fill="var(--chalk-amber)" />
+      </svg>
+    `;
+  },
+
+  // 2. Corner Wildflower / Buttercup (Reference Image 5: Curving Green Stems, Fluted Cream Petals)
+  renderCornerWildflower(size = 40) {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
+        <!-- Curving Stems & Stylized Foliage (Mint Green Chalk) -->
+        <path d="M 30 95 Q 45 65 42 35" stroke="var(--chalk-mint)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+        <path d="M 30 95 Q 60 80 75 60" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" fill="none" />
+        <path d="M 35 75 Q 18 55 22 40" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" fill="none" />
+        
+        <!-- Curling Leaves -->
+        <path d="M 38 70 Q 55 60 48 45 Q 40 55 38 70" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        <path d="M 32 82 Q 15 70 20 60 Q 28 68 32 82" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        
+        <!-- Top Cream Blossom (Fluted Chalk Petals) -->
+        <g transform="translate(42, 35)">
+          <path d="M 0 0 C -12 -10 -15 -25 -2 -22 C 2 -18 2 -8 0 0 Z" fill="#FAF0CA" opacity="0.9" stroke="var(--border-chalk)" stroke-width="0.8" />
+          <path d="M 0 0 C 12 -10 15 -25 2 -22 C -2 -18 -2 -8 0 0 Z" fill="#FAF0CA" opacity="0.9" stroke="var(--border-chalk)" stroke-width="0.8" />
+          <path d="M 0 0 C -6 -15 0 -30 4 -28 C 6 -20 4 -10 0 0 Z" fill="#FFF" opacity="0.95" />
+          <!-- Calyx -->
+          <path d="M -4 2 Q 0 -4 4 2 Z" fill="var(--chalk-mint)" />
+        </g>
+
+        <!-- Lower Side Blossom -->
+        <g transform="translate(75, 60)">
+          <path d="M 0 0 C -8 -8 -10 -20 0 -18 C 5 -12 2 -5 0 0 Z" fill="#FAF0CA" opacity="0.85" />
+          <path d="M 0 0 C 8 -8 10 -20 0 -18 C -5 -12 -2 -5 0 0 Z" fill="#FAF0CA" opacity="0.85" />
+          <path d="M -3 1 Q 0 -3 3 1 Z" fill="var(--chalk-mint)" />
+        </g>
+      </svg>
+    `;
+  },
+
+  // 3. Swelling Bud (Stage 3)
+  renderSwellingBud(size = 32) {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 80 80" class="flower-chalk-svg">
+        <path d="M 40 75 Q 40 50 40 38" stroke="var(--chalk-mint)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+        <path d="M 40 55 Q 26 48 20 40" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" fill="none" />
+        <path d="M 40 50 Q 54 44 60 38" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" fill="none" />
+        <!-- Closed Bud Crown -->
+        <path d="M 40 38 C 30 30 32 15 40 12 C 48 15 50 30 40 38 Z" fill="#E8A4C8" stroke="var(--chalk-white)" stroke-width="1" />
+        <path d="M 37 38 Q 40 22 43 38" fill="var(--chalk-mint)" opacity="0.8" />
+      </svg>
+    `;
+  },
+
+  // 4. Branching Stem (Stage 2)
+  renderBranchingStem(size = 28) {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 60 60" class="flower-chalk-svg">
+        <path d="M 30 58 Q 30 35 30 18" stroke="var(--chalk-mint)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+        <path d="M 30 42 Q 18 36 12 28 Q 20 32 30 38" fill="var(--chalk-mint)" opacity="0.85" />
+        <path d="M 30 32 Q 42 26 48 18 Q 40 22 30 28" fill="var(--chalk-mint)" opacity="0.85" />
+        <circle cx="30" cy="16" r="3" fill="var(--chalk-amber)" />
+      </svg>
+    `;
+  },
+
+  // 5. The First Sprout (Stage 1)
+  renderFirstSprout(size = 24) {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 50 50" class="flower-chalk-svg">
+        <path d="M 25 48 L 25 25" stroke="var(--chalk-mint)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+        <path d="M 25 25 Q 12 18 14 8 Q 22 14 25 25" fill="var(--chalk-mint)" opacity="0.9" />
+        <path d="M 25 25 Q 38 18 36 8 Q 28 14 25 25" fill="var(--chalk-mint)" opacity="0.9" />
+      </svg>
+    `;
+  },
+
+  // 6. Resting Seed & Soil (Stage 0)
+  renderRestingSeed(size = 22) {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 40 40" class="flower-chalk-svg">
+        <path d="M 5 32 Q 20 30 35 32" stroke="var(--border-chalk)" stroke-width="1.8" stroke-dasharray="3,2" fill="none" />
+        <!-- Sleeping Seed (Amber Chalk) -->
+        <ellipse cx="20" cy="28" rx="5" ry="3.5" transform="rotate(-15 20 28)" fill="var(--chalk-amber)" opacity="0.85" stroke="var(--border-chalk)" stroke-width="0.8" />
+      </svg>
+    `;
+  },
+
+  // Dynamic selector based on stage
+  getBotanicalSVG(stage, size = 32, day = 1) {
+    if (stage === 4) {
+      return (day % 2 === 0) ? this.renderCornerWildflower(size) : this.renderCrocusBloom(size);
+    } else if (stage === 3) {
+      return this.renderSwellingBud(size);
+    } else if (stage === 2) {
+      return this.renderBranchingStem(size);
+    } else if (stage === 1) {
+      return this.renderFirstSprout(size);
+    } else {
+      return this.renderRestingSeed(size);
+    }
+  }
+};
+
+// ==========================================================================
+// 2. DATA STATE & LOCAL STORAGE PERSISTENCE
+// ==========================================================================
+const STORAGE_KEY = 'chalkflow_state_v3';
 
 const DEFAULT_STATE = {
   theme: 'theme-dark-slate',
@@ -84,17 +216,16 @@ const DEFAULT_STATE = {
     { id: 'h-3', name: 'Morning Sketchbook Drill', icon: '🎨', type: 'CHECK', current: 1, target: 1, unit: '', completions: 5 },
     { id: 'h-4', name: 'Evening Walk / Rest', icon: '🌿', type: 'CHECK', current: 1, target: 1, unit: '', completions: 6 }
   ],
-  focusTimeLoggedToday: 45, // in minutes
+  focusTimeLoggedToday: 45,
   gardenData: {
-    // 31 days of October with Autumn Botanical Collection
-    1: { specimen: 'Chrysanthemum', tasks: 5, planned: 5, focus: 110, stage: 4 },
-    2: { specimen: 'Golden Aster', tasks: 3, planned: 4, focus: 60, stage: 2 },
+    1: { specimen: 'Wild Crocus', tasks: 5, planned: 5, focus: 110, stage: 4 },
+    2: { specimen: 'Golden Buttercup', tasks: 3, planned: 4, focus: 60, stage: 2 },
     3: { specimen: 'Dormant Soil', tasks: 0, planned: 0, focus: 0, stage: 0 },
-    4: { specimen: 'Goldenrod', tasks: 6, planned: 6, focus: 120, stage: 4 },
-    5: { specimen: 'Dahlia Sprig', tasks: 5, planned: 5, focus: 95, stage: 4 },
-    6: { specimen: 'Sweet Violet', tasks: 2, planned: 3, focus: 40, stage: 1 },
-    7: { specimen: 'Marigold', tasks: 5, planned: 5, focus: 100, stage: 4 },
-    8: { specimen: 'Autumn Sage', tasks: 1, planned: 3, focus: 45, stage: 1 } // Today
+    4: { specimen: 'Sweet Violet', tasks: 6, planned: 6, focus: 120, stage: 4 },
+    5: { specimen: 'Alpine Aster', tasks: 5, planned: 5, focus: 95, stage: 4 },
+    6: { specimen: 'Heather Blossom', tasks: 2, planned: 3, focus: 40, stage: 1 },
+    7: { specimen: 'Autumn Lily', tasks: 5, planned: 5, focus: 100, stage: 4 },
+    8: { specimen: 'Meadow Daisy', tasks: 1, planned: 3, focus: 45, stage: 1 }
   }
 };
 
@@ -118,7 +249,7 @@ function saveState() {
 }
 
 // ==========================================================================
-// 2. WEB AUDIO API SYNTHESIZER (SOUNDSCAPES & CHALK ACOUSTICS)
+// 3. WEB AUDIO API SYNTHESIZER (SOUNDSCAPES & CHALK ACOUSTICS)
 // ==========================================================================
 class SoundscapeEngine {
   constructor() {
@@ -156,7 +287,7 @@ class SoundscapeEngine {
 
   playChalkScratch() {
     this.initContext();
-    const bufferSize = this.ctx.sampleRate * 0.1;
+    const bufferSize = this.ctx.sampleRate * 0.08;
     const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
@@ -170,7 +301,7 @@ class SoundscapeEngine {
     filter.Q.value = 3.0;
 
     const gain = this.ctx.createGain();
-    gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+    gain.gain.setValueAtTime(0.16, this.ctx.currentTime);
 
     noise.connect(filter);
     filter.connect(gain);
@@ -180,7 +311,7 @@ class SoundscapeEngine {
 
   playFeltEraserSweep() {
     this.initContext();
-    const bufferSize = this.ctx.sampleRate * 0.4;
+    const bufferSize = this.ctx.sampleRate * 0.35;
     const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
@@ -193,7 +324,7 @@ class SoundscapeEngine {
     filter.frequency.value = 650;
 
     const gain = this.ctx.createGain();
-    gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+    gain.gain.setValueAtTime(0.22, this.ctx.currentTime);
 
     noise.connect(filter);
     filter.connect(gain);
@@ -290,7 +421,7 @@ class SoundscapeEngine {
 const AudioEngine = new SoundscapeEngine();
 
 // ==========================================================================
-// 3. UI CONTROLLER & DOM MANAGEMENT
+// 4. UI CONTROLLER & DOM MANAGEMENT
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
@@ -440,7 +571,6 @@ function renderTodaySlate() {
   const pendingCount = todayTasks.filter(t => t.status !== 'COMPLETED').length;
   if (badge) badge.innerText = pendingCount;
 
-  // Find single High Priority anchor
   const topPriorityTask = todayTasks.find(t => t.priority === 'HIGH' && t.status !== 'COMPLETED') || todayTasks.find(t => t.priority === 'HIGH');
   const generalTasks = todayTasks.filter(t => t !== topPriorityTask);
 
@@ -454,8 +584,8 @@ function renderTodaySlate() {
   if (generalTasks.length === 0 && !topPriorityTask) {
     generalTasksList.innerHTML = `
       <div class="chalk-card" style="text-align:center; padding: 24px 16px;">
-        <span style="font-size: 28px;">🌱</span>
-        <h4 class="chalk-font" style="margin-top: 6px; font-size: 15px;">A Clean Slate</h4>
+        <div style="display:flex; justify-content:center; margin-bottom:6px;">${ChalkBotanicals.renderRestingSeed(28)}</div>
+        <h4 class="chalk-font" style="font-size: 15px;">A Clean Slate</h4>
         <p style="color: var(--text-muted); font-size: 12px; margin-top: 2px;">Write a task above or enjoy this quiet moment of rest.</p>
       </div>
     `;
@@ -721,11 +851,11 @@ function renderUpcomingTasks() {
 }
 
 // --------------------------------------------------------------------------
-// E. PROGRESS GARDEN (REALISTIC BOTANICAL HERO MEADOW & JOURNAL)
+// E. PROGRESS GARDEN (BOTANICAL CHALK MEADOW & JOURNAL)
 // --------------------------------------------------------------------------
 const BOTANICAL_SPECIMENS_OCTOBER = [
-  'Chrysanthemum', 'Golden Aster', 'Dormant Soil', 'Goldenrod', 'Dahlia Sprig',
-  'Sweet Violet', 'Marigold', 'Autumn Sage', 'Winter Jasmine', 'Forget-Me-Not',
+  'Wild Crocus', 'Golden Buttercup', 'Dormant Soil', 'Sweet Violet', 'Alpine Aster',
+  'Heather Blossom', 'Autumn Lily', 'Meadow Daisy', 'Winter Jasmine', 'Forget-Me-Not',
   'Wild Poppy', 'Lavender Sprig', 'Chamomile', 'Coneflower', 'Sunburst Dahlia',
   'Sweet William', 'Cosmos Petal', 'Pansy', 'Primrose', 'Anemone',
   'Buttercup', 'Cornflower', 'Heather Blossom', 'Morning Glory', 'Foxglove Sprig',
@@ -775,11 +905,9 @@ function renderProgressGarden() {
     if (dayData.stage === 4) fullBlooms++;
     totalFocusMinutes += dayData.focus;
 
-    const stageIcons = ['🌱', '🌿', '🌿', '🌷', '🌸'];
-    const stageIcon = stageIcons[dayData.stage] || '🌱';
     const stageNames = ['Resting Seed', 'Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
 
-    // 1. Calendar Grid Tile
+    // 1. Calendar Grid Tile with Botanical SVG
     const tile = document.createElement('div');
     tile.className = `calendar-day-tile ${isToday ? 'is-today' : ''}`;
     tile.innerHTML = `
@@ -787,37 +915,30 @@ function renderProgressGarden() {
         <span class="day-num">${day < 10 ? '0' + day : day}</span>
         <span class="stage-tag">${isToday ? '★ Today' : ''}</span>
       </div>
-      <div class="tile-icon">${stageIcon}</div>
+      <div class="tile-artwork-svg">${ChalkBotanicals.getBotanicalSVG(dayData.stage, 32, day)}</div>
       <div class="tile-bottom chalk-font">${dayData.specimen}</div>
     `;
 
     tile.addEventListener('click', () => {
-      openGardenDayModal(day, dayData, stageNames[dayData.stage], stageIcon);
+      openGardenDayModal(day, dayData, stageNames[dayData.stage]);
     });
 
     grid.appendChild(tile);
 
-    // 2. Realistic Meadow Flower (with SVG Stalk & Petals anchored to ground)
+    // 2. Realistic Meadow Flower in Top Landscape (Chalk Flora rooted to ground)
     if (dayData.stage >= 1) {
       const flowerItem = document.createElement('div');
       flowerItem.className = 'meadow-flower-item';
       
-      const stemHeight = dayData.stage === 4 ? 48 : (dayData.stage === 3 ? 38 : (dayData.stage === 2 ? 28 : 18));
+      const svgArtwork = ChalkBotanicals.getBotanicalSVG(dayData.stage, 44, day);
       
       flowerItem.innerHTML = `
-        <div class="flower-stem-graphic">
-          <span class="flower-petals-top">${stageIcon}</span>
-          <svg class="flower-stalk-svg" viewBox="0 0 16 50" style="height:${stemHeight}px;">
-            <path d="M 8 50 Q 6 25 8 0" stroke="var(--chalk-mint)" stroke-width="2.5" fill="none" />
-            <path d="M 8 28 Q 2 20 0 16" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
-            <path d="M 8 20 Q 14 14 16 10" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
-          </svg>
-        </div>
+        ${svgArtwork}
         <span class="flower-tag-label chalk-font">D${day}</span>
       `;
       flowerItem.title = `Day ${day}: ${dayData.specimen} (${stageNames[dayData.stage]})`;
       flowerItem.addEventListener('click', () => {
-        openGardenDayModal(day, dayData, stageNames[dayData.stage], stageIcon);
+        openGardenDayModal(day, dayData, stageNames[dayData.stage]);
       });
       heroMeadow.appendChild(flowerItem);
     }
@@ -831,11 +952,11 @@ function renderProgressGarden() {
   }
 }
 
-function openGardenDayModal(day, dayData, stageName, stageIcon) {
+function openGardenDayModal(day, dayData, stageName) {
   const modal = document.getElementById('garden-day-modal');
   document.getElementById('modal-species-name').innerText = `🌸 ${dayData.specimen}`;
   document.getElementById('modal-date-title').innerText = `October ${day}, 2026`;
-  document.getElementById('modal-flower-visual').innerText = stageIcon;
+  document.getElementById('modal-flower-visual').innerHTML = ChalkBotanicals.getBotanicalSVG(dayData.stage, 68, day);
   document.getElementById('modal-growth-stage').innerText = stageName;
   document.getElementById('modal-tasks-ratio').innerText = `${dayData.tasks} / ${dayData.planned || dayData.tasks} tasks`;
   document.getElementById('modal-focus-time').innerText = `${dayData.focus} mins`;
@@ -913,7 +1034,6 @@ function renderHabitLedger() {
     const card = document.createElement('div');
     card.className = 'habit-card';
 
-    // Interactive Litre Counter Pill or Checkmark
     let actionHTML = '';
     if (h.type === 'COUNTER') {
       const isComplete = h.current >= h.target;
@@ -946,7 +1066,6 @@ function renderHabitLedger() {
       </div>
     `;
 
-    // Click handler for incrementing counter
     const counterBtn = card.querySelector('.habit-counter-pill');
     counterBtn.addEventListener('click', () => {
       AudioEngine.playChalkScratch();
@@ -972,7 +1091,6 @@ function renderHabitLedger() {
     container.appendChild(card);
   });
 
-  // Calculate Tree Growth Percentage
   const maxMonthlyTarget = AppState.habits.length * 20;
   const growthPercent = Math.min(100, Math.round((totalCompletions / (maxMonthlyTarget || 1)) * 100));
 
@@ -1004,7 +1122,6 @@ function renderHabitLedger() {
       circle.setAttribute('stroke-width', '1');
       foliageGroup.appendChild(circle);
 
-      // Crowning blossoms at higher progress
       if (growthPercent > 30 && idx % 3 === 0) {
         const blossom = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         blossom.setAttribute('cx', c.cx + 5);
@@ -1027,7 +1144,7 @@ function renderHabitLedger() {
 // G. DEEP FOCUS STUDIO (FULL-SCREEN & GENTLE REST MODE)
 // --------------------------------------------------------------------------
 let FocusTimer = {
-  mode: 'FOCUS', // 'FOCUS' or 'REST'
+  mode: 'FOCUS',
   durationSeconds: 25 * 60,
   remainingSeconds: 25 * 60,
   isRunning: false,
@@ -1047,7 +1164,6 @@ function initDeepFocus() {
   const modeBtnFocus = document.getElementById('mode-btn-focus');
   const modeBtnRest = document.getElementById('mode-btn-rest');
 
-  // Mode Switcher: Deep Focus vs Gentle Rest
   if (modeBtnFocus && modeBtnRest) {
     modeBtnFocus.addEventListener('click', () => setFocusMode('FOCUS'));
     modeBtnRest.addEventListener('click', () => setFocusMode('REST'));
@@ -1069,7 +1185,7 @@ function initDeepFocus() {
       modeBtnRest.classList.add('active');
       modeBtnFocus.classList.remove('active');
       statusLabel.innerText = 'Gentle Rest & Recharge';
-      setTimerDuration(5); // 5 min rest default
+      setTimerDuration(5);
       showToast('Switched to 5-min Gentle Rest Mode ☕');
     } else {
       document.body.classList.remove('mode-gentle-rest');
@@ -1081,7 +1197,6 @@ function initDeepFocus() {
     }
   }
 
-  // Preset Buttons
   document.querySelectorAll('.time-preset-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.time-preset-btn').forEach(b => b.classList.remove('active'));
@@ -1091,7 +1206,6 @@ function initDeepFocus() {
     });
   });
 
-  // Increment / Decrement Buttons
   document.getElementById('btn-time-minus-5').addEventListener('click', () => adjustTimerMinutes(-5));
   document.getElementById('btn-time-minus-1').addEventListener('click', () => adjustTimerMinutes(-1));
   document.getElementById('btn-time-plus-1').addEventListener('click', () => adjustTimerMinutes(1));
@@ -1180,7 +1294,6 @@ function initDeepFocus() {
     });
   }
 
-  // Soundscape Selection
   const soundPills = document.querySelectorAll('.sound-pill');
   const volumeSlider = document.getElementById('sound-volume');
 
@@ -1240,7 +1353,7 @@ function updateGlobalGrowthMetrics() {
   }
 
   if (!AppState.gardenData[8]) {
-    AppState.gardenData[8] = { specimen: 'Autumn Sage', tasks: 0, planned: 0, focus: 0, stage: 0 };
+    AppState.gardenData[8] = { specimen: 'Meadow Daisy', tasks: 0, planned: 0, focus: 0, stage: 0 };
   }
   AppState.gardenData[8].tasks = completedCount;
   AppState.gardenData[8].planned = todayTasks.length;
@@ -1248,14 +1361,13 @@ function updateGlobalGrowthMetrics() {
   AppState.gardenData[8].stage = stage;
   saveState();
 
-  const stageIcons = ['🌱', '🌿', '🌿', '🌷', '🌸'];
   const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
 
-  // Update Top Right Growth Widget
+  // Update Top Right Growth Widget with Botanical SVG
   const topIcon = document.getElementById('top-flower-icon');
   const topStage = document.getElementById('top-growth-stage');
   const topMeta = document.getElementById('top-growth-meta');
-  if (topIcon) topIcon.innerText = stageIcons[stage];
+  if (topIcon) topIcon.innerHTML = ChalkBotanicals.getBotanicalSVG(stage, 26, 8);
   if (topStage) topStage.innerText = stageNames[stage];
   if (topMeta) topMeta.innerText = `${completedCount} tasks • ${focusMins}m focus`;
 }
