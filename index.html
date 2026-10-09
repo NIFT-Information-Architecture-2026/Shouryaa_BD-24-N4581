@@ -57,7 +57,7 @@
           </button>
 
           <button class="nav-item" data-surface="habit-ledger" title="Habit Ledger">
-            <span class="nav-icon"><i class="fa-solid fa-tree"></i></span>
+            <span class="nav-icon"><i class="fa-solid fa-repeat"></i></span>
             <span class="nav-label chalk-font">Habit Ledger</span>
           </button>
 
@@ -346,138 +346,40 @@
         </section>
 
         <!-- =============================================================== -->
-        <!-- SURFACE 4: HABIT LEDGER (STACKED REALISTIC CHALK HABIT TREE)   -->
-        <!-- Modeled on User Reference Stages: Twisted Trunk, Roots & Canopy -->
+        <!-- SURFACE 4: HABIT LEDGER (DAILY HABIT RHYTHMS & WATER TRACKER)   -->
         <!-- =============================================================== -->
         <section class="surface-view" id="view-habit-ledger">
           
-          <div class="habit-ledger-stacked-layout">
+          <div class="habit-ledger-layout">
             
-            <!-- TOP: 30-Day Realistic Chalk Habit Tree Sanctuary -->
-            <div class="tree-sanctuary-card-stacked chalk-card">
-              <div class="tree-card-header">
-                <h3 class="chalk-font" id="habit-tree-title">October Habit Tree</h3>
-                <p class="tree-stage-caption" id="habit-tree-stage-text">Stage 2: Sprouting Branches & Leaf Buds (Days 6–14)</p>
-              </div>
-
-              <!-- Rich Realistic Hand-Drawn Chalk Tree SVG Graphic (Twisted Trunk & Deep Roots) -->
-              <div class="tree-canvas-container-stacked">
-                <svg id="chalk-tree-svg" viewBox="0 0 540 330" class="chalk-tree-illustration">
-                  <!-- Ground Baseline & Soil Hatchings -->
-                  <path d="M 20 250 Q 270 245 520 250" stroke="var(--border-chalk)" stroke-width="2" stroke-dasharray="6,4" fill="none" />
-                  <path d="M 40 258 Q 270 252 500 258" stroke="var(--border-chalk)" stroke-width="1.2" stroke-dasharray="3,5" fill="none" opacity="0.6" />
-                  
-                  <!-- Deep Underground Taproots Network (Matching User Images 1, 2 & 3) -->
-                  <g id="tree-roots" class="tree-part">
-                    <!-- Central Deep Taproots (Image 1 Style) -->
-                    <path d="M 270 248 C 270 270 265 295 260 322" stroke="var(--text-primary)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-                    <path d="M 265 250 C 255 272 245 298 230 320" stroke="var(--chalk-amber)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.85" />
-                    <path d="M 275 250 C 285 272 295 298 310 320" stroke="var(--chalk-amber)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.85" />
-                    
-                    <!-- Left Sprawling Surface & Sub-surface Roots (Image 2 & 3 Style) -->
-                    <path d="M 252 246 C 220 255 170 262 110 265" stroke="var(--text-primary)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-                    <path d="M 235 250 C 190 268 150 285 85 292" stroke="var(--chalk-amber)" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.8" />
-                    <path d="M 180 262 C 145 280 120 302 70 315" stroke="var(--chalk-amber)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.7" />
-                    <path d="M 140 264 Q 105 275 80 278" stroke="var(--border-chalk)" stroke-width="1.2" fill="none" opacity="0.6" />
-
-                    <!-- Right Sprawling Surface & Sub-surface Roots (Image 2 & 3 Style) -->
-                    <path d="M 288 246 C 320 255 370 262 430 265" stroke="var(--text-primary)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-                    <path d="M 305 250 C 350 268 390 285 455 292" stroke="var(--chalk-amber)" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.8" />
-                    <path d="M 360 262 C 395 280 420 302 470 315" stroke="var(--chalk-amber)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.7" />
-                    <path d="M 400 264 Q 435 275 460 278" stroke="var(--border-chalk)" stroke-width="1.2" fill="none" opacity="0.6" />
-                  </g>
-
-                  <!-- Twisted / Spiraled Chalk Trunk (Directly from Images 2 & 3) -->
-                  <g id="tree-trunk" class="tree-part">
-                    <!-- Flared Root Base & Trunk Outlines -->
-                    <path d="M 245 248 C 255 215 250 185 260 160 C 265 145 258 130 252 115" stroke="var(--text-primary)" stroke-width="2.8" stroke-linecap="round" fill="none" />
-                    <path d="M 295 248 C 285 215 290 185 280 160 C 275 145 282 130 288 115" stroke="var(--text-primary)" stroke-width="2.8" stroke-linecap="round" fill="none" />
-                    
-                    <!-- Sinuous Spiraling Wood Grain Lines (Double Helix Twist in Image 2 & 3) -->
-                    <path d="M 252 245 C 270 225 285 200 272 175 C 262 155 275 135 282 118" stroke="var(--text-primary)" stroke-width="1.6" fill="none" />
-                    <path d="M 262 248 C 280 230 288 208 278 185 C 268 165 272 145 260 120" stroke="var(--border-chalk)" stroke-width="1.4" stroke-dasharray="8,2" fill="none" />
-                    <path d="M 278 248 C 260 230 258 205 270 182 C 282 160 278 140 270 120" stroke="var(--border-chalk)" stroke-width="1.4" stroke-dasharray="6,3" fill="none" />
-                    
-                    <!-- Vertical Contour Shading Lines (Image 1 Style) -->
-                    <path d="M 256 242 Q 262 220 260 195" stroke="var(--text-primary)" stroke-width="1" fill="none" opacity="0.75" />
-                    <path d="M 284 242 Q 278 220 280 195" stroke="var(--text-primary)" stroke-width="1" fill="none" opacity="0.75" />
-                  </g>
-
-                  <!-- Graceful Sinuous Branching Boughs & Bare Twigs (Directly from Image 2 & 3) -->
-                  <g id="tree-branches" class="tree-part">
-                    <!-- Left Major Bough Fork -->
-                    <path d="M 252 115 C 235 95 195 85 150 72 C 115 62 85 45 60 25" stroke="var(--text-primary)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-                    <path d="M 195 85 C 170 65 140 45 110 20" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" fill="none" />
-                    <path d="M 150 72 C 135 55 120 40 100 28" stroke="var(--text-primary)" stroke-width="1.6" stroke-linecap="round" fill="none" />
-                    <path d="M 105 60 C 85 52 70 42 50 35" stroke="var(--text-primary)" stroke-width="1.4" fill="none" />
-                    <path d="M 220 102 C 195 80 180 55 165 30" stroke="var(--text-primary)" stroke-width="1.8" fill="none" />
-                    <path d="M 175 48 Q 155 35 140 22" stroke="var(--text-primary)" stroke-width="1.2" fill="none" />
-
-                    <!-- Right Major Bough Fork -->
-                    <path d="M 288 115 C 305 95 345 85 390 72 C 425 62 455 45 480 25" stroke="var(--text-primary)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-                    <path d="M 345 85 C 370 65 400 45 430 20" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" fill="none" />
-                    <path d="M 390 72 C 405 55 420 40 440 28" stroke="var(--text-primary)" stroke-width="1.6" stroke-linecap="round" fill="none" />
-                    <path d="M 435 60 C 455 52 470 42 490 35" stroke="var(--text-primary)" stroke-width="1.4" fill="none" />
-                    <path d="M 320 102 C 345 80 360 55 375 30" stroke="var(--text-primary)" stroke-width="1.8" fill="none" />
-                    <path d="M 365 48 Q 385 35 400 22" stroke="var(--text-primary)" stroke-width="1.2" fill="none" />
-
-                    <!-- Center Ascending Crown Twigs -->
-                    <path d="M 270 115 C 265 85 255 60 240 30 C 235 20 228 12 220 5" stroke="var(--text-primary)" stroke-width="2.2" stroke-linecap="round" fill="none" />
-                    <path d="M 270 115 C 275 85 285 60 300 30 C 305 20 312 12 320 5" stroke="var(--text-primary)" stroke-width="2.2" stroke-linecap="round" fill="none" />
-                    <path d="M 270 85 L 270 15" stroke="var(--text-primary)" stroke-width="1.8" stroke-linecap="round" fill="none" />
-                    <path d="M 268 55 Q 252 40 245 22" stroke="var(--text-primary)" stroke-width="1.3" fill="none" />
-                    <path d="M 272 55 Q 288 40 295 22" stroke="var(--text-primary)" stroke-width="1.3" fill="none" />
-                  </g>
-
-                  <!-- Dynamic Leaf Nodes & Dense Foliage Clouds (Rendered by JS for Stages 2, 3 & 4) -->
-                  <g id="tree-foliage" class="tree-part">
-                    <!-- Dynamically populated with pointed chalk leaves & cloud foliage -->
-                  </g>
-
-                  <!-- Dynamic Crowning Blossoms & Glowing Accents -->
-                  <g id="tree-blossoms" class="tree-part">
-                    <!-- Dynamically populated -->
-                  </g>
-
-                  <!-- Fallen Leaves at Root Baseline (Image 1 Style) -->
-                  <g id="tree-fallen-leaves" class="tree-part" opacity="0.8">
-                    <g transform="translate(130, 248) rotate(-15)">
-                      <path d="M 0 0 C 4 -6 12 -4 16 0 C 10 5 2 3 0 0 Z" fill="none" stroke="var(--chalk-mint)" stroke-width="1.4" />
-                      <path d="M 0 0 L 14 0" stroke="var(--chalk-mint)" stroke-width="0.8" />
-                    </g>
-                    <g transform="translate(190, 252) rotate(10)">
-                      <path d="M 0 0 C -4 -6 -12 -4 -16 0 C -10 5 -2 3 0 0 Z" fill="none" stroke="var(--chalk-mint)" stroke-width="1.4" />
-                    </g>
-                    <g transform="translate(350, 252) rotate(-8)">
-                      <path d="M 0 0 C 4 -6 12 -4 16 0 C 10 5 2 3 0 0 Z" fill="none" stroke="var(--chalk-mint)" stroke-width="1.4" />
-                    </g>
-                    <g transform="translate(410, 248) rotate(15)">
-                      <path d="M 0 0 C -4 -6 -12 -4 -16 0 C -10 5 -2 3 0 0 Z" fill="none" stroke="var(--chalk-mint)" stroke-width="1.4" />
-                      <path d="M 0 0 L -14 0" stroke="var(--chalk-mint)" stroke-width="0.8" />
-                    </g>
-                  </g>
-                </svg>
-              </div>
-
-              <!-- Habit Tree Progress Meter -->
-              <div class="habit-summary-box-stacked">
-                <div class="summary-bar-wrapper">
-                  <div class="summary-fill" id="habit-tree-progress-bar" style="width: 35%;"></div>
-                </div>
-                <div class="summary-text" id="habit-tree-progress-text">14 habit completions logged this month (35% toward crowning canopy)</div>
-              </div>
-            </div>
-
-            <!-- BOTTOM: Daily Habits Checklist & Water Tracker -->
-            <div class="habit-manager-card chalk-card">
-              <div class="habit-header-row">
+            <!-- TOP: Monthly Habit Consistency Overview Card -->
+            <div class="habit-overview-card chalk-card">
+              <div class="habit-overview-header">
                 <div>
-                  <h3 class="chalk-font">Daily Habit Rhythms</h3>
-                  <p class="habit-subtext">Click any habit to record progress (e.g. click water to add 1 Litre!).</p>
+                  <h3 class="chalk-font" id="habit-ledger-title">Habit Ledger & Daily Rhythms</h3>
+                  <p class="habit-overview-subtext">Maintain your recurring daily habits, hydration goals, and mindful routines.</p>
                 </div>
                 <button class="chalk-btn secondary-btn chalk-font" id="btn-add-habit-modal">
                   <i class="fa-solid fa-plus"></i> New Habit
                 </button>
+              </div>
+
+              <!-- Habit Progress Meter -->
+              <div class="habit-summary-box">
+                <div class="summary-bar-wrapper">
+                  <div class="summary-fill" id="habit-progress-bar" style="width: 35%;"></div>
+                </div>
+                <div class="summary-text" id="habit-progress-text">14 habit completions logged this month</div>
+              </div>
+            </div>
+
+            <!-- Daily Habits Checklist & Water Tracker -->
+            <div class="habit-manager-card chalk-card">
+              <div class="habit-header-row">
+                <div>
+                  <h4 class="chalk-font">Active Habit Routines</h4>
+                  <p class="habit-subtext">Click any habit to record progress (e.g. click water to add 1 Litre!).</p>
+                </div>
               </div>
 
               <!-- Habit List -->

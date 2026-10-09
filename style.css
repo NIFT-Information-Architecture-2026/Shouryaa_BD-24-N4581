@@ -1161,55 +1161,39 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   10. SURFACE 4: HABIT LEDGER (STACKED REALISTIC CHALK TREE)
+   10. SURFACE 4: HABIT LEDGER (DAILY HABIT RHYTHMS & WATER TRACKER)
    -------------------------------------------------------------------------- */
-.habit-ledger-stacked-layout {
+.habit-ledger-layout {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-.tree-sanctuary-card-stacked {
+.habit-overview-card {
+  padding: 18px 20px;
+}
+
+.habit-overview-header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  text-align: center;
-  padding: 20px 18px;
+  margin-bottom: 14px;
 }
 
-.tree-card-header {
-  margin-bottom: 6px;
-}
-
-.tree-card-header h3 {
+.habit-overview-header h3 {
   font-size: 18px;
   color: var(--text-primary);
 }
 
-.tree-stage-caption {
+.habit-overview-subtext {
   font-size: 12px;
   color: var(--text-muted);
+  margin-top: 2px;
 }
 
-.tree-canvas-container-stacked {
+.habit-summary-box {
   width: 100%;
-  max-width: 580px;
-  height: 280px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.chalk-tree-illustration {
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 0 4px rgba(232, 236, 239, 0.2));
-}
-
-.habit-summary-box-stacked {
-  width: 100%;
-  max-width: 500px;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .summary-bar-wrapper {
@@ -1218,7 +1202,7 @@ body {
   border-radius: 4px;
   overflow: hidden;
   border: 1px solid var(--border-chalk);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .summary-fill {
@@ -1228,7 +1212,7 @@ body {
 }
 
 .summary-text {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
 }
 

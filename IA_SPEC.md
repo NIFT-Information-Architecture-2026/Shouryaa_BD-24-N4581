@@ -127,22 +127,20 @@ flowchart TD
 
 ---
 
-### C. Habit Ledger Entity (`HabitObject` & `MonthlyHabitTree`)
+### C. Habit Ledger Entity (`HabitObject` & `MonthlyHabitConsistency`)
 
-Rather than maintaining separate, competing trees, the Habit Ledger features **One Unified 30-Day Chalk Tree** per month.
+The Habit Ledger serves as a quiet, dedicated space for recurring daily habits, hydration goals, and mindfulness rituals.
 
 - **Habit Object:**
-  - `habitName`: e.g., "Hydrate (4L Water)", "Morning Sketching", "30m Reading".
-  - `frequency`: Daily / Weekdays.
-  - `completedDates`: Array of date strings.
-  - `totalCompletionsThisMonth`: Aggregated tally.
-- **Monthly Tree Growth Metric:**
-  $$\text{Tree Growth Index} = \frac{\sum \text{Habit Completions Across All Habits}}{\text{Total Expected Completions in Month}} \times 100$$
-  - **Days 1–5 (Seedling):** Taproots push beneath soil.
-  - **Days 6–14 (Trunk):** Sturdy cross-hatched chalk bark thickens.
-  - **Days 15–24 (Boughs):** Spreading branches and dense leaf clusters.
-  - **Days 25–30 (Blossom & Fruit):** Crowning glowing blossoms; archived into Legacy Forest at month's end.
-  - **Rest State:** Missing a day causes 2-3 chalk leaves to drift to the base with: *"Roots run deep; growth resumes whenever you are ready."*
+  - `habitName`: e.g., "Drink 4 Litres of Water", "Morning Studio Sketching", "30m Reading".
+  - `type`: `COUNTER` (e.g. litre increments `1/4 L` $\rightarrow$ `4/4 L Complete`) or `BOOLEAN` (Daily checklist).
+  - `target`: Target units per day (e.g. 4 for litres, 1 for toggle).
+  - `current`: Current daily progress.
+  - `completions`: Monthly total completions tally.
+- **Monthly Habit Consistency Metric:**
+  $$\text{Habit Consistency Index} = \frac{\sum \text{Habit Completions Across All Habits}}{\text{Total Expected Monthly Completions}} \times 100$$
+  - **Daily Rhythms:** Interactive increment counters and toggle pills for quick logging without cognitive overload.
+  - **Mindful Philosophy:** No punitive streak counters or broken chain penalties. Progress accumulates steadily throughout the month.
 
 ---
 
