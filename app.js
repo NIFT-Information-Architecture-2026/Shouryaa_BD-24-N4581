@@ -193,7 +193,8 @@ const DEFAULT_STATE = {
       title: 'Complete CAT Quantitative Mock #4 (Algebra & Arithmetic)',
       priority: 'HIGH',
       category: 'ACADEMIC',
-      estTime: 60,
+      repeat: 'DAILY',
+      repeatDay: null,
       targetDate: '2026-10-08',
       status: 'TODO',
       isCarriedOver: true,
@@ -208,7 +209,8 @@ const DEFAULT_STATE = {
       title: 'Source brass hardware & buckle samples for bag prototype',
       priority: 'MEDIUM',
       category: 'CREATIVE',
-      estTime: 45,
+      repeat: 'WEEKLY',
+      repeatDay: null,
       targetDate: '2026-10-08',
       status: 'TODO',
       isCarriedOver: false,
@@ -220,7 +222,8 @@ const DEFAULT_STATE = {
       title: 'Buy A3 cartridge paper & 2B graphite pencils from stationery shop',
       priority: 'LOW',
       category: 'CREATIVE',
-      estTime: 20,
+      repeat: 'NONE',
+      repeatDay: null,
       targetDate: '2026-10-08',
       status: 'COMPLETED',
       isCarriedOver: false,
@@ -232,7 +235,8 @@ const DEFAULT_STATE = {
       title: 'Accessory Design Jury Presentation Slide Deck',
       priority: 'HIGH',
       category: 'ACADEMIC',
-      estTime: 90,
+      repeat: 'MONTHLY',
+      repeatDay: 8,
       targetDate: '2026-10-09',
       status: 'TODO',
       isCarriedOver: false,
@@ -244,7 +248,8 @@ const DEFAULT_STATE = {
       title: 'Read Chapter 5: 20th Century Textile Movements',
       priority: 'MEDIUM',
       category: 'ACADEMIC',
-      estTime: 30,
+      repeat: 'NONE',
+      repeatDay: null,
       targetDate: '2026-10-10',
       status: 'TODO',
       isCarriedOver: false,
@@ -276,7 +281,16 @@ let AppState = loadState();
 function loadState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : DEFAULT_STATE;
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed && Array.isArray(parsed.tasks)) {
+        parsed.tasks.forEach(t => {
+          if (!t.repeat) t.repeat = 'NONE';
+        });
+      }
+      return parsed;
+    }
+    return DEFAULT_STATE;
   } catch (e) {
     return DEFAULT_STATE;
   }
@@ -325,6 +339,26 @@ class SoundscapeEngine {
     });
     this.activeNodes = [];
     this.currentSound = 'none';
+  }
+
+  playChalkClick() {
+    this.initContext();
+    if (!this.ctx) return;
+    try {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(640, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.035);
+      gain.gain.setValueAtTime(0.14, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.035);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.035);
+    } catch (e) {
+      // Audio context might be restricted before first interaction
+    }
   }
 
   playChalkScratch() {
@@ -466,6 +500,7 @@ const AudioEngine = new SoundscapeEngine();
 // 4. UI CONTROLLER & DOM MANAGEMENT
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
+  initGlobalSoundEffects();
   initTheme();
   initNavigation();
   initTodaySlate();
@@ -475,6 +510,18 @@ document.addEventListener('DOMContentLoaded', () => {
   initDeepFocus();
   updateGlobalGrowthMetrics();
 });
+
+// --------------------------------------------------------------------------
+// GLOBAL AUDIO HOOK FOR BUTTONS & CONTROLS
+// --------------------------------------------------------------------------
+function initGlobalSoundEffects() {
+  document.addEventListener('click', (e) => {
+    const interactive = e.target.closest('button, .theme-btn, .nav-item, .custom-chalk-checkbox, .task-checkbox-wrap, .habit-counter-pill, .calendar-day-tile, select, .priority-dot-btn, .priority-choice-dot, .repeat-pill, .icon-action-btn, .time-adjust-btn, .mode-pill, .sound-pill, .quick-fill-btn');
+    if (interactive) {
+      AudioEngine.playChalkClick();
+    }
+  });
+}
 
 // --------------------------------------------------------------------------
 // A. THEME SYSTEM
@@ -543,6 +590,14 @@ function initNavigation() {
 function initTodaySlate() {
   const form = document.getElementById('today-add-form');
   const eraseCompletedBtn = document.getElementById('btn-erase-completed');
+  const repeatSelect = document.getElementById('task-repeat-select');
+  const monthlyGroup = document.getElementById('repeat-monthly-day-group');
+
+  if (repeatSelect && monthlyGroup) {
+    repeatSelect.addEventListener('change', () => {
+      monthlyGroup.style.display = repeatSelect.value === 'MONTHLY' ? 'flex' : 'none';
+    });
+  }
 
   if (form) {
     form.addEventListener('submit', (e) => {
@@ -550,14 +605,16 @@ function initTodaySlate() {
       const title = document.getElementById('task-title-input').value.trim();
       const priority = document.querySelector('input[name="task-priority"]:checked').value;
       const category = document.getElementById('task-category-select').value;
-      const estTime = parseInt(document.getElementById('task-est-time').value, 10);
+      const repeat = repeatSelect ? repeatSelect.value : 'NONE';
+      const repeatDay = repeat === 'MONTHLY' ? parseInt(document.getElementById('task-repeat-day-select').value, 10) : null;
 
       const newTask = {
         id: `task-${Date.now()}`,
         title,
         priority,
         category,
-        estTime,
+        repeat,
+        repeatDay,
         targetDate: '2026-10-08',
         status: 'TODO',
         isCarriedOver: false,
@@ -572,6 +629,7 @@ function initTodaySlate() {
       AudioEngine.playChalkScratch();
 
       form.reset();
+      if (monthlyGroup) monthlyGroup.style.display = 'none';
       showToast('Pinned task to Today\'s Slate');
     });
   }
@@ -645,9 +703,14 @@ function createTaskCardElement(task) {
 
   const priorityDot = task.priority === 'HIGH' ? '🔴' : (task.priority === 'MEDIUM' ? '🟡' : '🟢');
   const carriedBadge = task.isCarriedOver ? `<span class="carried-over-badge chalk-font">↪ Carried over</span>` : '';
-  const estPill = task.estTime ? `<span class="meta-pill"><i class="fa-regular fa-clock"></i> ${task.estTime}m</span>` : '';
   const catPill = `<span class="meta-pill"><i class="fa-solid fa-tag"></i> ${task.category.toLowerCase()}</span>`;
   
+  let repeatText = '🔁 No Repeat';
+  if (task.repeat === 'DAILY') repeatText = '🔁 Daily';
+  else if (task.repeat === 'WEEKLY') repeatText = '🔁 Weekly';
+  else if (task.repeat === 'MONTHLY') repeatText = `🔁 Monthly (${task.repeatDay ? `Day ${task.repeatDay}` : 'Day 8'})`;
+  const repeatPill = `<button type="button" class="repeat-pill chalk-font" data-repeat-toggle="${task.id}" title="Click to cycle repeat schedule">${repeatText}</button>`;
+
   const subtasksCount = task.subtasks ? task.subtasks.length : 0;
   const subtasksCompleted = task.subtasks ? task.subtasks.filter(s => s.completed).length : 0;
   const subtaskPill = subtasksCount > 0 ? `<span class="subtask-count-pill chalk-font">(${subtasksCompleted}/${subtasksCount} steps)</span>` : '';
@@ -680,13 +743,20 @@ function createTaskCardElement(task) {
       
       <div class="task-body-interactive">
         <div class="task-title-line">
-          <span class="dot-glyph">${priorityDot}</span>
+          <div class="priority-color-wrap" title="Change priority: Click dot to cycle or choose color">
+            <button type="button" class="priority-dot-btn" data-priority-cycle="${task.id}" title="Click to cycle priority">${priorityDot}</button>
+            <div class="priority-mini-picker">
+              <button type="button" class="priority-choice-dot ${task.priority === 'HIGH' ? 'active' : ''}" data-set-priority="HIGH" data-task-id="${task.id}" title="Set High (Red)">🔴</button>
+              <button type="button" class="priority-choice-dot ${task.priority === 'MEDIUM' ? 'active' : ''}" data-set-priority="MEDIUM" data-task-id="${task.id}" title="Set Medium (Yellow)">🟡</button>
+              <button type="button" class="priority-choice-dot ${task.priority === 'LOW' ? 'active' : ''}" data-set-priority="LOW" data-task-id="${task.id}" title="Set Low (Green)">🟢</button>
+            </div>
+          </div>
           <span class="task-title">${task.title}</span>
           ${carriedBadge}
           ${subtaskPill}
         </div>
         <div class="task-meta-row">
-          ${estPill}
+          ${repeatPill}
           ${catPill}
         </div>
       </div>
@@ -722,6 +792,54 @@ function createTaskCardElement(task) {
     renderTodaySlate();
     updateGlobalGrowthMetrics();
   });
+
+  // Priority Cycle Handler (Click on main dot)
+  const cycleBtn = card.querySelector('[data-priority-cycle]');
+  if (cycleBtn) {
+    cycleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const cycleOrder = ['HIGH', 'MEDIUM', 'LOW'];
+      const nextIdx = (cycleOrder.indexOf(task.priority) + 1) % cycleOrder.length;
+      task.priority = cycleOrder[nextIdx];
+      AudioEngine.playChalkClick();
+      saveState();
+      renderTodaySlate();
+      showToast(`Priority changed to ${task.priority === 'HIGH' ? '🔴 High' : task.priority === 'MEDIUM' ? '🟡 Medium' : '🟢 Low'}`);
+    });
+  }
+
+  // Priority Direct Color Selection Handlers (Mini picker dots)
+  card.querySelectorAll('[data-set-priority]').forEach(pBtn => {
+    pBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetPriority = pBtn.dataset.setPriority;
+      if (task.priority !== targetPriority) {
+        task.priority = targetPriority;
+        AudioEngine.playChalkClick();
+        saveState();
+        renderTodaySlate();
+        showToast(`Priority changed to ${task.priority === 'HIGH' ? '🔴 High' : task.priority === 'MEDIUM' ? '🟡 Medium' : '🟢 Low'}`);
+      }
+    });
+  });
+
+  // Repeat Schedule Toggle Handler
+  const repBtn = card.querySelector('[data-repeat-toggle]');
+  if (repBtn) {
+    repBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const cycleRepeat = ['NONE', 'DAILY', 'WEEKLY', 'MONTHLY'];
+      const nextIdx = (cycleRepeat.indexOf(task.repeat || 'NONE') + 1) % cycleRepeat.length;
+      task.repeat = cycleRepeat[nextIdx];
+      if (task.repeat === 'MONTHLY' && !task.repeatDay) {
+        task.repeatDay = 8;
+      }
+      AudioEngine.playChalkClick();
+      saveState();
+      renderTodaySlate();
+      showToast(`Repeat set to: ${task.repeat === 'NONE' ? 'Don\'t Repeat' : task.repeat}`);
+    });
+  }
 
   // Dedicated Steps Button Handler (Expands on click, collapses on re-click)
   const stepsBtn = card.querySelector('[data-subtasks-toggle]');

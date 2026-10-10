@@ -699,6 +699,71 @@ body {
   line-height: 1;
 }
 
+/* Interactive Priority Color Picker on Task Card */
+.priority-color-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  position: relative;
+}
+
+.priority-dot-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 1px 3px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.priority-dot-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-chalk);
+  transform: scale(1.25);
+}
+
+.priority-mini-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--bg-surface-elevated);
+  border: 1px dashed var(--border-chalk);
+  padding: 2px 4px;
+  border-radius: 12px;
+  opacity: 0.55;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.priority-color-wrap:hover .priority-mini-picker {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.priority-choice-dot {
+  background: transparent;
+  border: 1px solid transparent;
+  font-size: 10px;
+  line-height: 1;
+  padding: 1px 2px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.priority-choice-dot:hover {
+  transform: scale(1.3);
+}
+
+.priority-choice-dot.active {
+  border-color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
 .task-title {
   font-size: 14px;
   font-weight: 500;
@@ -734,6 +799,23 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+}
+
+.repeat-pill {
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px dashed var(--border-chalk);
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 11px;
+  color: var(--chalk-mint);
+}
+
+.repeat-pill:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--chalk-mint);
+  transform: translateY(-1px);
 }
 
 .subtask-count-pill {
