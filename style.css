@@ -6,27 +6,27 @@
 /* --------------------------------------------------------------------------
    1. CSS VARIABLES & MULTI-SURFACE THEME TOKENS
    -------------------------------------------------------------------------- */
-:root {
-  /* Default: Dark Slate Blackboard with Oak Wood Frame (#181A1B) */
-  --bg-base: #17191A;
-  --bg-surface: #202325;
-  --bg-surface-elevated: #282C2F;
-  --bg-hover: #32373B;
+:root, body.theme-dark-slate {
+  /* Theme 1: Black Board (Deep Matte Slate with Sleek Elevated Cards & Dot Grid) */
+  --bg-base: #151719;
+  --bg-surface: #1E2124;
+  --bg-surface-elevated: #282C30;
+  --bg-hover: #32383E;
   
-  --text-primary: #E8ECEF;
+  --text-primary: #F1F5F9;
   --text-muted: #94A3B8;
   --text-faint: #64748B;
   
-  --border-chalk: rgba(232, 236, 239, 0.12);
-  --border-chalk-dashed: rgba(232, 236, 239, 0.22);
+  --border-chalk: rgba(241, 245, 249, 0.09);
+  --border-chalk-dashed: rgba(241, 245, 249, 0.18);
   
   /* Wood Frame Colors (Natural Warm Oak) */
-  --wood-frame-outer: #6B4226;
-  --wood-frame-inner: #8B5A2B;
-  --wood-frame-highlight: #A06D3B;
-  --wood-frame-shadow: #4A2E1B;
+  --wood-frame-outer: #5C381E;
+  --wood-frame-inner: #7D4D26;
+  --wood-frame-highlight: #9E6436;
+  --wood-frame-shadow: #3E2412;
   
-  /* Handcrafted Mineral Chalk Colors (Matching Reference Meadow Art) */
+  /* Handcrafted Mineral Chalk Colors */
   --chalk-red: #FF6B6B;
   --chalk-amber: #FFD166;
   --chalk-mint: #06D6A0;
@@ -38,30 +38,30 @@
   --chalk-white: #FAF0CA;
   
   --nav-width: 240px;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --shadow-chalk: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --shadow-chalk: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
-/* Theme 2: Vintage Classroom Green Blackboard (#1B2A20) */
+/* Theme 2: Vintage Classroom Green Blackboard (Rich Moss/Forest with Ivory Chalk Accents) */
 body.theme-vintage-green {
-  --bg-base: #18281E;
-  --bg-surface: #203427;
-  --bg-surface-elevated: #284232;
-  --bg-hover: #32523E;
+  --bg-base: #142319;
+  --bg-surface: #1C3224;
+  --bg-surface-elevated: #264331;
+  --bg-hover: #32553E;
   
-  --text-primary: #F4F1DE;
-  --text-muted: #A3B899;
-  --text-faint: #708A68;
+  --text-primary: #F7F5EB;
+  --text-muted: #A8C2A3;
+  --text-faint: #728F6D;
   
-  --border-chalk: rgba(244, 241, 222, 0.14);
-  --border-chalk-dashed: rgba(244, 241, 222, 0.25);
+  --border-chalk: rgba(247, 245, 235, 0.11);
+  --border-chalk-dashed: rgba(247, 245, 235, 0.20);
   
-  --wood-frame-outer: #5C381E;
-  --wood-frame-inner: #7A4E29;
-  --wood-frame-highlight: #966336;
-  --wood-frame-shadow: #3E2412;
+  --wood-frame-outer: #52331B;
+  --wood-frame-inner: #734522;
+  --wood-frame-highlight: #915A2F;
+  --wood-frame-shadow: #382010;
   
   --chalk-red: #E07A5F;
   --chalk-amber: #F2CC8F;
@@ -491,7 +491,7 @@ body {
    -------------------------------------------------------------------------- */
 .chalk-card {
   background: var(--bg-surface);
-  border: 1px dashed var(--border-chalk-dashed);
+  border: 1px solid var(--border-chalk);
   border-radius: var(--radius-md);
   padding: 18px 20px;
   margin-bottom: 18px;
@@ -1706,8 +1706,58 @@ body.mode-gentle-rest .ring-progress {
 }
 
 /* ==========================================================================
-   10. WHITE BOARD THEME ENHANCEMENTS (DOT-GRID & PILL ACTIVE STYLES)
+   10. BOARD THEMES SPECIFIC STYLES (DOT-GRID & PILL ACTIVE NAVIGATION)
    ========================================================================== */
+
+/* Theme 1: Black Board (Deep Matte Slate with Sleek Charcoal Pill) */
+body.theme-dark-slate .app-layout {
+  background-color: var(--bg-base);
+  background-image: radial-gradient(rgba(241, 245, 249, 0.08) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+}
+
+body.theme-dark-slate .side-nav .nav-item.active {
+  background: #2E3338;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+body.theme-dark-slate .side-nav .nav-item.active .nav-icon,
+body.theme-dark-slate .side-nav .nav-item.active .nav-label {
+  color: #FFFFFF;
+}
+
+body.theme-dark-slate .side-nav .nav-item.active .nav-badge {
+  background: rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+}
+
+/* Theme 2: Green Board (Vintage Classroom Green with Moss Forest Pill) */
+body.theme-vintage-green .app-layout {
+  background-color: var(--bg-base);
+  background-image: radial-gradient(rgba(247, 245, 235, 0.09) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+}
+
+body.theme-vintage-green .side-nav .nav-item.active {
+  background: #2D4C37;
+  color: #FFFFFF;
+  border: 1px solid rgba(247, 245, 235, 0.22);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+body.theme-vintage-green .side-nav .nav-item.active .nav-icon,
+body.theme-vintage-green .side-nav .nav-item.active .nav-label {
+  color: #FFFFFF;
+}
+
+body.theme-vintage-green .side-nav .nav-item.active .nav-badge {
+  background: rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+}
+
+/* Theme 3: White Board (Studio White Board with Charcoal Pill) */
 body.theme-parchment-cream .app-layout {
   background-color: var(--bg-base);
   background-image: radial-gradient(rgba(43, 45, 66, 0.09) 1.5px, transparent 1.5px);
