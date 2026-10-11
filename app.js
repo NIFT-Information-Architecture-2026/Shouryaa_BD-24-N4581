@@ -578,6 +578,17 @@ const ChalkMeadowPanorama = {
 // ==========================================================================
 // 2. DATA STATE & LOCAL STORAGE PERSISTENCE
 // ==========================================================================
+const GROWTH_STAGE_NAMES = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
+
+const BOTANICAL_SPECIMENS_OCTOBER = [
+  'Sunburst Cosmos', 'Purple Wild Aster', 'Dormant Soil', 'White Coneflower', 'Golden Rudbeckia',
+  'Heather Blossom', 'Autumn Terracotta', 'Meadow Daisy', 'Winter Jasmine', 'Forget-Me-Not',
+  'Wild Poppy', 'Lavender Sprig', 'Chamomile', 'Coneflower', 'Sunburst Dahlia',
+  'Sweet William', 'Cosmos Petal', 'Pansy', 'Primrose', 'Anemone',
+  'Buttercup', 'Cornflower', 'Heather Blossom', 'Morning Glory', 'Foxglove Sprig',
+  'Zinnia', 'Lupine', 'Carnation Sprig', 'Hydrangea Florets', 'Hibiscus', 'Evening Primrose'
+];
+
 const STORAGE_KEY = 'chalkflow_state_v6';
 
 const DEFAULT_STATE = {
@@ -1533,15 +1544,6 @@ function renderUpcomingTasks() {
 // --------------------------------------------------------------------------
 // E. PROGRESS GARDEN (RICH WILDFLOWER MEADOW & JOURNAL)
 // --------------------------------------------------------------------------
-const BOTANICAL_SPECIMENS_OCTOBER = [
-  'Sunburst Cosmos', 'Purple Wild Aster', 'Dormant Soil', 'White Coneflower', 'Golden Rudbeckia',
-  'Heather Blossom', 'Autumn Terracotta', 'Meadow Daisy', 'Winter Jasmine', 'Forget-Me-Not',
-  'Wild Poppy', 'Lavender Sprig', 'Chamomile', 'Coneflower', 'Sunburst Dahlia',
-  'Sweet William', 'Cosmos Petal', 'Pansy', 'Primrose', 'Anemone',
-  'Buttercup', 'Cornflower', 'Heather Blossom', 'Morning Glory', 'Foxglove Sprig',
-  'Zinnia', 'Lupine', 'Carnation Sprig', 'Hydrangea Florets', 'Hibiscus', 'Evening Primrose'
-];
-
 function initProgressGarden() {
   const modal = document.getElementById('garden-day-modal');
   const closeBtn = document.getElementById('btn-close-garden-modal');
@@ -1600,7 +1602,9 @@ function renderProgressGarden() {
       `;
 
       tile.addEventListener('click', () => {
-        openGardenDayModal(day, dayData, stageNames[dayData.stage]);
+        AudioEngine.playChalkScratch();
+        emitDustParticles(tile.getBoundingClientRect());
+        openGardenDayModal(day, dayData, GROWTH_STAGE_NAMES[dayData.stage || 0]);
       });
 
       grid.appendChild(tile);
@@ -1615,22 +1619,49 @@ function renderProgressGarden() {
   }
 }
 
-function openGardenDayModal(day, dayData, stageName) {
+function openGardenDayModal(day, dayData, stageName = null) {
   const modal = document.getElementById('garden-day-modal');
-  document.getElementById('modal-species-name').innerText = `🌸 ${dayData.specimen}`;
-  document.getElementById('modal-date-title').innerText = `October ${day}, 2026`;
-  document.getElementById('modal-flower-visual').innerHTML = ChalkBotanicals.getBotanicalSVG(dayData.stage, 72, day);
-  document.getElementById('modal-growth-stage').innerText = stageName;
-  document.getElementById('modal-tasks-ratio').innerText = `${dayData.tasks} / ${dayData.planned || dayData.tasks} tasks`;
-  document.getElementById('modal-focus-time').innerText = `${dayData.focus} mins`;
+  if (!modal) return;
 
+  const currentStage = dayData ? (dayData.stage ?? 0) : 0;
+  const currentStageName = stageName || GROWTH_STAGE_NAMES[currentStage] || 'Resting Seed';
+  const specimenName = dayData?.specimen || (BOTANICAL_SPECIMENS_OCTOBER[day - 1] || 'Autumn Wildflower');
+  const tasksRatio = `${dayData?.tasks ?? 0} / ${dayData?.planned || dayData?.tasks || 5} tasks`;
+  const focusTime = `${dayData?.focus ?? 0} mins`;
+
+  // Calculate habit completions for this day
+  const isToday = day === 8;
+  const totalHabits = AppState.habits.length || 4;
+  const completedHabitsToday = AppState.habits.filter(h => h.current >= (h.type === 'COUNTER' ? h.target : 1)).length;
+  const habitsRatio = isToday
+    ? `${completedHabitsToday} / ${totalHabits} habits`
+    : (day <= 7 ? `${Math.min(totalHabits, 3 + (day % 2))} / ${totalHabits} habits` : `0 / ${totalHabits} habits`);
+
+  const speciesNameEl = document.getElementById('modal-species-name');
+  const dateTitleEl = document.getElementById('modal-date-title');
+  const flowerVisualEl = document.getElementById('modal-flower-visual');
+  const growthStageEl = document.getElementById('modal-growth-stage');
+  const tasksRatioEl = document.getElementById('modal-tasks-ratio');
+  const habitsRatioEl = document.getElementById('modal-habits-ratio');
+  const focusTimeEl = document.getElementById('modal-focus-time');
   const quoteEl = document.getElementById('modal-encouragement-quote');
-  if (dayData.stage === 0) {
-    quoteEl.innerText = '"A quiet day of rest. Growth happens below the soil, too."';
-  } else if (dayData.stage === 4) {
-    quoteEl.innerText = '"Full bloom dedication. Your hard work is permanently captured in your garden."';
-  } else {
-    quoteEl.innerText = '"Steady momentum rooted in patience. Every sprout strengthens your daily rhythm."';
+
+  if (speciesNameEl) speciesNameEl.innerText = `🌸 ${specimenName}`;
+  if (dateTitleEl) dateTitleEl.innerText = `October ${day}, 2026`;
+  if (flowerVisualEl) flowerVisualEl.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 74, day);
+  if (growthStageEl) growthStageEl.innerText = currentStageName;
+  if (tasksRatioEl) tasksRatioEl.innerText = tasksRatio;
+  if (habitsRatioEl) habitsRatioEl.innerText = habitsRatio;
+  if (focusTimeEl) focusTimeEl.innerText = focusTime;
+
+  if (quoteEl) {
+    if (currentStage === 0) {
+      quoteEl.innerText = '"A quiet day of rest. Growth happens below the soil, too."';
+    } else if (currentStage === 4) {
+      quoteEl.innerText = '"Full bloom dedication. Your hard work is permanently captured in your daily rhythm."';
+    } else {
+      quoteEl.innerText = '"Steady momentum rooted in patience. Every habit and sprout strengthens your growth."';
+    }
   }
 
   modal.style.display = 'flex';
@@ -1762,6 +1793,48 @@ function renderHabitLedger() {
 
   if (progressBar) progressBar.style.width = `${growthPercent}%`;
   if (progressText) progressText.innerText = `${totalCompletions} habit completions logged this month (${growthPercent}% of monthly goal)`;
+
+  // Populate Interactive Daily Rhythm Strip (D1 to D8 Today)
+  const daysStrip = document.getElementById('habit-days-strip');
+  if (daysStrip) {
+    daysStrip.innerHTML = '';
+    const totalHabits = AppState.habits.length || 4;
+    const completedToday = AppState.habits.filter(h => h.current >= (h.type === 'COUNTER' ? h.target : 1)).length;
+
+    for (let day = 1; day <= 8; day++) {
+      const isToday = day === 8;
+      const dayData = AppState.gardenData[day] || {
+        specimen: BOTANICAL_SPECIMENS_OCTOBER[day - 1] || 'Autumn Wildflower',
+        tasks: isToday ? 1 : 5,
+        planned: 5,
+        focus: isToday ? AppState.focusTimeLoggedToday : 90,
+        stage: day <= 3 ? day : 4
+      };
+
+      const dayHabitsDone = isToday ? completedToday : Math.min(totalHabits, 3 + (day % 2));
+      const isAllDone = dayHabitsDone >= totalHabits;
+
+      const pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = `habit-day-pill chalk-font ${isToday ? 'is-today' : ''} ${isAllDone ? 'all-done' : ''}`;
+      pill.title = `Day ${day}: ${dayHabitsDone}/${totalHabits} habits completed (Click to maximize progress details)`;
+
+      pill.innerHTML = `
+        <span class="day-label">${isToday ? '★ D8' : 'D' + day}</span>
+        <span class="day-count">${dayHabitsDone}/${totalHabits}</span>
+        <span class="day-star">${isAllDone ? '🌟' : '🌱'}</span>
+      `;
+
+      pill.addEventListener('click', (e) => {
+        e.stopPropagation();
+        AudioEngine.playChalkScratch();
+        emitDustParticles(pill.getBoundingClientRect());
+        openGardenDayModal(day, dayData, GROWTH_STAGE_NAMES[dayData.stage || 0]);
+      });
+
+      daysStrip.appendChild(pill);
+    }
+  }
 }
 
 // --------------------------------------------------------------------------

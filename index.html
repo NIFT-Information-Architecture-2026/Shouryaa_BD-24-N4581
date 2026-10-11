@@ -515,6 +515,17 @@
                 </div>
                 <div class="summary-text" id="habit-progress-text">14 habit completions logged this month</div>
               </div>
+
+              <!-- Interactive Daily Rhythm Strip (Click any day to maximize & inspect details) -->
+              <div class="habit-days-strip-container">
+                <div class="habit-strip-header">
+                  <span class="habit-strip-title chalk-font"><i class="fa-solid fa-calendar-week"></i> Daily Rhythm Log</span>
+                  <span class="habit-strip-hint">Click any day to maximize & view detailed progress</span>
+                </div>
+                <div class="habit-days-strip" id="habit-days-strip">
+                  <!-- Populated by JS with clickable day tiles (D1 - D8 Today) -->
+                </div>
+              </div>
             </div>
 
             <!-- Daily Habits Checklist & Water Tracker -->
@@ -680,8 +691,12 @@
             <span class="insp-val chalk-font" id="modal-growth-stage">Full Bloom</span>
           </div>
           <div class="insp-stat">
-            <span class="insp-lbl">Tasks Completed</span>
+            <span class="insp-lbl">Tasks Done</span>
             <span class="insp-val chalk-font" id="modal-tasks-ratio">5 / 5 tasks</span>
+          </div>
+          <div class="insp-stat">
+            <span class="insp-lbl">Habits Kept</span>
+            <span class="insp-val chalk-font" id="modal-habits-ratio">4 / 4 habits</span>
           </div>
           <div class="insp-stat">
             <span class="insp-lbl">Focus Logged</span>
@@ -696,7 +711,9 @@
       </div>
 
       <div class="modal-footer">
-        <button class="chalk-btn primary-btn chalk-font" id="btn-modal-dismiss">Return to Garden</button>
+        <button class="chalk-btn primary-btn chalk-font" id="btn-modal-dismiss">
+          <i class="fa-solid fa-check"></i> Close & Keep Growing
+        </button>
       </div>
     </div>
   </div>

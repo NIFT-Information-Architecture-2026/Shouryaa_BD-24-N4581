@@ -1182,6 +1182,93 @@ body {
   color: var(--text-muted);
 }
 
+/* Daily Rhythm Log Strip (Click any day to maximize & view progress) */
+.habit-days-strip-container {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border-chalk-dashed);
+}
+
+.habit-strip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.habit-strip-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.habit-strip-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.habit-days-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.habit-day-pill {
+  flex: 1;
+  min-width: 62px;
+  padding: 6px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: var(--bg-surface-elevated);
+  border: 1.5px solid var(--border-chalk);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.habit-day-pill:hover {
+  transform: translateY(-3px) scale(1.06);
+  border-color: var(--chalk-mint);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.habit-day-pill.is-today {
+  border-color: var(--chalk-amber);
+  background: rgba(255, 209, 102, 0.14);
+  box-shadow: 0 0 10px rgba(255, 209, 102, 0.3);
+}
+
+.habit-day-pill.all-done {
+  border-color: var(--chalk-mint);
+}
+
+.habit-day-pill .day-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.habit-day-pill.is-today .day-label {
+  color: var(--chalk-amber);
+}
+
+.habit-day-pill .day-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.habit-day-pill .day-star {
+  font-size: 12px;
+}
+
 .habit-header-row {
   display: flex;
   justify-content: space-between;
@@ -1531,19 +1618,31 @@ body.mode-gentle-rest .ring-progress {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(3px);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10000;
+  animation: modal-fade-in 0.2s ease-out;
 }
 
 .chalk-modal-dialog {
   width: 90%;
-  max-width: 440px;
+  max-width: 460px;
   background: var(--bg-surface);
   border: 1.5px dashed var(--border-chalk-dashed);
+  animation: modal-pop-in 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-pop-in {
+  from { opacity: 0; transform: scale(0.88); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .modal-header {
@@ -1577,11 +1676,11 @@ body.mode-gentle-rest .ring-progress {
 
 .inspection-stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
   background: var(--bg-surface-elevated);
   border-radius: var(--radius-sm);
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 14px;
   text-align: center;
 }
