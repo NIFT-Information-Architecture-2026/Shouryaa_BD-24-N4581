@@ -74,34 +74,34 @@ body.theme-vintage-green {
   --chalk-white: #FAF0CA;
 }
 
-/* Theme 3: Studio Board / Parchment (#F7F4EA) */
+/* Theme 3: Studio White Board (#FAF9F5 / Soft Neutral Greys) */
 body.theme-parchment-cream {
-  --bg-base: #F7F4EA;
-  --bg-surface: #EFEAD8;
-  --bg-surface-elevated: #E5DEC8;
-  --bg-hover: #DBD3BB;
+  --bg-base: #FAF9F5;
+  --bg-surface: #EFEFEF;
+  --bg-surface-elevated: #E5E5E5;
+  --bg-hover: #DCDCDC;
   
   --text-primary: #2B2D42;
-  --text-muted: #6C757D;
-  --text-faint: #9A9EAB;
+  --text-muted: #5E6573;
+  --text-faint: #8D99AE;
   
-  --border-chalk: rgba(43, 45, 66, 0.12);
-  --border-chalk-dashed: rgba(43, 45, 66, 0.22);
+  --border-chalk: rgba(43, 45, 66, 0.08);
+  --border-chalk-dashed: rgba(43, 45, 66, 0.16);
   
-  --wood-frame-outer: #A0A5AA;
+  --wood-frame-outer: #8D99AE;
   --wood-frame-inner: #D1D5DB;
-  --wood-frame-highlight: #E5E7EB;
-  --wood-frame-shadow: #6B7280;
+  --wood-frame-highlight: #F3F4F6;
+  --wood-frame-shadow: #9CA3AF;
   
-  --chalk-red: #D64045;
-  --chalk-amber: #E29578;
-  --chalk-mint: #457B9D;
-  --chalk-sky: #3D5A80;
-  --chalk-terracotta: #D08C5D;
-  --chalk-pink: #C77DFF;
-  --chalk-violet: #A288E3;
-  --chalk-purple: #5A4E72;
-  --chalk-white: #1D3557;
+  --chalk-red: #E63946;
+  --chalk-amber: #F4A261;
+  --chalk-mint: #2A9D8F;
+  --chalk-sky: #457B9D;
+  --chalk-terracotta: #E76F51;
+  --chalk-pink: #D8829D;
+  --chalk-violet: #9D81BA;
+  --chalk-purple: #6D597A;
+  --chalk-white: #FFFFFF;
 }
 
 /* --------------------------------------------------------------------------
@@ -699,71 +699,6 @@ body {
   line-height: 1;
 }
 
-/* Interactive Priority Color Picker on Task Card */
-.priority-color-wrap {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  position: relative;
-}
-
-.priority-dot-btn {
-  background: transparent;
-  border: 1px solid transparent;
-  padding: 1px 3px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
-}
-
-.priority-dot-btn:hover {
-  background: var(--bg-hover);
-  border-color: var(--border-chalk);
-  transform: scale(1.25);
-}
-
-.priority-mini-picker {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  background: var(--bg-surface-elevated);
-  border: 1px dashed var(--border-chalk);
-  padding: 2px 4px;
-  border-radius: 12px;
-  opacity: 0.55;
-  transition: opacity 0.2s, transform 0.15s;
-}
-
-.priority-color-wrap:hover .priority-mini-picker {
-  opacity: 1;
-  transform: scale(1.05);
-}
-
-.priority-choice-dot {
-  background: transparent;
-  border: 1px solid transparent;
-  font-size: 10px;
-  line-height: 1;
-  padding: 1px 2px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.priority-choice-dot:hover {
-  transform: scale(1.3);
-}
-
-.priority-choice-dot.active {
-  border-color: var(--text-primary);
-  background: var(--bg-hover);
-}
-
 .task-title {
   font-size: 14px;
   font-weight: 500;
@@ -799,23 +734,6 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-}
-
-.repeat-pill {
-  cursor: pointer;
-  transition: all 0.15s ease;
-  border: 1px dashed var(--border-chalk);
-  padding: 1px 7px;
-  border-radius: 10px;
-  font-size: 11px;
-  color: var(--chalk-mint);
-}
-
-.repeat-pill:hover {
-  background: var(--bg-hover);
-  color: var(--text-primary);
-  border-color: var(--chalk-mint);
-  transform: translateY(-1px);
 }
 
 .subtask-count-pill {
@@ -1786,3 +1704,499 @@ body.mode-gentle-rest .ring-progress {
   0% { transform: translate(0, 0) scale(1); opacity: 0.9; }
   100% { transform: translate(var(--dx), var(--dy)) scale(0.2); opacity: 0; }
 }
+
+/* ==========================================================================
+   10. WHITE BOARD THEME ENHANCEMENTS (DOT-GRID & PILL ACTIVE STYLES)
+   ========================================================================== */
+body.theme-parchment-cream .app-layout {
+  background-color: var(--bg-base);
+  background-image: radial-gradient(rgba(43, 45, 66, 0.09) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+}
+
+body.theme-parchment-cream .side-nav .nav-item.active {
+  background: #393C47;
+  color: #FFFFFF;
+  border: 1px solid #2B2D42;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+body.theme-parchment-cream .side-nav .nav-item.active .nav-icon,
+body.theme-parchment-cream .side-nav .nav-item.active .nav-label {
+  color: #FFFFFF;
+}
+
+body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   11. DASHBOARD SURFACE (PROGRESS RINGS & MULTI-BOX LAYOUT)
+   ========================================================================== */
+#view-dashboard {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 40px;
+}
+
+#view-dashboard.active {
+  display: flex;
+}
+
+/* Greeting Header */
+.dashboard-greeting-banner {
+  padding: 4px 0 10px 0;
+}
+
+.greeting-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+  letter-spacing: -0.2px;
+}
+
+.greeting-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Row 1: Metrics with Circular SVG Progress Rings */
+.dashboard-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.metric-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-chalk);
+  border-radius: 14px;
+  padding: 16px 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.metric-card-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ring-progress-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.progress-ring-svg {
+  transform: rotate(-90deg);
+  width: 80px;
+  height: 80px;
+}
+
+.ring-bg {
+  fill: none;
+  stroke: var(--bg-surface-elevated);
+  stroke-width: 6.5;
+}
+
+.ring-bar {
+  fill: none;
+  stroke-width: 6.5;
+  stroke-linecap: round;
+  stroke-dasharray: 213.63;
+  stroke-dashoffset: 213.63;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ring-tasks-bar {
+  stroke: var(--chalk-mint);
+}
+
+.ring-habits-bar {
+  stroke: var(--chalk-sky);
+}
+
+.ring-focus-bar {
+  stroke: var(--chalk-amber);
+}
+
+.ring-center-text {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.ring-percentage {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.metric-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metric-micro-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.metric-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.metric-caption {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Row 2: 2 Big Boxes Grid */
+.dashboard-main-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.dash-big-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-chalk);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 310px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.dash-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px dashed var(--border-chalk);
+  padding-bottom: 12px;
+}
+
+.dash-box-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dash-box-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.dash-box-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--bg-surface-elevated);
+  color: var(--text-muted);
+  border: 1px dashed var(--border-chalk);
+}
+
+.dash-box-stage-pill {
+  font-size: 11px;
+  padding: 2px 9px;
+  border-radius: 10px;
+  background: rgba(42, 157, 143, 0.14);
+  color: var(--chalk-mint);
+  font-weight: 700;
+  border: 1px solid var(--chalk-mint);
+}
+
+/* Big Box 1: Tasks Stream */
+.dash-tasks-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  max-height: 250px;
+  padding-right: 4px;
+}
+
+.dash-task-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.dash-task-item:hover {
+  background: var(--bg-hover);
+}
+
+.dash-task-item.priority-high {
+  border-color: rgba(230, 57, 70, 0.35);
+  box-shadow: inset 2px 0 0 var(--chalk-red);
+}
+
+.dash-task-item.priority-medium {
+  border-color: rgba(244, 162, 97, 0.35);
+  box-shadow: inset 2px 0 0 var(--chalk-amber);
+}
+
+.dash-task-item.priority-low {
+  border-color: rgba(42, 157, 143, 0.35);
+  box-shadow: inset 2px 0 0 var(--chalk-mint);
+}
+
+.dash-task-item.is-completed {
+  opacity: 0.62;
+}
+
+.dash-task-item.is-completed .dash-task-text {
+  text-decoration: line-through;
+  color: var(--text-faint);
+}
+
+.dash-task-check {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.dash-task-body {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.dash-task-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+}
+
+.dash-task-pill {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  border: 1px dashed var(--border-chalk);
+  white-space: nowrap;
+}
+
+.dash-task-empty {
+  text-align: center;
+  padding: 30px 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Big Box 2: Growth Progress */
+.dash-growth-spotlight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-grow: 1;
+}
+
+.dash-flower-display {
+  width: 104px;
+  height: 104px;
+  border-radius: 14px;
+  background: var(--bg-surface-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border-chalk);
+  flex-shrink: 0;
+}
+
+.dash-growth-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.dash-species-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.dash-growth-quote {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.dash-stages-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 8px 12px;
+  background: var(--bg-surface-elevated);
+  border-radius: 8px;
+  border: 1px dashed var(--border-chalk);
+}
+
+.stepper-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  color: var(--text-faint);
+  transition: all 0.2s ease;
+}
+
+.stepper-step .step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-chalk-dashed);
+  transition: all 0.2s ease;
+}
+
+.stepper-step.active {
+  color: var(--chalk-mint);
+  font-weight: 700;
+}
+
+.stepper-step.active .step-dot {
+  background: var(--chalk-mint);
+  transform: scale(1.3);
+  box-shadow: 0 0 6px rgba(42, 157, 143, 0.4);
+}
+
+.stepper-step.completed {
+  color: var(--text-muted);
+}
+
+.stepper-step.completed .step-dot {
+  background: var(--chalk-sky);
+}
+
+/* Row 3: Big Box 3 - Collected Botanicals Showcase */
+.dash-collection-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-chalk);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.dash-collection-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.dash-collected-plants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 14px;
+}
+
+.dash-plant-card {
+  background: var(--bg-surface-elevated);
+  border: 1px dashed var(--border-chalk);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.dash-plant-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--chalk-mint);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.dash-plant-svg-wrap {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dash-plant-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.dash-plant-meta {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.dash-plant-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(42, 157, 143, 0.12);
+  color: var(--chalk-mint);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 900px) {
+  .dashboard-metrics-row {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

@@ -182,19 +182,18 @@ const ChalkBotanicals = {
 // ==========================================================================
 // 2. DATA STATE & LOCAL STORAGE PERSISTENCE
 // ==========================================================================
-const STORAGE_KEY = 'chalkflow_state_v5';
+const STORAGE_KEY = 'chalkflow_state_v6';
 
 const DEFAULT_STATE = {
-  theme: 'theme-dark-slate',
-  activeSurface: 'today-slate',
+  theme: 'theme-parchment-cream',
+  activeSurface: 'dashboard',
   tasks: [
     {
       id: 'task-1',
       title: 'Complete CAT Quantitative Mock #4 (Algebra & Arithmetic)',
       priority: 'HIGH',
       category: 'ACADEMIC',
-      repeat: 'DAILY',
-      repeatDay: null,
+      estTime: 60,
       targetDate: '2026-10-08',
       status: 'TODO',
       isCarriedOver: true,
@@ -209,8 +208,7 @@ const DEFAULT_STATE = {
       title: 'Source brass hardware & buckle samples for bag prototype',
       priority: 'MEDIUM',
       category: 'CREATIVE',
-      repeat: 'WEEKLY',
-      repeatDay: null,
+      estTime: 45,
       targetDate: '2026-10-08',
       status: 'TODO',
       isCarriedOver: false,
@@ -222,8 +220,7 @@ const DEFAULT_STATE = {
       title: 'Buy A3 cartridge paper & 2B graphite pencils from stationery shop',
       priority: 'LOW',
       category: 'CREATIVE',
-      repeat: 'NONE',
-      repeatDay: null,
+      estTime: 20,
       targetDate: '2026-10-08',
       status: 'COMPLETED',
       isCarriedOver: false,
@@ -235,8 +232,7 @@ const DEFAULT_STATE = {
       title: 'Accessory Design Jury Presentation Slide Deck',
       priority: 'HIGH',
       category: 'ACADEMIC',
-      repeat: 'MONTHLY',
-      repeatDay: 8,
+      estTime: 90,
       targetDate: '2026-10-09',
       status: 'TODO',
       isCarriedOver: false,
@@ -248,8 +244,7 @@ const DEFAULT_STATE = {
       title: 'Read Chapter 5: 20th Century Textile Movements',
       priority: 'MEDIUM',
       category: 'ACADEMIC',
-      repeat: 'NONE',
-      repeatDay: null,
+      estTime: 30,
       targetDate: '2026-10-10',
       status: 'TODO',
       isCarriedOver: false,
@@ -281,16 +276,7 @@ let AppState = loadState();
 function loadState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (parsed && Array.isArray(parsed.tasks)) {
-        parsed.tasks.forEach(t => {
-          if (!t.repeat) t.repeat = 'NONE';
-        });
-      }
-      return parsed;
-    }
-    return DEFAULT_STATE;
+    return saved ? JSON.parse(saved) : DEFAULT_STATE;
   } catch (e) {
     return DEFAULT_STATE;
   }
@@ -339,26 +325,6 @@ class SoundscapeEngine {
     });
     this.activeNodes = [];
     this.currentSound = 'none';
-  }
-
-  playChalkClick() {
-    this.initContext();
-    if (!this.ctx) return;
-    try {
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(640, this.ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.035);
-      gain.gain.setValueAtTime(0.14, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.035);
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc.start();
-      osc.stop(this.ctx.currentTime + 0.035);
-    } catch (e) {
-      // Audio context might be restricted before first interaction
-    }
   }
 
   playChalkScratch() {
@@ -500,9 +466,9 @@ const AudioEngine = new SoundscapeEngine();
 // 4. UI CONTROLLER & DOM MANAGEMENT
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
-  initGlobalSoundEffects();
   initTheme();
   initNavigation();
+  initDashboard();
   initTodaySlate();
   initUpcomingTasks();
   initProgressGarden();
@@ -510,18 +476,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initDeepFocus();
   updateGlobalGrowthMetrics();
 });
-
-// --------------------------------------------------------------------------
-// GLOBAL AUDIO HOOK FOR BUTTONS & CONTROLS
-// --------------------------------------------------------------------------
-function initGlobalSoundEffects() {
-  document.addEventListener('click', (e) => {
-    const interactive = e.target.closest('button, .theme-btn, .nav-item, .custom-chalk-checkbox, .task-checkbox-wrap, .habit-counter-pill, .calendar-day-tile, select, .priority-dot-btn, .priority-choice-dot, .repeat-pill, .icon-action-btn, .time-adjust-btn, .mode-pill, .sound-pill, .quick-fill-btn');
-    if (interactive) {
-      AudioEngine.playChalkClick();
-    }
-  });
-}
 
 // --------------------------------------------------------------------------
 // A. THEME SYSTEM
@@ -552,6 +506,7 @@ function navigateToSurface(surfaceId, linkedTaskId = null) {
   const pageTitle = document.getElementById('page-title');
 
   const titles = {
+    'dashboard': 'Dashboard',
     'today-slate': "Today's Slate",
     'upcoming-tasks': 'Upcoming Tasks',
     'progress-garden': 'Progress Garden',
@@ -561,9 +516,10 @@ function navigateToSurface(surfaceId, linkedTaskId = null) {
 
   navItems.forEach(item => item.classList.toggle('active', item.dataset.surface === surfaceId));
   views.forEach(v => v.classList.toggle('active', v.id === `view-${surfaceId}`));
-  if (pageTitle) pageTitle.innerText = titles[surfaceId] || "Today's Slate";
+  if (pageTitle) pageTitle.innerText = titles[surfaceId] || "Dashboard";
   saveState();
 
+  if (surfaceId === 'dashboard') renderDashboard();
   if (surfaceId === 'progress-garden') renderProgressGarden();
   if (surfaceId === 'habit-ledger') renderHabitLedger();
 
@@ -581,23 +537,238 @@ function initNavigation() {
   navItems.forEach(btn => {
     btn.addEventListener('click', () => navigateToSurface(btn.dataset.surface));
   });
-  navigateToSurface(AppState.activeSurface || 'today-slate');
+  navigateToSurface(AppState.activeSurface || 'dashboard');
 }
 
 // --------------------------------------------------------------------------
-// C. TODAY'S SLATE (STRICT PRIORITY STREAM: RED -> YELLOW -> GREEN)
+// C. DASHBOARD CONTROLLER (PROGRESS RINGS, BOXES & COLLECTED SPECIES)
+// --------------------------------------------------------------------------
+function initDashboard() {
+  // Navigation links within dashboard boxes
+  document.querySelectorAll('.dash-nav-link').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetSurface = btn.dataset.goto;
+      if (targetSurface) {
+        navigateToSurface(targetSurface);
+      }
+    });
+  });
+
+  renderDashboard();
+}
+
+function renderDashboard() {
+  const dashView = document.getElementById('view-dashboard');
+  if (!dashView) return;
+
+  const circumference = 213.63; // 2 * Math.PI * 34 for r=34
+
+  // 1. TOP METRICS: TASKS PROGRESS RING
+  const todayTasks = AppState.tasks.filter(t => t.targetDate === '2026-10-08');
+  const completedTasks = todayTasks.filter(t => t.status === 'COMPLETED').length;
+  const totalTasks = todayTasks.length;
+  const tasksPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+  const tasksCircle = document.getElementById('ring-tasks-circle');
+  const tasksPercentText = document.getElementById('ring-tasks-percent');
+  const dashTasksRatio = document.getElementById('dash-tasks-ratio');
+  const dashTasksSub = document.getElementById('dash-tasks-sub');
+
+  if (tasksCircle) {
+    tasksCircle.style.strokeDashoffset = circumference * (1 - tasksPercent / 100);
+  }
+  if (tasksPercentText) tasksPercentText.innerText = `${tasksPercent}%`;
+  if (dashTasksRatio) dashTasksRatio.innerText = `${completedTasks} / ${totalTasks} Tasks`;
+  if (dashTasksSub) {
+    const remaining = totalTasks - completedTasks;
+    dashTasksSub.innerText = remaining === 0 && totalTasks > 0 ? 'All slate tasks completed! ✨' : `${remaining} task${remaining !== 1 ? 's' : ''} remaining today`;
+  }
+
+  // 2. TOP METRICS: HABITS PROGRESS RING
+  const completedHabits = AppState.habits.filter(h => h.current >= h.target).length;
+  const totalHabits = AppState.habits.length;
+  const habitsPercent = totalHabits > 0 ? Math.round((completedHabits / totalHabits) * 100) : 0;
+
+  const habitsCircle = document.getElementById('ring-habits-circle');
+  const habitsPercentText = document.getElementById('ring-habits-percent');
+  const dashHabitsRatio = document.getElementById('dash-habits-ratio');
+  const dashHabitsSub = document.getElementById('dash-habits-sub');
+
+  if (habitsCircle) {
+    habitsCircle.style.strokeDashoffset = circumference * (1 - habitsPercent / 100);
+  }
+  if (habitsPercentText) habitsPercentText.innerText = `${habitsPercent}%`;
+  if (dashHabitsRatio) dashHabitsRatio.innerText = `${completedHabits} / ${totalHabits} Habits`;
+  if (dashHabitsSub) {
+    dashHabitsSub.innerText = `${completedHabits} of ${totalHabits} daily rhythms finished`;
+  }
+
+  // 3. TOP METRICS: FOCUS TIMED PROGRESS RING
+  const focusGoal = 60; // 60 mins daily mindful focus target
+  const currentFocus = AppState.focusTimeLoggedToday || 0;
+  const focusPercent = Math.min(100, Math.round((currentFocus / focusGoal) * 100));
+
+  const focusCircle = document.getElementById('ring-focus-circle');
+  const focusPercentText = document.getElementById('ring-focus-percent');
+  const dashFocusRatio = document.getElementById('dash-focus-ratio');
+  const dashFocusSub = document.getElementById('dash-focus-sub');
+
+  if (focusCircle) {
+    focusCircle.style.strokeDashoffset = circumference * (1 - focusPercent / 100);
+  }
+  if (focusPercentText) focusPercentText.innerText = `${focusPercent}%`;
+  if (dashFocusRatio) dashFocusRatio.innerText = `${currentFocus} / ${focusGoal}m`;
+  if (dashFocusSub) {
+    dashFocusSub.innerText = currentFocus >= focusGoal ? 'Daily focus target reached!' : `${focusGoal - currentFocus}m left for daily target`;
+  }
+
+  // 4. MIDDLE ROW: BIG BOX 1 - TODAY'S TASKS ALL TOGETHER
+  const taskStream = document.getElementById('dash-tasks-stream');
+  const todayBadge = document.getElementById('dash-today-count-badge');
+  if (todayBadge) todayBadge.innerText = `${todayTasks.length} task${todayTasks.length !== 1 ? 's' : ''}`;
+
+  if (taskStream) {
+    taskStream.innerHTML = '';
+    if (todayTasks.length === 0) {
+      taskStream.innerHTML = `<div class="dash-task-empty chalk-font">No tasks on today's slate yet.</div>`;
+    } else {
+      const priorityWeights = { HIGH: 3, MEDIUM: 2, LOW: 1 };
+      const sortedTodayTasks = [...todayTasks].sort((a, b) => {
+        if (a.status !== b.status) return a.status === 'COMPLETED' ? 1 : -1;
+        return (priorityWeights[b.priority] || 0) - (priorityWeights[a.priority] || 0);
+      });
+
+      sortedTodayTasks.forEach(task => {
+        const item = document.createElement('div');
+        const isDone = task.status === 'COMPLETED';
+        const priorityClass = task.priority === 'HIGH' ? 'priority-high' : (task.priority === 'MEDIUM' ? 'priority-medium' : 'priority-low');
+        const priorityDot = task.priority === 'HIGH' ? '🔴' : (task.priority === 'MEDIUM' ? '🟡' : '🟢');
+
+        item.className = `dash-task-item ${priorityClass} ${isDone ? 'is-completed' : ''}`;
+
+        const subtaskCount = task.subtasks ? task.subtasks.length : 0;
+        const subtasksDone = task.subtasks ? task.subtasks.filter(s => s.completed).length : 0;
+        const subtaskPill = subtaskCount > 0 ? `<span class="dash-task-pill chalk-font">(${subtasksDone}/${subtaskCount})</span>` : '';
+        const timePill = task.estTime ? `<span class="dash-task-pill"><i class="fa-regular fa-clock"></i> ${task.estTime}m</span>` : '';
+
+        item.innerHTML = `
+          <div class="dash-task-check" title="Toggle completion">
+            <span class="custom-chalk-checkbox ${isDone ? 'checked' : ''}">
+              ${isDone ? '<i class="fa-solid fa-check"></i>' : ''}
+            </span>
+          </div>
+          <div class="dash-task-body">
+            <span class="dot-glyph" style="font-size:12px;">${priorityDot}</span>
+            <span class="dash-task-text" title="${task.title}">${task.title}</span>
+            ${subtaskPill}
+            ${timePill}
+          </div>
+        `;
+
+        const checkBtn = item.querySelector('.dash-task-check');
+        checkBtn.addEventListener('click', () => {
+          task.status = task.status === 'COMPLETED' ? 'TODO' : 'COMPLETED';
+          if (task.status === 'COMPLETED') {
+            AudioEngine.playChalkScratch();
+            emitDustParticles(checkBtn.getBoundingClientRect());
+            showToast('Marked task complete! 🌱');
+          } else {
+            AudioEngine.playChalkScratch();
+            showToast('Reopened task to slate');
+          }
+          saveState();
+          renderTodaySlate();
+          renderDashboard();
+          updateGlobalGrowthMetrics();
+        });
+
+        taskStream.appendChild(item);
+      });
+    }
+  }
+
+  // 5. MIDDLE ROW: BIG BOX 2 - DAILY GROWTH PROGRESS
+  const todayGardenData = AppState.gardenData[8] || { specimen: 'Meadow Daisy', tasks: completedTasks, planned: totalTasks, focus: currentFocus, stage: 0 };
+  const currentStage = todayGardenData.stage || 0;
+  const specimenName = todayGardenData.specimen || 'Meadow Daisy';
+
+  const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
+  const stageQuotes = [
+    '"Growth happens below the soil too. Ground yourself with your first task today."',
+    '"A quiet shoot breaks the earth. Momentum begins with a single mindful action."',
+    '"Stems and leaves expand into the light. Your rhythm is finding steady strength."',
+    '"A budding blossom forms with patience. Full bloom is just a step away."',
+    '"Radiant full bloom achieved today! Mindful consistency bore beautiful fruit."'
+  ];
+
+  const stagePill = document.getElementById('dash-growth-stage-pill');
+  const flowerVisual = document.getElementById('dash-today-flower-visual');
+  const specimenTitle = document.getElementById('dash-today-specimen-name');
+  const quoteEl = document.getElementById('dash-growth-quote');
+
+  if (stagePill) stagePill.innerText = stageNames[currentStage];
+  if (flowerVisual) flowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 74, 8);
+  if (specimenTitle) specimenTitle.innerText = `🌸 ${specimenName}`;
+  if (quoteEl) quoteEl.innerText = stageQuotes[currentStage];
+
+  const stepperSteps = document.querySelectorAll('.dash-stages-stepper .stepper-step');
+  stepperSteps.forEach(step => {
+    const stepIdx = parseInt(step.dataset.step, 10);
+    step.classList.remove('active', 'completed');
+    if (stepIdx === currentStage) {
+      step.classList.add('active');
+    } else if (stepIdx < currentStage) {
+      step.classList.add('completed');
+    }
+  });
+
+  // 6. BOTTOM ROW: BIG BOX 3 - COLLECTED BOTANICALS & SPECIES SHOWCASE
+  const collectionGrid = document.getElementById('dash-collected-plants-grid');
+  const countBadge = document.getElementById('dash-collected-count-badge');
+
+  if (collectionGrid) {
+    collectionGrid.innerHTML = '';
+
+    const bloomedDays = [1, 4, 5, 7];
+    if (currentStage === 4 && !bloomedDays.includes(8)) {
+      bloomedDays.push(8);
+    }
+
+    const collectedSpecies = bloomedDays.map(d => {
+      const g = AppState.gardenData[d] || {};
+      return {
+        day: d,
+        name: g.specimen || (typeof BOTANICAL_SPECIMENS_OCTOBER !== 'undefined' ? BOTANICAL_SPECIMENS_OCTOBER[d - 1] : 'Wild Botanical'),
+        focus: g.focus || 90,
+        tasks: g.tasks || 5
+      };
+    });
+
+    if (countBadge) countBadge.innerText = `${collectedSpecies.length} Species Harvested`;
+
+    collectedSpecies.forEach(plant => {
+      const card = document.createElement('div');
+      card.className = 'dash-plant-card';
+      card.innerHTML = `
+        <div class="dash-plant-svg-wrap">
+          ${ChalkBotanicals.getBotanicalSVG(4, 56, plant.day)}
+        </div>
+        <div class="dash-plant-name chalk-font">${plant.name}</div>
+        <div class="dash-plant-meta">${plant.tasks} tasks • ${plant.focus}m focus</div>
+        <span class="dash-plant-badge chalk-font"><i class="fa-solid fa-seedling"></i> Bloomed</span>
+      `;
+      collectionGrid.appendChild(card);
+    });
+  }
+}
+
+// --------------------------------------------------------------------------
+// D. TODAY'S SLATE (STRICT PRIORITY STREAM: RED -> YELLOW -> GREEN)
 // --------------------------------------------------------------------------
 function initTodaySlate() {
   const form = document.getElementById('today-add-form');
   const eraseCompletedBtn = document.getElementById('btn-erase-completed');
-  const repeatSelect = document.getElementById('task-repeat-select');
-  const monthlyGroup = document.getElementById('repeat-monthly-day-group');
-
-  if (repeatSelect && monthlyGroup) {
-    repeatSelect.addEventListener('change', () => {
-      monthlyGroup.style.display = repeatSelect.value === 'MONTHLY' ? 'flex' : 'none';
-    });
-  }
 
   if (form) {
     form.addEventListener('submit', (e) => {
@@ -605,16 +776,14 @@ function initTodaySlate() {
       const title = document.getElementById('task-title-input').value.trim();
       const priority = document.querySelector('input[name="task-priority"]:checked').value;
       const category = document.getElementById('task-category-select').value;
-      const repeat = repeatSelect ? repeatSelect.value : 'NONE';
-      const repeatDay = repeat === 'MONTHLY' ? parseInt(document.getElementById('task-repeat-day-select').value, 10) : null;
+      const estTime = parseInt(document.getElementById('task-est-time').value, 10);
 
       const newTask = {
         id: `task-${Date.now()}`,
         title,
         priority,
         category,
-        repeat,
-        repeatDay,
+        estTime,
         targetDate: '2026-10-08',
         status: 'TODO',
         isCarriedOver: false,
@@ -629,7 +798,6 @@ function initTodaySlate() {
       AudioEngine.playChalkScratch();
 
       form.reset();
-      if (monthlyGroup) monthlyGroup.style.display = 'none';
       showToast('Pinned task to Today\'s Slate');
     });
   }
@@ -703,14 +871,9 @@ function createTaskCardElement(task) {
 
   const priorityDot = task.priority === 'HIGH' ? '🔴' : (task.priority === 'MEDIUM' ? '🟡' : '🟢');
   const carriedBadge = task.isCarriedOver ? `<span class="carried-over-badge chalk-font">↪ Carried over</span>` : '';
+  const estPill = task.estTime ? `<span class="meta-pill"><i class="fa-regular fa-clock"></i> ${task.estTime}m</span>` : '';
   const catPill = `<span class="meta-pill"><i class="fa-solid fa-tag"></i> ${task.category.toLowerCase()}</span>`;
   
-  let repeatText = '🔁 No Repeat';
-  if (task.repeat === 'DAILY') repeatText = '🔁 Daily';
-  else if (task.repeat === 'WEEKLY') repeatText = '🔁 Weekly';
-  else if (task.repeat === 'MONTHLY') repeatText = `🔁 Monthly (${task.repeatDay ? `Day ${task.repeatDay}` : 'Day 8'})`;
-  const repeatPill = `<button type="button" class="repeat-pill chalk-font" data-repeat-toggle="${task.id}" title="Click to cycle repeat schedule">${repeatText}</button>`;
-
   const subtasksCount = task.subtasks ? task.subtasks.length : 0;
   const subtasksCompleted = task.subtasks ? task.subtasks.filter(s => s.completed).length : 0;
   const subtaskPill = subtasksCount > 0 ? `<span class="subtask-count-pill chalk-font">(${subtasksCompleted}/${subtasksCount} steps)</span>` : '';
@@ -743,20 +906,13 @@ function createTaskCardElement(task) {
       
       <div class="task-body-interactive">
         <div class="task-title-line">
-          <div class="priority-color-wrap" title="Change priority: Click dot to cycle or choose color">
-            <button type="button" class="priority-dot-btn" data-priority-cycle="${task.id}" title="Click to cycle priority">${priorityDot}</button>
-            <div class="priority-mini-picker">
-              <button type="button" class="priority-choice-dot ${task.priority === 'HIGH' ? 'active' : ''}" data-set-priority="HIGH" data-task-id="${task.id}" title="Set High (Red)">🔴</button>
-              <button type="button" class="priority-choice-dot ${task.priority === 'MEDIUM' ? 'active' : ''}" data-set-priority="MEDIUM" data-task-id="${task.id}" title="Set Medium (Yellow)">🟡</button>
-              <button type="button" class="priority-choice-dot ${task.priority === 'LOW' ? 'active' : ''}" data-set-priority="LOW" data-task-id="${task.id}" title="Set Low (Green)">🟢</button>
-            </div>
-          </div>
+          <span class="dot-glyph">${priorityDot}</span>
           <span class="task-title">${task.title}</span>
           ${carriedBadge}
           ${subtaskPill}
         </div>
         <div class="task-meta-row">
-          ${repeatPill}
+          ${estPill}
           ${catPill}
         </div>
       </div>
@@ -792,54 +948,6 @@ function createTaskCardElement(task) {
     renderTodaySlate();
     updateGlobalGrowthMetrics();
   });
-
-  // Priority Cycle Handler (Click on main dot)
-  const cycleBtn = card.querySelector('[data-priority-cycle]');
-  if (cycleBtn) {
-    cycleBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const cycleOrder = ['HIGH', 'MEDIUM', 'LOW'];
-      const nextIdx = (cycleOrder.indexOf(task.priority) + 1) % cycleOrder.length;
-      task.priority = cycleOrder[nextIdx];
-      AudioEngine.playChalkClick();
-      saveState();
-      renderTodaySlate();
-      showToast(`Priority changed to ${task.priority === 'HIGH' ? '🔴 High' : task.priority === 'MEDIUM' ? '🟡 Medium' : '🟢 Low'}`);
-    });
-  }
-
-  // Priority Direct Color Selection Handlers (Mini picker dots)
-  card.querySelectorAll('[data-set-priority]').forEach(pBtn => {
-    pBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const targetPriority = pBtn.dataset.setPriority;
-      if (task.priority !== targetPriority) {
-        task.priority = targetPriority;
-        AudioEngine.playChalkClick();
-        saveState();
-        renderTodaySlate();
-        showToast(`Priority changed to ${task.priority === 'HIGH' ? '🔴 High' : task.priority === 'MEDIUM' ? '🟡 Medium' : '🟢 Low'}`);
-      }
-    });
-  });
-
-  // Repeat Schedule Toggle Handler
-  const repBtn = card.querySelector('[data-repeat-toggle]');
-  if (repBtn) {
-    repBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const cycleRepeat = ['NONE', 'DAILY', 'WEEKLY', 'MONTHLY'];
-      const nextIdx = (cycleRepeat.indexOf(task.repeat || 'NONE') + 1) % cycleRepeat.length;
-      task.repeat = cycleRepeat[nextIdx];
-      if (task.repeat === 'MONTHLY' && !task.repeatDay) {
-        task.repeatDay = 8;
-      }
-      AudioEngine.playChalkClick();
-      saveState();
-      renderTodaySlate();
-      showToast(`Repeat set to: ${task.repeat === 'NONE' ? 'Don\'t Repeat' : task.repeat}`);
-    });
-  }
 
   // Dedicated Steps Button Handler (Expands on click, collapses on re-click)
   const stepsBtn = card.querySelector('[data-subtasks-toggle]');
@@ -1248,6 +1356,7 @@ function renderHabitLedger() {
 
       saveState();
       renderHabitLedger();
+      renderDashboard();
     });
 
     container.appendChild(card);
@@ -1508,6 +1617,7 @@ function updateGlobalGrowthMetrics() {
   if (topIcon) topIcon.innerHTML = ChalkBotanicals.getBotanicalSVG(stage, 28, 8);
   if (topStage) topStage.innerText = stageNames[stage];
   if (topMeta) topMeta.innerText = `${completedCount} tasks • ${focusMins}m focus`;
+  renderDashboard();
 }
 
 // --------------------------------------------------------------------------

@@ -15,7 +15,7 @@
   
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="theme-dark-slate">
+<body class="theme-parchment-cream">
 
   <!-- Outer Wooden Blackboard Frame Container -->
   <div class="blackboard-frame-wrapper" id="app-frame-wrapper">
@@ -31,7 +31,7 @@
       <!-- ================================================================= -->
       <aside class="side-nav" id="main-side-nav">
         <div class="brand-container">
-          <div class="brand-icon">🌿</div>
+          <div class="brand-icon-panda">🐼</div>
           <div class="brand-text">
             <h1 class="brand-title chalk-font">Chalkflow</h1>
             <p class="brand-subtitle">Mindful Productivity</p>
@@ -39,9 +39,14 @@
         </div>
 
         <nav class="nav-menu">
-          <button class="nav-item active" data-surface="today-slate" title="Today's Slate">
-            <span class="nav-icon"><i class="fa-solid fa-pen-nib"></i></span>
-            <span class="nav-label chalk-font">Today's Slate</span>
+          <button class="nav-item active" data-surface="dashboard" title="Dashboard">
+            <span class="nav-icon"><i class="fa-solid fa-shapes"></i></span>
+            <span class="nav-label chalk-font">Dashboard</span>
+          </button>
+
+          <button class="nav-item" data-surface="today-slate" title="Today's Tasks">
+            <span class="nav-icon"><i class="fa-solid fa-clipboard-check"></i></span>
+            <span class="nav-label chalk-font">Today's Tasks</span>
             <span class="nav-badge" id="today-pending-badge">0</span>
           </button>
 
@@ -57,12 +62,12 @@
           </button>
 
           <button class="nav-item" data-surface="habit-ledger" title="Habit Ledger">
-            <span class="nav-icon"><i class="fa-solid fa-repeat"></i></span>
+            <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
             <span class="nav-label chalk-font">Habit Ledger</span>
           </button>
 
           <button class="nav-item" data-surface="deep-focus" title="Deep Focus">
-            <span class="nav-icon"><i class="fa-solid fa-clock"></i></span>
+            <span class="nav-icon"><i class="fa-solid fa-hourglass-half"></i></span>
             <span class="nav-label chalk-font">Deep Focus</span>
             <span class="nav-indicator-live" id="focus-live-indicator" style="display:none;"></span>
           </button>
@@ -74,17 +79,17 @@
           <div class="surface-switcher-panel">
             <span class="section-micro-label chalk-font"><i class="fa-solid fa-palette"></i> Board Surface</span>
             <div class="theme-options-group">
-              <button class="theme-btn active" data-theme="theme-dark-slate" title="Dark Slate Board">
+              <button class="theme-btn" data-theme="theme-dark-slate" title="Black Board">
                 <span class="theme-swatch dark-slate-swatch"></span>
-                <span class="theme-name">Dark Slate</span>
+                <span class="theme-name">Black Board</span>
               </button>
-              <button class="theme-btn" data-theme="theme-vintage-green" title="Vintage Classroom Green Board">
+              <button class="theme-btn" data-theme="theme-vintage-green" title="Green Board">
                 <span class="theme-swatch vintage-green-swatch"></span>
-                <span class="theme-name">Classroom Green</span>
+                <span class="theme-name">Green Board</span>
               </button>
-              <button class="theme-btn" data-theme="theme-parchment-cream" title="Studio Whiteboard / Cream">
+              <button class="theme-btn active" data-theme="theme-parchment-cream" title="White Board">
                 <span class="theme-swatch parchment-swatch"></span>
-                <span class="theme-name">Studio Board</span>
+                <span class="theme-name">White Board</span>
               </button>
             </div>
           </div>
@@ -99,8 +104,8 @@
         <!-- TOP HEADER BAR -->
         <header class="workspace-header" id="main-workspace-header">
           <div class="header-left">
-            <h2 class="current-screen-title chalk-font" id="page-title">Today's Slate</h2>
-            <span class="current-date-badge" id="live-date-str">Tuesday, October 08, 2026</span>
+            <h2 class="current-screen-title chalk-font" id="page-title">Dashboard</h2>
+            <span class="current-date-badge" id="live-date-str">Wednesday, October 08, 2026</span>
           </div>
           
           <!-- Botanical Growth Badge in Top Right of Header -->
@@ -118,9 +123,158 @@
         </header>
 
         <!-- =============================================================== -->
+        <!-- SURFACE 0: DASHBOARD (OVERVIEW WITH PROGRESS RINGS & BIG BOXES)  -->
+        <!-- =============================================================== -->
+        <section class="surface-view active" id="view-dashboard">
+          
+          <!-- Greeting Header Banner (Modeled on User Reference Mockup) -->
+          <div class="dashboard-greeting-banner">
+            <div class="greeting-text-block">
+              <h2 class="greeting-title chalk-font">Welcome Back, El !</h2>
+              <p class="greeting-subtitle">Here is your day at a glance.</p>
+            </div>
+          </div>
+
+          <!-- TOP ROW: 3 Progress Ring Metric Cards (Tasks, Habits, Focus) -->
+          <div class="dashboard-metrics-row">
+            
+            <!-- Metric 1: Tasks Completion Progress Ring -->
+            <div class="metric-card chalk-card" id="metric-tasks-card">
+              <div class="metric-card-content">
+                <div class="ring-progress-wrapper">
+                  <svg class="progress-ring-svg" width="84" height="84" viewBox="0 0 84 84">
+                    <circle class="ring-bg" cx="42" cy="42" r="34" />
+                    <circle class="ring-bar ring-tasks-bar" id="ring-tasks-circle" cx="42" cy="42" r="34" />
+                  </svg>
+                  <div class="ring-center-text">
+                    <span class="ring-percentage chalk-font" id="ring-tasks-percent">0%</span>
+                  </div>
+                </div>
+                <div class="metric-info">
+                  <span class="metric-micro-tag">TASKS DONE</span>
+                  <h4 class="metric-title chalk-font" id="dash-tasks-ratio">0 / 0 Tasks</h4>
+                  <p class="metric-caption" id="dash-tasks-sub">Loading tasks...</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Metric 2: Habits Completion Progress Ring -->
+            <div class="metric-card chalk-card" id="metric-habits-card">
+              <div class="metric-card-content">
+                <div class="ring-progress-wrapper">
+                  <svg class="progress-ring-svg" width="84" height="84" viewBox="0 0 84 84">
+                    <circle class="ring-bg" cx="42" cy="42" r="34" />
+                    <circle class="ring-bar ring-habits-bar" id="ring-habits-circle" cx="42" cy="42" r="34" />
+                  </svg>
+                  <div class="ring-center-text">
+                    <span class="ring-percentage chalk-font" id="ring-habits-percent">0%</span>
+                  </div>
+                </div>
+                <div class="metric-info">
+                  <span class="metric-micro-tag">HABIT RHYTHMS</span>
+                  <h4 class="metric-title chalk-font" id="dash-habits-ratio">0 / 0 Habits</h4>
+                  <p class="metric-caption" id="dash-habits-sub">Daily water & routines</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Metric 3: Focus Timed Progress Ring -->
+            <div class="metric-card chalk-card" id="metric-focus-card">
+              <div class="metric-card-content">
+                <div class="ring-progress-wrapper">
+                  <svg class="progress-ring-svg" width="84" height="84" viewBox="0 0 84 84">
+                    <circle class="ring-bg" cx="42" cy="42" r="34" />
+                    <circle class="ring-bar ring-focus-bar" id="ring-focus-circle" cx="42" cy="42" r="34" />
+                  </svg>
+                  <div class="ring-center-text">
+                    <span class="ring-percentage chalk-font" id="ring-focus-percent">0%</span>
+                  </div>
+                </div>
+                <div class="metric-info">
+                  <span class="metric-micro-tag">DEEP FOCUS</span>
+                  <h4 class="metric-title chalk-font" id="dash-focus-ratio">0 / 60m</h4>
+                  <p class="metric-caption" id="dash-focus-sub">Daily focus target</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- MIDDLE ROW: The 2 Big Boxes from the mockup -->
+          <div class="dashboard-main-grid">
+            
+            <!-- Big Box 1: Today's Tasks All Together -->
+            <div class="dash-big-box chalk-card" id="dash-tasks-box">
+              <div class="dash-box-header">
+                <div class="dash-box-title-wrap">
+                  <h3 class="dash-box-title chalk-font"><i class="fa-solid fa-clipboard-check"></i> Today's Tasks</h3>
+                  <span class="dash-box-badge" id="dash-today-count-badge">0 tasks</span>
+                </div>
+                <button class="chalk-btn secondary-btn chalk-font dash-nav-link" data-goto="today-slate">
+                  Manage Slate <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+
+              <!-- Quick Interactive Tasks Stream -->
+              <div class="dash-tasks-stream" id="dash-tasks-stream">
+                <!-- Dynamically rendered with priority dots & interactive checkboxes -->
+              </div>
+            </div>
+
+            <!-- Big Box 2: Daily Growth Progress -->
+            <div class="dash-big-box chalk-card" id="dash-growth-box">
+              <div class="dash-box-header">
+                <div class="dash-box-title-wrap">
+                  <h3 class="dash-box-title chalk-font"><i class="fa-solid fa-seedling"></i> Today's Botanical Progress</h3>
+                  <span class="dash-box-stage-pill chalk-font" id="dash-growth-stage-pill">Resting Seed</span>
+                </div>
+                <button class="chalk-btn secondary-btn chalk-font dash-nav-link" data-goto="progress-garden">
+                  Full Garden <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+
+              <div class="dash-growth-spotlight">
+                <div class="dash-flower-display" id="dash-today-flower-visual">
+                  <!-- Live SVG Botanical Artwork of Today's Flower -->
+                </div>
+                <div class="dash-growth-details">
+                  <h4 class="dash-species-title chalk-font" id="dash-today-specimen-name">🌸 Autumn Botanical</h4>
+                  <p class="dash-growth-quote" id="dash-growth-quote">"Steady momentum rooted in patience. Every sprout strengthens your daily rhythm."</p>
+                  
+                  <div class="dash-stages-stepper" id="dash-stages-stepper">
+                    <div class="stepper-step" data-step="0"><span class="step-dot"></span><span>Seed</span></div>
+                    <div class="stepper-step" data-step="1"><span class="step-dot"></span><span>Sprout</span></div>
+                    <div class="stepper-step" data-step="2"><span class="step-dot"></span><span>Stem</span></div>
+                    <div class="stepper-step" data-step="3"><span class="step-dot"></span><span>Bud</span></div>
+                    <div class="stepper-step" data-step="4"><span class="step-dot"></span><span>Bloom</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- BOTTOM ROW: Big Box 3: Collected Botanicals & Species Showcase -->
+          <div class="dash-collection-box chalk-card" id="dash-collection-box">
+            <div class="dash-box-header">
+              <div class="dash-box-title-wrap">
+                <h3 class="dash-box-title chalk-font"><i class="fa-solid fa-book-bookmark"></i> Collected Botanicals & Species</h3>
+                <span class="dash-box-badge" id="dash-collected-count-badge">0 Species Harvested</span>
+              </div>
+              <p class="dash-collection-desc">Botanical flowers and plants bloomed through your mindful consistency this month.</p>
+            </div>
+
+            <div class="dash-collected-plants-grid" id="dash-collected-plants-grid">
+              <!-- Dynamically populated with collected plant cards (visual + name) -->
+            </div>
+          </div>
+
+        </section>
+
+        <!-- =============================================================== -->
         <!-- SURFACE 1: TODAY'S SLATE (UNIFIED HIERARCHY: RED -> YELLOW -> GREEN) -->
         <!-- =============================================================== -->
-        <section class="surface-view active" id="view-today-slate">
+        <section class="surface-view" id="view-today-slate">
           
           <!-- Quick-Add Slate Form -->
           <div class="chalk-card quick-add-card">
@@ -163,52 +317,16 @@
                   </select>
                 </div>
 
-                <!-- Repeat Selector -->
+                <!-- Estimated Time -->
                 <div class="control-group">
-                  <label class="control-label chalk-font">Repeat:</label>
-                  <select id="task-repeat-select" class="chalk-select">
-                    <option value="NONE" selected>Don't Repeat</option>
-                    <option value="DAILY">🔁 Daily</option>
-                    <option value="WEEKLY">🔁 Weekly</option>
-                    <option value="MONTHLY">🔁 Monthly</option>
-                  </select>
-                </div>
-
-                <!-- Monthly Specific Day Selector (Visible when Monthly is chosen) -->
-                <div class="control-group" id="repeat-monthly-day-group" style="display: none;">
-                  <label class="control-label chalk-font">On Day:</label>
-                  <select id="task-repeat-day-select" class="chalk-select" style="min-width: 60px;">
-                    <option value="1">Day 1</option>
-                    <option value="2">Day 2</option>
-                    <option value="3">Day 3</option>
-                    <option value="4">Day 4</option>
-                    <option value="5">Day 5</option>
-                    <option value="6">Day 6</option>
-                    <option value="7">Day 7</option>
-                    <option value="8" selected>Day 8 (Today)</option>
-                    <option value="9">Day 9</option>
-                    <option value="10">Day 10</option>
-                    <option value="11">Day 11</option>
-                    <option value="12">Day 12</option>
-                    <option value="13">Day 13</option>
-                    <option value="14">Day 14</option>
-                    <option value="15">Day 15</option>
-                    <option value="16">Day 16</option>
-                    <option value="17">Day 17</option>
-                    <option value="18">Day 18</option>
-                    <option value="19">Day 19</option>
-                    <option value="20">Day 20</option>
-                    <option value="21">Day 21</option>
-                    <option value="22">Day 22</option>
-                    <option value="23">Day 23</option>
-                    <option value="24">Day 24</option>
-                    <option value="25">Day 25</option>
-                    <option value="26">Day 26</option>
-                    <option value="27">Day 27</option>
-                    <option value="28">Day 28</option>
-                    <option value="29">Day 29</option>
-                    <option value="30">Day 30</option>
-                    <option value="31">Day 31</option>
+                  <label class="control-label chalk-font">Est. Time:</label>
+                  <select id="task-est-time" class="chalk-select">
+                    <option value="15">15 mins</option>
+                    <option value="30" selected>30 mins</option>
+                    <option value="45">45 mins</option>
+                    <option value="60">1 hour</option>
+                    <option value="90">1.5 hours</option>
+                    <option value="120">2+ hours</option>
                   </select>
                 </div>
               </div>
