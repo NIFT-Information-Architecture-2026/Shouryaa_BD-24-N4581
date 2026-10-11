@@ -1151,75 +1151,99 @@ function initProgressGarden() {
 
 function renderProgressGarden() {
   const grid = document.getElementById('botanical-calendar-grid');
-  const heroMeadow = document.getElementById('hero-meadow-flowers');
+  const hotspotsLayer = document.getElementById('meadow-hotspots-overlay');
   const bloomCountEl = document.getElementById('meadow-bloom-count');
   const totalFocusEl = document.getElementById('meadow-total-focus');
 
-  if (!grid || !heroMeadow) return;
+  const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
 
-  grid.innerHTML = '';
-  heroMeadow.innerHTML = '';
+  // 1. Populate the 8 botanical specimen hotspots on the panoramic garden meadow (Image 1)
+  if (hotspotsLayer) {
+    hotspotsLayer.innerHTML = '';
+    
+    const panoramaDays = [
+      { day: 1, left: 7.5, name: 'The Young Sprout' },
+      { day: 2, left: 18.2, name: 'Leafy Seedling' },
+      { day: 3, left: 28.2, name: 'Branching Bud' },
+      { day: 4, left: 38.5, name: 'Sunburst Cosmos' },
+      { day: 5, left: 49.8, name: 'Purple Wild Aster' },
+      { day: 6, left: 62.5, name: 'White Coneflower' },
+      { day: 7, left: 76.5, name: 'Autumn Terracotta' },
+      { day: 8, left: 91.0, name: 'Golden Rudbeckia' }
+    ];
 
-  let fullBlooms = 0;
-  let totalFocusMinutes = 0;
+    panoramaDays.forEach(p => {
+      const isToday = p.day === 8;
+      const dayData = AppState.gardenData[p.day] || {
+        specimen: p.name,
+        tasks: isToday ? 1 : 5,
+        planned: 5,
+        focus: isToday ? AppState.focusTimeLoggedToday : 90,
+        stage: p.day <= 3 ? p.day : 4
+      };
 
-  for (let day = 1; day <= 31; day++) {
-    const isToday = day === 8;
-    const dayData = AppState.gardenData[day] || {
-      specimen: BOTANICAL_SPECIMENS_OCTOBER[day - 1] || 'Autumn Wildflower',
-      tasks: 0,
-      planned: 0,
-      focus: 0,
-      stage: 0
-    };
-
-    if (dayData.stage === 4) fullBlooms++;
-    totalFocusMinutes += dayData.focus;
-
-    const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
-
-    // 1. Calendar Grid Tile
-    const tile = document.createElement('div');
-    tile.className = `calendar-day-tile ${isToday ? 'is-today' : ''}`;
-    tile.innerHTML = `
-      <div class="tile-top">
-        <span class="day-num">${day < 10 ? '0' + day : day}</span>
-        <span class="stage-tag">${isToday ? '★ Today' : ''}</span>
-      </div>
-      <div class="tile-artwork-svg">${ChalkBotanicals.getBotanicalSVG(dayData.stage, 34, day)}</div>
-      <div class="tile-bottom chalk-font">${dayData.specimen}</div>
-    `;
-
-    tile.addEventListener('click', () => {
-      openGardenDayModal(day, dayData, stageNames[dayData.stage]);
-    });
-
-    grid.appendChild(tile);
-
-    // 2. Rich Multi-Height Wildflower Meadow in Hero Top Landscape
-    if (dayData.stage >= 1) {
-      const flowerItem = document.createElement('div');
-      flowerItem.className = 'meadow-flower-item';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `garden-hotspot-btn chalk-font ${isToday ? 'is-today-hotspot' : ''}`;
+      btn.style.left = `${p.left}%`;
+      btn.style.bottom = '8px';
       
-      const svgArtwork = ChalkBotanicals.getBotanicalSVG(dayData.stage, 50, day);
+      const badgeIcon = isToday ? '⭐' : '🌸';
+      btn.innerHTML = `<span>${badgeIcon} D${p.day}</span>`;
+      btn.title = `Day ${p.day}: ${dayData.specimen} • ${stageNames[dayData.stage]} • ${dayData.focus}m focus (Click to inspect)`;
       
-      flowerItem.innerHTML = `
-        ${svgArtwork}
-        <span class="flower-tag-label chalk-font">D${day}</span>
-      `;
-      flowerItem.title = `Day ${day}: ${dayData.specimen} (${stageNames[dayData.stage]})`;
-      flowerItem.addEventListener('click', () => {
-        openGardenDayModal(day, dayData, stageNames[dayData.stage]);
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openGardenDayModal(p.day, dayData, stageNames[dayData.stage]);
       });
-      heroMeadow.appendChild(flowerItem);
-    }
+
+      hotspotsLayer.appendChild(btn);
+    });
   }
 
-  if (bloomCountEl) bloomCountEl.innerText = `${fullBlooms}/31`;
-  if (totalFocusEl) {
-    const hrs = Math.floor(totalFocusMinutes / 60);
-    const mins = totalFocusMinutes % 60;
-    totalFocusEl.innerText = `${hrs}h ${mins}m`;
+  // 2. 31-Day Illustrated Nature Journal Grid
+  if (grid) {
+    grid.innerHTML = '';
+    let fullBlooms = 0;
+    let totalFocusMinutes = 0;
+
+    for (let day = 1; day <= 31; day++) {
+      const isToday = day === 8;
+      const dayData = AppState.gardenData[day] || {
+        specimen: BOTANICAL_SPECIMENS_OCTOBER[day - 1] || 'Autumn Wildflower',
+        tasks: 0,
+        planned: 0,
+        focus: 0,
+        stage: 0
+      };
+
+      if (dayData.stage === 4) fullBlooms++;
+      totalFocusMinutes += dayData.focus;
+
+      const tile = document.createElement('div');
+      tile.className = `calendar-day-tile ${isToday ? 'is-today' : ''}`;
+      tile.innerHTML = `
+        <div class="tile-top">
+          <span class="day-num">${day < 10 ? '0' + day : day}</span>
+          <span class="stage-tag">${isToday ? '★ Today' : ''}</span>
+        </div>
+        <div class="tile-artwork-svg">${ChalkBotanicals.getBotanicalSVG(dayData.stage, 34, day)}</div>
+        <div class="tile-bottom chalk-font">${dayData.specimen}</div>
+      `;
+
+      tile.addEventListener('click', () => {
+        openGardenDayModal(day, dayData, stageNames[dayData.stage]);
+      });
+
+      grid.appendChild(tile);
+    }
+
+    if (bloomCountEl) bloomCountEl.innerText = `${fullBlooms}/31`;
+    if (totalFocusEl) {
+      const hrs = Math.floor(totalFocusMinutes / 60);
+      const mins = totalFocusMinutes % 60;
+      totalFocusEl.innerText = `${hrs}h ${mins}m`;
+    }
   }
 }
 
@@ -1307,10 +1331,12 @@ function renderHabitLedger() {
     let actionHTML = '';
     if (h.type === 'COUNTER') {
       const isComplete = h.current >= h.target;
+      const isExceeded = h.current > h.target;
+      const icon = isExceeded ? 'fa-star' : (isComplete ? 'fa-check' : 'fa-plus');
       actionHTML = `
-        <button class="habit-counter-pill ${isComplete ? 'completed' : ''}" data-habit-id="${h.id}" title="Click to increment ${h.unit || ''}">
+        <button class="habit-counter-pill ${isComplete ? 'completed' : ''} ${isExceeded ? 'exceeded' : ''}" data-habit-id="${h.id}" title="Click to increment ${h.unit || ''}">
           <span>${h.current}/${h.target} ${h.unit}</span>
-          <i class="fa-solid ${isComplete ? 'fa-check' : 'fa-plus'}"></i>
+          <i class="fa-solid ${icon}"></i>
         </button>
       `;
     } else {
@@ -1343,8 +1369,9 @@ function renderHabitLedger() {
 
       if (h.type === 'COUNTER') {
         h.current += 1;
-        if (h.current >= h.target) {
-          h.current = h.target;
+        if (h.current > h.target) {
+          showToast(`🌟 ${h.name}: ${h.current}/${h.target} ${h.unit} (Target exceeded!)`);
+        } else if (h.current === h.target) {
           showToast(`🎉 ${h.name} target reached for today!`);
         } else {
           showToast(`Recorded +1 ${h.unit} for ${h.name}`);

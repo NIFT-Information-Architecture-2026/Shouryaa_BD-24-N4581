@@ -7,24 +7,25 @@
    1. CSS VARIABLES & MULTI-SURFACE THEME TOKENS
    -------------------------------------------------------------------------- */
 :root, body.theme-dark-slate {
-  /* Theme 1: Black Board (Deep Matte Slate with Sleek Elevated Cards & Dot Grid) */
-  --bg-base: #151719;
-  --bg-surface: #1E2124;
-  --bg-surface-elevated: #282C30;
-  --bg-hover: #32383E;
+  /* Theme 1: Black Board (Deep Matte Slate with Dark Defined Borders) */
+  --bg-base: #131416;
+  --bg-surface: #1B1D20;
+  --bg-surface-elevated: #24272B;
+  --bg-hover: #2C3035;
   
   --text-primary: #F1F5F9;
   --text-muted: #94A3B8;
   --text-faint: #64748B;
   
-  --border-chalk: rgba(241, 245, 249, 0.09);
-  --border-chalk-dashed: rgba(241, 245, 249, 0.18);
+  /* Darker Defined Board & Card Borders */
+  --border-chalk: rgba(0, 0, 0, 0.65);
+  --border-chalk-dashed: rgba(0, 0, 0, 0.75);
   
-  /* Wood Frame Colors (Natural Warm Oak) */
-  --wood-frame-outer: #5C381E;
-  --wood-frame-inner: #7D4D26;
-  --wood-frame-highlight: #9E6436;
-  --wood-frame-shadow: #3E2412;
+  /* Dark Rich Espresso/Ebony Wood Frame */
+  --wood-frame-outer: #1E1208;
+  --wood-frame-inner: #2E1D0F;
+  --wood-frame-highlight: #422B17;
+  --wood-frame-shadow: #140C06;
   
   /* Handcrafted Mineral Chalk Colors */
   --chalk-red: #FF6B6B;
@@ -41,27 +42,29 @@
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 18px;
-  --shadow-chalk: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-chalk: 0 4px 14px rgba(0, 0, 0, 0.45);
 }
 
-/* Theme 2: Vintage Classroom Green Blackboard (Rich Moss/Forest with Ivory Chalk Accents) */
+/* Theme 2: Vintage Classroom Green Blackboard (Dark Forest Green with Dark Borders) */
 body.theme-vintage-green {
-  --bg-base: #142319;
-  --bg-surface: #1C3224;
-  --bg-surface-elevated: #264331;
-  --bg-hover: #32553E;
+  --bg-base: #111E15;
+  --bg-surface: #182B1E;
+  --bg-surface-elevated: #223828;
+  --bg-hover: #2C4734;
   
   --text-primary: #F7F5EB;
   --text-muted: #A8C2A3;
   --text-faint: #728F6D;
   
-  --border-chalk: rgba(247, 245, 235, 0.11);
-  --border-chalk-dashed: rgba(247, 245, 235, 0.20);
+  /* Darker Defined Board & Card Borders */
+  --border-chalk: rgba(0, 0, 0, 0.65);
+  --border-chalk-dashed: rgba(0, 0, 0, 0.75);
   
-  --wood-frame-outer: #52331B;
-  --wood-frame-inner: #734522;
-  --wood-frame-highlight: #915A2F;
-  --wood-frame-shadow: #382010;
+  /* Dark Antique Walnut Wood Frame */
+  --wood-frame-outer: #1A1108;
+  --wood-frame-inner: #28190C;
+  --wood-frame-highlight: #3A2512;
+  --wood-frame-shadow: #110A04;
   
   --chalk-red: #E07A5F;
   --chalk-amber: #F2CC8F;
@@ -257,10 +260,36 @@ body {
 .brand-container {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   padding-bottom: 16px;
   margin-bottom: 14px;
   border-bottom: 1px dashed var(--border-chalk);
+}
+
+.brand-avatar-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid var(--border-chalk);
+  background: var(--bg-surface-elevated);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.brand-avatar-wrap:hover {
+  transform: scale(1.08) rotate(-3deg);
+}
+
+.brand-mascot-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .brand-icon {
@@ -979,111 +1008,85 @@ body {
   background: var(--border-chalk);
 }
 
-/* Rich Wildflower Scenery with Flying Chalk Bees */
+/* Rich Wildflower Panoramic Meadow (Modeled on Image 1) */
 .meadow-scenery-container {
-  height: 180px;
   position: relative;
-  background: var(--bg-surface-elevated);
-  border: 1px dashed var(--border-chalk);
+  background: #111315;
+  border: 1px solid var(--border-chalk);
   border-radius: var(--radius-md);
   overflow: hidden;
-  display: flex;
-  align-items: flex-end;
-  padding: 0 20px 0 20px;
+  box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.6);
 }
 
-.meadow-chalk-bees {
-  position: absolute;
-  top: 14px;
-  left: 0;
+.meadow-panorama-viewport {
+  position: relative;
   width: 100%;
-  pointer-events: none;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 40px;
-}
-
-.chalk-bee {
-  font-size: 16px;
-  opacity: 0.85;
-}
-
-.bee-trail {
-  font-family: 'Kalam', cursive;
-  font-size: 12px;
-  color: var(--text-muted);
-  letter-spacing: 2px;
-}
-
-.bee-1 {
-  animation: bee-float-left 4s ease-in-out infinite;
-}
-
-.bee-2 {
-  animation: bee-float-right 5s ease-in-out infinite;
-}
-
-@keyframes bee-float-left {
-  0%, 100% { transform: translate(0, 0) rotate(5deg); }
-  50% { transform: translate(15px, -8px) rotate(-5deg); }
-}
-
-@keyframes bee-float-right {
-  0%, 100% { transform: translate(0, 0) rotate(-5deg); }
-  50% { transform: translate(-15px, -10px) rotate(5deg); }
-}
-
-.meadow-earth-ground {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 28px;
-  background: linear-gradient(180deg, rgba(232, 236, 239, 0.06) 0%, rgba(232, 236, 239, 0.14) 100%);
-  border-top: 2px dashed var(--border-chalk);
-}
-
-.soil-top-grass {
-  position: absolute;
-  top: -6px;
-  left: 0;
-  width: 100%;
-  height: 8px;
-  background-image: repeating-linear-gradient(45deg, var(--chalk-mint) 0 2px, transparent 2px 6px);
-  opacity: 0.35;
-}
-
-.meadow-flowers-row {
-  display: flex;
-  gap: 14px;
-  align-items: flex-end;
-  z-index: 2;
   overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.meadow-panorama-image {
+  display: block;
   width: 100%;
-  padding-bottom: 10px;
+  min-width: 760px;
+  height: auto;
+  max-height: 290px;
+  object-fit: cover;
+  object-position: center bottom;
+  user-select: none;
 }
 
-.meadow-flower-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.meadow-hotspots-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-width: 760px;
+  height: 100%;
+  pointer-events: none;
+}
+
+.garden-hotspot-btn {
+  position: absolute;
+  pointer-events: auto;
+  transform: translateX(-50%);
+  background: rgba(18, 20, 22, 0.82);
+  border: 1px dashed rgba(241, 245, 249, 0.4);
+  border-radius: 20px;
+  color: var(--chalk-white);
+  padding: 3px 10px;
+  font-size: 11px;
   cursor: pointer;
-  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  animation: sprout-up 0.4s ease-out;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.meadow-flower-item:hover {
-  transform: scale(1.15) translateY(-4px);
+.garden-hotspot-btn:hover {
+  transform: translateX(-50%) scale(1.18) translateY(-4px);
+  background: var(--bg-surface-elevated);
+  border-color: var(--chalk-mint);
+  border-style: solid;
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(6, 214, 160, 0.45);
 }
 
-.flower-chalk-svg {
-  filter: drop-shadow(0 0 4px rgba(232, 164, 200, 0.4));
+.garden-hotspot-btn.is-today-hotspot {
+  border-color: var(--chalk-amber);
+  border-style: solid;
+  background: rgba(48, 32, 14, 0.92);
+  color: var(--chalk-amber);
+  box-shadow: 0 0 14px rgba(255, 209, 102, 0.5);
+  animation: pulse-hotspot 2.5s infinite ease-in-out;
 }
 
-.flower-tag-label {
-  font-size: 9px;
-  color: var(--text-muted);
-  margin-top: 2px;
+@keyframes pulse-hotspot {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 209, 102, 0.35); transform: translateX(-50%) scale(1); }
+  50% { box-shadow: 0 0 18px rgba(255, 209, 102, 0.7); transform: translateX(-50%) scale(1.06); }
 }
 
 /* Botanical Calendar Grid */
@@ -1300,6 +1303,13 @@ body {
   background: var(--chalk-mint);
   color: #181A1B;
   font-weight: 700;
+}
+
+.habit-counter-pill.exceeded {
+  background: var(--chalk-amber);
+  color: #181A1B;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(255, 209, 102, 0.45);
 }
 
 /* --------------------------------------------------------------------------
@@ -1733,6 +1743,22 @@ body.theme-dark-slate .side-nav .nav-item.active .nav-badge {
   color: #FFFFFF;
 }
 
+body.theme-dark-slate .chalk-card,
+body.theme-dark-slate .metric-card,
+body.theme-dark-slate .dash-big-box,
+body.theme-dark-slate .dash-collection-box,
+body.theme-dark-slate .task-card,
+body.theme-dark-slate .meadow-scenery-container,
+body.theme-dark-slate .habit-card,
+body.theme-dark-slate .dash-plant-card {
+  border: 1.5px solid #000000 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+body.theme-dark-slate .side-nav {
+  border-right: 1.5px solid #000000;
+}
+
 /* Theme 2: Green Board (Vintage Classroom Green with Moss Forest Pill) */
 body.theme-vintage-green .app-layout {
   background-color: var(--bg-base);
@@ -1755,6 +1781,22 @@ body.theme-vintage-green .side-nav .nav-item.active .nav-label {
 body.theme-vintage-green .side-nav .nav-item.active .nav-badge {
   background: rgba(255, 255, 255, 0.22);
   color: #FFFFFF;
+}
+
+body.theme-vintage-green .chalk-card,
+body.theme-vintage-green .metric-card,
+body.theme-vintage-green .dash-big-box,
+body.theme-vintage-green .dash-collection-box,
+body.theme-vintage-green .task-card,
+body.theme-vintage-green .meadow-scenery-container,
+body.theme-vintage-green .habit-card,
+body.theme-vintage-green .dash-plant-card {
+  border: 1.5px solid #000000 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+body.theme-vintage-green .side-nav {
+  border-right: 1.5px solid #000000;
 }
 
 /* Theme 3: White Board (Studio White Board with Charcoal Pill) */

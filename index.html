@@ -13,6 +13,7 @@
   <!-- FontAwesome for UI Glyphs -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
+  <link rel="icon" type="image/jpeg" href="assets/chalk_panda.jpg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="theme-parchment-cream">
@@ -31,7 +32,9 @@
       <!-- ================================================================= -->
       <aside class="side-nav" id="main-side-nav">
         <div class="brand-container">
-          <div class="brand-icon-panda">🐼</div>
+          <div class="brand-avatar-wrap">
+            <img src="assets/chalk_panda.jpg" alt="Chalkflow Mascot Panda" class="brand-mascot-img">
+          </div>
           <div class="brand-text">
             <h1 class="brand-title chalk-font">Chalkflow</h1>
             <p class="brand-subtitle">Mindful Productivity</p>
@@ -464,23 +467,15 @@
               </div>
             </div>
 
-            <!-- Rich Panoramic Botanical Garden Landscape Container -->
-            <div class="meadow-scenery-container">
-              <!-- Chalk Bees with Dotted Flight Lines (Inspired by Reference Image 1) -->
-              <div class="meadow-chalk-bees" aria-hidden="true">
-                <span class="chalk-bee bee-1">🐝 <span class="bee-trail">~ ~ ~</span></span>
-                <span class="chalk-bee bee-2"><span class="bee-trail">~ ~ ~</span> 🐝</span>
-              </div>
-
-              <!-- Earth Soil Layer -->
-              <div class="meadow-earth-ground">
-                <div class="soil-top-grass"></div>
-                <div class="soil-strata"></div>
-              </div>
-
-              <!-- Multi-Height Flourishing Botanical Meadow Flora -->
-              <div class="meadow-flowers-row" id="hero-meadow-flowers">
-                <!-- Dynamically Populated with rich colorful chalk flower SVGs -->
+            <!-- Rich Panoramic Botanical Garden Landscape Container (Image 1 Style) -->
+            <div class="meadow-scenery-container" id="meadow-scenery-wrap">
+              <div class="meadow-panorama-viewport">
+                <img src="assets/garden_panorama.png" alt="Progress Garden Meadow Flora" class="meadow-panorama-image" id="meadow-panorama-img">
+                
+                <!-- Interactive Hotspots for D1 to D8 directly over each botanical specimen -->
+                <div class="meadow-hotspots-overlay" id="meadow-hotspots-overlay">
+                  <!-- Populated by JS with D1-D8 hotspots & tooltips -->
+                </div>
               </div>
             </div>
           </div>
