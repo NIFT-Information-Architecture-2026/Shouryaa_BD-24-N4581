@@ -1390,11 +1390,76 @@ body.focus-maximized .main-content {
 
 body.focus-maximized .deep-focus-fullscreen-container {
   min-height: 88vh;
-  padding: 36px 48px;
+  padding: 30px 48px;
   justify-content: space-around;
   border: none;
   background: transparent;
   box-shadow: none;
+}
+
+/* Enlarge Timer Clock & Readout when Focus Mode is Maximized */
+body.focus-maximized .clock-display-wrapper {
+  width: 380px;
+  height: 380px;
+  margin: 16px auto 26px auto;
+  filter: drop-shadow(0 0 25px rgba(255, 209, 102, 0.18));
+}
+
+body.focus-maximized .time-readout {
+  font-size: 80px;
+  font-weight: 700;
+  letter-spacing: -2px;
+  text-shadow: 0 0 24px rgba(255, 209, 102, 0.35);
+}
+
+body.focus-maximized .time-label {
+  font-size: 18px;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}
+
+body.focus-maximized .ring-bg {
+  stroke-width: 9;
+}
+
+body.focus-maximized .ring-progress {
+  stroke-width: 9;
+  filter: drop-shadow(0 0 8px var(--chalk-amber));
+}
+
+body.focus-maximized .timer-adjuster-row {
+  margin-bottom: 22px;
+  gap: 8px;
+}
+
+body.focus-maximized .adjust-btn,
+body.focus-maximized .time-preset-btn {
+  font-size: 13px;
+  padding: 6px 14px;
+}
+
+body.focus-maximized .main-focus-cta {
+  font-size: 18px;
+  padding: 12px 36px;
+  border-radius: 30px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+
+body.focus-maximized .reset-focus-btn {
+  font-size: 15px;
+  padding: 12px 20px;
+}
+
+body.focus-maximized .focus-ambient-soundscape {
+  margin-top: 20px;
+  padding: 14px 20px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: var(--radius-md);
+}
+
+body.focus-maximized .soundscape-pills .sound-pill {
+  font-size: 13px;
+  padding: 6px 14px;
 }
 
 .maximize-focus-btn {

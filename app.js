@@ -343,8 +343,26 @@ const ChalkMeadowPanorama = {
           <path d="M 68 244 Q 85 246 102 244" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8" />
         </g>
 
-        <!-- SPECIMEN D2: Leafy Seedling (x=185) -->
-        <g class="meadow-plant-hotspot" data-day="2" id="plant-hotspot-d2">
+        <!-- SPECIMEN D8 (x=85) -->
+        <g class="meadow-plant-hotspot" data-day="8" id="plant-hotspot-d8">
+          <rect x="40" y="20" width="90" height="235" fill="transparent" />
+          <!-- Soil Mound -->
+          <path d="M 70 215 Q 85 208 100 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
+          <!-- Emerging Sprout Stem -->
+          <path d="M 85 209 Q 86 195 85 178" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <!-- Left Cotyledon Leaf -->
+          <path d="M 85 178 C 72 173 64 179 67 187 C 72 191 80 186 85 180 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="2" />
+          <path d="M 85 179 Q 76 182 69 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
+          <!-- Right Cotyledon Leaf -->
+          <path d="M 85 178 C 98 173 106 179 103 187 C 98 191 90 186 85 180 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="2" />
+          <path d="M 85 179 Q 94 182 101 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
+          <!-- Chalk Label & Underline -->
+          <text x="85" y="238" class="meadow-chalk-label">D8</text>
+          <path d="M 68 244 Q 85 246 102 244" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8" />
+        </g>
+
+        <!-- SPECIMEN D9: Leafy Seedling (x=185) -->
+        <g class="meadow-plant-hotspot" data-day="9" id="plant-hotspot-d9">
           <rect x="140" y="20" width="90" height="235" fill="transparent" />
           <!-- Stem -->
           <path d="M 185 215 Q 183 180 185 148" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
@@ -359,12 +377,12 @@ const ChalkMeadowPanorama = {
           <!-- Apex Sprout Leaf -->
           <path d="M 185 148 C 179 138 185 132 185 132 C 185 132 191 138 185 148 Z" fill="rgba(6, 214, 160, 0.28)" stroke="var(--chalk-mint)" stroke-width="1.6" />
           <!-- Chalk Label & Underline -->
-          <text x="185" y="238" class="meadow-chalk-label">D2</text>
+          <text x="185" y="238" class="meadow-chalk-label">D9</text>
           <path d="M 168 244 Q 185 246 202 244" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8" />
         </g>
 
-        <!-- SPECIMEN D3: Branching Bud (x=285) -->
-        <g class="meadow-plant-hotspot" data-day="3" id="plant-hotspot-d3">
+        <!-- SPECIMEN D10: Branching Bud (x=285) -->
+        <g class="meadow-plant-hotspot" data-day="10" id="plant-hotspot-d10">
           <rect x="240" y="20" width="90" height="235" fill="transparent" />
           <!-- Main Stem -->
           <path d="M 285 215 Q 282 165 285 118" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
@@ -379,12 +397,12 @@ const ChalkMeadowPanorama = {
           <path d="M 284 116 C 276 104 280 92 284 86 C 288 92 292 104 284 116 Z" fill="rgba(239, 71, 111, 0.35)" stroke="#EF476F" stroke-width="2.2" />
           <path d="M 284 108 Q 284 92 284 88" stroke="#FAF0CA" stroke-width="1" fill="none" opacity="0.8" />
           <!-- Chalk Label & Underline -->
-          <text x="285" y="238" class="meadow-chalk-label">D3</text>
+          <text x="285" y="238" class="meadow-chalk-label">D10</text>
           <path d="M 268 244 Q 285 246 302 244" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8" />
         </g>
 
-        <!-- SPECIMEN D4: Coral Daisy Bloom (x=385) -->
-        <g class="meadow-plant-hotspot" data-day="4" id="plant-hotspot-d4">
+        <!-- SPECIMEN D11: Coral Daisy Bloom (x=385) -->
+        <g class="meadow-plant-hotspot" data-day="11" id="plant-hotspot-d11">
           <rect x="340" y="20" width="90" height="235" fill="transparent" />
           <!-- Stem -->
           <path d="M 385 215 Q 382 155 385 108" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
@@ -406,12 +424,12 @@ const ChalkMeadowPanorama = {
             <circle cx="0" cy="0" r="5" fill="none" stroke="#181A1D" stroke-width="1" stroke-dasharray="2,2" opacity="0.6" />
           </g>
           <!-- Chalk Label & Underline -->
-          <text x="385" y="238" class="meadow-chalk-label">D4</text>
+          <text x="385" y="238" class="meadow-chalk-label">D11</text>
           <path d="M 368 244 Q 385 246 402 244" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8" />
         </g>
 
-        <!-- SPECIMEN D5: Purple Wild Aster (x=490) -->
-        <g class="meadow-plant-hotspot" data-day="5" id="plant-hotspot-d5">
+        <!-- SPECIMEN D12: Purple Wild Aster (x=490) -->
+        <g class="meadow-plant-hotspot" data-day="12" id="plant-hotspot-d12">
           <rect x="445" y="20" width="90" height="235" fill="transparent" />
           <!-- Stem -->
           <path d="M 490 215 Q 488 150 490 95" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
@@ -440,12 +458,12 @@ const ChalkMeadowPanorama = {
             <circle cx="0" cy="0" r="4" fill="none" stroke="#181A1D" stroke-width="0.8" opacity="0.6" />
           </g>
           <!-- Chalk Label & Underline -->
-          <text x="490" y="238" class="meadow-chalk-label">D5</text>
+          <text x="490" y="238" class="meadow-chalk-label">D12</text>
           <path d="M 473 244 Q 490 246 507 244" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8" />
         </g>
 
-        <!-- SPECIMEN D6: White Drooping Coneflower (x=605) -->
-        <g class="meadow-plant-hotspot" data-day="6" id="plant-hotspot-d6">
+        <!-- SPECIMEN D13: White Drooping Coneflower (x=605) -->
+        <g class="meadow-plant-hotspot" data-day="13" id="plant-hotspot-d13">
           <rect x="560" y="20" width="90" height="235" fill="transparent" />
           <!-- Stem -->
           <path d="M 605 215 Q 602 145 605 85" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" />
@@ -463,12 +481,12 @@ const ChalkMeadowPanorama = {
             <circle cx="0" cy="-3" r="1.5" fill="#181A1D" />
           </g>
           <!-- Chalk Label & Underline -->
-          <text x="605" y="238" class="meadow-chalk-label">D6</text>
+          <text x="605" y="238" class="meadow-chalk-label">D13</text>
           <path d="M 588 244 Q 605 246 622 244" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8" />
         </g>
 
-        <!-- SPECIMEN D7: Autumn Terracotta Flourishing Coneflower (x=735) -->
-        <g class="meadow-plant-hotspot" data-day="7" id="plant-hotspot-d7">
+        <!-- SPECIMEN D14: Autumn Terracotta Flourishing Coneflower (x=735) -->
+        <g class="meadow-plant-hotspot" data-day="14" id="plant-hotspot-d14">
           <rect x="690" y="20" width="90" height="235" fill="transparent" />
           <!-- Tall Stem -->
           <path d="M 735 215 Q 732 135 735 72" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" />
@@ -487,12 +505,12 @@ const ChalkMeadowPanorama = {
             <path d="M -12 0 L 12 0 M -9 -5 L 9 -5 M -6 -9 L 6 -9" stroke="#181A1D" stroke-width="1.3" opacity="0.65" />
           </g>
           <!-- Chalk Label & Underline -->
-          <text x="735" y="238" class="meadow-chalk-label">D7</text>
+          <text x="735" y="238" class="meadow-chalk-label">D14</text>
           <path d="M 718 244 Q 735 246 752 244" stroke="var(--text-primary)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8" />
         </g>
 
-        <!-- SPECIMEN D8: Golden Rudbeckia / Sunflower (Today's Star Flora) (x=875) -->
-        <g class="meadow-plant-hotspot is-today-plant" data-day="8" id="plant-hotspot-d8">
+        <!-- SPECIMEN D15: Golden Rudbeckia / Sunflower (Today's Star Flora) (x=875) -->
+        <g class="meadow-plant-hotspot is-today-plant" data-day="15" id="plant-hotspot-d15">
           <rect x="825" y="10" width="100" height="245" fill="transparent" />
           <!-- Thick Sunflower Stem -->
           <path d="M 875 215 Q 872 125 875 58" stroke="var(--chalk-mint)" stroke-width="3.4" stroke-linecap="round" fill="none" />
@@ -530,7 +548,7 @@ const ChalkMeadowPanorama = {
             <circle cx="0" cy="0" r="2.5" fill="#FAF0CA" />
           </g>
           <!-- Chalk Label & Underline with Glowing Today Indicator -->
-          <text x="875" y="234" class="meadow-chalk-label" style="fill: var(--chalk-amber);">D8</text>
+          <text x="875" y="234" class="meadow-chalk-label" style="fill: var(--chalk-amber);">D15</text>
           <path d="M 855 240 Q 875 242 895 240" stroke="var(--chalk-amber)" stroke-width="2.2" stroke-linecap="round" fill="none" />
           <text x="875" y="253" font-family="'Kalam', cursive" font-size="12" font-weight="700" fill="var(--chalk-amber)" text-anchor="middle">★ Today</text>
         </g>
@@ -539,20 +557,8 @@ const ChalkMeadowPanorama = {
 
     container.innerHTML = svgHTML;
 
-    // Attach click listeners to all 8 specimen hotspots
-    const specimenNames = [
-      'The Young Sprout',
-      'Leafy Seedling',
-      'Branching Bud',
-      'Sunburst Cosmos',
-      'Purple Wild Aster',
-      'White Coneflower',
-      'Autumn Terracotta',
-      'Golden Rudbeckia'
-    ];
-    const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
-
-    for (let day = 1; day <= 8; day++) {
+    // Attach click listeners to all 8 specimen hotspots (Days 8 to 15)
+    for (let day = 8; day <= 15; day++) {
       const hotspot = container.querySelector(`#plant-hotspot-d${day}`);
       if (hotspot) {
         hotspot.addEventListener('click', (e) => {
@@ -560,15 +566,15 @@ const ChalkMeadowPanorama = {
           AudioEngine.playChalkScratch();
           emitDustParticles(hotspot.getBoundingClientRect());
           
-          const isToday = day === 8;
+          const isToday = day === TODAY_DAY_NUM;
           const dayData = AppState.gardenData[day] || {
-            specimen: specimenNames[day - 1],
+            specimen: BOTANICAL_SPECIMENS_OCTOBER[day - 1] || 'Autumn Wildflower',
             tasks: isToday ? 1 : 5,
             planned: 5,
             focus: isToday ? AppState.focusTimeLoggedToday : 90,
-            stage: day <= 3 ? day : 4
+            stage: day <= 14 ? 4 : 1
           };
-          openGardenDayModal(day, dayData, stageNames[dayData.stage]);
+          openGardenDayModal(day, dayData, GROWTH_STAGE_NAMES[dayData.stage || 0]);
         });
       }
     }
@@ -578,6 +584,11 @@ const ChalkMeadowPanorama = {
 // ==========================================================================
 // 2. DATA STATE & LOCAL STORAGE PERSISTENCE
 // ==========================================================================
+const TODAY_DATE = '2026-10-15';
+const TOMORROW_DATE = '2026-10-16';
+const THIS_WEEK_END_DATE = '2026-10-18';
+const TODAY_DAY_NUM = 15;
+
 const GROWTH_STAGE_NAMES = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
 
 const BOTANICAL_SPECIMENS_OCTOBER = [
@@ -589,19 +600,20 @@ const BOTANICAL_SPECIMENS_OCTOBER = [
   'Zinnia', 'Lupine', 'Carnation Sprig', 'Hydrangea Florets', 'Hibiscus', 'Evening Primrose'
 ];
 
-const STORAGE_KEY = 'chalkflow_state_v6';
+const STORAGE_KEY = 'chalkflow_state_v7';
 
 const DEFAULT_STATE = {
   theme: 'theme-parchment-cream',
   activeSurface: 'dashboard',
   tasks: [
+    // Today's Slate Tasks (Thursday, October 15, 2026)
     {
       id: 'task-1',
       title: 'Complete CAT Quantitative Mock #4 (Algebra & Arithmetic)',
       priority: 'HIGH',
       category: 'ACADEMIC',
       estTime: 60,
-      targetDate: '2026-10-08',
+      targetDate: '2026-10-15',
       status: 'TODO',
       isCarriedOver: true,
       subtasks: [
@@ -616,7 +628,7 @@ const DEFAULT_STATE = {
       priority: 'MEDIUM',
       category: 'CREATIVE',
       estTime: 45,
-      targetDate: '2026-10-08',
+      targetDate: '2026-10-15',
       status: 'TODO',
       isCarriedOver: false,
       subtasks: [],
@@ -628,53 +640,134 @@ const DEFAULT_STATE = {
       priority: 'LOW',
       category: 'CREATIVE',
       estTime: 20,
-      targetDate: '2026-10-08',
+      targetDate: '2026-10-15',
       status: 'COMPLETED',
       isCarriedOver: false,
       subtasks: [],
       isExpanded: false
     },
+    // Upcoming Assignments for Tomorrow (Friday, October 16, 2026)
     {
       id: 'task-4',
       title: 'Accessory Design Jury Presentation Slide Deck',
       priority: 'HIGH',
       category: 'ACADEMIC',
       estTime: 90,
-      targetDate: '2026-10-09',
+      targetDate: '2026-10-16',
+      status: 'TODO',
+      isCarriedOver: false,
+      subtasks: [
+        { id: 'sub-4-1', title: 'Compile ergonomic handle sketches & CAD renders', completed: true },
+        { id: 'sub-4-2', title: 'Finalize material breakdown & cost sheet', completed: false },
+        { id: 'sub-4-3', title: 'Rehearse 7-minute pitch & timing', completed: false }
+      ],
+      isExpanded: false
+    },
+    {
+      id: 'task-tomorrow-2',
+      title: 'Submit Fashion Forecasting Trend Moodboard & Swatch Analysis',
+      priority: 'HIGH',
+      category: 'ACADEMIC',
+      estTime: 60,
+      targetDate: '2026-10-16',
       status: 'TODO',
       isCarriedOver: false,
       subtasks: [],
       isExpanded: false
     },
     {
+      id: 'task-tomorrow-3',
+      title: 'Print 300gsm Laser Proofs for Brand Identity Packaging Project',
+      priority: 'MEDIUM',
+      category: 'CREATIVE',
+      estTime: 40,
+      targetDate: '2026-10-16',
+      status: 'TODO',
+      subtasks: [],
+      isExpanded: false
+    },
+    {
+      id: 'task-tomorrow-4',
+      title: 'Peer Review & Feedback Session: Ergonomic Bag Strap Prototypes',
+      priority: 'LOW',
+      category: 'ACADEMIC',
+      estTime: 30,
+      targetDate: '2026-10-16',
+      status: 'TODO',
+      subtasks: [],
+      isExpanded: false
+    },
+    // Later This Week (October 17 - 18, 2026)
+    {
       id: 'task-5',
-      title: 'Read Chapter 5: 20th Century Textile Movements',
+      title: 'Read Chapter 5: 20th Century Textile Movements & Bauhaus Influence',
       priority: 'MEDIUM',
       category: 'ACADEMIC',
       estTime: 30,
-      targetDate: '2026-10-10',
+      targetDate: '2026-10-17',
       status: 'TODO',
       isCarriedOver: false,
+      subtasks: [],
+      isExpanded: false
+    },
+    {
+      id: 'task-week-2',
+      title: 'Restock acrylic paints & fine-tip calligraphy nibs for studio workshop',
+      priority: 'LOW',
+      category: 'CREATIVE',
+      estTime: 25,
+      targetDate: '2026-10-18',
+      status: 'TODO',
+      subtasks: [],
+      isExpanded: false
+    },
+    // Next Week & Beyond (October 20, 2026+)
+    {
+      id: 'task-later-1',
+      title: 'CAT Quantitative Mock #5: Probability & Modern Mathematics',
+      priority: 'HIGH',
+      category: 'ACADEMIC',
+      estTime: 90,
+      targetDate: '2026-10-20',
+      status: 'TODO',
+      subtasks: [],
+      isExpanded: false
+    },
+    {
+      id: 'task-later-2',
+      title: 'Exhibition Hallway Layout Blueprint & Spot-Lighting Proposal',
+      priority: 'MEDIUM',
+      category: 'CREATIVE',
+      estTime: 75,
+      targetDate: '2026-10-22',
+      status: 'TODO',
       subtasks: [],
       isExpanded: false
     }
   ],
   habits: [
-    { id: 'h-1', name: 'Drink 4 Liters Water', icon: '💧', type: 'COUNTER', current: 2, target: 4, unit: 'L', completions: 7 },
-    { id: 'h-2', name: '30 Mins Design Reading', icon: '📖', type: 'COUNTER', current: 15, target: 30, unit: 'm', completions: 6 },
-    { id: 'h-3', name: 'Morning Sketchbook Drill', icon: '🎨', type: 'CHECK', current: 1, target: 1, unit: '', completions: 5 },
-    { id: 'h-4', name: 'Evening Walk / Rest', icon: '🌿', type: 'CHECK', current: 1, target: 1, unit: '', completions: 6 }
+    { id: 'h-1', name: 'Drink 4 Liters Water', icon: '💧', type: 'COUNTER', current: 2, target: 4, unit: 'L', completions: 13 },
+    { id: 'h-2', name: '30 Mins Design Reading', icon: '📖', type: 'COUNTER', current: 15, target: 30, unit: 'm', completions: 12 },
+    { id: 'h-3', name: 'Morning Sketchbook Drill', icon: '🎨', type: 'CHECK', current: 1, target: 1, unit: '', completions: 11 },
+    { id: 'h-4', name: 'Evening Walk / Rest', icon: '🌿', type: 'CHECK', current: 1, target: 1, unit: '', completions: 12 }
   ],
   focusTimeLoggedToday: 45,
   gardenData: {
     1: { specimen: 'Sunburst Cosmos', tasks: 5, planned: 5, focus: 110, stage: 4 },
-    2: { specimen: 'Purple Wild Aster', tasks: 3, planned: 4, focus: 60, stage: 2 },
+    2: { specimen: 'Purple Wild Aster', tasks: 4, planned: 4, focus: 85, stage: 4 },
     3: { specimen: 'Dormant Soil', tasks: 0, planned: 0, focus: 0, stage: 0 },
     4: { specimen: 'White Coneflower', tasks: 6, planned: 6, focus: 120, stage: 4 },
     5: { specimen: 'Golden Rudbeckia', tasks: 5, planned: 5, focus: 95, stage: 4 },
-    6: { specimen: 'Heather Blossom', tasks: 2, planned: 3, focus: 40, stage: 1 },
+    6: { specimen: 'Heather Blossom', tasks: 3, planned: 4, focus: 55, stage: 2 },
     7: { specimen: 'Autumn Terracotta', tasks: 5, planned: 5, focus: 100, stage: 4 },
-    8: { specimen: 'Meadow Daisy', tasks: 1, planned: 3, focus: 45, stage: 1 }
+    8: { specimen: 'Meadow Daisy', tasks: 4, planned: 4, focus: 90, stage: 4 },
+    9: { specimen: 'Winter Jasmine', tasks: 5, planned: 5, focus: 105, stage: 4 },
+    10: { specimen: 'Forget-Me-Not', tasks: 0, planned: 0, focus: 0, stage: 0 },
+    11: { specimen: 'Wild Poppy', tasks: 6, planned: 6, focus: 115, stage: 4 },
+    12: { specimen: 'Lavender Sprig', tasks: 4, planned: 5, focus: 75, stage: 3 },
+    13: { specimen: 'Chamomile', tasks: 5, planned: 5, focus: 90, stage: 4 },
+    14: { specimen: 'Coneflower', tasks: 5, planned: 5, focus: 100, stage: 4 },
+    15: { specimen: 'Sunburst Dahlia', tasks: 1, planned: 3, focus: 45, stage: 1 }
   }
 };
 
@@ -683,7 +776,15 @@ let AppState = loadState();
 function loadState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : DEFAULT_STATE;
+    if (saved) return JSON.parse(saved);
+    const oldSaved = localStorage.getItem('chalkflow_state_v6');
+    if (oldSaved) {
+      const oldState = JSON.parse(oldSaved);
+      const migrated = { ...DEFAULT_STATE };
+      if (oldState.theme) migrated.theme = oldState.theme;
+      return migrated;
+    }
+    return DEFAULT_STATE;
   } catch (e) {
     return DEFAULT_STATE;
   }
@@ -985,7 +1086,7 @@ function renderDashboard() {
   const circumference = 213.63; // 2 * Math.PI * 34 for r=34
 
   // 1. TOP METRICS: TASKS PROGRESS RING
-  const todayTasks = AppState.tasks.filter(t => t.targetDate === '2026-10-08');
+  const todayTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE);
   const completedTasks = todayTasks.filter(t => t.status === 'COMPLETED').length;
   const totalTasks = todayTasks.length;
   const tasksPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
@@ -1109,9 +1210,9 @@ function renderDashboard() {
   }
 
   // 5. MIDDLE ROW: BIG BOX 2 - DAILY GROWTH PROGRESS
-  const todayGardenData = AppState.gardenData[8] || { specimen: 'Meadow Daisy', tasks: completedTasks, planned: totalTasks, focus: currentFocus, stage: 0 };
+  const todayGardenData = AppState.gardenData[TODAY_DAY_NUM] || { specimen: 'Sunburst Dahlia', tasks: completedTasks, planned: totalTasks, focus: currentFocus, stage: 0 };
   const currentStage = todayGardenData.stage || 0;
-  const specimenName = todayGardenData.specimen || 'Meadow Daisy';
+  const specimenName = todayGardenData.specimen || 'Sunburst Dahlia';
 
   const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
   const stageQuotes = [
@@ -1128,7 +1229,7 @@ function renderDashboard() {
   const quoteEl = document.getElementById('dash-growth-quote');
 
   if (stagePill) stagePill.innerText = stageNames[currentStage];
-  if (flowerVisual) flowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 74, 8);
+  if (flowerVisual) flowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 74, TODAY_DAY_NUM);
   if (specimenTitle) specimenTitle.innerText = `🌸 ${specimenName}`;
   if (quoteEl) quoteEl.innerText = stageQuotes[currentStage];
 
@@ -1150,9 +1251,14 @@ function renderDashboard() {
   if (collectionGrid) {
     collectionGrid.innerHTML = '';
 
-    const bloomedDays = [1, 4, 5, 7];
-    if (currentStage === 4 && !bloomedDays.includes(8)) {
-      bloomedDays.push(8);
+    const bloomedDays = [];
+    for (let d = 1; d <= 31; d++) {
+      if (AppState.gardenData[d] && AppState.gardenData[d].stage === 4) {
+        bloomedDays.push(d);
+      }
+    }
+    if (currentStage === 4 && !bloomedDays.includes(TODAY_DAY_NUM)) {
+      bloomedDays.push(TODAY_DAY_NUM);
     }
 
     const collectedSpecies = bloomedDays.map(d => {
@@ -1204,7 +1310,7 @@ function initTodaySlate() {
         priority,
         category,
         estTime,
-        targetDate: '2026-10-08',
+        targetDate: TODAY_DATE,
         status: 'TODO',
         isCarriedOver: false,
         subtasks: [],
@@ -1224,7 +1330,7 @@ function initTodaySlate() {
 
   if (eraseCompletedBtn) {
     eraseCompletedBtn.addEventListener('click', () => {
-      const completedCount = AppState.tasks.filter(t => t.status === 'COMPLETED' && t.targetDate === '2026-10-08').length;
+      const completedCount = AppState.tasks.filter(t => t.status === 'COMPLETED' && t.targetDate === TODAY_DATE).length;
       if (completedCount === 0) {
         showToast('No completed tasks to erase.');
         return;
@@ -1233,7 +1339,7 @@ function initTodaySlate() {
       AudioEngine.playFeltEraserSweep();
       emitDustParticles(eraseCompletedBtn.getBoundingClientRect());
 
-      AppState.tasks = AppState.tasks.filter(t => !(t.status === 'COMPLETED' && t.targetDate === '2026-10-08'));
+      AppState.tasks = AppState.tasks.filter(t => !(t.status === 'COMPLETED' && t.targetDate === TODAY_DATE));
       saveState();
       renderTodaySlate();
       updateGlobalGrowthMetrics();
@@ -1251,7 +1357,7 @@ function renderTodaySlate() {
   if (!taskList) return;
   taskList.innerHTML = '';
 
-  const todayTasks = AppState.tasks.filter(t => t.targetDate === '2026-10-08');
+  const todayTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE);
   const pendingCount = todayTasks.filter(t => t.status !== 'COMPLETED').length;
   if (badge) badge.innerText = pendingCount;
 
@@ -1448,11 +1554,19 @@ function createTaskCardElement(task) {
 // --------------------------------------------------------------------------
 function initUpcomingTasks() {
   const form = document.getElementById('upcoming-add-form');
+  const dateInput = document.getElementById('upcoming-date-input');
+  if (dateInput) {
+    dateInput.min = TOMORROW_DATE;
+    if (!dateInput.value || dateInput.value < TOMORROW_DATE) {
+      dateInput.value = TOMORROW_DATE;
+    }
+  }
+
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const title = document.getElementById('upcoming-title-input').value.trim();
-      const targetDate = document.getElementById('upcoming-date-input').value;
+      const targetDate = document.getElementById('upcoming-date-input').value || TOMORROW_DATE;
       const priority = document.querySelector('input[name="upcoming-priority"]:checked').value;
       const category = document.getElementById('upcoming-category-select').value;
 
@@ -1473,6 +1587,7 @@ function initUpcomingTasks() {
       saveState();
       renderUpcomingTasks();
       form.reset();
+      if (dateInput) dateInput.value = TOMORROW_DATE;
       showToast('Scheduled task in Future Planning Shelf');
     });
   }
@@ -1492,7 +1607,7 @@ function renderUpcomingTasks() {
   listThisWeek.innerHTML = '';
   listLater.innerHTML = '';
 
-  const upcomingTasks = AppState.tasks.filter(t => t.targetDate > '2026-10-08');
+  const upcomingTasks = AppState.tasks.filter(t => t.targetDate > TODAY_DATE);
   if (badge) badge.innerText = upcomingTasks.length;
 
   let countTomorrow = 0, countThisWeek = 0, countLater = 0;
@@ -1517,17 +1632,17 @@ function renderUpcomingTasks() {
     `;
 
     item.querySelector('[data-move-id]').addEventListener('click', () => {
-      t.targetDate = '2026-10-08';
+      t.targetDate = TODAY_DATE;
       saveState();
       renderUpcomingTasks();
       renderTodaySlate();
       showToast('Moved task to Today\'s Slate');
     });
 
-    if (t.targetDate === '2026-10-09') {
+    if (t.targetDate === TOMORROW_DATE) {
       listTomorrow.appendChild(item);
       countTomorrow++;
-    } else if (t.targetDate <= '2026-10-14') {
+    } else if (t.targetDate <= THIS_WEEK_END_DATE) {
       listThisWeek.appendChild(item);
       countThisWeek++;
     } else {
@@ -1578,7 +1693,7 @@ function renderProgressGarden() {
     let totalFocusMinutes = 0;
 
     for (let day = 1; day <= 31; day++) {
-      const isToday = day === 8;
+      const isToday = day === TODAY_DAY_NUM;
       const dayData = AppState.gardenData[day] || {
         specimen: BOTANICAL_SPECIMENS_OCTOBER[day - 1] || 'Autumn Wildflower',
         tasks: 0,
@@ -1630,12 +1745,12 @@ function openGardenDayModal(day, dayData, stageName = null) {
   const focusTime = `${dayData?.focus ?? 0} mins`;
 
   // Calculate habit completions for this day
-  const isToday = day === 8;
+  const isToday = day === TODAY_DAY_NUM;
   const totalHabits = AppState.habits.length || 4;
   const completedHabitsToday = AppState.habits.filter(h => h.current >= (h.type === 'COUNTER' ? h.target : 1)).length;
   const habitsRatio = isToday
     ? `${completedHabitsToday} / ${totalHabits} habits`
-    : (day <= 7 ? `${Math.min(totalHabits, 3 + (day % 2))} / ${totalHabits} habits` : `0 / ${totalHabits} habits`);
+    : (day < TODAY_DAY_NUM ? `${Math.min(totalHabits, 3 + (day % 2))} / ${totalHabits} habits` : `0 / ${totalHabits} habits`);
 
   const speciesNameEl = document.getElementById('modal-species-name');
   const dateTitleEl = document.getElementById('modal-date-title');
@@ -1794,15 +1909,15 @@ function renderHabitLedger() {
   if (progressBar) progressBar.style.width = `${growthPercent}%`;
   if (progressText) progressText.innerText = `${totalCompletions} habit completions logged this month (${growthPercent}% of monthly goal)`;
 
-  // Populate Interactive Daily Rhythm Strip (D1 to D8 Today)
+  // Populate Interactive Daily Rhythm Strip (D1 to D15 Today)
   const daysStrip = document.getElementById('habit-days-strip');
   if (daysStrip) {
     daysStrip.innerHTML = '';
     const totalHabits = AppState.habits.length || 4;
     const completedToday = AppState.habits.filter(h => h.current >= (h.type === 'COUNTER' ? h.target : 1)).length;
 
-    for (let day = 1; day <= 8; day++) {
-      const isToday = day === 8;
+    for (let day = 1; day <= TODAY_DAY_NUM; day++) {
+      const isToday = day === TODAY_DAY_NUM;
       const dayData = AppState.gardenData[day] || {
         specimen: BOTANICAL_SPECIMENS_OCTOBER[day - 1] || 'Autumn Wildflower',
         tasks: isToday ? 1 : 5,
@@ -1820,7 +1935,7 @@ function renderHabitLedger() {
       pill.title = `Day ${day}: ${dayHabitsDone}/${totalHabits} habits completed (Click to maximize progress details)`;
 
       pill.innerHTML = `
-        <span class="day-label">${isToday ? '★ D8' : 'D' + day}</span>
+        <span class="day-label">${isToday ? '★ D' + TODAY_DAY_NUM : 'D' + day}</span>
         <span class="day-count">${dayHabitsDone}/${totalHabits}</span>
         <span class="day-star">${isAllDone ? '🌟' : '🌱'}</span>
       `;
@@ -1984,7 +2099,10 @@ function initDeepFocus() {
             if (FocusTimer.mode === 'FOCUS') {
               const loggedMins = Math.floor(FocusTimer.durationSeconds / 60);
               AppState.focusTimeLoggedToday += loggedMins;
-              AppState.gardenData[8].focus += loggedMins;
+              if (!AppState.gardenData[TODAY_DAY_NUM]) {
+                AppState.gardenData[TODAY_DAY_NUM] = { specimen: 'Sunburst Dahlia', tasks: 0, planned: 0, focus: 0, stage: 0 };
+              }
+              AppState.gardenData[TODAY_DAY_NUM].focus += loggedMins;
               saveState();
               updateGlobalGrowthMetrics();
               showToast(`🌸 Focus complete! ${loggedMins}m credited to today's garden flower.`);
@@ -2039,7 +2157,7 @@ function populateFocusTaskDropdown() {
   const currentVal = select.value;
   select.innerHTML = '<option value="">-- No specific task --</option>';
 
-  const activeTasks = AppState.tasks.filter(t => t.targetDate === '2026-10-08' && t.status !== 'COMPLETED');
+  const activeTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE && t.status !== 'COMPLETED');
   activeTasks.forEach(t => {
     const opt = document.createElement('option');
     opt.value = t.id;
@@ -2053,7 +2171,7 @@ function populateFocusTaskDropdown() {
 // H. GLOBAL GROWTH CALCULATOR & TOP RIGHT BADGE
 // --------------------------------------------------------------------------
 function updateGlobalGrowthMetrics() {
-  const todayTasks = AppState.tasks.filter(t => t.targetDate === '2026-10-08');
+  const todayTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE);
   const completedCount = todayTasks.filter(t => t.status === 'COMPLETED').length;
   const focusMins = AppState.focusTimeLoggedToday || 0;
 
@@ -2068,13 +2186,13 @@ function updateGlobalGrowthMetrics() {
     stage = 1;
   }
 
-  if (!AppState.gardenData[8]) {
-    AppState.gardenData[8] = { specimen: 'Meadow Daisy', tasks: 0, planned: 0, focus: 0, stage: 0 };
+  if (!AppState.gardenData[TODAY_DAY_NUM]) {
+    AppState.gardenData[TODAY_DAY_NUM] = { specimen: 'Sunburst Dahlia', tasks: 0, planned: 0, focus: 0, stage: 0 };
   }
-  AppState.gardenData[8].tasks = completedCount;
-  AppState.gardenData[8].planned = todayTasks.length;
-  AppState.gardenData[8].focus = focusMins;
-  AppState.gardenData[8].stage = stage;
+  AppState.gardenData[TODAY_DAY_NUM].tasks = completedCount;
+  AppState.gardenData[TODAY_DAY_NUM].planned = todayTasks.length;
+  AppState.gardenData[TODAY_DAY_NUM].focus = focusMins;
+  AppState.gardenData[TODAY_DAY_NUM].stage = stage;
   saveState();
 
   const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
@@ -2082,7 +2200,7 @@ function updateGlobalGrowthMetrics() {
   const topIcon = document.getElementById('top-flower-icon');
   const topStage = document.getElementById('top-growth-stage');
   const topMeta = document.getElementById('top-growth-meta');
-  if (topIcon) topIcon.innerHTML = ChalkBotanicals.getBotanicalSVG(stage, 28, 8);
+  if (topIcon) topIcon.innerHTML = ChalkBotanicals.getBotanicalSVG(stage, 28, TODAY_DAY_NUM);
   if (topStage) topStage.innerText = stageNames[stage];
   if (topMeta) topMeta.innerText = `${completedCount} tasks • ${focusMins}m focus`;
   renderDashboard();
