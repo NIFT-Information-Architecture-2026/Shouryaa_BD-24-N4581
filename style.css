@@ -1126,6 +1126,48 @@ body {
   max-width: 90px;
 }
 
+.stage-tag {
+  font-size: 9px;
+  font-family: 'Kalam', cursive;
+  padding: 1px 5px;
+  border-radius: 4px;
+  letter-spacing: 0.3px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.stage-tag.stage-4 {
+  color: var(--chalk-amber);
+  background: rgba(255, 209, 102, 0.14);
+}
+
+.stage-tag.stage-3 {
+  color: #EF476F;
+  background: rgba(239, 71, 111, 0.14);
+}
+
+.stage-tag.stage-2 {
+  color: var(--chalk-mint);
+  background: rgba(6, 214, 160, 0.14);
+}
+
+.stage-tag.stage-1 {
+  color: var(--chalk-mint);
+  background: rgba(6, 214, 160, 0.08);
+}
+
+.stage-tag.stage-0 {
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+.stage-tag.today-tag {
+  color: var(--chalk-amber);
+  font-weight: 700;
+  text-shadow: 0 0 6px rgba(255, 209, 102, 0.45);
+  border: 1px dashed rgba(255, 209, 102, 0.4);
+}
+
 /* --------------------------------------------------------------------------
    10. SURFACE 4: HABIT LEDGER (DAILY HABIT RHYTHMS & WATER TRACKER)
    -------------------------------------------------------------------------- */
