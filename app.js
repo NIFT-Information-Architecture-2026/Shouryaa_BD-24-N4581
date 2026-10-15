@@ -1078,6 +1078,66 @@ function initDashboard() {
     });
   });
 
+  // Rename Today's Star Flower directly from Dashboard Big Box 2
+  const renameTodayBtn = document.getElementById('btn-rename-today-flower');
+  const renameTodayTitle = document.getElementById('dash-today-specimen-name');
+  const renameTodayBox = document.getElementById('dash-rename-today-box');
+  const renameTodayInput = document.getElementById('input-dash-rename-flower');
+  const saveTodayBtn = document.getElementById('btn-save-dash-flower-name');
+  const cancelTodayBtn = document.getElementById('btn-cancel-dash-flower-name');
+
+  const toggleTodayRename = () => {
+    if (!renameTodayBox) return;
+    const isVisible = renameTodayBox.style.display !== 'none';
+    if (isVisible) {
+      renameTodayBox.style.display = 'none';
+    } else {
+      renameTodayBox.style.display = 'flex';
+      const current = AppState.gardenData[TODAY_DAY_NUM]?.specimen || 'Sunburst Dahlia';
+      if (renameTodayInput) {
+        renameTodayInput.value = current;
+        renameTodayInput.focus();
+        renameTodayInput.select();
+      }
+    }
+  };
+
+  if (renameTodayBtn) renameTodayBtn.addEventListener('click', toggleTodayRename);
+  if (renameTodayTitle) renameTodayTitle.addEventListener('click', toggleTodayRename);
+  if (cancelTodayBtn) cancelTodayBtn.addEventListener('click', () => {
+    if (renameTodayBox) renameTodayBox.style.display = 'none';
+  });
+
+  const saveTodayRename = () => {
+    if (!renameTodayInput) return;
+    const newName = renameTodayInput.value.trim();
+    if (newName) {
+      if (!AppState.gardenData[TODAY_DAY_NUM]) {
+        AppState.gardenData[TODAY_DAY_NUM] = { specimen: newName, tasks: 0, planned: 0, focus: 0, stage: 0 };
+      }
+      AppState.gardenData[TODAY_DAY_NUM].specimen = newName;
+      saveState();
+      AudioEngine.playChalkScratch();
+      if (saveTodayBtn) emitDustParticles(saveTodayBtn.getBoundingClientRect());
+      showToast(`🌸 Renamed today's star flower to "${newName}"!`);
+      if (renameTodayBox) renameTodayBox.style.display = 'none';
+      renderDashboard();
+      renderProgressGarden();
+    }
+  };
+
+  if (saveTodayBtn) saveTodayBtn.addEventListener('click', saveTodayRename);
+  if (renameTodayInput) {
+    renameTodayInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        saveTodayRename();
+      } else if (e.key === 'Escape') {
+        if (renameTodayBox) renameTodayBox.style.display = 'none';
+      }
+    });
+  }
+
   renderDashboard();
 }
 
@@ -1278,6 +1338,8 @@ function renderDashboard() {
     collectedSpecies.forEach(plant => {
       const card = document.createElement('div');
       card.className = 'dash-plant-card';
+      card.style.cursor = 'pointer';
+      card.title = `Click to inspect or rename ${plant.name}`;
       card.innerHTML = `
         <div class="dash-plant-svg-wrap">
           ${ChalkBotanicals.getBotanicalSVG(4, 56, plant.day)}
@@ -1286,6 +1348,10 @@ function renderDashboard() {
         <div class="dash-plant-meta">${plant.tasks} tasks • ${plant.focus}m focus</div>
         <span class="dash-plant-badge chalk-font"><i class="fa-solid fa-seedling"></i> Bloomed</span>
       `;
+      card.addEventListener('click', () => {
+        const g = AppState.gardenData[plant.day] || { stage: 4, specimen: plant.name, tasks: plant.tasks, focus: plant.focus };
+        openGardenDayModal(plant.day, g, 'Full Bloom');
+      });
       collectionGrid.appendChild(card);
     });
   }
@@ -1665,12 +1731,73 @@ function initProgressGarden() {
   const modal = document.getElementById('garden-day-modal');
   const closeBtn = document.getElementById('btn-close-garden-modal');
   const dismissBtn = document.getElementById('btn-modal-dismiss');
+  const renameBtn = document.getElementById('btn-rename-specimen');
+  const speciesTitle = document.getElementById('modal-species-name');
+  const renameBox = document.getElementById('modal-rename-box');
+  const renameInput = document.getElementById('input-rename-flower');
+  const saveBtn = document.getElementById('btn-save-flower-name');
+  const cancelBtn = document.getElementById('btn-cancel-flower-name');
 
   if (closeBtn) closeBtn.addEventListener('click', () => modal.style.display = 'none');
   if (dismissBtn) dismissBtn.addEventListener('click', () => modal.style.display = 'none');
   if (modal) {
     modal.addEventListener('click', (e) => {
       if (e.target === modal) modal.style.display = 'none';
+    });
+  }
+
+  const toggleModalRename = () => {
+    if (!renameBox || !modal) return;
+    const isVisible = renameBox.style.display !== 'none';
+    if (isVisible) {
+      renameBox.style.display = 'none';
+    } else {
+      renameBox.style.display = 'block';
+      const day = parseInt(modal.dataset.currentDay, 10);
+      const current = AppState.gardenData[day]?.specimen || (BOTANICAL_SPECIMENS_OCTOBER[day - 1] || 'Autumn Wildflower');
+      if (renameInput) {
+        renameInput.value = current;
+        renameInput.focus();
+        renameInput.select();
+      }
+    }
+  };
+
+  if (renameBtn) renameBtn.addEventListener('click', toggleModalRename);
+  if (speciesTitle) speciesTitle.addEventListener('click', toggleModalRename);
+  if (cancelBtn) cancelBtn.addEventListener('click', () => {
+    if (renameBox) renameBox.style.display = 'none';
+  });
+
+  const saveModalRename = () => {
+    if (!renameInput || !modal) return;
+    const newName = renameInput.value.trim();
+    const day = parseInt(modal.dataset.currentDay, 10);
+    if (newName && day) {
+      if (!AppState.gardenData[day]) {
+        AppState.gardenData[day] = { specimen: newName, tasks: 0, planned: 0, focus: 0, stage: 0 };
+      }
+      AppState.gardenData[day].specimen = newName;
+      saveState();
+      AudioEngine.playChalkScratch();
+      if (saveBtn) emitDustParticles(saveBtn.getBoundingClientRect());
+      if (speciesTitle) speciesTitle.innerText = `🌸 ${newName}`;
+      if (renameBox) renameBox.style.display = 'none';
+      showToast(`🌸 Renamed Day ${day}'s flower to "${newName}"!`);
+      renderProgressGarden();
+      renderDashboard();
+    }
+  };
+
+  if (saveBtn) saveBtn.addEventListener('click', saveModalRename);
+  if (renameInput) {
+    renameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        saveModalRename();
+      } else if (e.key === 'Escape') {
+        if (renameBox) renameBox.style.display = 'none';
+      }
     });
   }
 
@@ -1742,6 +1869,10 @@ function renderProgressGarden() {
 function openGardenDayModal(day, dayData, stageName = null) {
   const modal = document.getElementById('garden-day-modal');
   if (!modal) return;
+
+  modal.dataset.currentDay = day;
+  const renameBox = document.getElementById('modal-rename-box');
+  if (renameBox) renameBox.style.display = 'none';
 
   const currentStage = dayData ? (dayData.stage ?? 0) : 0;
   const currentStageName = stageName || GROWTH_STAGE_NAMES[currentStage] || 'Resting Seed';
@@ -1872,7 +2003,12 @@ function renderHabitLedger() {
       <div class="habit-info-left">
         <span class="habit-icon">${h.icon}</span>
         <div>
-          <div class="habit-name">${h.name}</div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <div class="habit-name">${h.name}</div>
+            <button type="button" class="chalk-icon-btn btn-rename-habit" data-habit-id="${h.id}" title="Rename habit" style="width:20px; height:20px; font-size:9px; opacity:0.65;">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+          </div>
           <div class="habit-tally">${h.completions}/${TODAY_DAY_NUM} days completed this month</div>
         </div>
       </div>
@@ -1880,6 +2016,22 @@ function renderHabitLedger() {
         ${actionHTML}
       </div>
     `;
+
+    const renameHabitBtn = card.querySelector('.btn-rename-habit');
+    if (renameHabitBtn) {
+      renameHabitBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const newName = prompt(`Rename habit "${h.name}":`, h.name);
+        if (newName && newName.trim() && newName.trim() !== h.name) {
+          h.name = newName.trim();
+          saveState();
+          AudioEngine.playChalkScratch();
+          showToast(`✏️ Renamed habit to "${h.name}"!`);
+          renderHabitLedger();
+          renderDashboard();
+        }
+      });
+    }
 
     const counterBtn = card.querySelector('.habit-counter-pill');
     counterBtn.addEventListener('click', () => {

@@ -1759,10 +1759,88 @@ body.mode-gentle-rest .ring-progress {
   margin-bottom: 16px;
 }
 
+.modal-species-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chalk-icon-btn {
+  background: var(--bg-surface-elevated);
+  border: 1px dashed var(--border-chalk);
+  color: var(--text-muted);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.chalk-icon-btn:hover {
+  color: var(--chalk-amber);
+  border-color: var(--chalk-amber);
+  transform: scale(1.12);
+  box-shadow: 0 0 8px rgba(255, 209, 102, 0.35);
+}
+
 .modal-species-pill {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--chalk-pink);
-  text-transform: uppercase;
+  text-transform: capitalize;
+  cursor: pointer;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+  border: 1px dashed transparent;
+}
+
+.modal-species-pill:hover {
+  background: rgba(255, 209, 102, 0.12);
+  color: var(--chalk-amber);
+  border-color: rgba(255, 209, 102, 0.3);
+}
+
+.specimen-rename-box {
+  background: var(--bg-surface-elevated);
+  border: 1.5px dashed var(--chalk-amber);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  animation: modal-pop-in 0.2s ease-out;
+}
+
+.rename-box-label {
+  font-size: 12px;
+  color: var(--chalk-amber);
+  display: block;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+
+.rename-box-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dash-species-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.dash-rename-today-box {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin: 6px 0 10px 0;
+  animation: modal-pop-in 0.2s ease-out;
 }
 
 .modal-close-btn {

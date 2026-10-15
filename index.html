@@ -241,7 +241,17 @@
                   <!-- Live SVG Botanical Artwork of Today's Flower -->
                 </div>
                 <div class="dash-growth-details">
-                  <h4 class="dash-species-title chalk-font" id="dash-today-specimen-name">🌸 Autumn Botanical</h4>
+                  <div class="dash-species-title-row">
+                    <h4 class="dash-species-title chalk-font" id="dash-today-specimen-name" title="Click to rename today's flower">🌸 Autumn Botanical</h4>
+                    <button type="button" class="chalk-icon-btn" id="btn-rename-today-flower" title="Rename today's flower" aria-label="Rename today's flower">
+                      <i class="fa-solid fa-pen"></i>
+                    </button>
+                  </div>
+                  <div class="dash-rename-today-box" id="dash-rename-today-box" style="display:none;">
+                    <input type="text" id="input-dash-rename-flower" class="chalk-input" placeholder="Flower name..." maxlength="30" style="padding:4px 8px; font-size:12px; max-width:180px;">
+                    <button type="button" id="btn-save-dash-flower-name" class="chalk-btn primary-btn chalk-font" style="padding:4px 10px; font-size:11px;">Save</button>
+                    <button type="button" id="btn-cancel-dash-flower-name" class="chalk-btn secondary-btn chalk-font" style="padding:4px 8px; font-size:11px;">Cancel</button>
+                  </div>
                   <p class="dash-growth-quote" id="dash-growth-quote">"Steady momentum rooted in patience. Every sprout strengthens your daily rhythm."</p>
                   
                   <div class="dash-stages-stepper" id="dash-stages-stepper">
@@ -674,13 +684,28 @@
     <div class="chalk-modal-dialog chalk-card">
       <div class="modal-header">
         <div class="modal-title-group">
-          <span class="modal-species-pill chalk-font" id="modal-species-name">🌸 Chrysanthemum</span>
+          <div class="modal-species-row">
+            <span class="modal-species-pill chalk-font" id="modal-species-name" title="Click to rename this flower">🌸 Chrysanthemum</span>
+            <button type="button" class="chalk-icon-btn btn-rename-specimen" id="btn-rename-specimen" title="Rename this flower" aria-label="Rename this flower">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+          </div>
           <h3 class="chalk-font" id="modal-date-title">October 15, 2026</h3>
         </div>
         <button class="modal-close-btn" id="btn-close-garden-modal">&times;</button>
       </div>
 
       <div class="modal-body">
+        <!-- Inline Flower Rename Bar -->
+        <div class="specimen-rename-box" id="modal-rename-box" style="display:none;">
+          <label class="chalk-font rename-box-label"><i class="fa-solid fa-seedling"></i> Give this flower a custom name:</label>
+          <div class="rename-box-input-row">
+            <input type="text" id="input-rename-flower" class="chalk-input" placeholder="Enter custom flower name..." maxlength="30" style="flex:1;">
+            <button type="button" id="btn-save-flower-name" class="chalk-btn primary-btn chalk-font" style="padding:6px 12px; font-size:12px;">Save</button>
+            <button type="button" id="btn-cancel-flower-name" class="chalk-btn secondary-btn chalk-font" style="padding:6px 10px; font-size:12px;">Cancel</button>
+          </div>
+        </div>
+
         <div class="inspection-flower-preview" id="modal-flower-visual">
           <!-- Botanical SVG inserted here -->
         </div>
