@@ -76,8 +76,20 @@
           </button>
         </nav>
 
-        <!-- Bottom Sidebar Controls: Theme Switcher -->
+        <!-- Bottom Sidebar Controls: User Profile & Theme Switcher -->
         <div class="side-nav-footer">
+          <!-- User Profile Strip (Click to change name) -->
+          <div class="user-profile-strip" id="user-profile-strip" title="Click to customize your name">
+            <div class="user-avatar-circle chalk-font" id="user-avatar-initial">S</div>
+            <div class="user-profile-info">
+              <span class="user-profile-name chalk-font" id="nav-user-name">Shouryaa</span>
+              <span class="user-profile-role">Student Profile</span>
+            </div>
+            <button type="button" class="user-name-quick-edit-btn" id="btn-side-edit-name" title="Change user name" aria-label="Change user name">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+          </div>
+
           <!-- Theme Surface Switcher -->
           <div class="surface-switcher-panel">
             <span class="section-micro-label chalk-font"><i class="fa-solid fa-palette"></i> Board Surface</span>
@@ -133,7 +145,12 @@
           <!-- Greeting Header Banner (Modeled on User Reference Mockup) -->
           <div class="dashboard-greeting-banner">
             <div class="greeting-text-block">
-              <h2 class="greeting-title chalk-font">Welcome Back, El !</h2>
+              <h2 class="greeting-title chalk-font">
+                Welcome Back, <span class="editable-user-name" id="display-user-name" title="Click to change your name">Shouryaa</span> !
+                <button type="button" class="btn-edit-user-name" id="btn-edit-user-name" title="Change your name" aria-label="Change user name">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </h2>
               <p class="greeting-subtitle">Here is your day at a glance.</p>
             </div>
           </div>
@@ -782,6 +799,40 @@
         <div class="modal-footer">
           <button type="button" class="chalk-btn secondary-btn chalk-font" id="btn-cancel-habit">Cancel</button>
           <button type="submit" class="chalk-btn primary-btn chalk-font">Plant Habit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Change User Name Modal -->
+  <div class="chalk-modal-backdrop" id="user-name-modal" style="display:none;">
+    <div class="chalk-modal-dialog chalk-card name-modal-card">
+      <div class="modal-header">
+        <h3 class="chalk-font"><i class="fa-solid fa-user-pen" style="color:var(--chalk-amber); margin-right:6px;"></i> Personalize Your Name</h3>
+        <button class="modal-close-btn" id="btn-close-name-modal">&times;</button>
+      </div>
+      <form id="change-user-name-form">
+        <div class="modal-body">
+          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 14px;">
+            Set how you would like Chalkflow to greet you on your board.
+          </p>
+          <div class="form-group">
+            <label class="chalk-font" for="input-change-user-name">Your Name or Preferred Nickname:</label>
+            <input type="text" id="input-change-user-name" class="chalk-input" maxlength="28" placeholder="Enter your name..." required>
+          </div>
+          <div class="name-quick-suggestions">
+            <span class="quick-suggest-label chalk-font">Quick Suggestions:</span>
+            <div class="name-chip-group">
+              <button type="button" class="name-chip-btn chalk-font" data-preset="Shouryaa">Shouryaa</button>
+              <button type="button" class="name-chip-btn chalk-font" data-preset="El">El</button>
+              <button type="button" class="name-chip-btn chalk-font" data-preset="Designer">Designer</button>
+              <button type="button" class="name-chip-btn chalk-font" data-preset="Scholar">Scholar</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="chalk-btn secondary-btn chalk-font" id="btn-cancel-name-modal">Cancel</button>
+          <button type="submit" class="chalk-btn primary-btn chalk-font"><i class="fa-solid fa-check"></i> Save Name</button>
         </div>
       </form>
     </div>

@@ -379,6 +379,81 @@ body {
   padding-top: 14px;
 }
 
+/* User Profile Strip in Sidebar */
+.user-profile-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk);
+  border-radius: var(--radius-md);
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.user-profile-strip:hover {
+  border-color: var(--chalk-amber);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.user-avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 209, 102, 0.25), rgba(224, 122, 95, 0.25));
+  border: 1.5px solid var(--chalk-amber);
+  color: var(--chalk-amber);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  flex-shrink: 0;
+  text-shadow: 0 0 6px rgba(255, 209, 102, 0.4);
+}
+
+.user-profile-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.user-profile-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-profile-role {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.user-name-quick-edit-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.2s;
+}
+
+.user-profile-strip:hover .user-name-quick-edit-btn {
+  color: var(--chalk-amber);
+  opacity: 1;
+  transform: scale(1.1);
+}
+
 .section-micro-label {
   font-size: 11px;
   color: var(--text-muted);
@@ -2095,11 +2170,93 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
   color: var(--text-primary);
   margin-bottom: 2px;
   letter-spacing: -0.2px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.editable-user-name {
+  color: var(--chalk-amber);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+  border-bottom: 1.5px dashed rgba(255, 209, 102, 0.45);
+  padding-bottom: 1px;
+}
+
+.editable-user-name:hover {
+  color: #FFE699;
+  border-bottom-color: var(--chalk-amber);
+  text-shadow: 0 0 10px rgba(255, 209, 102, 0.55);
+}
+
+.btn-edit-user-name {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk);
+  color: var(--text-muted);
+  font-size: 12px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  vertical-align: middle;
+}
+
+.btn-edit-user-name:hover {
+  color: var(--chalk-amber);
+  border-color: var(--chalk-amber);
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .greeting-subtitle {
   font-size: 13px;
   color: var(--text-muted);
+}
+
+/* Change User Name Modal Specifics */
+.name-modal-card {
+  max-width: 440px;
+}
+
+.name-quick-suggestions {
+  margin-top: 14px;
+}
+
+.quick-suggest-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.name-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.name-chip-btn {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk);
+  color: var(--text-primary);
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.name-chip-btn:hover {
+  border-color: var(--chalk-amber);
+  color: var(--chalk-amber);
+  background: rgba(255, 209, 102, 0.12);
+  transform: translateY(-1px);
 }
 
 /* Row 1: Metrics with Circular SVG Progress Rings */

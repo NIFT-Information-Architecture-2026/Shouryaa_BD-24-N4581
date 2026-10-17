@@ -597,6 +597,7 @@ const STORAGE_KEY = 'chalkflow_state_v8';
 const DEFAULT_STATE = {
   theme: 'theme-parchment-cream',
   activeSurface: 'dashboard',
+  userName: 'Shouryaa',
   tasks: [
     // Today's Slate Tasks (Thursday, October 15, 2026)
     {
@@ -770,6 +771,7 @@ function loadState() {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
+      if (!parsed.userName) parsed.userName = 'Shouryaa';
       if (!parsed.gardenData || !parsed.gardenData[15]) {
         parsed.gardenData = { ...DEFAULT_STATE.gardenData, ...(parsed.gardenData || {}) };
       }
@@ -782,6 +784,7 @@ function loadState() {
       if (oldState.theme) migrated.theme = oldState.theme;
       if (oldState.tasks) migrated.tasks = oldState.tasks;
       if (oldState.habits) migrated.habits = oldState.habits;
+      if (oldState.userName) migrated.userName = oldState.userName;
       if (oldState.focusTimeLoggedToday !== undefined) migrated.focusTimeLoggedToday = oldState.focusTimeLoggedToday;
       migrated.gardenData = { ...DEFAULT_STATE.gardenData, ...(oldState.gardenData || {}) };
       return migrated;
@@ -978,6 +981,7 @@ const AudioEngine = new SoundscapeEngine();
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initBrandMascot();
+  initUserProfile();
   initNavigation();
   initDashboard();
   initTodaySlate();
@@ -987,6 +991,97 @@ document.addEventListener('DOMContentLoaded', () => {
   initDeepFocus();
   updateGlobalGrowthMetrics();
 });
+
+// --------------------------------------------------------------------------
+// A.0 USER PROFILE & NAME CONTROLLER
+// --------------------------------------------------------------------------
+function updateUserGreeting() {
+  const name = AppState.userName || 'Shouryaa';
+  const displayEl = document.getElementById('display-user-name');
+  const navNameEl = document.getElementById('nav-user-name');
+  const avatarEl = document.getElementById('user-avatar-initial');
+
+  if (displayEl) displayEl.innerText = name;
+  if (navNameEl) navNameEl.innerText = name;
+  if (avatarEl) avatarEl.innerText = name.charAt(0).toUpperCase();
+}
+
+function initUserProfile() {
+  const modal = document.getElementById('user-name-modal');
+  const closeBtn = document.getElementById('btn-close-name-modal');
+  const cancelBtn = document.getElementById('btn-cancel-name-modal');
+  const form = document.getElementById('change-user-name-form');
+  const input = document.getElementById('input-change-user-name');
+  const triggerDash = document.getElementById('btn-edit-user-name');
+  const displayClick = document.getElementById('display-user-name');
+  const triggerSide = document.getElementById('btn-side-edit-name');
+  const sideStripClick = document.getElementById('user-profile-strip');
+  const chipBtns = document.querySelectorAll('.name-chip-btn');
+
+  function openModal() {
+    if (!modal) return;
+    if (input) {
+      input.value = AppState.userName || 'Shouryaa';
+    }
+    modal.style.display = 'flex';
+    AudioEngine.playChalkScratch();
+    setTimeout(() => {
+      if (input) {
+        input.focus();
+        input.select();
+      }
+    }, 50);
+  }
+
+  function closeModal() {
+    if (modal) modal.style.display = 'none';
+  }
+
+  if (triggerDash) triggerDash.addEventListener('click', openModal);
+  if (displayClick) displayClick.addEventListener('click', openModal);
+  if (triggerSide) {
+    triggerSide.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openModal();
+    });
+  }
+  if (sideStripClick) sideStripClick.addEventListener('click', openModal);
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  chipBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (input && btn.dataset.preset) {
+        input.value = btn.dataset.preset;
+        AudioEngine.playChalkScratch();
+      }
+    });
+  });
+
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const newName = input.value.trim();
+      if (!newName) return;
+
+      AppState.userName = newName;
+      saveState();
+      updateUserGreeting();
+      closeModal();
+      AudioEngine.playChalkScratch();
+      emitDustParticles(form.getBoundingClientRect());
+      showToast(`Welcome, ${newName}! Name updated ✨`);
+    });
+  }
+
+  updateUserGreeting();
+}
 
 // --------------------------------------------------------------------------
 // A. THEME SYSTEM
@@ -1144,6 +1239,8 @@ function initDashboard() {
 function renderDashboard() {
   const dashView = document.getElementById('view-dashboard');
   if (!dashView) return;
+
+  updateUserGreeting();
 
   const circumference = 213.63; // 2 * Math.PI * 34 for r=34
 
