@@ -2151,8 +2151,8 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
 #view-dashboard {
   display: none;
   flex-direction: column;
-  gap: 20px;
-  padding-bottom: 40px;
+  gap: 14px;
+  padding-bottom: 24px;
 }
 
 #view-dashboard.active {
@@ -2161,11 +2161,11 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
 
 /* Greeting Header */
 .dashboard-greeting-banner {
-  padding: 4px 0 10px 0;
+  padding: 0 0 2px 0;
 }
 
 .greeting-title {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 2px;
@@ -2195,9 +2195,9 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   color: var(--text-muted);
-  font-size: 12px;
-  width: 26px;
-  height: 26px;
+  font-size: 11px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
@@ -2211,11 +2211,11 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
   color: var(--chalk-amber);
   border-color: var(--chalk-amber);
   transform: scale(1.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .greeting-subtitle {
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--text-muted);
 }
 
@@ -2263,33 +2263,33 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
 .dashboard-metrics-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 12px;
 }
 
 .metric-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-chalk);
-  border-radius: 14px;
-  padding: 16px 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
 .metric-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+  border-color: var(--border-chalk-dashed);
 }
 
 .metric-card-content {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .ring-progress-wrapper {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 72px;
+  height: 72px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2298,19 +2298,30 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
 
 .progress-ring-svg {
   transform: rotate(-90deg);
-  width: 80px;
-  height: 80px;
+  width: 72px;
+  height: 72px;
 }
 
 .ring-bg {
   fill: none;
   stroke: var(--bg-surface-elevated);
-  stroke-width: 6.5;
+  stroke-width: 6;
+}
+
+/* Subtle background stroke for high visibility across all 3 themes */
+body.theme-parchment-cream .ring-bg {
+  stroke: rgba(43, 45, 66, 0.08);
+}
+body.theme-dark-slate .ring-bg {
+  stroke: rgba(241, 245, 249, 0.08);
+}
+body.theme-vintage-green .ring-bg {
+  stroke: rgba(247, 245, 235, 0.08);
 }
 
 .ring-bar {
   fill: none;
-  stroke-width: 6.5;
+  stroke-width: 6;
   stroke-linecap: round;
   stroke-dasharray: 213.63;
   stroke-dashoffset: 213.63;
@@ -2338,7 +2349,7 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
 }
 
 .ring-percentage {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -2346,134 +2357,154 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
 .metric-info {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
+  min-width: 0;
 }
 
 .metric-micro-tag {
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
   color: var(--text-muted);
 }
 
 .metric-title {
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--text-primary);
+  margin: 1px 0;
+  white-space: nowrap;
 }
 
 .metric-caption {
   font-size: 11px;
   color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Row 2: 2 Big Boxes Grid */
+/* Row 2: 2 Main Sections Grid (Balanced Spacing, Tasks Slightly More Prominent) */
 .dashboard-main-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  grid-template-columns: 1.18fr 0.82fr;
+  gap: 14px;
+  align-items: stretch;
 }
 
 .dash-big-box {
   background: var(--bg-surface);
   border: 1px solid var(--border-chalk);
-  border-radius: 14px;
-  padding: 18px 20px;
+  border-radius: 12px;
+  padding: 14px 16px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  min-height: 310px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  gap: 10px;
+  min-height: 250px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .dash-box-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   border-bottom: 1px dashed var(--border-chalk);
-  padding-bottom: 12px;
+  padding-bottom: 9px;
 }
 
 .dash-box-title-wrap {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .dash-box-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--text-primary);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   margin: 0;
 }
 
 .dash-box-badge {
-  font-size: 11px;
-  padding: 2px 8px;
-  border-radius: 10px;
+  font-size: 10.5px;
+  padding: 2px 7px;
+  border-radius: 8px;
   background: var(--bg-surface-elevated);
   color: var(--text-muted);
-  border: 1px dashed var(--border-chalk);
+  border: 1px solid var(--border-chalk);
 }
 
 .dash-box-stage-pill {
-  font-size: 11px;
-  padding: 2px 9px;
+  font-size: 10.5px;
+  padding: 2px 8px;
   border-radius: 10px;
-  background: rgba(42, 157, 143, 0.14);
+  background: rgba(6, 214, 160, 0.12);
   color: var(--chalk-mint);
   font-weight: 700;
-  border: 1px solid var(--chalk-mint);
+  border: 1px solid rgba(6, 214, 160, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dash-nav-link {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.dash-nav-link:hover {
+  color: var(--text-primary);
+  border-color: var(--chalk-amber);
+  background: var(--bg-hover);
+  transform: translateX(1px);
 }
 
 /* Big Box 1: Tasks Stream */
 .dash-tasks-stream {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
   overflow-y: auto;
-  max-height: 250px;
-  padding-right: 4px;
+  max-height: 240px;
+  padding-right: 3px;
 }
 
+/* Clean task card: No colored borders or colored outlines, neutral card background */
 .dash-task-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 9px 12px;
+  padding: 8px 11px;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
-  border-radius: 10px;
-  transition: all 0.2s ease;
+  border-radius: 9px;
+  transition: all 0.15s ease;
 }
 
 .dash-task-item:hover {
   background: var(--bg-hover);
+  border-color: var(--border-chalk-dashed);
 }
 
-.dash-task-item.priority-high {
-  border-color: rgba(230, 57, 70, 0.35);
-  box-shadow: inset 2px 0 0 var(--chalk-red);
-}
-
-.dash-task-item.priority-medium {
-  border-color: rgba(244, 162, 97, 0.35);
-  box-shadow: inset 2px 0 0 var(--chalk-amber);
-}
-
-.dash-task-item.priority-low {
-  border-color: rgba(42, 157, 143, 0.35);
-  box-shadow: inset 2px 0 0 var(--chalk-mint);
-}
-
+/* Completed task styling */
 .dash-task-item.is-completed {
-  opacity: 0.62;
+  opacity: 0.6;
 }
 
 .dash-task-item.is-completed .dash-task-text {
@@ -2488,6 +2519,24 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
   flex-shrink: 0;
 }
 
+.dash-task-check .custom-chalk-checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--border-chalk-dashed);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--chalk-mint);
+  transition: all 0.15s ease;
+}
+
+.dash-task-check .custom-chalk-checkbox.checked {
+  border-color: var(--chalk-mint);
+  background: rgba(6, 214, 160, 0.12);
+}
+
 .dash-task-body {
   display: flex;
   align-items: center;
@@ -2496,8 +2545,18 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
   overflow: hidden;
 }
 
+/* Priority Indicator: Small discrete red, yellow and green dots without coloring card */
+.dash-priority-dot {
+  font-size: 10px;
+  line-height: 1;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .dash-task-text {
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 500;
   color: var(--text-primary);
   white-space: nowrap;
@@ -2512,69 +2571,100 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
   border-radius: 6px;
   background: var(--bg-surface);
   color: var(--text-muted);
-  border: 1px dashed var(--border-chalk);
+  border: 1px solid var(--border-chalk);
   white-space: nowrap;
 }
 
 .dash-task-empty {
   text-align: center;
-  padding: 30px 10px;
+  padding: 24px 10px;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 12.5px;
 }
 
-/* Big Box 2: Growth Progress */
+/* Big Box 2: Growth Progress (Large Visually Appealing Daily Flower) */
 .dash-growth-spotlight {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   flex-grow: 1;
 }
 
 .dash-flower-display {
-  width: 104px;
-  height: 104px;
+  width: 114px;
+  height: 114px;
   border-radius: 14px;
   background: var(--bg-surface-elevated);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px dashed var(--border-chalk);
+  border: 1px solid var(--border-chalk);
   flex-shrink: 0;
+  box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease;
+}
+
+.dash-flower-display:hover {
+  transform: scale(1.02);
 }
 
 .dash-growth-details {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   flex-grow: 1;
+  min-width: 0;
+}
+
+.dash-species-title-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 2px;
 }
 
 .dash-species-title {
-  font-size: 17px;
+  font-size: 16.5px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--chalk-amber);
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dash-growth-quote {
-  font-size: 12px;
+  font-size: 11.5px;
   font-style: italic;
   color: var(--text-muted);
-  line-height: 1.45;
+  line-height: 1.4;
   margin: 0;
 }
 
+/* Connected Botanical Growth Stepper */
 .dash-stages-stepper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 6px;
+  gap: 4px;
   margin-top: 6px;
-  padding: 8px 12px;
+  padding: 8px 10px;
   background: var(--bg-surface-elevated);
-  border-radius: 8px;
-  border: 1px dashed var(--border-chalk);
+  border-radius: 9px;
+  border: 1px solid var(--border-chalk);
+  position: relative;
+}
+
+.dash-stages-stepper::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: var(--border-chalk-dashed);
+  z-index: 0;
+  opacity: 0.6;
 }
 
 .stepper-step {
@@ -2584,15 +2674,28 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
   gap: 3px;
   font-size: 10px;
   color: var(--text-faint);
+  position: relative;
+  z-index: 1;
   transition: all 0.2s ease;
+  min-width: 36px;
 }
 
 .stepper-step .step-dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: var(--border-chalk-dashed);
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-chalk-dashed);
   transition: all 0.2s ease;
+}
+
+.stepper-step.completed {
+  color: var(--text-muted);
+}
+
+.stepper-step.completed .step-dot {
+  background: var(--chalk-sky);
+  border-color: var(--chalk-sky);
 }
 
 .stepper-step.active {
@@ -2602,97 +2705,113 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
 
 .stepper-step.active .step-dot {
   background: var(--chalk-mint);
+  border-color: var(--chalk-mint);
   transform: scale(1.3);
-  box-shadow: 0 0 6px rgba(42, 157, 143, 0.4);
-}
-
-.stepper-step.completed {
-  color: var(--text-muted);
-}
-
-.stepper-step.completed .step-dot {
-  background: var(--chalk-sky);
+  box-shadow: 0 0 8px rgba(6, 214, 160, 0.45);
 }
 
 /* Row 3: Big Box 3 - Collected Botanicals Showcase */
 .dash-collection-box {
   background: var(--bg-surface);
   border: 1px solid var(--border-chalk);
-  border-radius: 14px;
-  padding: 18px 20px;
+  border-radius: 12px;
+  padding: 14px 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  gap: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .dash-collection-desc {
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--text-muted);
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .dash-collected-plants-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 10px;
 }
 
 .dash-plant-card {
   background: var(--bg-surface-elevated);
-  border: 1px dashed var(--border-chalk);
-  border-radius: 12px;
-  padding: 14px;
+  border: 1px solid var(--border-chalk);
+  border-radius: 10px;
+  padding: 10px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 8px;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  gap: 5px;
+  transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
 .dash-plant-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: var(--chalk-mint);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
 }
 
 .dash-plant-svg-wrap {
-  width: 60px;
-  height: 60px;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .dash-plant-name {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .dash-plant-meta {
-  font-size: 10px;
+  font-size: 9.5px;
   color: var(--text-muted);
 }
 
 .dash-plant-badge {
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  background: rgba(42, 157, 143, 0.12);
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 8px;
+  background: rgba(6, 214, 160, 0.12);
   color: var(--chalk-mint);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
-@media (max-width: 900px) {
+/* Responsive Breakpoints for Dashboard */
+@media (max-width: 980px) {
+  .dashboard-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
   .dashboard-metrics-row {
     grid-template-columns: 1fr;
   }
-  .dashboard-main-grid {
-    grid-template-columns: 1fr;
+  .dash-growth-spotlight {
+    flex-direction: column;
+    text-align: center;
+  }
+  .dash-species-title-row {
+    justify-content: center;
+  }
+  .dash-stages-stepper {
+    width: 100%;
+  }
+  .dash-collected-plants-grid {
+    grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
   }
 }
 

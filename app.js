@@ -1339,7 +1339,7 @@ function renderDashboard() {
             </span>
           </div>
           <div class="dash-task-body">
-            <span class="dot-glyph" style="font-size:12px;">${priorityDot}</span>
+            <span class="dash-priority-dot">${priorityDot}</span>
             <span class="dash-task-text" title="${task.title}">${task.title}</span>
             ${subtaskPill}
             ${timePill}
@@ -1388,7 +1388,7 @@ function renderDashboard() {
   const quoteEl = document.getElementById('dash-growth-quote');
 
   if (stagePill) stagePill.innerText = stageNames[currentStage];
-  if (flowerVisual) flowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 74, TODAY_DAY_NUM);
+  if (flowerVisual) flowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 96, TODAY_DAY_NUM);
   if (specimenTitle) specimenTitle.innerText = `🌸 ${specimenName}`;
   if (quoteEl) quoteEl.innerText = stageQuotes[currentStage];
 
