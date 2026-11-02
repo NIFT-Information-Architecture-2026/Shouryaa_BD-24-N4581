@@ -514,21 +514,37 @@
                 <h3 class="meadow-heading chalk-font" id="current-month-heading">October 2026 — Autumn Wildflower Meadow</h3>
                 <p class="meadow-subtext">Every day's effort blooms a unique multi-layered botanical specimen into your shared landscape.</p>
               </div>
-              <div class="meadow-stats-pill">
-                <div class="stat-item">
-                  <span class="stat-val chalk-font" id="meadow-bloom-count">0/31</span>
-                  <span class="stat-lbl">Blooms</span>
+              <div class="meadow-controls-group">
+                <div class="meadow-nav-buttons" title="Navigate monthly landscape">
+                  <button type="button" class="chalk-icon-btn meadow-scroll-btn" id="btn-meadow-scroll-left" title="Scroll earlier in the month">
+                    <i class="fa-solid fa-chevron-left"></i>
+                  </button>
+                  <button type="button" class="chalk-btn secondary-btn chalk-font meadow-today-btn" id="btn-meadow-center-today" title="Jump to Today's plot in the landscape">
+                    ★ Today
+                  </button>
+                  <button type="button" class="chalk-icon-btn meadow-scroll-btn" id="btn-meadow-scroll-right" title="Scroll later in the month">
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </button>
                 </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                  <span class="stat-val chalk-font" id="meadow-total-focus">0h 0m</span>
-                  <span class="stat-lbl">Focus Logged</span>
+                <div class="meadow-stats-pill">
+                  <div class="stat-item">
+                    <span class="stat-val chalk-font" id="meadow-bloom-count">0/31</span>
+                    <span class="stat-lbl">Blooms</span>
+                  </div>
+                  <div class="stat-divider"></div>
+                  <div class="stat-item">
+                    <span class="stat-val chalk-font" id="meadow-total-focus">0h 0m</span>
+                    <span class="stat-lbl">Focus Logged</span>
+                  </div>
                 </div>
               </div>
             </div>
 
             <!-- Rich Panoramic Botanical Garden Landscape Container (Image 1 Style) -->
             <div class="meadow-scenery-container" id="meadow-scenery-wrap">
+              <div class="meadow-scroll-hint-bar">
+                <span class="hint-text chalk-font"><i class="fa-solid fa-arrows-left-right"></i> Scroll or swipe horizontally to view all days of the month</span>
+              </div>
               <div class="meadow-panorama-viewport" id="meadow-panorama-viewport">
                 <!-- Chalk Vector SVG Meadow Landscape rendered by ChalkMeadowPanorama -->
               </div>

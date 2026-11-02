@@ -430,10 +430,15 @@ const ChalkMeadowPanorama = {
     const labelColor = isToday ? 'style="fill: var(--chalk-amber); font-weight:700;"' : '';
     const underlineColor = isToday ? 'stroke="var(--chalk-amber)" stroke-width="2.2"' : 'stroke="var(--text-primary)" stroke-width="2" opacity="0.8"';
     const todayBadge = isToday ? `<text x="${x}" y="253" font-family="'Kalam', cursive" font-size="12" font-weight="700" fill="var(--chalk-amber)" text-anchor="middle">★ Today</text>` : '';
+    const todayPedestal = isToday ? `
+      <!-- Soft Amber Soil Pedestal Aura for Today's Specimen -->
+      <ellipse cx="${x}" cy="222" rx="42" ry="11" fill="rgba(255, 209, 102, 0.12)" stroke="var(--chalk-amber)" stroke-width="1.2" stroke-dasharray="3,2" />
+    ` : '';
 
     return `
       <g class="meadow-plant-hotspot ${isToday ? 'is-today-plant' : ''}" data-day="${day}" id="plant-hotspot-d${day}">
         <rect x="${x - 45}" y="10" width="90" height="245" fill="transparent" />
+        ${todayPedestal}
         ${plantArtwork}
         <text x="${x}" y="${isToday ? 234 : 238}" class="meadow-chalk-label" ${labelColor}>D${day}</text>
         <path d="M ${x - 17} ${isToday ? 240 : 244} Q ${x} ${isToday ? 242 : 246} ${x + 17} ${isToday ? 240 : 244}" ${underlineColor} stroke-linecap="round" fill="none" />
@@ -446,30 +451,67 @@ const ChalkMeadowPanorama = {
     if (!container) return;
 
     const totalDays = CurrentDateInfo ? CurrentDateInfo.daysInMonth : 30;
-    const startDay = Math.max(1, Math.min(TODAY_DAY_NUM - 7, totalDays - 7));
-    const xPositions = [75, 185, 295, 405, 520, 635, 755, 880];
+    const slotWidth = 110;
+    const startX = 65;
+    const totalWidth = startX * 2 + (totalDays - 1) * slotWidth;
+
     const meadowSlots = [];
-    for (let i = 0; i < 8; i++) {
-      const slotDay = startDay + i;
-      if (slotDay <= totalDays) {
-        meadowSlots.push({ day: slotDay, x: xPositions[i] });
-      }
+    for (let day = 1; day <= totalDays; day++) {
+      const x = startX + (day - 1) * slotWidth;
+      meadowSlots.push({ day, x });
     }
 
     const plantsSVG = meadowSlots.map(slot => {
       const isToday = slot.day === TODAY_DAY_NUM;
       const dayData = AppState.gardenData[slot.day] || {
         specimen: BOTANICAL_SPECIMENS[slot.day - 1] || 'Autumn Wildflower',
-        tasks: 0,
-        planned: 0,
-        focus: 0,
-        stage: 0
+        tasks: isToday ? 1 : (slot.day < TODAY_DAY_NUM ? 5 : 0),
+        planned: 5,
+        focus: isToday ? AppState.focusTimeLoggedToday : (slot.day < TODAY_DAY_NUM ? 90 : 0),
+        stage: isToday ? 1 : (slot.day < TODAY_DAY_NUM ? 4 : 0)
       };
       return this.renderPlantStage(slot.x, slot.day, dayData, isToday);
     }).join('\n');
 
+    // Generate continuous ground tufts & pebbles between each day's plant
+    let sceneryTufts = '';
+    for (let day = 1; day < totalDays; day++) {
+      const midX = startX + (day - 1) * slotWidth + (slotWidth / 2);
+      sceneryTufts += `
+        <ellipse cx="${midX - 16}" cy="217" rx="3.5" ry="1.6" fill="none" stroke="var(--border-chalk)" stroke-width="1" opacity="0.5" />
+        <path d="M ${midX} 215 Q ${midX - 3} 204 ${midX - 7} 200 M ${midX + 1} 215 Q ${midX + 2} 202 ${midX + 5} 198 M ${midX + 3} 215 Q ${midX + 7} 205 ${midX + 11} 201" stroke="var(--chalk-mint)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.75" />
+      `;
+    }
+
+    // Sky fauna: butterflies & bees gliding at intervals along the continuous month landscape
+    let skyFauna = '';
+    for (let day = 1; day <= totalDays; day += 4) {
+      const fx = startX + (day - 1) * slotWidth + 45;
+      if (day % 8 === 1) {
+        skyFauna += `
+          <g class="meadow-sky-butterfly" transform="translate(${fx}, 48)">
+            <line x1="0" y1="-7" x2="0" y2="7" stroke="var(--chalk-white)" stroke-width="1.6" stroke-linecap="round" />
+            <path d="M 0 -2 C -10 -10 -14 2 -2 3 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.2" />
+            <path d="M 0 2 C -8 3 -10 10 -2 6 Z" fill="rgba(6, 214, 160, 0.3)" stroke="#06D6A0" stroke-width="1.1" />
+            <path d="M 0 -2 C 10 -10 14 2 2 3 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.2" />
+            <path d="M 0 2 C 8 3 10 10 2 6 Z" fill="rgba(6, 214, 160, 0.3)" stroke="#06D6A0" stroke-width="1.1" />
+          </g>
+        `;
+      } else {
+        skyFauna += `
+          <g class="meadow-sky-bee" transform="translate(${fx}, 44)">
+            <ellipse cx="0" cy="0" rx="5.5" ry="3.8" fill="#FFD166" stroke="#FAF0CA" stroke-width="1.1" />
+            <line x1="-1.5" y1="-3.2" x2="-1.5" y2="3.2" stroke="#181A1D" stroke-width="1.1" />
+            <line x1="2" y1="-3.2" x2="2" y2="3.2" stroke="#181A1D" stroke-width="1.1" />
+            <ellipse cx="-1.5" cy="-5" rx="3.5" ry="2" transform="rotate(-25 -1.5 -5)" fill="rgba(255,255,255,0.7)" stroke="#FAF0CA" stroke-width="0.9" />
+            <ellipse cx="2" cy="-5" rx="3.5" ry="2" transform="rotate(25 2 -5)" fill="rgba(255,255,255,0.7)" stroke="#FAF0CA" stroke-width="0.9" />
+          </g>
+        `;
+      }
+    }
+
     const svgHTML = `
-      <svg viewBox="0 0 960 260" class="meadow-panorama-svg" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 ${totalWidth} 260" class="meadow-panorama-svg" style="width:${totalWidth}px; min-width:${totalWidth}px; height:260px;" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <filter id="chalk-glow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="3" result="blur" />
@@ -477,72 +519,17 @@ const ChalkMeadowPanorama = {
           </filter>
         </defs>
 
-        <!-- ================= SKY & FAUNA ================= -->
-        <!-- Fluttering Chalk Butterfly (Left Sky, near D8/D9) -->
-        <g class="meadow-sky-butterfly">
-          <path d="M 45 80 C 75 45 110 35 125 50 C 135 62 120 78 105 68 C 94 56 112 40 135 48" 
-                fill="none" stroke="var(--chalk-white)" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.45" />
-          <g transform="translate(135, 48) rotate(-15)">
-            <line x1="0" y1="-8" x2="0" y2="8" stroke="var(--chalk-white)" stroke-width="1.8" stroke-linecap="round" />
-            <path d="M 0 -8 Q -4 -13 -6 -12 M 0 -8 Q 4 -13 6 -12" stroke="var(--chalk-white)" stroke-width="1" fill="none" />
-            <path d="M 0 -2 C -12 -12 -16 2 -2 3 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.4" />
-            <path d="M 0 2 C -10 4 -12 12 -2 7 Z" fill="rgba(6, 214, 160, 0.3)" stroke="#06D6A0" stroke-width="1.2" />
-            <path d="M 0 -2 C 12 -12 16 2 2 3 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.4" />
-            <path d="M 0 2 C 10 4 12 12 2 7 Z" fill="rgba(6, 214, 160, 0.3)" stroke="#06D6A0" stroke-width="1.2" />
-          </g>
-        </g>
+        <!-- Continuous Shared Ground Horizon Line across all ${totalDays} Days -->
+        <path d="M 0 215 L ${totalWidth} 215" stroke="var(--text-primary)" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.8" />
+        <path d="M 0 219 L ${totalWidth} 219" stroke="var(--border-chalk)" stroke-width="1.4" stroke-dasharray="6,4" fill="none" opacity="0.55" />
 
-        <!-- Buzzing Chalk Bee #1 (Mid Sky, above D10/D11) -->
-        <g class="meadow-sky-bee">
-          <path d="M 315 65 Q 345 32 370 42" fill="none" stroke="var(--chalk-amber)" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.5" />
-          <g transform="translate(372, 42) rotate(12)">
-            <ellipse cx="0" cy="0" rx="6" ry="4" fill="#FFD166" stroke="#FAF0CA" stroke-width="1.2" />
-            <line x1="-2" y1="-3.5" x2="-2" y2="3.5" stroke="#181A1D" stroke-width="1.2" />
-            <line x1="2" y1="-3.5" x2="2" y2="3.5" stroke="#181A1D" stroke-width="1.2" />
-            <ellipse cx="-2" cy="-6" rx="4" ry="2.2" transform="rotate(-30 -2 -6)" fill="rgba(255,255,255,0.7)" stroke="#FAF0CA" stroke-width="0.9" />
-            <ellipse cx="2" cy="-6" rx="4" ry="2.2" transform="rotate(20 2 -6)" fill="rgba(255,255,255,0.7)" stroke="#FAF0CA" stroke-width="0.9" />
-          </g>
-        </g>
+        <!-- Meadow Grass Tufts & Ground Stipples along Horizon -->
+        ${sceneryTufts}
 
-        <!-- Buzzing Chalk Bee #2 (Right Sky, above D13/D14) -->
-        <g class="meadow-sky-bee">
-          <path d="M 645 58 Q 675 25 700 36" fill="none" stroke="var(--chalk-amber)" stroke-width="1.2" stroke-dasharray="3,3" opacity="0.5" />
-          <g transform="translate(702, 36) rotate(-10)">
-            <ellipse cx="0" cy="0" rx="5.5" ry="3.8" fill="#FFD166" stroke="#FAF0CA" stroke-width="1.2" />
-            <line x1="-1.5" y1="-3.2" x2="-1.5" y2="3.2" stroke="#181A1D" stroke-width="1.2" />
-            <line x1="2" y1="-3.2" x2="2" y2="3.2" stroke="#181A1D" stroke-width="1.2" />
-            <ellipse cx="-1.5" cy="-5.5" rx="3.5" ry="2" transform="rotate(-25 -1.5 -5.5)" fill="rgba(255,255,255,0.7)" stroke="#FAF0CA" stroke-width="0.9" />
-            <ellipse cx="2" cy="-5.5" rx="3.5" ry="2" transform="rotate(25 2 -5.5)" fill="rgba(255,255,255,0.7)" stroke="#FAF0CA" stroke-width="0.9" />
-          </g>
-        </g>
+        <!-- Sky Fauna (Butterflies & Bees) -->
+        ${skyFauna}
 
-        <!-- ================= GROUND SOIL & TEXTURE ================= -->
-        <!-- Primary Soil Horizon Line -->
-        <path d="M 10 215 Q 240 212 480 215 T 950 215" stroke="var(--text-primary)" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.8" />
-        <!-- Secondary Chalk Ground Texture Line -->
-        <path d="M 15 219 Q 240 221 480 219 T 945 221" stroke="var(--border-chalk)" stroke-width="1.4" stroke-dasharray="6,4" fill="none" opacity="0.55" />
-        
-        <!-- Ground Pebbles & Chalk Stipples -->
-        <ellipse cx="45" cy="216" rx="4" ry="2" fill="none" stroke="var(--border-chalk)" stroke-width="1" opacity="0.6" />
-        <ellipse cx="140" cy="217" rx="3" ry="1.5" fill="none" stroke="var(--border-chalk)" stroke-width="1" opacity="0.6" />
-        <ellipse cx="235" cy="216" rx="4.5" ry="2" fill="none" stroke="var(--border-chalk)" stroke-width="1.2" opacity="0.6" />
-        <ellipse cx="340" cy="218" rx="3" ry="1.5" fill="none" stroke="var(--border-chalk)" stroke-width="1" opacity="0.6" />
-        <ellipse cx="445" cy="216" rx="4" ry="2" fill="none" stroke="var(--border-chalk)" stroke-width="1" opacity="0.6" />
-        <ellipse cx="550" cy="217" rx="5" ry="2.2" fill="none" stroke="var(--border-chalk)" stroke-width="1.2" opacity="0.6" />
-        <ellipse cx="670" cy="216" rx="3.5" ry="1.8" fill="none" stroke="var(--border-chalk)" stroke-width="1" opacity="0.6" />
-        <ellipse cx="805" cy="217" rx="4" ry="2" fill="none" stroke="var(--border-chalk)" stroke-width="1" opacity="0.6" />
-        <ellipse cx="920" cy="216" rx="4.5" ry="2" fill="none" stroke="var(--border-chalk)" stroke-width="1" opacity="0.6" />
-
-        <!-- Meadow Grass Tufts Between Plants -->
-        <path d="M 130 215 Q 128 205 125 202 M 131 215 Q 132 203 134 200 M 133 215 Q 136 206 140 203" stroke="var(--chalk-mint)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.75" />
-        <path d="M 240 215 Q 238 204 234 200 M 242 215 Q 243 202 245 198 M 244 215 Q 248 205 251 201" stroke="var(--chalk-mint)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.75" />
-        <path d="M 350 215 Q 347 203 343 199 M 352 215 Q 354 201 357 197 M 354 215 Q 358 204 362 201" stroke="var(--chalk-mint)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.75" />
-        <path d="M 460 215 Q 457 203 453 199 M 462 215 Q 464 201 467 196 M 464 215 Q 468 204 472 200" stroke="var(--chalk-mint)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.75" />
-        <path d="M 575 215 Q 572 204 568 199 M 577 215 Q 579 200 582 195 M 579 215 Q 583 205 588 201" stroke="var(--chalk-mint)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.75" />
-        <path d="M 695 215 Q 692 203 688 198 M 697 215 Q 700 200 703 195 M 699 215 Q 704 204 709 200" stroke="var(--chalk-mint)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.75" />
-        <path d="M 815 215 Q 812 202 808 197 M 817 215 Q 820 199 824 194 M 819 215 Q 824 203 829 199" stroke="var(--chalk-mint)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.75" />
-
-        <!-- ================= DYNAMIC BOTANICAL PLANTS (D8 TO D15) ================= -->
+        <!-- Dynamic Botanical Plants (Full Month Days 1 to ${totalDays}) -->
         ${plantsSVG}
       </svg>
     `;
@@ -2449,6 +2436,36 @@ function initProgressGarden() {
     });
   }
 
+  // Meadow Landscape Navigation Scroll Buttons
+  const scrollLeftBtn = document.getElementById('btn-meadow-scroll-left');
+  if (scrollLeftBtn) {
+    scrollLeftBtn.addEventListener('click', () => {
+      const vp = document.getElementById('meadow-panorama-viewport');
+      if (vp) vp.scrollBy({ left: -330, behavior: 'smooth' });
+    });
+  }
+
+  const scrollRightBtn = document.getElementById('btn-meadow-scroll-right');
+  if (scrollRightBtn) {
+    scrollRightBtn.addEventListener('click', () => {
+      const vp = document.getElementById('meadow-panorama-viewport');
+      if (vp) vp.scrollBy({ left: 330, behavior: 'smooth' });
+    });
+  }
+
+  const centerTodayBtn = document.getElementById('btn-meadow-center-today');
+  if (centerTodayBtn) {
+    centerTodayBtn.addEventListener('click', () => {
+      const vp = document.getElementById('meadow-panorama-viewport');
+      if (vp) {
+        const todayX = 65 + (TODAY_DAY_NUM - 1) * 110;
+        const vpWidth = vp.clientWidth || 800;
+        vp.scrollTo({ left: Math.max(0, todayX - (vpWidth / 2)), behavior: 'smooth' });
+        AudioEngine.playChalkScratch();
+      }
+    });
+  }
+
   renderProgressGarden();
 }
 
@@ -2463,9 +2480,15 @@ function renderProgressGarden() {
     monthHeadingEl.innerText = `${CurrentDateInfo.monthName} ${CurrentDateInfo.year} — Botanical Wildflower Meadow`;
   }
 
-  // 1. Render Handcrafted Vector Chalk Botanical Meadow Panorama (Image 1 Style)
+  // 1. Render Handcrafted Vector Chalk Botanical Meadow Panorama across Full Month
   if (meadowViewport) {
     ChalkMeadowPanorama.renderMeadow(meadowViewport);
+    // Smoothly scroll and center landscape on Today's plot
+    setTimeout(() => {
+      const todayX = 65 + (TODAY_DAY_NUM - 1) * 110;
+      const vpWidth = meadowViewport.clientWidth || 800;
+      meadowViewport.scrollTo({ left: Math.max(0, todayX - (vpWidth / 2)), behavior: 'smooth' });
+    }, 50);
   }
 
   // 2. Illustrated Nature Journal Grid
@@ -2489,23 +2512,26 @@ function renderProgressGarden() {
       totalFocusMinutes += dayData.focus;
 
       const stageNamesShort = ['Seed', 'Sprout', 'Stem', 'Bud', 'Bloom'];
-      const stageTagText = isToday ? '★ Today' : (day <= TODAY_DAY_NUM ? stageNamesShort[dayData.stage || 0] : '');
+      const currentStage = dayData ? (dayData.stage ?? 0) : 0;
+      const stageTagText = isToday ? '★ Today' : (stageNamesShort[currentStage] || 'Seed');
 
       const tile = document.createElement('div');
       tile.className = `calendar-day-tile ${isToday ? 'is-today' : ''}`;
+      tile.dataset.day = day;
+      tile.title = `Day ${day}: ${dayData.specimen} (${GROWTH_STAGE_NAMES[currentStage] || 'Resting Seed'})`;
       tile.innerHTML = `
         <div class="tile-top">
           <span class="day-num">${day < 10 ? '0' + day : day}</span>
-          <span class="stage-tag stage-${dayData.stage || 0} ${isToday ? 'today-tag' : ''}">${stageTagText}</span>
+          <span class="stage-tag stage-${currentStage} ${isToday ? 'today-tag' : ''}">${stageTagText}</span>
         </div>
-        <div class="tile-artwork-svg">${ChalkBotanicals.getBotanicalSVG(dayData.stage, 36, day)}</div>
-        <div class="tile-bottom chalk-font">${dayData.specimen}</div>
+        <div class="tile-artwork-svg">${ChalkBotanicals.getBotanicalSVG(currentStage, 34, day)}</div>
+        <div class="tile-bottom chalk-font" title="${dayData.specimen}">${dayData.specimen}</div>
       `;
 
       tile.addEventListener('click', () => {
         AudioEngine.playChalkScratch();
         emitDustParticles(tile.getBoundingClientRect());
-        openGardenDayModal(day, dayData, GROWTH_STAGE_NAMES[dayData.stage || 0]);
+        openGardenDayModal(day, dayData, GROWTH_STAGE_NAMES[currentStage]);
       });
 
       grid.appendChild(tile);
