@@ -808,7 +808,7 @@ body {
 .task-checkbox-wrap {
   cursor: pointer;
   flex-shrink: 0;
-  margin-top: 5px;
+  margin-top: 2px;
 }
 
 .custom-chalk-checkbox {
@@ -840,48 +840,6 @@ body {
   transform: scale(1.02);
 }
 
-/* Circular Progress Ring (Approximately 30px with balanced typography & alignment) */
-.task-progress-ring {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  margin-top: 0;
-  transition: transform 0.15s ease;
-  user-select: none;
-}
-
-.task-progress-ring:hover {
-  transform: scale(1.1);
-}
-
-.task-ring-svg {
-  display: block;
-  overflow: visible;
-}
-
-.task-ring-track {
-  color: var(--text-faint);
-}
-
-.task-ring-fill {
-  transition: stroke-dashoffset 0.35s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.25s ease;
-}
-
-.task-ring-glyph {
-  font-family: 'Inter', -apple-system, sans-serif;
-  line-height: 1;
-}
-
-.task-ring-pct {
-  font-family: 'Inter', -apple-system, sans-serif;
-  letter-spacing: -0.4px;
-  line-height: 1;
-}
-
 .task-body-interactive {
   flex: 1 1 auto;
   min-width: 0;
@@ -893,7 +851,7 @@ body {
   flex-wrap: wrap;
   gap: 5px 8px;
   line-height: 1.35;
-  margin-top: 3px;
+  margin-top: 0;
 }
 
 .task-priority-dot {
@@ -3077,7 +3035,7 @@ body.theme-vintage-green .ring-bg {
     gap: 8px 10px;
   }
   .task-body-interactive {
-    width: calc(100% - 72px);
+    width: calc(100% - 34px);
   }
   .task-actions {
     width: 100%;

@@ -1732,42 +1732,6 @@ function renderTodaySlate() {
   populateFocusTaskDropdown();
 }
 
-function renderTaskProgressRing(percent, subtasksCount, subtasksCompleted) {
-  const r = 11.5;
-  const circumference = 2 * Math.PI * r; // ~72.26
-  const strokeOffset = circumference * (1 - percent / 100);
-
-  let strokeColor = 'var(--text-faint)';
-  if (percent === 100) {
-    strokeColor = 'var(--chalk-mint)';
-  } else if (percent > 0) {
-    strokeColor = 'var(--chalk-sky)';
-  }
-
-  let centerContent = '';
-  if (percent === 100) {
-    centerContent = `<text x="15" y="15" text-anchor="middle" dominant-baseline="central" class="task-ring-glyph" font-size="11" fill="var(--chalk-mint)" font-weight="700">✓</text>`;
-  } else if (subtasksCount > 0) {
-    centerContent = `<text x="15" y="15.5" text-anchor="middle" dominant-baseline="central" class="task-ring-pct" font-size="9" fill="var(--text-primary)" font-weight="600">${percent}%</text>`;
-  } else {
-    centerContent = `<circle cx="15" cy="15" r="2" class="task-ring-dot" fill="var(--text-muted)" opacity="0.4" />`;
-  }
-
-  const tooltip = subtasksCount > 0
-    ? `${percent}% completed (${subtasksCompleted}/${subtasksCount} steps)`
-    : (percent === 100 ? '100% completed' : '0% completed');
-
-  return `
-    <div class="task-progress-ring" title="${tooltip}">
-      <svg class="task-ring-svg" width="30" height="30" viewBox="0 0 30 30">
-        <circle cx="15" cy="15" r="${r}" class="task-ring-track" fill="none" stroke="currentColor" stroke-width="2.6" opacity="0.16" />
-        <circle cx="15" cy="15" r="${r}" class="task-ring-fill" fill="none" stroke="${strokeColor}" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="${circumference.toFixed(2)}" stroke-dashoffset="${strokeOffset.toFixed(2)}" transform="rotate(-90 15 15)" />
-        ${centerContent}
-      </svg>
-    </div>
-  `;
-}
-
 function createTaskCardElement(task) {
   const card = document.createElement('div');
   const isDone = task.status === 'COMPLETED';
@@ -1781,19 +1745,6 @@ function createTaskCardElement(task) {
   
   const subtasksCount = task.subtasks ? task.subtasks.length : 0;
   const subtasksCompleted = task.subtasks ? task.subtasks.filter(s => s.completed).length : 0;
-
-  // Calculate percentage
-  let taskPercent = 0;
-  if (isDone) {
-    taskPercent = 100;
-  } else if (subtasksCount > 0) {
-    taskPercent = Math.round((subtasksCompleted / subtasksCount) * 100);
-  } else {
-    taskPercent = 0;
-  }
-
-  // Circular progress ring SVG
-  const ringSVG = renderTaskProgressRing(taskPercent, subtasksCount, subtasksCompleted);
 
   // Subtasks Drawer (collapsed by default unless task.isExpanded is true)
   let subtasksDrawerHTML = '';
@@ -1827,9 +1778,6 @@ function createTaskCardElement(task) {
       <div class="task-checkbox-wrap" data-task-id="${task.id}" title="${isDone ? 'Mark uncompleted' : 'Mark completed'}">
         <div class="custom-chalk-checkbox">${isDone ? '✓' : ''}</div>
       </div>
-
-      <!-- Small Circular Progress Ring -->
-      ${ringSVG}
       
       <!-- Interactive Task Body -->
       <div class="task-body-interactive">
@@ -1889,21 +1837,6 @@ function createTaskCardElement(task) {
     renderDashboard();
     updateGlobalGrowthMetrics();
   });
-
-  // Circular Progress Ring Click
-  const ringEl = card.querySelector('.task-progress-ring');
-  if (ringEl) {
-    ringEl.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (subtasksCount > 0) {
-        task.isExpanded = !task.isExpanded;
-        saveState();
-        renderTodaySlate();
-      } else {
-        checkWrap.click();
-      }
-    });
-  }
 
   // Dedicated Steps Button Handler (Expands on click, collapses on re-click)
   const stepsBtn = card.querySelector('[data-subtasks-toggle]');
