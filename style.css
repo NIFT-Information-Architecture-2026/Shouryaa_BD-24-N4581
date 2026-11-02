@@ -808,7 +808,7 @@ body {
 .task-checkbox-wrap {
   cursor: pointer;
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 5px;
 }
 
 .custom-chalk-checkbox {
@@ -840,22 +840,22 @@ body {
   transform: scale(1.02);
 }
 
-/* Small Circular Progress Ring */
+/* Circular Progress Ring (Approximately 30px with balanced typography & alignment) */
 .task-progress-ring {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
-  margin-top: 1px;
+  margin-top: 0;
   transition: transform 0.15s ease;
   user-select: none;
 }
 
 .task-progress-ring:hover {
-  transform: scale(1.12);
+  transform: scale(1.1);
 }
 
 .task-ring-svg {
@@ -873,11 +873,13 @@ body {
 
 .task-ring-glyph {
   font-family: 'Inter', -apple-system, sans-serif;
+  line-height: 1;
 }
 
 .task-ring-pct {
   font-family: 'Inter', -apple-system, sans-serif;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.4px;
+  line-height: 1;
 }
 
 .task-body-interactive {
@@ -891,6 +893,7 @@ body {
   flex-wrap: wrap;
   gap: 5px 8px;
   line-height: 1.35;
+  margin-top: 3px;
 }
 
 .task-priority-dot {
@@ -1156,6 +1159,9 @@ body {
 /* Slate Footer Bar */
 .slate-footer-bar {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
   justify-content: flex-start;
   margin-top: 18px;
   padding-top: 12px;
@@ -1181,6 +1187,34 @@ body {
   background: var(--bg-hover);
   border-color: var(--border-chalk);
   transform: translateY(-1px);
+}
+
+.undo-eraser-btn {
+  background: var(--bg-surface-elevated);
+  border: 1px dashed var(--chalk-sky);
+  color: var(--chalk-sky);
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  user-select: none;
+  animation: chalkFadeIn 0.25s ease-out;
+}
+
+.undo-eraser-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+@keyframes chalkFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* --------------------------------------------------------------------------
@@ -3043,7 +3077,7 @@ body.theme-vintage-green .ring-bg {
     gap: 8px 10px;
   }
   .task-body-interactive {
-    width: calc(100% - 66px);
+    width: calc(100% - 72px);
   }
   .task-actions {
     width: 100%;
