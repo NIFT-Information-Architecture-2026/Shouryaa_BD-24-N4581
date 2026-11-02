@@ -432,16 +432,24 @@
                     <option value="WELLNESS">🌿 Wellness / Life</option>
                   </select>
                 </div>
+                <div class="control-group">
+                  <label class="control-label chalk-font" for="upcoming-est-time">Est. Time:</label>
+                  <input type="number" id="upcoming-est-time" class="chalk-input" value="45" min="5" step="5" style="width:72px; padding:4px 8px; font-size:12px;">
+                </div>
               </div>
             </form>
           </div>
 
-          <!-- Upcoming Date Columns -->
+          <!-- Upcoming Date Columns (4 Buckets: Tomorrow, Later This Week, Next Week, Later) -->
           <div class="upcoming-buckets-grid">
             
+            <!-- Bucket 1: Tomorrow -->
             <div class="bucket-column chalk-card">
               <div class="bucket-header">
-                <h4 class="chalk-font">Tomorrow</h4>
+                <div class="bucket-title-wrap">
+                  <h4 class="chalk-font">Tomorrow</h4>
+                  <span class="bucket-sub-date" id="date-label-tomorrow"></span>
+                </div>
                 <span class="bucket-count" id="count-tomorrow">0</span>
               </div>
               <div class="bucket-task-list" id="list-tomorrow">
@@ -449,9 +457,13 @@
               </div>
             </div>
 
+            <!-- Bucket 2: Later This Week -->
             <div class="bucket-column chalk-card">
               <div class="bucket-header">
-                <h4 class="chalk-font">Later This Week</h4>
+                <div class="bucket-title-wrap">
+                  <h4 class="chalk-font">Later This Week</h4>
+                  <span class="bucket-sub-date" id="date-label-this-week"></span>
+                </div>
                 <span class="bucket-count" id="count-this-week">0</span>
               </div>
               <div class="bucket-task-list" id="list-this-week">
@@ -459,9 +471,27 @@
               </div>
             </div>
 
+            <!-- Bucket 3: Next Week -->
             <div class="bucket-column chalk-card">
               <div class="bucket-header">
-                <h4 class="chalk-font">Next Week & Beyond</h4>
+                <div class="bucket-title-wrap">
+                  <h4 class="chalk-font">Next Week</h4>
+                  <span class="bucket-sub-date" id="date-label-next-week"></span>
+                </div>
+                <span class="bucket-count" id="count-next-week">0</span>
+              </div>
+              <div class="bucket-task-list" id="list-next-week">
+                <!-- Dynamically Populated -->
+              </div>
+            </div>
+
+            <!-- Bucket 4: Later (Beyond Next Week) -->
+            <div class="bucket-column chalk-card">
+              <div class="bucket-header">
+                <div class="bucket-title-wrap">
+                  <h4 class="chalk-font">Later</h4>
+                  <span class="bucket-sub-date" id="date-label-later">Beyond next week</span>
+                </div>
                 <span class="bucket-count" id="count-later">0</span>
               </div>
               <div class="bucket-task-list" id="list-later">
@@ -836,6 +866,66 @@
         <div class="modal-footer">
           <button type="button" class="chalk-btn secondary-btn chalk-font" id="btn-cancel-name-modal">Cancel</button>
           <button type="submit" class="chalk-btn primary-btn chalk-font"><i class="fa-solid fa-check"></i> Save Name</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 4: Edit Task Modal -->
+  <div class="chalk-modal-backdrop" id="edit-task-modal" style="display:none;">
+    <div class="chalk-modal-dialog chalk-card">
+      <div class="modal-header">
+        <h3 class="chalk-font"><i class="fa-solid fa-pen-to-square" style="color:var(--chalk-amber); margin-right:6px;"></i> Edit Task Details</h3>
+        <button type="button" class="modal-close-btn" id="btn-close-edit-task-modal">&times;</button>
+      </div>
+      <form id="edit-task-form">
+        <input type="hidden" id="edit-task-id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="chalk-font" for="edit-task-title">Task Name:</label>
+            <input type="text" id="edit-task-title" class="chalk-input" placeholder="Task name..." required>
+          </div>
+          <div class="form-row-2col">
+            <div class="form-group">
+              <label class="chalk-font" for="edit-task-date">Scheduled Date:</label>
+              <input type="date" id="edit-task-date" class="chalk-date-picker" required>
+            </div>
+            <div class="form-group">
+              <label class="chalk-font" for="edit-task-est-time">Est. Time (min):</label>
+              <input type="number" id="edit-task-est-time" class="chalk-input" min="5" step="5" placeholder="45">
+            </div>
+          </div>
+          <div class="form-row-2col">
+            <div class="form-group">
+              <label class="chalk-font">Priority:</label>
+              <div class="priority-pills">
+                <label class="priority-pill red-pill" title="High Priority">
+                  <input type="radio" name="edit-task-priority" value="HIGH">
+                  <span class="dot-glyph red-dot">🔴</span>
+                </label>
+                <label class="priority-pill amber-pill" title="Medium Priority">
+                  <input type="radio" name="edit-task-priority" value="MEDIUM">
+                  <span class="dot-glyph amber-dot">🟡</span>
+                </label>
+                <label class="priority-pill mint-pill" title="Low Priority">
+                  <input type="radio" name="edit-task-priority" value="LOW">
+                  <span class="dot-glyph mint-dot">🟢</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="chalk-font" for="edit-task-category">Category:</label>
+              <select id="edit-task-category" class="chalk-select">
+                <option value="ACADEMIC">📚 Academic / Studio</option>
+                <option value="CREATIVE">🎨 Creative / Personal</option>
+                <option value="WELLNESS">🌿 Wellness / Life</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="chalk-btn secondary-btn chalk-font" id="btn-cancel-edit-task">Cancel</button>
+          <button type="submit" class="chalk-btn primary-btn chalk-font"><i class="fa-solid fa-check"></i> Save Changes</button>
         </div>
       </form>
     </div>

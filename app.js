@@ -601,6 +601,29 @@ function getLocalDateInfo() {
   const eowDay = String(endOfWeek.getDate()).padStart(2, '0');
   const endOfWeekStr = `${eowYear}-${eowMonth}-${eowDay}`;
 
+  // Next week calculations (starts day after endOfWeek, ends 7 days later)
+  const nextWeekStart = new Date(endOfWeek);
+  nextWeekStart.setDate(endOfWeek.getDate() + 1);
+  const nwsYear = nextWeekStart.getFullYear();
+  const nwsMonth = String(nextWeekStart.getMonth() + 1).padStart(2, '0');
+  const nwsDay = String(nextWeekStart.getDate()).padStart(2, '0');
+  const nextWeekStartStr = `${nwsYear}-${nwsMonth}-${nwsDay}`;
+
+  const endOfNextWeek = new Date(endOfWeek);
+  endOfNextWeek.setDate(endOfWeek.getDate() + 7);
+  const eonwYear = endOfNextWeek.getFullYear();
+  const eonwMonth = String(endOfNextWeek.getMonth() + 1).padStart(2, '0');
+  const eonwDay = String(endOfNextWeek.getDate()).padStart(2, '0');
+  const endOfNextWeekStr = `${eonwYear}-${eonwMonth}-${eonwDay}`;
+
+  const nextWeekSample = new Date(nextWeekStart);
+  nextWeekSample.setDate(nextWeekStart.getDate() + 2);
+  const nextWeekSampleStr = `${nextWeekSample.getFullYear()}-${String(nextWeekSample.getMonth() + 1).padStart(2, '0')}-${String(nextWeekSample.getDate()).padStart(2, '0')}`;
+
+  const laterSample = new Date(now);
+  laterSample.setDate(now.getDate() + 18);
+  const laterSampleStr = `${laterSample.getFullYear()}-${String(laterSample.getMonth() + 1).padStart(2, '0')}-${String(laterSample.getDate()).padStart(2, '0')}`;
+
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const friendlyStr = now.toLocaleDateString('en-US', options);
   const monthName = now.toLocaleDateString('en-US', { month: 'long' });
@@ -611,6 +634,10 @@ function getLocalDateInfo() {
     daysInMonth,
     tomorrowStr,
     endOfWeekStr,
+    nextWeekStartStr,
+    endOfNextWeekStr,
+    nextWeekSampleStr,
+    laterSampleStr,
     friendlyStr,
     monthName,
     year
@@ -621,7 +648,17 @@ let CurrentDateInfo = getLocalDateInfo();
 let TODAY_DATE = CurrentDateInfo.dateStr;
 let TOMORROW_DATE = CurrentDateInfo.tomorrowStr;
 let THIS_WEEK_END_DATE = CurrentDateInfo.endOfWeekStr;
+let NEXT_WEEK_START_DATE = CurrentDateInfo.nextWeekStartStr;
+let NEXT_WEEK_END_DATE = CurrentDateInfo.endOfNextWeekStr;
 let TODAY_DAY_NUM = CurrentDateInfo.dayNum;
+
+function formatShortDate(dateStr) {
+  if (!dateStr) return '';
+  const parts = dateStr.split('-');
+  if (parts.length !== 3) return dateStr;
+  const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
 
 const GROWTH_STAGE_NAMES = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
 
@@ -781,6 +818,35 @@ const DEFAULT_STATE = {
       estTime: 25,
       targetDate: THIS_WEEK_END_DATE,
       status: 'TODO',
+      subtasks: [],
+      isExpanded: false
+    },
+    // Next Week
+    {
+      id: 'task-next-week-1',
+      title: 'Accessory Design Hardware Fabrication Final Studio Jury',
+      priority: 'HIGH',
+      category: 'ACADEMIC',
+      estTime: 120,
+      targetDate: CurrentDateInfo.nextWeekSampleStr,
+      status: 'TODO',
+      isCarriedOver: false,
+      subtasks: [
+        { id: 'sub-nw-1', title: 'Polish brass buckles with emery paper', completed: false },
+        { id: 'sub-nw-2', title: 'Mount portfolio renders on black mount-board', completed: false }
+      ],
+      isExpanded: false
+    },
+    // Later (Beyond Next Week)
+    {
+      id: 'task-later-1',
+      title: 'End-of-Semester Portfolio & Botanical Craft Exhibition Setup',
+      priority: 'MEDIUM',
+      category: 'CREATIVE',
+      estTime: 90,
+      targetDate: CurrentDateInfo.laterSampleStr,
+      status: 'TODO',
+      isCarriedOver: false,
       subtasks: [],
       isExpanded: false
     }
@@ -1799,6 +1865,11 @@ function createTaskCardElement(task) {
           <i class="fa-solid fa-list-check"></i> Steps ${subtasksCount > 0 ? `<span class="steps-count">(${subtasksCompleted}/${subtasksCount})</span>` : ''}
         </button>
 
+        <!-- Edit Button -->
+        <button type="button" class="icon-action-btn edit-task-btn" title="Edit task details" data-edit-task="${task.id}">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+
         <!-- Focus Button -->
         <button class="focus-task-btn chalk-font" title="Start Deep Focus with this task" data-focus-task="${task.id}">
           <i class="fa-solid fa-brain"></i> Focus
@@ -1846,6 +1917,15 @@ function createTaskCardElement(task) {
     saveState();
     renderTodaySlate();
   });
+
+  // Edit Task Button Handler
+  const editBtn = card.querySelector('[data-edit-task]');
+  if (editBtn) {
+    editBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openEditTaskModal(task.id);
+    });
+  }
 
   // Focus Button Handler
   const focusBtn = card.querySelector('[data-focus-task]');
@@ -1945,8 +2025,162 @@ function createTaskCardElement(task) {
 }
 
 // --------------------------------------------------------------------------
-// D. UPCOMING TASKS CONTROLLER
+// D. UPCOMING TASKS & TASK EDITING CONTROLLER
 // --------------------------------------------------------------------------
+function openEditTaskModal(taskId) {
+  const modal = document.getElementById('edit-task-modal');
+  const task = AppState.tasks.find(t => t.id === taskId);
+  if (!modal || !task) return;
+
+  const idInput = document.getElementById('edit-task-id');
+  const titleInput = document.getElementById('edit-task-title');
+  const dateInput = document.getElementById('edit-task-date');
+  const estTimeInput = document.getElementById('edit-task-est-time');
+  const catSelect = document.getElementById('edit-task-category');
+
+  if (idInput) idInput.value = task.id;
+  if (titleInput) titleInput.value = task.title || '';
+  if (dateInput) {
+    dateInput.min = TODAY_DATE;
+    dateInput.value = task.targetDate || TODAY_DATE;
+  }
+  if (estTimeInput) estTimeInput.value = task.estTime || 45;
+  if (catSelect) catSelect.value = task.category || 'ACADEMIC';
+
+  const priorityRadios = document.querySelectorAll('input[name="edit-task-priority"]');
+  priorityRadios.forEach(r => {
+    r.checked = r.value === (task.priority || 'MEDIUM');
+  });
+
+  modal.style.display = 'flex';
+  if (titleInput) {
+    titleInput.focus();
+    titleInput.select();
+  }
+}
+
+function createUpcomingTaskCardElement(task) {
+  const card = document.createElement('div');
+  const isDone = task.status === 'COMPLETED';
+  card.className = `task-card upcoming-task-card ${isDone ? 'completed' : ''}`;
+  card.id = `card-${task.id}`;
+
+  const priorityDot = task.priority === 'HIGH' ? '🔴' : (task.priority === 'MEDIUM' ? '🟡' : '🟢');
+  const estPill = task.estTime ? `<span class="meta-pill"><i class="fa-regular fa-clock"></i> ${task.estTime}m</span>` : '';
+  const catPill = `<span class="meta-pill"><i class="fa-solid fa-tag"></i> ${(task.category || 'academic').toLowerCase()}</span>`;
+  
+  const subtasksCount = task.subtasks ? task.subtasks.length : 0;
+  const subtasksCompleted = task.subtasks ? task.subtasks.filter(s => s.completed).length : 0;
+  const subtasksPill = subtasksCount > 0
+    ? `<span class="meta-pill" title="${subtasksCompleted}/${subtasksCount} steps completed"><i class="fa-solid fa-list-check"></i> ${subtasksCompleted}/${subtasksCount} steps</span>`
+    : '';
+
+  const displayDateStr = formatShortDate(task.targetDate);
+
+  card.innerHTML = `
+    <div class="task-main-row">
+      <!-- Interactive Task Body -->
+      <div class="task-body-interactive">
+        <div class="task-title-line">
+          <span class="task-priority-dot" title="${task.priority} Priority">${priorityDot}</span>
+          <span class="task-title">${task.title}</span>
+        </div>
+        <div class="task-meta-row">
+          <!-- Quick Date Reschedule Pill (Opens native calendar on click) -->
+          <label class="meta-pill date-picker-pill" title="Click to reschedule date">
+            <i class="fa-regular fa-calendar"></i>
+            <span class="date-picker-label">${displayDateStr}</span>
+            <input type="date" class="task-date-inline-input" value="${task.targetDate}" min="${TODAY_DATE}" data-task-id="${task.id}">
+          </label>
+          ${estPill}
+          ${catPill}
+          ${subtasksPill}
+        </div>
+      </div>
+
+      <!-- Action Controls -->
+      <div class="task-actions upcoming-task-actions">
+        <!-- Edit Button -->
+        <button type="button" class="icon-action-btn edit-task-btn" title="Edit task details" data-edit-id="${task.id}">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+        <!-- Move to Today Button -->
+        <button type="button" class="chalk-btn secondary-btn chalk-font move-today-btn" title="Move to Today's Slate" data-move-id="${task.id}">
+          <i class="fa-solid fa-arrow-down-long"></i> Today
+        </button>
+        <!-- Delete Button -->
+        <button type="button" class="icon-action-btn delete-btn" title="Erase from planning shelf" data-delete-id="${task.id}">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+  `;
+
+  // Inline Quick Date Picker Handler
+  const datePicker = card.querySelector('.task-date-inline-input');
+  if (datePicker) {
+    datePicker.addEventListener('change', (e) => {
+      const newDate = e.target.value;
+      if (!newDate) return;
+      task.targetDate = newDate;
+      if (task.targetDate === TODAY_DATE) {
+        task.isCarriedOver = false;
+        showToast(`Moved "${task.title}" to Today's Slate 🌱`);
+      } else {
+        showToast(`Rescheduled to ${formatShortDate(newDate)} 📅`);
+      }
+      AudioEngine.playChalkScratch();
+      saveState();
+      renderUpcomingTasks();
+      renderTodaySlate();
+      renderDashboard();
+    });
+  }
+
+  // Move to Today Handler
+  const moveBtn = card.querySelector('[data-move-id]');
+  if (moveBtn) {
+    moveBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      task.targetDate = TODAY_DATE;
+      task.isCarriedOver = false;
+      AudioEngine.playChalkScratch();
+      emitDustParticles(moveBtn.getBoundingClientRect());
+      saveState();
+      renderUpcomingTasks();
+      renderTodaySlate();
+      renderDashboard();
+      showToast(`Moved "${task.title}" to Today's Slate 🌱`);
+    });
+  }
+
+  // Edit Task Modal Handler
+  const editBtn = card.querySelector('[data-edit-id]');
+  if (editBtn) {
+    editBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openEditTaskModal(task.id);
+    });
+  }
+
+  // Delete Card Handler
+  const deleteBtn = card.querySelector('[data-delete-id]');
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      AppState.tasks = AppState.tasks.filter(t => t.id !== task.id);
+      AudioEngine.playChalkScratch();
+      emitDustParticles(deleteBtn.getBoundingClientRect());
+      saveState();
+      renderUpcomingTasks();
+      renderDashboard();
+      showToast('Erased task from planning shelf 🧹');
+    });
+  }
+
+  return card;
+}
+
 function initUpcomingTasks() {
   const form = document.getElementById('upcoming-add-form');
   const dateInput = document.getElementById('upcoming-date-input');
@@ -1962,15 +2196,18 @@ function initUpcomingTasks() {
       e.preventDefault();
       const title = document.getElementById('upcoming-title-input').value.trim();
       const targetDate = document.getElementById('upcoming-date-input').value || TOMORROW_DATE;
-      const priority = document.querySelector('input[name="upcoming-priority"]:checked').value;
+      const priorityRadio = document.querySelector('input[name="upcoming-priority"]:checked');
+      const priority = priorityRadio ? priorityRadio.value : 'MEDIUM';
       const category = document.getElementById('upcoming-category-select').value;
+      const estTimeInput = document.getElementById('upcoming-est-time');
+      const estTime = estTimeInput ? (parseInt(estTimeInput.value, 10) || 45) : 45;
 
       const newTask = {
         id: `task-${Date.now()}`,
         title,
         priority,
         category,
-        estTime: 45,
+        estTime,
         targetDate,
         status: 'TODO',
         isCarriedOver: false,
@@ -1983,9 +2220,74 @@ function initUpcomingTasks() {
       renderUpcomingTasks();
       form.reset();
       if (dateInput) dateInput.value = TOMORROW_DATE;
+      AudioEngine.playChalkScratch();
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) emitDustParticles(submitBtn.getBoundingClientRect());
       showToast('Scheduled task in Future Planning Shelf');
     });
   }
+
+  // Edit Task Modal Event Handlers
+  const editModal = document.getElementById('edit-task-modal');
+  const closeEditBtn = document.getElementById('btn-close-edit-task-modal');
+  const cancelEditBtn = document.getElementById('btn-cancel-edit-task');
+  const editForm = document.getElementById('edit-task-form');
+
+  const closeEditModal = () => {
+    if (editModal) editModal.style.display = 'none';
+  };
+
+  if (closeEditBtn) closeEditBtn.addEventListener('click', closeEditModal);
+  if (cancelEditBtn) cancelEditBtn.addEventListener('click', closeEditModal);
+  if (editModal) {
+    editModal.addEventListener('click', (e) => {
+      if (e.target === editModal) closeEditModal();
+    });
+  }
+
+  if (editForm) {
+    editForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const taskId = document.getElementById('edit-task-id').value;
+      const task = AppState.tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      const newTitle = document.getElementById('edit-task-title').value.trim();
+      const newDate = document.getElementById('edit-task-date').value;
+      const newEstTime = parseInt(document.getElementById('edit-task-est-time').value, 10) || 45;
+      const chosenPriority = document.querySelector('input[name="edit-task-priority"]:checked');
+      const newCategory = document.getElementById('edit-task-category').value;
+
+      if (newTitle) task.title = newTitle;
+      if (newDate) {
+        task.targetDate = newDate;
+        if (task.targetDate === TODAY_DATE) {
+          task.isCarriedOver = false;
+        }
+      }
+      task.estTime = newEstTime;
+      if (chosenPriority) task.priority = chosenPriority.value;
+      if (newCategory) task.category = newCategory;
+
+      saveState();
+      AudioEngine.playChalkScratch();
+      const submitBtn = editForm.querySelector('button[type="submit"]');
+      if (submitBtn) emitDustParticles(submitBtn.getBoundingClientRect());
+
+      closeEditModal();
+      renderUpcomingTasks();
+      renderTodaySlate();
+      renderDashboard();
+      showToast(`Updated "${task.title}"! ✏️`);
+    });
+  }
+
+  // Keyboard shortcut: Escape to close modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && editModal && editModal.style.display !== 'none') {
+      closeEditModal();
+    }
+  });
 
   renderUpcomingTasks();
 }
@@ -1993,62 +2295,81 @@ function initUpcomingTasks() {
 function renderUpcomingTasks() {
   const listTomorrow = document.getElementById('list-tomorrow');
   const listThisWeek = document.getElementById('list-this-week');
+  const listNextWeek = document.getElementById('list-next-week');
   const listLater = document.getElementById('list-later');
   const badge = document.getElementById('upcoming-badge');
 
-  if (!listTomorrow || !listThisWeek || !listLater) return;
+  if (!listTomorrow || !listThisWeek || !listNextWeek || !listLater) return;
+
+  // Dynamic Column Subtitle Labels
+  const labelTomorrow = document.getElementById('date-label-tomorrow');
+  const labelThisWeek = document.getElementById('date-label-this-week');
+  const labelNextWeek = document.getElementById('date-label-next-week');
+  const labelLater = document.getElementById('date-label-later');
+
+  if (labelTomorrow) labelTomorrow.innerText = formatShortDate(TOMORROW_DATE);
+  if (labelThisWeek) labelThisWeek.innerText = `Through ${formatShortDate(THIS_WEEK_END_DATE)}`;
+  if (labelNextWeek) labelNextWeek.innerText = `${formatShortDate(NEXT_WEEK_START_DATE)} – ${formatShortDate(NEXT_WEEK_END_DATE)}`;
+  if (labelLater) labelLater.innerText = `Beyond ${formatShortDate(NEXT_WEEK_END_DATE)}`;
 
   listTomorrow.innerHTML = '';
   listThisWeek.innerHTML = '';
+  listNextWeek.innerHTML = '';
   listLater.innerHTML = '';
 
   const upcomingTasks = AppState.tasks.filter(t => t.targetDate > TODAY_DATE);
   if (badge) badge.innerText = upcomingTasks.length;
 
-  let countTomorrow = 0, countThisWeek = 0, countLater = 0;
+  // Priority sorting weights: HIGH -> MEDIUM -> LOW
+  const priorityWeight = { 'HIGH': 1, 'MEDIUM': 2, 'LOW': 3 };
+  const sortedUpcoming = [...upcomingTasks].sort((a, b) => {
+    if (a.targetDate !== b.targetDate) return a.targetDate.localeCompare(b.targetDate);
+    return (priorityWeight[a.priority] || 2) - (priorityWeight[b.priority] || 2);
+  });
 
-  upcomingTasks.forEach(t => {
-    const item = document.createElement('div');
-    item.className = 'task-card';
-    const dot = t.priority === 'HIGH' ? '🔴' : (t.priority === 'MEDIUM' ? '🟡' : '🟢');
-    item.innerHTML = `
-      <div class="task-main-row">
-        <span class="dot-glyph">${dot}</span>
-        <div class="task-body-interactive" style="cursor:default;">
-          <div class="task-title" style="font-size:13px;">${t.title}</div>
-          <div class="task-meta-row">
-            <span class="meta-pill"><i class="fa-regular fa-calendar"></i> ${t.targetDate}</span>
-          </div>
-        </div>
-        <button class="chalk-btn secondary-btn chalk-font" style="padding:3px 7px;font-size:11px;" data-move-id="${t.id}">
-          Move to Today
-        </button>
-      </div>
-    `;
+  let countTomorrow = 0, countThisWeek = 0, countNextWeek = 0, countLater = 0;
 
-    item.querySelector('[data-move-id]').addEventListener('click', () => {
-      t.targetDate = TODAY_DATE;
-      saveState();
-      renderUpcomingTasks();
-      renderTodaySlate();
-      showToast('Moved task to Today\'s Slate');
-    });
+  sortedUpcoming.forEach(t => {
+    const card = createUpcomingTaskCardElement(t);
 
     if (t.targetDate === TOMORROW_DATE) {
-      listTomorrow.appendChild(item);
+      listTomorrow.appendChild(card);
       countTomorrow++;
     } else if (t.targetDate <= THIS_WEEK_END_DATE) {
-      listThisWeek.appendChild(item);
+      listThisWeek.appendChild(card);
       countThisWeek++;
+    } else if (t.targetDate <= NEXT_WEEK_END_DATE) {
+      listNextWeek.appendChild(card);
+      countNextWeek++;
     } else {
-      listLater.appendChild(item);
+      listLater.appendChild(card);
       countLater++;
     }
   });
 
-  document.getElementById('count-tomorrow').innerText = countTomorrow;
-  document.getElementById('count-this-week').innerText = countThisWeek;
-  document.getElementById('count-later').innerText = countLater;
+  // Peaceful chalkboard empty states
+  if (countTomorrow === 0) {
+    listTomorrow.innerHTML = '<div class="bucket-empty-state chalk-font">No tasks scheduled</div>';
+  }
+  if (countThisWeek === 0) {
+    listThisWeek.innerHTML = '<div class="bucket-empty-state chalk-font">No tasks scheduled</div>';
+  }
+  if (countNextWeek === 0) {
+    listNextWeek.innerHTML = '<div class="bucket-empty-state chalk-font">No tasks scheduled</div>';
+  }
+  if (countLater === 0) {
+    listLater.innerHTML = '<div class="bucket-empty-state chalk-font">No tasks scheduled</div>';
+  }
+
+  const countTomEl = document.getElementById('count-tomorrow');
+  const countWeekEl = document.getElementById('count-this-week');
+  const countNextEl = document.getElementById('count-next-week');
+  const countLaterEl = document.getElementById('count-later');
+
+  if (countTomEl) countTomEl.innerText = countTomorrow;
+  if (countWeekEl) countWeekEl.innerText = countThisWeek;
+  if (countNextEl) countNextEl.innerText = countNextWeek;
+  if (countLaterEl) countLaterEl.innerText = countLater;
 }
 
 // --------------------------------------------------------------------------
