@@ -1246,8 +1246,10 @@ function renderDashboard() {
 
   // 1. TOP METRICS: TASKS PROGRESS RING
   const todayTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE);
-  const completedTasks = todayTasks.filter(t => t.status === 'COMPLETED').length;
-  const totalTasks = todayTasks.length;
+  const dayGarden = AppState.gardenData[TODAY_DAY_NUM] || {};
+  const erasedCount = dayGarden.erasedTasksCount || 0;
+  const completedTasks = todayTasks.filter(t => t.status === 'COMPLETED').length + erasedCount;
+  const totalTasks = todayTasks.length + erasedCount;
   const tasksPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
   const tasksCircle = document.getElementById('ring-tasks-circle');
@@ -1485,6 +1487,7 @@ function initTodaySlate() {
       AppState.tasks.unshift(newTask);
       saveState();
       renderTodaySlate();
+      renderDashboard();
       updateGlobalGrowthMetrics();
       AudioEngine.playChalkScratch();
 
@@ -1495,8 +1498,8 @@ function initTodaySlate() {
 
   if (eraseCompletedBtn) {
     eraseCompletedBtn.addEventListener('click', () => {
-      const completedCount = AppState.tasks.filter(t => t.status === 'COMPLETED' && t.targetDate === TODAY_DATE).length;
-      if (completedCount === 0) {
+      const completedToday = AppState.tasks.filter(t => t.status === 'COMPLETED' && t.targetDate === TODAY_DATE);
+      if (completedToday.length === 0) {
         showToast('No completed tasks to erase.');
         return;
       }
@@ -1504,11 +1507,19 @@ function initTodaySlate() {
       AudioEngine.playFeltEraserSweep();
       emitDustParticles(eraseCompletedBtn.getBoundingClientRect());
 
+      // Preserve completed tasks count in Progress Garden
+      if (!AppState.gardenData[TODAY_DAY_NUM]) {
+        AppState.gardenData[TODAY_DAY_NUM] = { specimen: 'Sunburst Dahlia', tasks: 0, planned: 0, focus: 0, stage: 0 };
+      }
+      AppState.gardenData[TODAY_DAY_NUM].erasedTasksCount = (AppState.gardenData[TODAY_DAY_NUM].erasedTasksCount || 0) + completedToday.length;
+
+      // Filter out completed tasks from the active slate
       AppState.tasks = AppState.tasks.filter(t => !(t.status === 'COMPLETED' && t.targetDate === TODAY_DATE));
       saveState();
       renderTodaySlate();
+      renderDashboard();
       updateGlobalGrowthMetrics();
-      showToast('Completed tasks erased into resting soil ✨');
+      showToast(`Erased ${completedToday.length} completed task${completedToday.length > 1 ? 's' : ''} into resting soil ✨`);
     });
   }
 
@@ -1554,10 +1565,46 @@ function renderTodaySlate() {
   populateFocusTaskDropdown();
 }
 
+function renderTaskProgressRing(percent, subtasksCount, subtasksCompleted) {
+  const r = 9;
+  const circumference = 2 * Math.PI * r; // ~56.55
+  const strokeOffset = circumference * (1 - percent / 100);
+
+  let strokeColor = 'var(--text-faint)';
+  if (percent === 100) {
+    strokeColor = 'var(--chalk-mint)';
+  } else if (percent > 0) {
+    strokeColor = 'var(--chalk-sky)';
+  }
+
+  let centerContent = '';
+  if (percent === 100) {
+    centerContent = `<text x="12" y="12" text-anchor="middle" dominant-baseline="central" class="task-ring-glyph" font-size="9" fill="var(--chalk-mint)" font-weight="700">✓</text>`;
+  } else if (subtasksCount > 0) {
+    centerContent = `<text x="12" y="12.5" text-anchor="middle" dominant-baseline="central" class="task-ring-pct" font-size="7.5" fill="var(--text-primary)" font-weight="600">${percent}%</text>`;
+  } else {
+    centerContent = `<circle cx="12" cy="12" r="1.5" class="task-ring-dot" fill="var(--text-muted)" opacity="0.35" />`;
+  }
+
+  const tooltip = subtasksCount > 0
+    ? `${percent}% completed (${subtasksCompleted}/${subtasksCount} steps)`
+    : (percent === 100 ? '100% completed' : '0% completed');
+
+  return `
+    <div class="task-progress-ring" title="${tooltip}">
+      <svg class="task-ring-svg" width="24" height="24" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="${r}" class="task-ring-track" fill="none" stroke="currentColor" stroke-width="2.2" opacity="0.16" />
+        <circle cx="12" cy="12" r="${r}" class="task-ring-fill" fill="none" stroke="${strokeColor}" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="${circumference.toFixed(2)}" stroke-dashoffset="${strokeOffset.toFixed(2)}" transform="rotate(-90 12 12)" />
+        ${centerContent}
+      </svg>
+    </div>
+  `;
+}
+
 function createTaskCardElement(task) {
   const card = document.createElement('div');
-  const isHighPriority = task.priority === 'HIGH';
-  card.className = `task-card ${isHighPriority ? 'is-high-priority' : ''} ${task.status === 'COMPLETED' ? 'completed' : ''}`;
+  const isDone = task.status === 'COMPLETED';
+  card.className = `task-card ${isDone ? 'completed' : ''}`;
   card.id = `card-${task.id}`;
 
   const priorityDot = task.priority === 'HIGH' ? '🔴' : (task.priority === 'MEDIUM' ? '🟡' : '🟢');
@@ -1567,23 +1614,41 @@ function createTaskCardElement(task) {
   
   const subtasksCount = task.subtasks ? task.subtasks.length : 0;
   const subtasksCompleted = task.subtasks ? task.subtasks.filter(s => s.completed).length : 0;
-  const subtaskPill = subtasksCount > 0 ? `<span class="subtask-count-pill chalk-font">(${subtasksCompleted}/${subtasksCount} steps)</span>` : '';
 
+  // Calculate percentage
+  let taskPercent = 0;
+  if (isDone) {
+    taskPercent = 100;
+  } else if (subtasksCount > 0) {
+    taskPercent = Math.round((subtasksCompleted / subtasksCount) * 100);
+  } else {
+    taskPercent = 0;
+  }
+
+  // Circular progress ring SVG
+  const ringSVG = renderTaskProgressRing(taskPercent, subtasksCount, subtasksCompleted);
+
+  // Subtasks Drawer (collapsed by default unless task.isExpanded is true)
   let subtasksDrawerHTML = '';
   if (task.isExpanded) {
     const itemsHTML = (task.subtasks || []).map(sub => `
       <div class="nested-subtask-item ${sub.completed ? 'completed' : ''}" data-task-id="${task.id}" data-sub-id="${sub.id}">
-        <span class="custom-chalk-checkbox" style="width:14px;height:14px;font-size:9px;">${sub.completed ? '✓' : ''}</span>
-        <span>${sub.title}</span>
+        <span class="custom-chalk-checkbox nested-checkbox">${sub.completed ? '✓' : ''}</span>
+        <span class="subtask-text">${sub.title}</span>
+        <button type="button" class="subtask-delete-btn" title="Delete micro-step" data-action="delete-subtask" data-task-id="${task.id}" data-sub-id="${sub.id}">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
     `).join('');
 
     subtasksDrawerHTML = `
       <div class="subtasks-drawer-inline">
-        ${itemsHTML}
+        <div class="subtasks-list-container">
+          ${itemsHTML || '<div class="subtasks-empty chalk-font">No micro-steps yet. Add one below:</div>'}
+        </div>
         <div class="inline-subtask-add-row">
           <input type="text" class="chalk-input subtask-mini-input" placeholder="+ Add a micro-step..." data-task-id="${task.id}">
-          <button type="button" class="chalk-btn secondary-btn chalk-font" style="padding:3px 8px; font-size:11px;" data-action="add-subtask" data-task-id="${task.id}">Add</button>
+          <button type="button" class="chalk-btn secondary-btn chalk-font subtask-add-btn" data-action="add-subtask" data-task-id="${task.id}">Add</button>
         </div>
       </div>
     `;
@@ -1591,16 +1656,20 @@ function createTaskCardElement(task) {
 
   card.innerHTML = `
     <div class="task-main-row">
-      <div class="task-checkbox-wrap" data-task-id="${task.id}" title="Complete task">
-        <div class="custom-chalk-checkbox">${task.status === 'COMPLETED' ? '✓' : ''}</div>
+      <!-- Checkbox -->
+      <div class="task-checkbox-wrap" data-task-id="${task.id}" title="${isDone ? 'Mark uncompleted' : 'Mark completed'}">
+        <div class="custom-chalk-checkbox">${isDone ? '✓' : ''}</div>
       </div>
+
+      <!-- Small Circular Progress Ring -->
+      ${ringSVG}
       
+      <!-- Interactive Task Body -->
       <div class="task-body-interactive">
         <div class="task-title-line">
-          <span class="dot-glyph">${priorityDot}</span>
+          <span class="task-priority-dot" title="${task.priority} Priority">${priorityDot}</span>
           <span class="task-title">${task.title}</span>
           ${carriedBadge}
-          ${subtaskPill}
         </div>
         <div class="task-meta-row">
           ${estPill}
@@ -1608,10 +1677,11 @@ function createTaskCardElement(task) {
         </div>
       </div>
 
+      <!-- Actions -->
       <div class="task-actions">
-        <!-- Dedicated Steps / Subtasks Button -->
+        <!-- Dedicated Steps Button (Collapsed by default, toggles drawer) -->
         <button class="subtasks-toggle-btn chalk-font ${task.isExpanded ? 'expanded' : ''}" title="View & add micro-steps" data-subtasks-toggle="${task.id}">
-          <i class="fa-solid fa-list-check"></i> Steps
+          <i class="fa-solid fa-list-check"></i> Steps ${subtasksCount > 0 ? `<span class="steps-count">(${subtasksCompleted}/${subtasksCount})</span>` : ''}
         </button>
 
         <!-- Focus Button -->
@@ -1619,8 +1689,8 @@ function createTaskCardElement(task) {
           <i class="fa-solid fa-brain"></i> Focus
         </button>
 
-        <!-- Delete Button -->
-        <button class="icon-action-btn delete-btn" title="Erase task" data-task-id="${task.id}">
+        <!-- Erase/Delete Button -->
+        <button class="icon-action-btn delete-btn" title="Erase task from slate" data-task-id="${task.id}">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -1633,12 +1703,40 @@ function createTaskCardElement(task) {
   checkWrap.addEventListener('click', (e) => {
     e.stopPropagation();
     task.status = task.status === 'COMPLETED' ? 'TODO' : 'COMPLETED';
-    AudioEngine.playChalkScratch();
-    emitDustParticles(checkWrap.getBoundingClientRect());
+    if (task.status === 'COMPLETED') {
+      if (task.subtasks) {
+        task.subtasks.forEach(s => s.completed = true);
+      }
+      AudioEngine.playChalkScratch();
+      emitDustParticles(checkWrap.getBoundingClientRect());
+      showToast('Marked task complete! 🌱');
+    } else {
+      if (task.subtasks) {
+        task.subtasks.forEach(s => s.completed = false);
+      }
+      AudioEngine.playChalkScratch();
+      showToast('Reopened task to slate');
+    }
     saveState();
     renderTodaySlate();
+    renderDashboard();
     updateGlobalGrowthMetrics();
   });
+
+  // Circular Progress Ring Click
+  const ringEl = card.querySelector('.task-progress-ring');
+  if (ringEl) {
+    ringEl.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (subtasksCount > 0) {
+        task.isExpanded = !task.isExpanded;
+        saveState();
+        renderTodaySlate();
+      } else {
+        checkWrap.click();
+      }
+    });
+  }
 
   // Dedicated Steps Button Handler (Expands on click, collapses on re-click)
   const stepsBtn = card.querySelector('[data-subtasks-toggle]');
@@ -1659,16 +1757,41 @@ function createTaskCardElement(task) {
   // Subtask Checkbox Handlers
   card.querySelectorAll('.nested-subtask-item').forEach(subEl => {
     subEl.addEventListener('click', (e) => {
+      if (e.target.closest('[data-action="delete-subtask"]')) return;
       e.stopPropagation();
       const subId = subEl.dataset.subId;
       const targetSub = (task.subtasks || []).find(s => s.id === subId);
       if (targetSub) {
         targetSub.completed = !targetSub.completed;
+        const allDone = task.subtasks.length > 0 && task.subtasks.every(s => s.completed);
+        if (allDone) {
+          task.status = 'COMPLETED';
+          emitDustParticles(subEl.getBoundingClientRect());
+        } else if (task.status === 'COMPLETED' && !targetSub.completed) {
+          task.status = 'TODO';
+        }
         AudioEngine.playChalkScratch();
         saveState();
         renderTodaySlate();
+        renderDashboard();
         updateGlobalGrowthMetrics();
       }
+    });
+  });
+
+  // Subtask Delete Handlers
+  card.querySelectorAll('[data-action="delete-subtask"]').forEach(delBtn => {
+    delBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const subId = delBtn.dataset.subId;
+      task.subtasks = (task.subtasks || []).filter(s => s.id !== subId);
+      if (task.subtasks.length > 0 && task.subtasks.every(s => s.completed)) {
+        task.status = 'COMPLETED';
+      }
+      saveState();
+      renderTodaySlate();
+      renderDashboard();
+      updateGlobalGrowthMetrics();
     });
   });
 
@@ -1682,9 +1805,14 @@ function createTaskCardElement(task) {
     if (val) {
       if (!task.subtasks) task.subtasks = [];
       task.subtasks.push({ id: `sub-${Date.now()}`, title: val, completed: false });
+      if (task.status === 'COMPLETED') {
+        task.status = 'TODO';
+      }
       AudioEngine.playChalkScratch();
       saveState();
       renderTodaySlate();
+      renderDashboard();
+      updateGlobalGrowthMetrics();
     }
   }
 
@@ -1703,11 +1831,13 @@ function createTaskCardElement(task) {
     });
   }
 
+  // Delete Card Handler
   card.querySelector('.delete-btn').addEventListener('click', (e) => {
     e.stopPropagation();
     AppState.tasks = AppState.tasks.filter(t => t.id !== task.id);
     saveState();
     renderTodaySlate();
+    renderDashboard();
     updateGlobalGrowthMetrics();
   });
 
@@ -2427,7 +2557,11 @@ function populateFocusTaskDropdown() {
 // --------------------------------------------------------------------------
 function updateGlobalGrowthMetrics() {
   const todayTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE);
-  const completedCount = todayTasks.filter(t => t.status === 'COMPLETED').length;
+  const activeCompleted = todayTasks.filter(t => t.status === 'COMPLETED').length;
+  const dayGarden = AppState.gardenData[TODAY_DAY_NUM] || {};
+  const erasedCount = dayGarden.erasedTasksCount || 0;
+  const completedCount = activeCompleted + erasedCount;
+  const effectivePlanned = Math.max(todayTasks.length + erasedCount, dayGarden.planned || 0, completedCount);
   const focusMins = AppState.focusTimeLoggedToday || 0;
   const totalHabits = AppState.habits.length || 4;
   const completedHabits = AppState.habits.filter(h => h.current >= (h.type === 'COUNTER' ? h.target : 1)).length;
@@ -2436,13 +2570,13 @@ function updateGlobalGrowthMetrics() {
   if (completedCount === 0 && focusMins === 0 && completedHabits === 0) {
     stage = 0; // Resting Seed
   } else if (
-    (todayTasks.length > 0 && completedCount === todayTasks.length && (focusMins >= 45 || completedHabits >= 3)) ||
+    (effectivePlanned > 0 && completedCount === effectivePlanned && (focusMins >= 45 || completedHabits >= 3)) ||
     completedCount >= 5 ||
     focusMins >= 90
   ) {
     stage = 4; // Full Bloom
   } else if (
-    (todayTasks.length > 0 && (completedCount / todayTasks.length) >= 0.6) ||
+    (effectivePlanned > 0 && (completedCount / effectivePlanned) >= 0.6) ||
     completedCount >= 3 ||
     focusMins >= 55 ||
     (completedCount >= 2 && completedHabits >= 2)
@@ -2462,9 +2596,9 @@ function updateGlobalGrowthMetrics() {
     AppState.gardenData[TODAY_DAY_NUM] = { specimen: 'Sunburst Dahlia', tasks: 0, planned: 0, focus: 0, stage: 0 };
   }
   AppState.gardenData[TODAY_DAY_NUM].tasks = completedCount;
-  AppState.gardenData[TODAY_DAY_NUM].planned = todayTasks.length;
+  AppState.gardenData[TODAY_DAY_NUM].planned = effectivePlanned;
   AppState.gardenData[TODAY_DAY_NUM].focus = focusMins;
-  AppState.gardenData[TODAY_DAY_NUM].stage = stage;
+  AppState.gardenData[TODAY_DAY_NUM].stage = Math.max(stage, dayGarden.stage || 0);
   saveState();
 
   const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
@@ -2472,8 +2606,9 @@ function updateGlobalGrowthMetrics() {
   const topIcon = document.getElementById('top-flower-icon');
   const topStage = document.getElementById('top-growth-stage');
   const topMeta = document.getElementById('top-growth-meta');
-  if (topIcon) topIcon.innerHTML = ChalkBotanicals.getBotanicalSVG(stage, 28, TODAY_DAY_NUM);
-  if (topStage) topStage.innerText = stageNames[stage];
+  const finalStage = AppState.gardenData[TODAY_DAY_NUM].stage;
+  if (topIcon) topIcon.innerHTML = ChalkBotanicals.getBotanicalSVG(finalStage, 28, TODAY_DAY_NUM);
+  if (topStage) topStage.innerText = stageNames[finalStage];
   if (topMeta) topMeta.innerText = `${completedCount} tasks • ${focusMins}m focus • ${completedHabits} habits`;
 
   renderDashboard();
