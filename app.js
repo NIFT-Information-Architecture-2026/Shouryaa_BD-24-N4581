@@ -3222,9 +3222,9 @@ function getHabitStep(habit) {
   const unit = (habit.unit || '').trim().toLowerCase();
   const name = (habit.name || '').trim().toLowerCase();
 
-  // Water / hydration (0.25 L step)
+  // Water / hydration (0.5 L step)
   if (unit === 'l' || unit === 'liter' || unit === 'liters' || unit === 'litre' || unit === 'litres' || name.includes('water') || name.includes('hydrat')) {
-    return 0.25;
+    return 0.5;
   }
   // Minutes / duration (5 mins step)
   if (unit === 'm' || unit === 'min' || unit === 'mins' || unit === 'minute' || unit === 'minutes') {

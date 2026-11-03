@@ -2654,6 +2654,7 @@ body.theme-white-board .habit-graph-viewport-wrap {
 
 .habit-card-bar-track {
   width: 100%;
+  max-width: 260px;
   height: 5px;
   background: rgba(0, 0, 0, 0.22);
   border: 1px solid var(--border-chalk);
@@ -2761,6 +2762,9 @@ body.theme-white-board .habit-card-bar-track {
   }
   .habit-card-bar-wrap {
     padding-left: 0;
+  }
+  .habit-card-bar-track {
+    max-width: 100%;
   }
 }
 
