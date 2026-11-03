@@ -11,12 +11,12 @@
 const ChalkBotanicals = {
 
   // STAGE 0: Resting Seed & Downward Taproots (Reference Image 2)
-  renderRestingSeed(size = 36) {
+  renderRestingSeed(size = 36, animClass = '') {
     return `
-      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
-        <path d="M 15 72 Q 50 68 85 72" stroke="var(--border-chalk)" stroke-width="2" stroke-dasharray="4,3" fill="none" />
-        <path d="M 25 76 Q 50 73 75 76" stroke="var(--border-chalk)" stroke-width="1.2" stroke-dasharray="2,4" fill="none" opacity="0.6" />
-        <circle cx="50" cy="50" r="16" fill="var(--bg-surface-elevated)" stroke="#FAF0CA" stroke-width="2.2" stroke-dasharray="25,1.5" />
+      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
+        <path class="plant-soil-mound" d="M 15 72 Q 50 68 85 72" stroke="var(--border-chalk)" stroke-width="2" stroke-dasharray="4,3" fill="none" />
+        <path class="plant-soil-mound" d="M 25 76 Q 50 73 75 76" stroke="var(--border-chalk)" stroke-width="1.2" stroke-dasharray="2,4" fill="none" opacity="0.6" />
+        <circle cx="50" cy="50" r="16" class="plant-seed" fill="var(--bg-surface-elevated)" stroke="#FAF0CA" stroke-width="2.2" stroke-dasharray="25,1.5" />
         <path d="M 42 44 Q 50 40 56 46" stroke="#FAF0CA" stroke-width="1.2" fill="none" opacity="0.8" />
         <circle cx="50" cy="50" r="11" fill="none" stroke="var(--chalk-amber)" stroke-width="1" stroke-dasharray="3,2" opacity="0.7" />
         <path d="M 50 66 Q 50 78 48 92" stroke="var(--chalk-amber)" stroke-width="2.2" stroke-linecap="round" fill="none" />
@@ -28,46 +28,52 @@ const ChalkBotanicals = {
   },
 
   // STAGE 1: Cotyledon Sprout on Shaded Soil Mound (Reference Images 1 & 3)
-  renderFirstSprout(size = 36) {
+  renderFirstSprout(size = 36, animClass = '') {
     return `
-      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
-        <path d="M 10 82 Q 50 80 90 82" stroke="var(--text-primary)" stroke-width="2" stroke-dasharray="5,3" fill="none" opacity="0.6" />
-        <path d="M 32 82 Q 50 64 68 82 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="2" />
-        <path d="M 36 80 L 64 72 M 38 76 L 62 68 M 42 72 L 58 66" stroke="var(--border-chalk)" stroke-width="1.2" opacity="0.75" />
-        <path d="M 50 66 Q 52 50 48 38" stroke="#FAF0CA" stroke-width="2.6" stroke-linecap="round" fill="none" />
-        <path d="M 48 38 C 30 32 18 36 20 48 C 24 54 38 52 48 40 Z" fill="none" stroke="#FAF0CA" stroke-width="2.2" />
-        <path d="M 48 39 Q 34 42 22 46" stroke="var(--chalk-mint)" stroke-width="1.2" fill="none" opacity="0.8" />
-        <path d="M 48 38 C 66 32 78 36 76 48 C 72 54 58 52 48 40 Z" fill="none" stroke="#FAF0CA" stroke-width="2.2" />
-        <path d="M 48 39 Q 62 42 74 46" stroke="var(--chalk-mint)" stroke-width="1.2" fill="none" opacity="0.8" />
+      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
+        <path class="plant-soil-mound" d="M 10 82 Q 50 80 90 82" stroke="var(--text-primary)" stroke-width="2" stroke-dasharray="5,3" fill="none" opacity="0.6" />
+        <path class="plant-soil-mound" d="M 32 82 Q 50 64 68 82 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="2" />
+        <path class="plant-soil-mound" d="M 36 80 L 64 72 M 38 76 L 62 68 M 42 72 L 58 66" stroke="var(--border-chalk)" stroke-width="1.2" opacity="0.75" />
+        <path class="plant-stem" d="M 50 66 Q 52 50 48 38" stroke="#FAF0CA" stroke-width="2.6" stroke-linecap="round" fill="none" />
+        <g class="plant-leaves">
+          <path d="M 48 38 C 30 32 18 36 20 48 C 24 54 38 52 48 40 Z" fill="none" stroke="#FAF0CA" stroke-width="2.2" />
+          <path d="M 48 39 Q 34 42 22 46" stroke="var(--chalk-mint)" stroke-width="1.2" fill="none" opacity="0.8" />
+          <path d="M 48 38 C 66 32 78 36 76 48 C 72 54 58 52 48 40 Z" fill="none" stroke="#FAF0CA" stroke-width="2.2" />
+          <path d="M 48 39 Q 62 42 74 46" stroke="var(--chalk-mint)" stroke-width="1.2" fill="none" opacity="0.8" />
+        </g>
       </svg>
     `;
   },
 
   // STAGE 2: Branching Stem & Foliage (Reference Image 4)
-  renderBranchingStem(size = 38) {
+  renderBranchingStem(size = 38, animClass = '') {
     return `
-      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
-        <path d="M 20 90 Q 50 88 80 90" stroke="var(--border-chalk)" stroke-width="1.5" stroke-dasharray="4,3" fill="none" />
-        <path d="M 50 90 Q 46 65 50 24" stroke="var(--chalk-mint)" stroke-width="2.2" stroke-linecap="round" fill="none" />
-        <path d="M 48 76 Q 25 70 12 58 Q 30 60 47 70" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-        <path d="M 49 66 Q 72 58 88 50 Q 70 54 50 60" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-        <path d="M 49 52 Q 32 40 34 26 Q 42 36 50 44" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-        <path d="M 50 42 Q 68 32 66 18 Q 58 28 50 36" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-        <path d="M 50 66 Q 64 54 62 40" stroke="var(--chalk-mint)" stroke-width="1.5" fill="none" />
-        <path d="M 62 40 C 58 35 60 28 64 26 C 66 30 66 36 62 40 Z" fill="none" stroke="var(--chalk-amber)" stroke-width="1.4" />
+      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
+        <path class="plant-soil-mound" d="M 20 90 Q 50 88 80 90" stroke="var(--border-chalk)" stroke-width="1.5" stroke-dasharray="4,3" fill="none" />
+        <path class="plant-stem" d="M 50 90 Q 46 65 50 24" stroke="var(--chalk-mint)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+        <g class="plant-leaves">
+          <path d="M 48 76 Q 25 70 12 58 Q 30 60 47 70" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          <path d="M 49 66 Q 72 58 88 50 Q 70 54 50 60" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          <path d="M 49 52 Q 32 40 34 26 Q 42 36 50 44" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          <path d="M 50 42 Q 68 32 66 18 Q 58 28 50 36" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          <path d="M 50 66 Q 64 54 62 40" stroke="var(--chalk-mint)" stroke-width="1.5" fill="none" />
+          <path d="M 62 40 C 58 35 60 28 64 26 C 66 30 66 36 62 40 Z" fill="none" stroke="var(--chalk-amber)" stroke-width="1.4" />
+        </g>
       </svg>
     `;
   },
 
   // STAGE 3: Swelling Teardrop Floral Bud (Reference Image 4 Apex)
-  renderSwellingBud(size = 40) {
+  renderSwellingBud(size = 40, animClass = '') {
     return `
-      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
-        <path d="M 25 92 Q 50 90 75 92" stroke="var(--border-chalk)" stroke-width="1.5" fill="none" />
-        <path d="M 50 90 Q 48 60 50 34" stroke="var(--chalk-mint)" stroke-width="2.4" stroke-linecap="round" fill="none" />
-        <path d="M 49 72 Q 28 62 20 50 Q 36 54 49 64" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-        <path d="M 50 60 Q 72 50 80 38 Q 64 44 50 54" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-        <g transform="translate(50, 34)">
+      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
+        <path class="plant-soil-mound" d="M 25 92 Q 50 90 75 92" stroke="var(--border-chalk)" stroke-width="1.5" fill="none" />
+        <path class="plant-stem" d="M 50 90 Q 48 60 50 34" stroke="var(--chalk-mint)" stroke-width="2.4" stroke-linecap="round" fill="none" />
+        <g class="plant-leaves">
+          <path d="M 49 72 Q 28 62 20 50 Q 36 54 49 64" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          <path d="M 50 60 Q 72 50 80 38 Q 64 44 50 54" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        </g>
+        <g class="plant-bud" transform="translate(50, 34)">
           <path d="M -5 0 Q 0 -6 5 0 Z" fill="var(--chalk-mint)" stroke="var(--chalk-mint)" stroke-width="1" />
           <path d="M -5 0 C -10 -12 -6 -24 0 -28 C 4 -20 2 -8 0 0 Z" fill="var(--bg-surface-elevated)" stroke="#E8A4C8" stroke-width="1.8" />
           <path d="M 5 0 C 10 -12 6 -24 0 -28 C -4 -20 -2 -8 0 0 Z" fill="var(--bg-surface-elevated)" stroke="#E8A4C8" stroke-width="1.8" />
@@ -79,17 +85,19 @@ const ChalkBotanicals = {
 
   // STAGE 4: Full Multi-Species Botanical Wildflower Blooms
   // (Directly modeled on uploaded meadow art: Terracotta Cosmos, Purple Aster, White Coneflower, Golden Daisy)
-  renderFullBloom(size = 48, day = 1) {
+  renderFullBloom(size = 48, day = 1, animClass = '') {
     const variety = day % 4;
     
     if (variety === 0) {
       // Variety A: Terracotta / Coral Sunburst Cosmos (Centerpiece in Image 1)
       return `
-        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
-          <path d="M 50 96 Q 51 68 50 48" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" />
-          <path d="M 49 75 Q 32 70 24 58 Q 38 60 48 70" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <path d="M 51 65 Q 68 58 78 48 Q 62 54 51 60" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <g transform="translate(50, 30)">
+        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
+          <path class="plant-stem" d="M 50 96 Q 51 68 50 48" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 49 75 Q 32 70 24 58 Q 38 60 48 70" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 51 65 Q 68 58 78 48 Q 62 54 51 60" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+          <g class="plant-petals" transform="translate(50, 30)">
             <!-- 8 Broad Terracotta Petals with Linear Hatching -->
             <path d="M 0 0 C -12 -4 -20 -18 -8 -24 C 0 -18 2 -6 0 0 Z" fill="#E07A5F" opacity="0.95" stroke="#FAF0CA" stroke-width="0.7" />
             <path d="M 0 0 C 12 -4 20 -18 8 -24 C 0 -18 -2 -6 0 0 Z" fill="#E07A5F" opacity="0.95" stroke="#FAF0CA" stroke-width="0.7" />
@@ -98,20 +106,28 @@ const ChalkBotanicals = {
             <path d="M 0 0 C -14 16 -4 24 4 18 C 4 10 2 2 0 0 Z" fill="#D08C5D" opacity="0.9" stroke="#FAF0CA" stroke-width="0.7" />
             <path d="M 0 0 C 14 16 4 24 -4 18 C -4 10 -2 2 0 0 Z" fill="#D08C5D" opacity="0.9" stroke="#FAF0CA" stroke-width="0.7" />
             <path d="M 0 0 C -6 -18 0 -28 8 -26 C 8 -16 4 -4 0 0 Z" fill="#E07A5F" opacity="0.95" stroke="#FAF0CA" stroke-width="0.7" />
+          </g>
+          <g class="plant-bloom-core" transform="translate(50, 30)">
             <!-- Stippled Brown Core -->
             <circle cx="0" cy="0" r="7" fill="#4A2E1B" stroke="#FAF0CA" stroke-width="1" stroke-dasharray="3,1.5" />
             <circle cx="0" cy="0" r="3.5" fill="var(--chalk-amber)" />
+          </g>
+          <g class="plant-sparkles">
+            <text x="24" y="24" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
+            <text x="74" y="26" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
           </g>
         </svg>
       `;
     } else if (variety === 1) {
       // Variety B: Purple Wild Aster / Coneflower (Top flower in Image 1 & 2)
       return `
-        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
-          <path d="M 50 96 Q 48 70 50 44" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-          <path d="M 50 78 Q 28 68 20 54 Q 35 58 49 72" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <path d="M 50 62 Q 72 54 80 40 Q 64 48 50 56" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <g transform="translate(50, 26)">
+        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
+          <path class="plant-stem" d="M 50 96 Q 48 70 50 44" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 50 78 Q 28 68 20 54 Q 35 58 49 72" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 50 62 Q 72 54 80 40 Q 64 48 50 56" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+          <g class="plant-petals" transform="translate(50, 26)">
             <!-- Radiating Purple Chalk Petals -->
             <path d="M 0 0 L -5 -22 L 0 -26 L 5 -22 Z" fill="#7E6B8F" stroke="#FAF0CA" stroke-width="0.6" />
             <path d="M 0 0 L -18 -14 L -22 -8 L -14 -4 Z" fill="#6D597A" stroke="#FAF0CA" stroke-width="0.6" />
@@ -119,20 +135,28 @@ const ChalkBotanicals = {
             <path d="M 0 0 L -22 6 L -20 14 L -10 10 Z" fill="#B5838D" stroke="#FAF0CA" stroke-width="0.6" />
             <path d="M 0 0 L 22 6 L 20 14 L 10 10 Z" fill="#B5838D" stroke="#FAF0CA" stroke-width="0.6" />
             <path d="M 0 0 L -8 20 L 0 24 L 8 20 Z" fill="#7E6B8F" stroke="#FAF0CA" stroke-width="0.6" />
+          </g>
+          <g class="plant-bloom-core" transform="translate(50, 26)">
             <!-- Bright Yellow Stamen Core -->
             <circle cx="0" cy="0" r="6" fill="var(--chalk-amber)" stroke="#FAF0CA" stroke-width="1" />
             <circle cx="0" cy="0" r="2.5" fill="#5C381E" />
+          </g>
+          <g class="plant-sparkles">
+            <text x="22" y="22" font-family="'Kalam', cursive" font-size="12" fill="#B388FF">✦</text>
+            <text x="76" y="24" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
           </g>
         </svg>
       `;
     } else if (variety === 2) {
       // Variety C: Pure White Coneflower / Daisy (Bottom Right in Image 1)
       return `
-        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
-          <path d="M 50 96 L 50 42" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-          <path d="M 50 75 Q 32 68 25 56 Q 38 58 49 68" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <path d="M 50 60 Q 68 52 75 40 Q 62 46 50 54" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <g transform="translate(50, 26)">
+        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
+          <path class="plant-stem" d="M 50 96 L 50 42" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 50 75 Q 32 68 25 56 Q 38 58 49 68" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 50 60 Q 68 52 75 40 Q 62 46 50 54" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+          <g class="plant-petals" transform="translate(50, 26)">
             <!-- Layered Pure White Chalk Petals -->
             <path d="M 0 0 C -16 -6 -24 -20 -10 -24 C -2 -18 0 -8 0 0 Z" fill="#FFFFFF" opacity="0.95" stroke="#E8ECEF" stroke-width="0.8" />
             <path d="M 0 0 C 16 -6 24 -20 10 -24 C 2 -18 0 -8 0 0 Z" fill="#FFFFFF" opacity="0.95" stroke="#E8ECEF" stroke-width="0.8" />
@@ -140,26 +164,40 @@ const ChalkBotanicals = {
             <path d="M 0 0 C 18 8 24 0 16 -10 C 8 -6 2 -2 0 0 Z" fill="#FAF0CA" opacity="0.9" stroke="#E8ECEF" stroke-width="0.8" />
             <path d="M 0 0 C -10 18 0 22 8 16 C 6 8 2 2 0 0 Z" fill="#FFFFFF" opacity="0.95" />
             <path d="M 0 0 C 10 18 0 22 -8 16 C -6 8 -2 2 0 0 Z" fill="#FFFFFF" opacity="0.95" />
+          </g>
+          <g class="plant-bloom-core" transform="translate(50, 26)">
             <!-- Textured Chocolate Core -->
             <circle cx="0" cy="0" r="6.5" fill="#4A2E1B" stroke="var(--chalk-amber)" stroke-width="1" stroke-dasharray="2,1" />
+          </g>
+          <g class="plant-sparkles">
+            <text x="24" y="20" font-family="'Kalam', cursive" font-size="12" fill="#FAF0CA">✦</text>
+            <text x="74" y="24" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
           </g>
         </svg>
       `;
     } else {
       // Variety D: Drooping Golden Sunflower / Rudbeckia (Image 1 Left)
       return `
-        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg">
-          <path d="M 50 96 Q 52 68 50 38" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-          <path d="M 50 72 Q 28 64 18 52 Q 35 54 49 65" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <g transform="translate(50, 24)">
+        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
+          <path class="plant-stem" d="M 50 96 Q 52 68 50 38" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 50 72 Q 28 64 18 52 Q 35 54 49 65" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+          <g class="plant-petals" transform="translate(50, 24)">
             <!-- Drooping Gold Petals Falling Downward -->
             <path d="M 0 -4 C -8 10 -16 26 -6 28 C 0 20 2 8 0 -4 Z" fill="var(--chalk-amber)" stroke="#FAF0CA" stroke-width="0.6" />
             <path d="M 0 -4 C 8 10 16 26 6 28 C 0 20 -2 8 0 -4 Z" fill="var(--chalk-amber)" stroke="#FAF0CA" stroke-width="0.6" />
             <path d="M 0 -4 C -18 8 -26 22 -18 26 C -10 18 -4 6 0 -4 Z" fill="#F2CC8F" stroke="#FAF0CA" stroke-width="0.6" />
             <path d="M 0 -4 C 18 8 26 22 18 26 C 10 18 4 6 0 -4 Z" fill="#F2CC8F" stroke="#FAF0CA" stroke-width="0.6" />
             <path d="M 0 -4 C -2 14 0 28 2 28 C 4 20 2 8 0 -4 Z" fill="var(--chalk-amber)" stroke="#FAF0CA" stroke-width="0.6" />
+          </g>
+          <g class="plant-bloom-core" transform="translate(50, 24)">
             <!-- High Dome Cone Core (Brown) -->
             <path d="M -8 -4 C -8 -16 8 -16 8 -4 Z" fill="#5C381E" stroke="#FAF0CA" stroke-width="1" />
+          </g>
+          <g class="plant-sparkles">
+            <text x="22" y="18" font-family="'Kalam', cursive" font-size="13" fill="var(--chalk-amber)">✦</text>
+            <text x="76" y="20" font-family="'Kalam', cursive" font-size="11" fill="#FAF0CA">✦</text>
           </g>
         </svg>
       `;
@@ -167,14 +205,14 @@ const ChalkBotanicals = {
   },
 
   // Dynamic selector for any growth stage (0 to 4)
-  getBotanicalSVG(stage, size = 36, day = 1) {
+  getBotanicalSVG(stage, size = 36, day = 1, animClass = '') {
     switch (stage) {
-      case 4: return this.renderFullBloom(size, day);
-      case 3: return this.renderSwellingBud(size);
-      case 2: return this.renderBranchingStem(size);
-      case 1: return this.renderFirstSprout(size);
+      case 4: return this.renderFullBloom(size, day, animClass);
+      case 3: return this.renderSwellingBud(size, animClass);
+      case 2: return this.renderBranchingStem(size, animClass);
+      case 1: return this.renderFirstSprout(size, animClass);
       case 0:
-      default: return this.renderRestingSeed(size);
+      default: return this.renderRestingSeed(size, animClass);
     }
   }
 };
@@ -238,7 +276,7 @@ const ChalkMascot = {
 };
 
 const ChalkMeadowPanorama = {
-  renderPlantStage(x, day, dayData, isToday, isFuture = false) {
+  renderPlantStage(x, day, dayData, isToday, isFuture = false, animClass = '', animDelay = 0) {
     const stage = dayData ? (dayData.stage ?? 0) : 0;
     const variety = day % 4;
     let plantArtwork = '';
@@ -253,13 +291,13 @@ const ChalkMeadowPanorama = {
         const seedOpacity = isFuture ? '0.45' : '0.65';
         plantArtwork = `
           <!-- Soil Mound (Dotted for Future Calm Plots, Solid for Recorded Days) -->
-          <path d="M ${x - 22} 215 Q ${x} 206 ${x + 22} 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" ${moundStroke} />
+          <path class="plant-soil-mound" d="M ${x - 22} 215 Q ${x} 206 ${x + 22} 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" ${moundStroke} />
           <!-- Sleeping / Resting Chalk Seed in Soil -->
-          <ellipse cx="${x}" cy="217" rx="4" ry="2.5" fill="#FAF0CA" opacity="${seedOpacity}" stroke="var(--chalk-amber)" stroke-width="1" />
+          <ellipse class="plant-seed" cx="${x}" cy="217" rx="4" ry="2.5" fill="#FAF0CA" opacity="${seedOpacity}" stroke="var(--chalk-amber)" stroke-width="1" />
           <circle cx="${x - 7}" cy="218" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
           <circle cx="${x + 8}" cy="216" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
           <!-- Subtle resting chalk whisper -->
-          <text x="${x}" y="196" font-family="'Kalam', cursive" font-size="10" fill="${whisperColor}" text-anchor="middle" opacity="${whisperOpacity}">${whisperText}</text>
+          <text class="plant-stage-label" x="${x}" y="196" font-family="'Kalam', cursive" font-size="10" fill="${whisperColor}" text-anchor="middle" opacity="${whisperOpacity}">${whisperText}</text>
         `;
         break;
 
@@ -267,16 +305,17 @@ const ChalkMeadowPanorama = {
         // STAGE 1: THE SPROUT (First green shoot emerging from soil)
         plantArtwork = `
           <!-- Soil Mound -->
-          <path d="M ${x - 20} 215 Q ${x} 207 ${x + 20} 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
+          <path class="plant-soil-mound" d="M ${x - 20} 215 Q ${x} 207 ${x + 20} 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
           <!-- Emerging Sprout Stem -->
-          <path d="M ${x} 209 Q ${x + 1} 195 ${x} 178" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-          <!-- Left Cotyledon Leaf -->
-          <path d="M ${x} 178 C ${x - 14} 173 ${x - 22} 179 ${x - 19} 187 C ${x - 14} 191 ${x - 6} 186 ${x} 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
-          <path d="M ${x} 179 Q ${x - 9} 182 ${x - 16} 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
-          <!-- Right Cotyledon Leaf -->
-          <path d="M ${x} 178 C ${x + 14} 173 ${x + 22} 179 ${x + 19} 187 C ${x + 14} 191 ${x + 6} 186 ${x} 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
-          <path d="M ${x} 179 Q ${x + 9} 182 ${x + 16} 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
-          <text x="${x}" y="166" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-mint)" text-anchor="middle">Sprout</text>
+          <path class="plant-stem" d="M ${x} 209 Q ${x + 1} 195 ${x} 178" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <!-- Left & Right Cotyledon Leaves -->
+          <g class="plant-leaves">
+            <path d="M ${x} 178 C ${x - 14} 173 ${x - 22} 179 ${x - 19} 187 C ${x - 14} 191 ${x - 6} 186 ${x} 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+            <path d="M ${x} 179 Q ${x - 9} 182 ${x - 16} 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
+            <path d="M ${x} 178 C ${x + 14} 173 ${x + 22} 179 ${x + 19} 187 C ${x + 14} 191 ${x + 6} 186 ${x} 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+            <path d="M ${x} 179 Q ${x + 9} 182 ${x + 16} 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
+          </g>
+          <text class="plant-stage-label" x="${x}" y="166" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-mint)" text-anchor="middle">Sprout</text>
         `;
         break;
 
@@ -284,20 +323,18 @@ const ChalkMeadowPanorama = {
         // STAGE 2: BRANCHING STEM (Growing taller, multiple leaves, finding light)
         plantArtwork = `
           <!-- Soil Mound -->
-          <path d="M ${x - 18} 215 Q ${x} 209 ${x + 18} 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
+          <path class="plant-soil-mound" d="M ${x - 18} 215 Q ${x} 209 ${x + 18} 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
           <!-- Main Stem growing to 145 -->
-          <path d="M ${x} 215 Q ${x - 2} 180 ${x} 145" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-          <!-- Lower Left Leaf -->
-          <path d="M ${x - 1} 195 C ${x - 19} 190 ${x - 28} 197 ${x - 24} 205 C ${x - 16} 208 ${x - 7} 202 ${x - 1} 196 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <!-- Lower Right Leaf -->
-          <path d="M ${x} 188 C ${x + 19} 183 ${x + 28} 189 ${x + 25} 197 C ${x + 18} 201 ${x + 7} 195 ${x} 190 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <!-- Upper Left Leaf -->
-          <path d="M ${x - 1} 170 C ${x - 17} 163 ${x - 25} 169 ${x - 21} 177 C ${x - 14} 180 ${x - 6} 175 ${x - 1} 171 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <!-- Upper Right Leaf -->
-          <path d="M ${x} 163 C ${x + 16} 156 ${x + 23} 162 ${x + 21} 170 C ${x + 15} 173 ${x + 6} 168 ${x} 164 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <!-- Apex Leaf Shoot -->
-          <path d="M ${x} 145 C ${x - 6} 135 ${x} 130 ${x} 130 C ${x} 130 ${x + 6} 135 ${x} 145 Z" fill="rgba(6, 214, 160, 0.28)" stroke="var(--chalk-mint)" stroke-width="1.6" />
-          <text x="${x}" y="122" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-mint)" text-anchor="middle">Branching</text>
+          <path class="plant-stem" d="M ${x} 215 Q ${x - 2} 180 ${x} 145" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <!-- Branching Foliage Leaves -->
+          <g class="plant-leaves">
+            <path d="M ${x - 1} 195 C ${x - 19} 190 ${x - 28} 197 ${x - 24} 205 C ${x - 16} 208 ${x - 7} 202 ${x - 1} 196 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M ${x} 188 C ${x + 19} 183 ${x + 28} 189 ${x + 25} 197 C ${x + 18} 201 ${x + 7} 195 ${x} 190 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M ${x - 1} 170 C ${x - 17} 163 ${x - 25} 169 ${x - 21} 177 C ${x - 14} 180 ${x - 6} 175 ${x - 1} 171 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M ${x} 163 C ${x + 16} 156 ${x + 23} 162 ${x + 21} 170 C ${x + 15} 173 ${x + 6} 168 ${x} 164 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M ${x} 145 C ${x - 6} 135 ${x} 130 ${x} 130 C ${x} 130 ${x + 6} 135 ${x} 145 Z" fill="rgba(6, 214, 160, 0.28)" stroke="var(--chalk-mint)" stroke-width="1.6" />
+          </g>
+          <text class="plant-stage-label" x="${x}" y="122" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-mint)" text-anchor="middle">Branching</text>
         `;
         break;
 
@@ -305,18 +342,21 @@ const ChalkMeadowPanorama = {
         // STAGE 3: SWELLING BUD (High stem, rich foliage, swelling floral teardrop bud)
         plantArtwork = `
           <!-- Main Stem growing to 118 -->
-          <path d="M ${x} 215 Q ${x - 2} 165 ${x} 118" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <path class="plant-stem" d="M ${x} 215 Q ${x - 2} 165 ${x} 118" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
           <!-- Foliage leaves -->
-          <path d="M ${x - 1} 185 C ${x - 19} 178 ${x - 27} 188 ${x - 19} 195 C ${x - 11} 196 ${x - 5} 190 ${x - 1} 186 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <path d="M ${x} 172 C ${x + 19} 165 ${x + 25} 174 ${x + 19} 182 C ${x + 11} 183 ${x + 5} 177 ${x} 173 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <path d="M ${x - 1} 150 C ${x - 17} 142 ${x - 21} 150 ${x - 15} 156 C ${x - 8} 157 ${x - 4} 153 ${x - 1} 151 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <!-- Green Sepals cupping the bud -->
-          <path d="M ${x - 3} 122 C ${x - 10} 116 ${x - 9} 107 ${x - 1} 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
-          <path d="M ${x + 3} 122 C ${x + 10} 116 ${x + 9} 107 ${x + 1} 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
-          <!-- Coral / Amber Bud with glowing chalk tip -->
-          <path d="M ${x} 116 C ${x - 9} 104 ${x - 5} 92 ${x} 86 C ${x + 5} 92 ${x + 9} 104 ${x} 116 Z" fill="rgba(239, 71, 111, 0.35)" stroke="#EF476F" stroke-width="2.2" />
-          <path d="M ${x} 108 Q ${x} 92 ${x} 88" stroke="#FAF0CA" stroke-width="1" fill="none" opacity="0.8" />
-          <text x="${x}" y="78" font-family="'Kalam', cursive" font-size="10" fill="#EF476F" text-anchor="middle">Budding</text>
+          <g class="plant-leaves">
+            <path d="M ${x - 1} 185 C ${x - 19} 178 ${x - 27} 188 ${x - 19} 195 C ${x - 11} 196 ${x - 5} 190 ${x - 1} 186 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M ${x} 172 C ${x + 19} 165 ${x + 25} 174 ${x + 19} 182 C ${x + 11} 183 ${x + 5} 177 ${x} 173 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M ${x - 1} 150 C ${x - 17} 142 ${x - 21} 150 ${x - 15} 156 C ${x - 8} 157 ${x - 4} 153 ${x - 1} 151 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+          <!-- Green Sepals & Floral Bud with glowing chalk tip -->
+          <g class="plant-bud">
+            <path d="M ${x - 3} 122 C ${x - 10} 116 ${x - 9} 107 ${x - 1} 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
+            <path d="M ${x + 3} 122 C ${x + 10} 116 ${x + 9} 107 ${x + 1} 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
+            <path d="M ${x} 116 C ${x - 9} 104 ${x - 5} 92 ${x} 86 C ${x + 5} 92 ${x + 9} 104 ${x} 116 Z" fill="rgba(239, 71, 111, 0.35)" stroke="#EF476F" stroke-width="2.2" />
+            <path d="M ${x} 108 Q ${x} 92 ${x} 88" stroke="#FAF0CA" stroke-width="1" fill="none" opacity="0.8" />
+          </g>
+          <text class="plant-stage-label" x="${x}" y="78" font-family="'Kalam', cursive" font-size="10" fill="#EF476F" text-anchor="middle">Budding</text>
         `;
         break;
 
@@ -326,10 +366,12 @@ const ChalkMeadowPanorama = {
         if (variety === 0) {
           // Coral Daisy / Cosmos
           plantArtwork = `
-            <path d="M ${x} 215 Q ${x - 3} 155 ${x} 108" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-            <path d="M ${x - 1} 175 C ${x - 19} 168 ${x - 25} 178 ${x - 17} 184 C ${x - 10} 184 ${x - 5} 180 ${x - 1} 176 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M ${x} 155 C ${x + 17} 148 ${x + 23} 156 ${x + 17} 163 C ${x + 10} 164 ${x + 5} 159 ${x} 156 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <g transform="translate(${x}, 100)">
+            <path class="plant-stem" d="M ${x} 215 Q ${x - 3} 155 ${x} 108" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+            <g class="plant-leaves">
+              <path d="M ${x - 1} 175 C ${x - 19} 168 ${x - 25} 178 ${x - 17} 184 C ${x - 10} 184 ${x - 5} 180 ${x - 1} 176 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+              <path d="M ${x} 155 C ${x + 17} 148 ${x + 23} 156 ${x + 17} 163 C ${x + 10} 164 ${x + 5} 159 ${x} 156 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            </g>
+            <g class="plant-petals" transform="translate(${x}, 100)">
               <ellipse cx="0" cy="-18" rx="4.5" ry="9" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
               <ellipse cx="11" cy="-14" rx="4.5" ry="9" transform="rotate(36 11 -14)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
               <ellipse cx="17" cy="-5" rx="4.5" ry="9" transform="rotate(72 17 -5)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
@@ -339,20 +381,26 @@ const ChalkMeadowPanorama = {
               <ellipse cx="-15" cy="11" rx="4.5" ry="9" transform="rotate(252 -15 11)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
               <ellipse cx="-17" cy="-5" rx="4.5" ry="9" transform="rotate(288 -17 -5)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
               <ellipse cx="-11" cy="-14" rx="4.5" ry="9" transform="rotate(324 -11 -14)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
+            </g>
+            <g class="plant-bloom-core" transform="translate(${x}, 100)">
               <circle cx="0" cy="0" r="8.5" fill="#FFD166" stroke="#FAF0CA" stroke-width="2.2" />
               <circle cx="0" cy="0" r="5" fill="none" stroke="#181A1D" stroke-width="1" stroke-dasharray="2,2" opacity="0.6" />
             </g>
-            <text x="${x - 22}" y="88" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
-            <text x="${x + 20}" y="92" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
-            <text x="${x}" y="65" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)" text-anchor="middle">Bloomed</text>
+            <g class="plant-sparkles">
+              <text x="${x - 22}" y="88" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
+              <text x="${x + 20}" y="92" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
+            </g>
+            <text class="plant-stage-label" x="${x}" y="65" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)" text-anchor="middle">Bloomed</text>
           `;
         } else if (variety === 1) {
           // Purple Wild Aster
           plantArtwork = `
-            <path d="M ${x} 215 Q ${x - 2} 150 ${x} 95" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-            <path d="M ${x - 1} 180 Q ${x - 20} 175 ${x - 28} 168 M ${x} 172 Q ${x - 18} 168 ${x - 22} 158" stroke="var(--chalk-mint)" stroke-width="1.6" fill="none" />
-            <path d="M ${x + 1} 165 Q ${x + 18} 160 ${x + 26} 154 M ${x + 1} 155 Q ${x + 17} 150 ${x + 22} 142" stroke="var(--chalk-mint)" stroke-width="1.6" fill="none" />
-            <g transform="translate(${x}, 85)">
+            <path class="plant-stem" d="M ${x} 215 Q ${x - 2} 150 ${x} 95" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+            <g class="plant-leaves">
+              <path d="M ${x - 1} 180 Q ${x - 20} 175 ${x - 28} 168 M ${x} 172 Q ${x - 18} 168 ${x - 22} 158" stroke="var(--chalk-mint)" stroke-width="1.6" fill="none" />
+              <path d="M ${x + 1} 165 Q ${x + 18} 160 ${x + 26} 154 M ${x + 1} 155 Q ${x + 17} 150 ${x + 22} 142" stroke="var(--chalk-mint)" stroke-width="1.6" fill="none" />
+            </g>
+            <g class="plant-petals" transform="translate(${x}, 85)">
               <line x1="0" y1="0" x2="0" y2="-22" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
               <line x1="0" y1="0" x2="8" y2="-20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
               <line x1="0" y1="0" x2="16" y2="-15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
@@ -370,41 +418,50 @@ const ChalkMeadowPanorama = {
               <line x1="0" y1="0" x2="-16" y2="-15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
               <line x1="0" y1="0" x2="-8" y2="-20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
               <circle cx="0" cy="0" r="12" fill="none" stroke="#D8B4FE" stroke-width="1.8" stroke-dasharray="3,2" />
+            </g>
+            <g class="plant-bloom-core" transform="translate(${x}, 85)">
               <circle cx="0" cy="0" r="7.5" fill="#FFD166" stroke="#FAF0CA" stroke-width="2" />
             </g>
-            <text x="${x - 22}" y="74" font-family="'Kalam', cursive" font-size="12" fill="#B388FF">✦</text>
-            <text x="${x + 22}" y="78" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
-            <text x="${x}" y="50" font-family="'Kalam', cursive" font-size="10" fill="#B388FF" text-anchor="middle">Bloomed</text>
+            <g class="plant-sparkles">
+              <text x="${x - 22}" y="74" font-family="'Kalam', cursive" font-size="12" fill="#B388FF">✦</text>
+              <text x="${x + 22}" y="78" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
+            </g>
+            <text class="plant-stage-label" x="${x}" y="50" font-family="'Kalam', cursive" font-size="10" fill="#B388FF" text-anchor="middle">Bloomed</text>
           `;
         } else if (variety === 2) {
           // White Coneflower
           plantArtwork = `
-            <path d="M ${x} 215 Q ${x - 3} 145 ${x} 85" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" />
-            <path d="M ${x - 1} 175 C ${x - 23} 165 ${x - 31} 178 ${x - 21} 187 C ${x - 11} 188 ${x - 5} 181 ${x - 1} 176 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M ${x} 150 C ${x + 21} 140 ${x + 29} 152 ${x + 21} 161 C ${x + 12} 162 ${x + 6} 155 ${x} 151 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <g transform="translate(${x}, 80)">
+            <path class="plant-stem" d="M ${x} 215 Q ${x - 3} 145 ${x} 85" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" />
+            <g class="plant-leaves">
+              <path d="M ${x - 1} 175 C ${x - 23} 165 ${x - 31} 178 ${x - 21} 187 C ${x - 11} 188 ${x - 5} 181 ${x - 1} 176 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+              <path d="M ${x} 150 C ${x + 21} 140 ${x + 29} 152 ${x + 21} 161 C ${x + 12} 162 ${x + 6} 155 ${x} 151 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            </g>
+            <g class="plant-petals" transform="translate(${x}, 80)">
               <path d="M -16 5 C -24 15 -22 36 -18 42 C -15 36 -12 20 -10 5 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
               <path d="M -10 6 C -14 20 -12 40 -8 46 C -5 40 -4 22 -3 6 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
               <path d="M -3 7 C -4 22 -3 42 0 48 C 3 42 4 22 3 7 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
               <path d="M 3 6 C 4 22 5 40 8 46 C 12 40 14 20 10 6 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
               <path d="M 10 5 C 12 20 15 36 18 42 C 22 36 24 15 16 5 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
+            </g>
+            <g class="plant-bloom-core" transform="translate(${x}, 80)">
               <path d="M -14 5 C -14 -12 14 -12 14 5 Z" fill="#FFD166" stroke="#FAF0CA" stroke-width="2.2" />
               <path d="M -10 0 L 10 0 M -8 -4 L 8 -4 M -5 -8 L 5 -8" stroke="#181A1D" stroke-width="1.2" opacity="0.65" />
             </g>
-            <text x="${x - 20}" y="66" font-family="'Kalam', cursive" font-size="12" fill="#FAF0CA">✦</text>
-            <text x="${x + 20}" y="70" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
-            <text x="${x}" y="52" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA" text-anchor="middle">Bloomed</text>
+            <g class="plant-sparkles">
+              <text x="${x - 20}" y="66" font-family="'Kalam', cursive" font-size="12" fill="#FAF0CA">✦</text>
+              <text x="${x + 20}" y="70" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
+            </g>
+            <text class="plant-stage-label" x="${x}" y="52" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA" text-anchor="middle">Bloomed</text>
           `;
         } else {
           // Golden Sunflower / Rudbeckia / Dahlia
           plantArtwork = `
-            <path d="M ${x} 215 Q ${x - 3} 125 ${x} 58" stroke="var(--chalk-mint)" stroke-width="3.4" stroke-linecap="round" fill="none" />
-            <path d="M ${x - 2} 170 C ${x - 35} 155 ${x - 45} 176 ${x - 29} 190 C ${x - 13} 192 ${x - 6} 180 ${x - 2} 172 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
-            <path d="M ${x + 1} 138 C ${x + 35} 122 ${x + 47} 144 ${x + 30} 158 C ${x + 13} 160 ${x + 5} 148 ${x + 1} 140 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
-            <text x="${x - 39}" y="44" font-family="'Kalam', cursive" font-size="14" fill="var(--chalk-amber)">✦</text>
-            <text x="${x + 39}" y="48" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
-            <text x="${x + 21}" y="24" font-family="'Kalam', cursive" font-size="15" fill="#FAF0CA">✦</text>
-            <g transform="translate(${x}, 52)">
+            <path class="plant-stem" d="M ${x} 215 Q ${x - 3} 125 ${x} 58" stroke="var(--chalk-mint)" stroke-width="3.4" stroke-linecap="round" fill="none" />
+            <g class="plant-leaves">
+              <path d="M ${x - 2} 170 C ${x - 35} 155 ${x - 45} 176 ${x - 29} 190 C ${x - 13} 192 ${x - 6} 180 ${x - 2} 172 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
+              <path d="M ${x + 1} 138 C ${x + 35} 122 ${x + 47} 144 ${x + 30} 158 C ${x + 13} 160 ${x + 5} 148 ${x + 1} 140 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
+            </g>
+            <g class="plant-petals" transform="translate(${x}, 52)">
               <ellipse cx="0" cy="-24" rx="5.5" ry="12" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
               <ellipse cx="9" cy="-22" rx="5.5" ry="12" transform="rotate(22.5 9 -22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
               <ellipse cx="17" cy="-17" rx="5.5" ry="12" transform="rotate(45 17 -17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
@@ -421,12 +478,19 @@ const ChalkMeadowPanorama = {
               <ellipse cx="-22" cy="-9" rx="5.5" ry="12" transform="rotate(292.5 -22 -9)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
               <ellipse cx="-17" cy="-17" rx="5.5" ry="12" transform="rotate(315 -17 -17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
               <ellipse cx="-9" cy="-22" rx="5.5" ry="12" transform="rotate(337.5 -9 -22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+            </g>
+            <g class="plant-bloom-core" transform="translate(${x}, 52)">
               <circle cx="0" cy="0" r="14" fill="#2E1D0E" stroke="#FFD166" stroke-width="2.4" />
               <circle cx="0" cy="0" r="10" fill="none" stroke="#FAF0CA" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.8" />
               <circle cx="0" cy="0" r="6" fill="none" stroke="#FFD166" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.8" />
               <circle cx="0" cy="0" r="2.5" fill="#FAF0CA" />
             </g>
-            <text x="${x}" y="20" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)" text-anchor="middle">Bloomed</text>
+            <g class="plant-sparkles">
+              <text x="${x - 39}" y="44" font-family="'Kalam', cursive" font-size="14" fill="var(--chalk-amber)">✦</text>
+              <text x="${x + 39}" y="48" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
+              <text x="${x + 21}" y="24" font-family="'Kalam', cursive" font-size="15" fill="#FAF0CA">✦</text>
+            </g>
+            <text class="plant-stage-label" x="${x}" y="20" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)" text-anchor="middle">Bloomed</text>
           `;
         }
         break;
@@ -440,8 +504,17 @@ const ChalkMeadowPanorama = {
       <ellipse cx="${x}" cy="222" rx="42" ry="11" fill="rgba(255, 209, 102, 0.12)" stroke="var(--chalk-amber)" stroke-width="1.2" stroke-dasharray="3,2" />
     ` : '';
 
+    const hotspotClasses = [
+      'meadow-plant-hotspot',
+      isToday ? 'is-today-plant' : '',
+      isFuture ? 'is-future-plant' : '',
+      animClass || ''
+    ].filter(Boolean).join(' ');
+
+    const delayStyle = animDelay ? `style="--plant-delay: ${animDelay.toFixed(2)}s;"` : '';
+
     return `
-      <g class="meadow-plant-hotspot ${isToday ? 'is-today-plant' : ''} ${isFuture ? 'is-future-plant' : ''}" data-day="${day}" id="plant-hotspot-d${day}">
+      <g class="${hotspotClasses}" ${delayStyle} data-day="${day}" id="plant-hotspot-d${day}">
         <rect x="${x - 45}" y="10" width="90" height="245" fill="transparent" />
         ${todayPedestal}
         ${plantArtwork}
@@ -484,7 +557,28 @@ const ChalkMeadowPanorama = {
         // Enforce stage 0 resting seed placeholder for future dates
         dayData = { ...dayData, stage: 0, tasks: 0, focus: 0 };
       }
-      return this.renderPlantStage(slot.x, slot.day, dayData, isToday, isFuture);
+
+      // Determine animation class and staggered delay
+      let animClass = '';
+      let animDelay = 0;
+
+      if (isToday && activeStageEvolutionDay === slot.day && activeStageEvolutionClass) {
+        // Active botanical stage evolution taking place right now!
+        animClass = activeStageEvolutionClass;
+        animDelay = 0;
+      } else if (GardenView.isCurrentMonth && !hasVisitedGardenThisSession) {
+        // First visit to garden this session: staggered emergence centered around Today
+        const distFromToday = Math.abs(slot.day - TODAY_DAY_NUM);
+        animDelay = distFromToday <= 3 ? distFromToday * 0.12 : 0.36 + (distFromToday - 3) * 0.05;
+        animClass = 'garden-entrance-anim';
+      } else if (GardenView.isCurrentMonth) {
+        // Subsequent visits: gentle living breathing sway
+        animClass = 'subtle-visit-sway';
+        const distFromToday = Math.abs(slot.day - TODAY_DAY_NUM);
+        animDelay = (distFromToday % 6) * 0.22;
+      }
+
+      return this.renderPlantStage(slot.x, slot.day, dayData, isToday, isFuture, animClass, animDelay);
     }).join('\n');
 
     // Generate continuous ground tufts & pebbles between each day's plant
@@ -549,6 +643,9 @@ const ChalkMeadowPanorama = {
     `;
 
     container.innerHTML = svgHTML;
+    if (GardenView.isCurrentMonth) {
+      hasVisitedGardenThisSession = true;
+    }
 
     // Attach click listeners to all active specimen hotspots
     meadowSlots.forEach(slot => {
@@ -1684,10 +1781,34 @@ function renderDashboard() {
   const specimenTitle = document.getElementById('dash-today-specimen-name');
   const quoteEl = document.getElementById('dash-growth-quote');
 
+  const animClass = (activeStageEvolutionDay === TODAY_DAY_NUM && activeStageEvolutionClass) ? activeStageEvolutionClass : '';
   if (stagePill) stagePill.innerText = stageNames[currentStage];
-  if (flowerVisual) flowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 96, TODAY_DAY_NUM);
+  if (flowerVisual) flowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 96, TODAY_DAY_NUM, animClass);
   if (specimenTitle) specimenTitle.innerText = `🌸 ${specimenName}`;
   if (quoteEl) quoteEl.innerText = stageQuotes[currentStage];
+
+  const bloomHintEl = document.getElementById('dash-bloom-hint');
+  if (bloomHintEl) {
+    if (currentStage === 4) {
+      bloomHintEl.innerHTML = `<span class="chalk-font" style="color:var(--chalk-amber); font-weight:700;">🌸 Your flower is in full bloom!</span>`;
+    } else {
+      const genuineBaseline = Math.max(totalTasks, todayGardenData.highestPlannedCount || 0);
+      const tasksNeeded = Math.max(0, genuineBaseline - completedTasks);
+      const focusNeeded = Math.max(0, 45 - currentFocus);
+
+      let hintText = '';
+      if (tasksNeeded > 0 && focusNeeded > 0) {
+        hintText = `${tasksNeeded} task${tasksNeeded !== 1 ? 's' : ''} and ${focusNeeded} minutes of focus to bloom.`;
+      } else if (tasksNeeded > 0 && focusNeeded === 0) {
+        hintText = `Focus goal reached! Finish your remaining ${tasksNeeded} task${tasksNeeded !== 1 ? 's' : ''} to bloom.`;
+      } else if (tasksNeeded === 0 && focusNeeded > 0) {
+        hintText = `All tasks done! Just ${focusNeeded} minute${focusNeeded !== 1 ? 's' : ''} of focus left.`;
+      } else {
+        hintText = `Add tasks to your slate and record 45 minutes of focus to bloom.`;
+      }
+      bloomHintEl.innerText = hintText;
+    }
+  }
 
   const stepperSteps = document.querySelectorAll('.dash-stages-stepper .stepper-step');
   stepperSteps.forEach(step => {
@@ -3326,46 +3447,70 @@ function populateFocusTaskDropdown() {
 // --------------------------------------------------------------------------
 // H. GLOBAL GROWTH CALCULATOR & TOP RIGHT BADGE
 // --------------------------------------------------------------------------
+function getStageEvolutionAnimClass(stage) {
+  switch (stage) {
+    case 1: return 'anim-emerge-sprout';
+    case 2: return 'anim-grow-stem';
+    case 3: return 'anim-swell-bud';
+    case 4: return 'anim-unfurl-bloom';
+    default: return '';
+  }
+}
+
 function updateGlobalGrowthMetrics() {
   const todayTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE);
   const activeCompleted = todayTasks.filter(t => t.status === 'COMPLETED').length;
   const dayGarden = AppState.gardenData[TODAY_DAY_NUM] || {};
   const erasedCount = dayGarden.erasedTasksCount || 0;
   const completedCount = activeCompleted + erasedCount;
-  const effectivePlanned = Math.max(todayTasks.length + erasedCount, dayGarden.planned || 0, completedCount);
+  const activePlanned = todayTasks.length + erasedCount;
+
+  // Genuine baseline planned: track the highest planned count ever recorded today
+  // to prevent accidental or intentional task deletions from falsely triggering Full Bloom
+  dayGarden.highestPlannedCount = Math.max(dayGarden.highestPlannedCount || 0, activePlanned, dayGarden.planned || 0);
+  const genuineBaseline = dayGarden.highestPlannedCount;
+  const effectivePlanned = Math.max(activePlanned, genuineBaseline, completedCount);
   const focusMins = AppState.focusTimeLoggedToday || 0;
 
   // 1. Separate Progress Garden & Habit Ledger:
-  // Growth stage depends purely on completed tasks & focus minutes (Habit Ledger tracks habit rhythms independently)
+  // Botanical growth depends ONLY on completed daily tasks and Deep Focus minutes.
+  // Habit rhythms are tracked independently in Habit Ledger.
   let calculatedStage = 0;
+  const allTasksDone = activePlanned > 0 && completedCount >= activePlanned && completedCount >= genuineBaseline;
+
   if (completedCount === 0 && focusMins === 0) {
-    calculatedStage = 0; // Resting Seed
+    calculatedStage = 0; // Stage 0: Resting Seed
+  } else if (allTasksDone && focusMins >= 45) {
+    // Stage 4: Full Bloom strictly requires BOTH: 100% planned tasks completed AND >= 45m focus.
+    // (All alternative shortcuts such as 5 tasks or 90m focus alone have been removed).
+    calculatedStage = 4;
   } else if (
-    (effectivePlanned > 0 && completedCount === effectivePlanned && focusMins >= 45) ||
-    completedCount >= 5 ||
-    focusMins >= 90
-  ) {
-    calculatedStage = 4; // Full Bloom
-  } else if (
-    (effectivePlanned > 0 && (completedCount / effectivePlanned) >= 0.6) ||
+    allTasksDone ||
+    focusMins >= 45 ||
+    (activePlanned > 0 && (completedCount / activePlanned) >= 0.6) ||
     completedCount >= 3 ||
-    focusMins >= 55
+    (completedCount >= 2 && focusMins >= 25)
   ) {
-    calculatedStage = 3; // Swelling Bud
+    // Stage 3: Swelling Bud (Significant progress; or one condition for bloom met but not both)
+    calculatedStage = 3;
   } else if (
     completedCount >= 2 ||
-    focusMins >= 30 ||
-    (completedCount >= 1 && focusMins >= 15)
+    focusMins >= 25 ||
+    (completedCount >= 1 && focusMins >= 10)
   ) {
-    calculatedStage = 2; // Branching Stem
+    // Stage 2: Branching Stem (Further progress)
+    calculatedStage = 2;
   } else {
-    calculatedStage = 1; // The Sprout
+    // Stage 1: The Sprout (First momentum: at least 1 task completed or any focus > 0)
+    calculatedStage = 1;
   }
 
   // 2. Preserve Earned Flower Growth:
-  // Once a flower reaches a growth stage, it never shrinks if a task is reopened or edited.
+  // Once a flower reaches a growth stage through genuine effort, it never shrinks if a task is reopened.
   const previousStage = dayGarden.stage ?? 0;
-  const earnedStage = Math.max(calculatedStage, previousStage);
+  const highestEarned = Math.max(calculatedStage, dayGarden.highestEarnedStage || 0, previousStage);
+  dayGarden.highestEarnedStage = highestEarned;
+  const earnedStage = highestEarned;
   const hasGrown = earnedStage > previousStage;
 
   if (!AppState.gardenData[TODAY_DAY_NUM]) {
@@ -3375,6 +3520,8 @@ function updateGlobalGrowthMetrics() {
   AppState.gardenData[TODAY_DAY_NUM].planned = effectivePlanned;
   AppState.gardenData[TODAY_DAY_NUM].focus = focusMins;
   AppState.gardenData[TODAY_DAY_NUM].stage = earnedStage;
+  AppState.gardenData[TODAY_DAY_NUM].highestEarnedStage = highestEarned;
+  AppState.gardenData[TODAY_DAY_NUM].highestPlannedCount = genuineBaseline;
 
   if (!AppState.monthlyGardens) AppState.monthlyGardens = {};
   AppState.monthlyGardens[CurrentDateInfo.monthKey] = AppState.gardenData;
@@ -3391,58 +3538,54 @@ function updateGlobalGrowthMetrics() {
   if (topStage) topStage.innerText = stageNames[finalStage];
   if (topMeta) topMeta.innerText = `${completedCount} tasks • ${focusMins}m focus`;
 
+  // If a new growth stage was reached, set the active evolution class before rendering
+  if (hasGrown && !isSystemInitializing) {
+    activeStageEvolutionDay = TODAY_DAY_NUM;
+    activeStageEvolutionClass = getStageEvolutionAnimClass(earnedStage);
+  }
+
   renderDashboard();
   renderProgressGarden();
 
-  // 3. Subtle Organic Growth Animation when new stage is reached (not on initial load)
+  // 3. Trigger Botanical Organic Growth Animation when genuine new stage is achieved
   if (hasGrown && !isSystemInitializing) {
     triggerBotanicalGrowthAnimation(earnedStage);
   }
 }
 
 function triggerBotanicalGrowthAnimation(newStage) {
-  // A. Dashboard flower visual
+  AudioEngine.playChalkScratch();
+
   const dashVisual = document.getElementById('dash-today-flower-visual');
   if (dashVisual) {
     dashVisual.classList.remove('plant-growth-anim');
     void dashVisual.offsetWidth; // trigger reflow
     dashVisual.classList.add('plant-growth-anim');
-    setTimeout(() => {
-      if (dashVisual) dashVisual.classList.remove('plant-growth-anim');
-    }, 1000);
   }
 
-  // B. Top navigation flower icon
   const topIcon = document.getElementById('top-flower-icon');
   if (topIcon) {
     topIcon.classList.remove('plant-growth-anim');
     void topIcon.offsetWidth;
     topIcon.classList.add('plant-growth-anim');
-    setTimeout(() => {
-      if (topIcon) topIcon.classList.remove('plant-growth-anim');
-    }, 1000);
   }
 
-  // C. Progress Garden landscape plant hotspot
-  const todayHotspot = document.getElementById(`plant-hotspot-d${TODAY_DAY_NUM}`);
-  if (todayHotspot) {
-    todayHotspot.classList.add('is-stage-growing');
-    setTimeout(() => {
-      if (todayHotspot) todayHotspot.classList.remove('is-stage-growing');
-    }, 1200);
-  }
-
-  // D. Nature journal calendar tile
   const todayTile = document.querySelector('.calendar-day-tile.is-today');
   if (todayTile) {
     todayTile.classList.add('tile-growth-pulse');
-    setTimeout(() => {
-      if (todayTile) todayTile.classList.remove('tile-growth-pulse');
-    }, 1000);
   }
 
   const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
   showToast(`🌱 Botanical Growth: Reached ${stageNames[newStage] || 'new stage'}!`);
+
+  // Clear active stage evolution after animation completes (2.2s)
+  setTimeout(() => {
+    activeStageEvolutionDay = null;
+    activeStageEvolutionClass = '';
+    if (dashVisual) dashVisual.classList.remove('plant-growth-anim');
+    if (topIcon) topIcon.classList.remove('plant-growth-anim');
+    if (todayTile) todayTile.classList.remove('tile-growth-pulse');
+  }, 2200);
 }
 
 // --------------------------------------------------------------------------
