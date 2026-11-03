@@ -604,31 +604,53 @@
                 </div>
                 <div class="summary-text" id="habit-progress-text">14 habit completions logged this month</div>
               </div>
+            </div>
 
-              <!-- Interactive Daily Rhythm Strip (Click any day to maximize & inspect details) -->
-              <div class="habit-days-strip-container">
-                <div class="habit-strip-header">
-                  <span class="habit-strip-title chalk-font"><i class="fa-solid fa-calendar-week"></i> Daily Rhythm Log</span>
-                  <span class="habit-strip-hint">Click any day to maximize & view detailed progress</span>
+            <!-- MIDDLE: Interactive Habit Consistency Line Graph Card -->
+            <div class="habit-graph-card chalk-card" id="habit-graph-card">
+              <div class="habit-graph-header">
+                <div class="habit-graph-header-left">
+                  <h4 class="chalk-font habit-graph-title">
+                    <i class="fa-solid fa-chart-line" style="color:var(--chalk-mint);"></i> Habit Consistency Line Graph
+                  </h4>
+                  <span class="habit-graph-subtext" id="habit-graph-subtext">Daily completion percentage of scheduled habits</span>
                 </div>
-                <div class="habit-days-strip" id="habit-days-strip">
-                  <!-- Populated by JS with clickable day tiles (D1 - D8 Today) -->
+                <div class="habit-graph-toggle-group" role="group" aria-label="Graph time range">
+                  <button type="button" class="graph-toggle-btn active chalk-font" id="btn-graph-weekly" data-range="weekly">Weekly</button>
+                  <button type="button" class="graph-toggle-btn chalk-font" id="btn-graph-monthly" data-range="monthly">Monthly</button>
                 </div>
+              </div>
+
+              <!-- Interactive SVG Line Graph Canvas -->
+              <div class="habit-graph-viewport-wrap" id="habit-graph-viewport">
+                <!-- Populated with interactive SVG line graph by JS -->
+              </div>
+
+              <!-- Interactive Inspection Detail Badge (Shows on hover/click) -->
+              <div class="habit-graph-inspection-bar" id="habit-graph-inspection">
+                <div class="inspection-pill-content">
+                  <span class="inspection-date chalk-font" id="graph-inspect-date">Today</span>
+                  <span class="inspection-separator">•</span>
+                  <span class="inspection-habits" id="graph-inspect-habits">2 of 4 habits completed</span>
+                  <span class="inspection-separator">•</span>
+                  <span class="inspection-badge chalk-font" id="graph-inspect-pct">50% consistency</span>
+                </div>
+                <span class="inspection-hint">Hover or click any data point to inspect that day</span>
               </div>
             </div>
 
-            <!-- Daily Habits Checklist & Water Tracker -->
+            <!-- BOTTOM: Daily Habits Checklist & Water Tracker -->
             <div class="habit-manager-card chalk-card">
               <div class="habit-header-row">
                 <div>
                   <h4 class="chalk-font">Active Habit Routines</h4>
-                  <p class="habit-subtext">Click any habit to record progress (e.g. click water to add 1 Litre!).</p>
+                  <p class="habit-subtext">Adjust measurable progress with circular rings or toggle daily check-ins.</p>
                 </div>
               </div>
 
               <!-- Habit List -->
               <div class="habit-items-container" id="habit-items-list">
-                <!-- Populated with Interactive Litre Increments -->
+                <!-- Populated with Interactive Stepper Controls & Circular Progress Rings -->
               </div>
             </div>
 
@@ -846,6 +868,10 @@
             <label class="chalk-font">Daily Target Amount:</label>
             <input type="number" id="new-habit-target" class="chalk-input" value="4" min="1" max="100">
           </div>
+          <div class="form-group" id="habit-unit-group">
+            <label class="chalk-font">Unit of Measurement (e.g. L, mins, pages):</label>
+            <input type="text" id="new-habit-unit" class="chalk-input" placeholder="e.g. L, mins, pages...">
+          </div>
           <div class="form-group">
             <label class="chalk-font">Icon Symbol:</label>
             <select id="new-habit-icon" class="chalk-select">
@@ -855,12 +881,72 @@
               <option value="🏃">🏃 Exercise / Movement</option>
               <option value="🧘">🧘 Mindfulness / Rest</option>
               <option value="🌿">🌿 Plant Care / Nature</option>
+              <option value="✏️">✏️ Writing / Journal</option>
+              <option value="🥗">🥗 Healthy Eating</option>
+              <option value="🌙">🌙 Sleep / Rest</option>
             </select>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="chalk-btn secondary-btn chalk-font" id="btn-cancel-habit">Cancel</button>
           <button type="submit" class="chalk-btn primary-btn chalk-font">Plant Habit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2b: Edit Existing Habit Modal -->
+  <div class="chalk-modal-backdrop" id="edit-habit-modal" style="display:none;">
+    <div class="chalk-modal-dialog chalk-card">
+      <div class="modal-header">
+        <h3 class="chalk-font"><i class="fa-solid fa-pen-to-square" style="color:var(--chalk-amber); margin-right:6px;"></i> Edit Daily Habit</h3>
+        <button class="modal-close-btn" id="btn-close-edit-habit-modal">&times;</button>
+      </div>
+      <form id="edit-habit-form">
+        <input type="hidden" id="edit-habit-id" />
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="chalk-font">Habit Name:</label>
+            <input type="text" id="edit-habit-name" class="chalk-input" required>
+          </div>
+          <div class="form-group">
+            <label class="chalk-font">Habit Type:</label>
+            <select id="edit-habit-type" class="chalk-select">
+              <option value="COUNTER">Counter / Progress Ring (e.g. Litres, Mins, Pages)</option>
+              <option value="CHECK">Simple Daily Checkbox</option>
+            </select>
+          </div>
+          <div class="form-group" id="edit-habit-target-group">
+            <label class="chalk-font">Daily Target Amount:</label>
+            <input type="number" id="edit-habit-target" class="chalk-input" value="4" min="1" max="100">
+          </div>
+          <div class="form-group" id="edit-habit-unit-group">
+            <label class="chalk-font">Unit of Measurement (e.g. L, mins, pages):</label>
+            <input type="text" id="edit-habit-unit" class="chalk-input" placeholder="e.g. L, mins, pages...">
+          </div>
+          <div class="form-group">
+            <label class="chalk-font">Icon Symbol:</label>
+            <select id="edit-habit-icon" class="chalk-select">
+              <option value="💧">💧 Hydration</option>
+              <option value="📖">📖 Reading / Theory</option>
+              <option value="🎨">🎨 Sketching / Design</option>
+              <option value="🏃">🏃 Exercise / Movement</option>
+              <option value="🧘">🧘 Mindfulness / Rest</option>
+              <option value="🌿">🌿 Plant Care / Nature</option>
+              <option value="✏️">✏️ Writing / Journal</option>
+              <option value="🥗">🥗 Healthy Eating</option>
+              <option value="🌙">🌙 Sleep / Rest</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer" style="display:flex; justify-content:space-between; align-items:center;">
+          <button type="button" class="chalk-btn danger-btn chalk-font" id="btn-delete-habit" style="color:var(--chalk-coral); border-color:var(--chalk-coral);">
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="chalk-btn secondary-btn chalk-font" id="btn-cancel-edit-habit">Cancel</button>
+            <button type="submit" class="chalk-btn primary-btn chalk-font">Save Changes</button>
+          </div>
         </div>
       </form>
     </div>

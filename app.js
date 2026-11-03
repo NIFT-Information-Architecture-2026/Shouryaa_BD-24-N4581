@@ -1093,6 +1093,7 @@ const DEFAULT_STATE = {
     { id: 'h-4', name: 'Evening Walk / Rest', icon: '🌿', type: 'CHECK', current: 1, target: 1, unit: '', completions: Math.min(12, TODAY_DAY_NUM) }
   ],
   focusTimeLoggedToday: 45,
+  habitHistory: {},
   gardenData: buildInitialGardenData(TODAY_DAY_NUM),
   monthlyGardens: {
     '2026-10': OCTOBER_2026_HISTORICAL_GARDEN,
@@ -1110,6 +1111,8 @@ function loadState() {
       if (!parsed.userName) parsed.userName = 'Shouryaa';
       if (!parsed.gardenData) parsed.gardenData = {};
       if (!parsed.monthlyGardens) parsed.monthlyGardens = {};
+      if (!parsed.habitHistory) parsed.habitHistory = {};
+      ensureHabitHistoryInitialized(parsed);
       
       // Ensure historical October 2026 garden is available for previous month navigation
       if (!parsed.monthlyGardens['2026-10']) {
@@ -1192,6 +1195,7 @@ function loadState() {
           migrated.gardenData[d].focus = 0;
         }
       }
+      ensureHabitHistoryInitialized(migrated);
       return migrated;
     }
     return DEFAULT_STATE;
@@ -3077,26 +3081,428 @@ function openGardenDayModal(day, dayData, stageName = null) {
 }
 
 // --------------------------------------------------------------------------
-// F. HABIT LEDGER CONTROLLER (STACKED TREE & INTERACTIVE LITRE COUNTER)
+// F. HABIT LEDGER CONTROLLER & INTERACTIVE LINE GRAPH
 // --------------------------------------------------------------------------
+let currentHabitGraphRange = 'weekly';
+
+function ensureHabitHistoryInitialized(state) {
+  if (!state.habitHistory) state.habitHistory = {};
+
+  // Guarantee Today is always recorded with live current values
+  if (!state.habitHistory[TODAY_DATE]) {
+    state.habitHistory[TODAY_DATE] = {};
+  }
+  (state.habits || []).forEach(h => {
+    state.habitHistory[TODAY_DATE][h.id] = h.current;
+  });
+
+  // Seed / backfill past days for up to 31 days if not present
+  const habits = state.habits || [];
+  for (let offset = 1; offset <= 31; offset++) {
+    const d = new Date();
+    d.setDate(d.getDate() - offset);
+    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+    if (!state.habitHistory[dateStr]) {
+      state.habitHistory[dateStr] = {};
+      habits.forEach((h, hIdx) => {
+        // Natural distribution matching habit completions
+        const seedVal = (d.getDate() * 13 + hIdx * 7 + offset * 5) % 10;
+        if (seedVal >= 2) {
+          state.habitHistory[dateStr][h.id] = h.target;
+        } else if (seedVal === 1 && h.type === 'COUNTER') {
+          // Partial progress day (e.g. 2 of 4 litres)
+          state.habitHistory[dateStr][h.id] = Math.max(1, Math.floor(h.target * 0.5));
+        } else {
+          // Missed day
+          state.habitHistory[dateStr][h.id] = 0;
+        }
+      });
+    }
+  }
+}
+
+function getHabitCompletionForDate(dateStr) {
+  const habits = AppState.habits || [];
+  // Habits scheduled on or before this date
+  const activeHabits = habits.filter(h => !h.createdAt || h.createdAt <= dateStr);
+  const totalScheduled = activeHabits.length || habits.length || 1;
+
+  const record = (AppState.habitHistory && AppState.habitHistory[dateStr]) || {};
+  const isToday = dateStr === TODAY_DATE;
+
+  let completedCount = 0;
+  let fractionalSum = 0;
+
+  activeHabits.forEach(h => {
+    const val = record[h.id] !== undefined ? record[h.id] : (isToday ? h.current : 0);
+    const target = h.target || (h.type === 'COUNTER' ? 4 : 1);
+    if (val >= target) {
+      completedCount++;
+      fractionalSum += 1;
+    } else {
+      fractionalSum += Math.max(0, Math.min(1, val / target));
+    }
+  });
+
+  const percentage = Math.round((fractionalSum / totalScheduled) * 100);
+
+  return {
+    dateStr,
+    totalScheduled,
+    completedCount,
+    percentage: Math.min(100, Math.max(0, percentage)),
+    fractionalSum
+  };
+}
+
+function renderHabitConsistencyGraph() {
+  const container = document.getElementById('habit-graph-viewport');
+  if (!container) return;
+
+  const isWeekly = currentHabitGraphRange === 'weekly';
+  const days = [];
+
+  if (isWeekly) {
+    // Last 7 days up to today
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      const dayOfWeek = d.toLocaleDateString('en-US', { weekday: 'short' });
+      const dayNum = d.getDate();
+      const isToday = i === 0;
+      const stats = getHabitCompletionForDate(dateStr);
+      days.push({
+        dateStr,
+        dayNum,
+        dayOfWeek,
+        isToday,
+        isFuture: false,
+        label: isToday ? '★ Today' : `${dayOfWeek} ${dayNum}`,
+        fullDate: d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+        stats
+      });
+    }
+  } else {
+    // Current month view: all days of month
+    const daysInMonth = CurrentDateInfo ? CurrentDateInfo.daysInMonth : 30;
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateStr = `${CurrentDateInfo.year}-${String(CurrentDateInfo.monthNum).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      const isToday = day === TODAY_DAY_NUM;
+      const isFuture = day > TODAY_DAY_NUM;
+      const stats = isFuture ? { percentage: 0, completedCount: 0, totalScheduled: (AppState.habits || []).length } : getHabitCompletionForDate(dateStr);
+      const d = new Date(CurrentDateInfo.year, CurrentDateInfo.monthNum - 1, day);
+      days.push({
+        dateStr,
+        dayNum: day,
+        isToday,
+        isFuture,
+        label: `D${day}`,
+        fullDate: d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+        stats
+      });
+    }
+  }
+
+  // Update inspection bar to default (Today)
+  const todayEntry = days.find(d => d.isToday) || days[days.length - 1];
+  updateHabitGraphInspection(todayEntry);
+
+  const svgWidth = 680;
+  const svgHeight = 210;
+  const padLeft = 45;
+  const padRight = 24;
+  const padTop = 22;
+  const padBottom = 34;
+  const graphW = svgWidth - padLeft - padRight;
+  const graphH = svgHeight - padTop - padBottom;
+
+  // Generate subtle horizontal grid lines & percentage labels
+  let gridLinesSVG = '';
+  [100, 75, 50, 25, 0].forEach(p => {
+    const y = padTop + graphH * (1 - p / 100);
+    gridLinesSVG += `
+      <line x1="${padLeft}" y1="${y}" x2="${svgWidth - padRight}" y2="${y}" stroke="var(--border-chalk)" stroke-width="1" stroke-dasharray="3,3" opacity="0.32" />
+      <text x="${padLeft - 8}" y="${y + 3.5}" font-family="'Inter', sans-serif" font-size="10" fill="var(--text-muted)" text-anchor="end" opacity="0.8">${p}%</text>
+    `;
+  });
+
+  // Calculate coordinates for plotted days
+  const numDays = days.length;
+  const points = [];
+
+  days.forEach((d, idx) => {
+    const x = padLeft + (idx / (numDays - 1)) * graphW;
+    const y = padTop + graphH * (1 - (d.stats.percentage || 0) / 100);
+    d.x = x;
+    d.y = y;
+    if (!d.isFuture) {
+      points.push({ x, y, day: d });
+    }
+  });
+
+  // Generate smooth cubic bezier line path
+  let pathD = '';
+  if (points.length > 0) {
+    pathD = `M ${points[0].x} ${points[0].y}`;
+    for (let i = 0; i < points.length - 1; i++) {
+      const p0 = points[i];
+      const p1 = points[i + 1];
+      const cpX = (p0.x + p1.x) / 2;
+      pathD += ` C ${cpX} ${p0.y}, ${cpX} ${p1.y}, ${p1.x} ${p1.y}`;
+    }
+  }
+
+  // Generate area fill path underneath line
+  let areaSVG = '';
+  if (points.length > 1) {
+    const lastPt = points[points.length - 1];
+    const firstPt = points[0];
+    const groundY = padTop + graphH;
+    const areaD = `${pathD} L ${lastPt.x} ${groundY} L ${firstPt.x} ${groundY} Z`;
+    areaSVG = `<path d="${areaD}" fill="url(#habitMintGrad)" />`;
+  }
+
+  // Generate X-axis labels
+  let xLabelsSVG = '';
+  days.forEach(d => {
+    let showLabel = false;
+    if (isWeekly) {
+      showLabel = true;
+    } else {
+      // Monthly view: D1, D5, D10, D15, D20, D25, D30, and Today
+      showLabel = d.dayNum === 1 || d.dayNum % 5 === 0 || d.isToday || d.dayNum === numDays;
+    }
+
+    if (showLabel) {
+      const labelFill = d.isToday ? 'var(--chalk-amber)' : (d.isFuture ? 'var(--text-muted)' : 'var(--text-primary)');
+      const labelWeight = d.isToday ? '700' : '500';
+      xLabelsSVG += `
+        <text x="${d.x}" y="${svgHeight - 12}" font-family="'Inter', sans-serif" font-size="${isWeekly ? 11 : 10}" fill="${labelFill}" font-weight="${labelWeight}" text-anchor="middle" opacity="${d.isFuture ? 0.45 : 0.9}">${d.label}</text>
+      `;
+    } else {
+      // Small subtle tick mark
+      xLabelsSVG += `
+        <line x1="${d.x}" y1="${padTop + graphH}" x2="${d.x}" y2="${padTop + graphH + 4}" stroke="var(--border-chalk)" stroke-width="1" opacity="0.3" />
+      `;
+    }
+  });
+
+  // Future line continuation for monthly view (subtle dotted line to end of month)
+  let futurePathSVG = '';
+  if (!isWeekly && points.length < days.length) {
+    const todayPt = points[points.length - 1];
+    const lastDayPt = days[days.length - 1];
+    futurePathSVG = `
+      <line x1="${todayPt.x}" y1="${todayPt.y}" x2="${lastDayPt.x}" y2="${padTop + graphH}" stroke="var(--border-chalk)" stroke-width="1.4" stroke-dasharray="3,3" opacity="0.35" />
+    `;
+  }
+
+  // Data point markers
+  let pointsSVG = '';
+  points.forEach((pt, ptIdx) => {
+    const d = pt.day;
+    const isToday = d.isToday;
+    const halo = isToday ? `
+      <circle cx="${pt.x}" cy="${pt.y}" r="8.5" fill="none" stroke="var(--chalk-amber)" stroke-width="1.2" stroke-dasharray="2.5,2" opacity="0.75" />
+    ` : '';
+
+    pointsSVG += `
+      <g class="graph-point-group ${isToday ? 'is-today' : ''}" data-idx="${ptIdx}" style="cursor: pointer;">
+        <circle cx="${pt.x}" cy="${pt.y}" r="15" fill="transparent" class="graph-point-hitbox" />
+        ${halo}
+        <circle cx="${pt.x}" cy="${pt.y}" r="${isToday ? 5.5 : 4}"
+                class="graph-point-circle ${isToday ? 'is-today' : ''}"
+                fill="${isToday ? 'var(--chalk-amber)' : 'var(--bg-surface-elevated)'}"
+                stroke="${isToday ? 'var(--chalk-amber)' : 'var(--chalk-mint)'}"
+                stroke-width="2.2" />
+      </g>
+    `;
+  });
+
+  container.innerHTML = `
+    <svg class="habit-svg-canvas" viewBox="0 0 ${svgWidth} ${svgHeight}" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="habitMintGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--chalk-mint)" stop-opacity="0.25" />
+          <stop offset="100%" stop-color="var(--chalk-mint)" stop-opacity="0.0" />
+        </linearGradient>
+      </defs>
+
+      <!-- Subtle Grid Lines -->
+      ${gridLinesSVG}
+
+      <!-- Shaded Area Underneath Curve -->
+      ${areaSVG}
+
+      <!-- Future Dotted Guide Line -->
+      ${futurePathSVG}
+
+      <!-- Soft Mint-Green Consistency Line -->
+      <path class="habit-graph-line" d="${pathD}" fill="none" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+
+      <!-- X-Axis Day Labels & Ticks -->
+      ${xLabelsSVG}
+
+      <!-- Active Cursor Guideline (Dynamic) -->
+      <line id="graph-cursor-guide" x1="0" y1="${padTop}" x2="0" y2="${padTop + graphH}" stroke="var(--chalk-mint)" stroke-width="1.2" stroke-dasharray="3,3" opacity="0" />
+
+      <!-- Interactive Data Points -->
+      ${pointsSVG}
+    </svg>
+  `;
+
+  // Attach hover & click listeners to data points
+  const pointGroups = container.querySelectorAll('.graph-point-group');
+  const cursorGuide = container.querySelector('#graph-cursor-guide');
+
+  pointGroups.forEach(grp => {
+    const idx = parseInt(grp.dataset.idx, 10);
+    const pt = points[idx];
+    if (!pt) return;
+
+    const handleInspect = () => {
+      pointGroups.forEach(g => g.classList.remove('is-hovered'));
+      grp.classList.add('is-hovered');
+      if (cursorGuide) {
+        cursorGuide.setAttribute('x1', pt.x);
+        cursorGuide.setAttribute('x2', pt.x);
+        cursorGuide.style.opacity = '0.55';
+      }
+      updateHabitGraphInspection(pt.day);
+    };
+
+    grp.addEventListener('mouseenter', handleInspect);
+    grp.addEventListener('click', () => {
+      AudioEngine.playChalkScratch();
+      emitDustParticles(grp.getBoundingClientRect());
+      handleInspect();
+    });
+  });
+
+  container.addEventListener('mouseleave', () => {
+    pointGroups.forEach(g => g.classList.remove('is-hovered'));
+    if (cursorGuide) cursorGuide.style.opacity = '0';
+    updateHabitGraphInspection(todayEntry);
+  });
+}
+
+function updateHabitGraphInspection(dayEntry) {
+  if (!dayEntry) return;
+  const dateEl = document.getElementById('graph-inspect-date');
+  const habitsEl = document.getElementById('graph-inspect-habits');
+  const pctEl = document.getElementById('graph-inspect-pct');
+
+  if (dateEl) {
+    dateEl.innerText = dayEntry.isToday ? `★ Today (${dayEntry.fullDate})` : dayEntry.fullDate;
+  }
+  if (habitsEl) {
+    habitsEl.innerText = `${dayEntry.stats.completedCount} of ${dayEntry.stats.totalScheduled} habits completed`;
+  }
+  if (pctEl) {
+    pctEl.innerText = `${dayEntry.stats.percentage}% consistency`;
+    if (dayEntry.stats.percentage === 100) {
+      pctEl.style.color = 'var(--chalk-mint)';
+      pctEl.style.borderColor = 'var(--chalk-mint)';
+    } else if (dayEntry.stats.percentage >= 50) {
+      pctEl.style.color = 'var(--chalk-amber)';
+      pctEl.style.borderColor = 'var(--chalk-amber)';
+    } else {
+      pctEl.style.color = 'var(--text-muted)';
+      pctEl.style.borderColor = 'var(--border-chalk)';
+    }
+  }
+}
+
 function initHabitLedger() {
+  ensureHabitHistoryInitialized(AppState);
+
   const addModal = document.getElementById('add-habit-modal');
-  const openModalBtn = document.getElementById('btn-add-habit-modal');
-  const closeModalBtn = document.getElementById('btn-close-habit-modal');
-  const cancelModalBtn = document.getElementById('btn-cancel-habit');
-  const form = document.getElementById('new-habit-form');
+  const openAddModalBtn = document.getElementById('btn-add-habit-modal');
+  const closeAddModalBtn = document.getElementById('btn-close-habit-modal');
+  const cancelAddModalBtn = document.getElementById('btn-cancel-habit');
+  const addForm = document.getElementById('new-habit-form');
 
-  if (openModalBtn) openModalBtn.addEventListener('click', () => addModal.style.display = 'flex');
-  if (closeModalBtn) closeModalBtn.addEventListener('click', () => addModal.style.display = 'none');
-  if (cancelModalBtn) cancelModalBtn.addEventListener('click', () => addModal.style.display = 'none');
+  const editModal = document.getElementById('edit-habit-modal');
+  const closeEditModalBtn = document.getElementById('btn-close-edit-habit-modal');
+  const cancelEditModalBtn = document.getElementById('btn-cancel-edit-habit');
+  const editForm = document.getElementById('edit-habit-form');
+  const deleteHabitBtn = document.getElementById('btn-delete-habit');
 
-  if (form) {
-    form.addEventListener('submit', (e) => {
+  const btnWeekly = document.getElementById('btn-graph-weekly');
+  const btnMonthly = document.getElementById('btn-graph-monthly');
+
+  // Toggle Weekly / Monthly
+  if (btnWeekly && btnMonthly) {
+    btnWeekly.addEventListener('click', () => {
+      AudioEngine.playChalkScratch();
+      currentHabitGraphRange = 'weekly';
+      btnWeekly.classList.add('active');
+      btnMonthly.classList.remove('active');
+      renderHabitConsistencyGraph();
+    });
+
+    btnMonthly.addEventListener('click', () => {
+      AudioEngine.playChalkScratch();
+      currentHabitGraphRange = 'monthly';
+      btnMonthly.classList.add('active');
+      btnWeekly.classList.remove('active');
+      renderHabitConsistencyGraph();
+    });
+  }
+
+  // Type change toggles target & unit fields in add modal
+  const newTypeSelect = document.getElementById('new-habit-type');
+  if (newTypeSelect) {
+    newTypeSelect.addEventListener('change', () => {
+      const targetGrp = document.getElementById('habit-target-group');
+      const unitGrp = document.getElementById('habit-unit-group');
+      const isCounter = newTypeSelect.value === 'COUNTER';
+      if (targetGrp) targetGrp.style.display = isCounter ? 'block' : 'none';
+      if (unitGrp) unitGrp.style.display = isCounter ? 'block' : 'none';
+    });
+  }
+
+  // Type change toggles target & unit fields in edit modal
+  const editTypeSelect = document.getElementById('edit-habit-type');
+  if (editTypeSelect) {
+    editTypeSelect.addEventListener('change', () => {
+      const targetGrp = document.getElementById('edit-habit-target-group');
+      const unitGrp = document.getElementById('edit-habit-unit-group');
+      const isCounter = editTypeSelect.value === 'COUNTER';
+      if (targetGrp) targetGrp.style.display = isCounter ? 'block' : 'none';
+      if (unitGrp) unitGrp.style.display = isCounter ? 'block' : 'none';
+    });
+  }
+
+  // Add Habit Modal Handlers
+  if (openAddModalBtn && addModal) openAddModalBtn.addEventListener('click', () => addModal.style.display = 'flex');
+  if (closeAddModalBtn && addModal) closeAddModalBtn.addEventListener('click', () => addModal.style.display = 'none');
+  if (cancelAddModalBtn && addModal) cancelAddModalBtn.addEventListener('click', () => addModal.style.display = 'none');
+
+  // Add Habit Form Submit
+  if (addForm) {
+    addForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const name = document.getElementById('new-habit-name').value.trim();
       const type = document.getElementById('new-habit-type').value;
-      const target = parseInt(document.getElementById('new-habit-target').value, 10) || 1;
+      const target = type === 'COUNTER' ? (parseInt(document.getElementById('new-habit-target').value, 10) || 4) : 1;
+      const customUnit = (document.getElementById('new-habit-unit')?.value || '').trim();
       const icon = document.getElementById('new-habit-icon').value;
+
+      let unit = '';
+      if (type === 'COUNTER') {
+        if (customUnit) {
+          unit = customUnit;
+        } else if (name.toLowerCase().includes('water')) {
+          unit = 'L';
+        } else if (name.toLowerCase().includes('min') || name.toLowerCase().includes('reading')) {
+          unit = 'm';
+        } else {
+          unit = 'pts';
+        }
+      }
 
       const newHabit = {
         id: `h-${Date.now()}`,
@@ -3105,20 +3511,96 @@ function initHabitLedger() {
         type,
         current: 0,
         target,
-        unit: type === 'COUNTER' ? (name.toLowerCase().includes('water') ? 'L' : 'pts') : '',
-        completions: 1
+        unit,
+        createdAt: TODAY_DATE,
+        completions: 0
       };
 
       AppState.habits.push(newHabit);
+      if (!AppState.habitHistory) AppState.habitHistory = {};
+      if (!AppState.habitHistory[TODAY_DATE]) AppState.habitHistory[TODAY_DATE] = {};
+      AppState.habitHistory[TODAY_DATE][newHabit.id] = 0;
+
       saveState();
       renderHabitLedger();
+      renderDashboard();
       addModal.style.display = 'none';
-      form.reset();
-      showToast('Planted new habit companion 🌱');
+      addForm.reset();
+      showToast('Planted new daily habit companion 🌱');
+    });
+  }
+
+  // Edit Habit Modal Handlers
+  if (closeEditModalBtn && editModal) closeEditModalBtn.addEventListener('click', () => editModal.style.display = 'none');
+  if (cancelEditModalBtn && editModal) cancelEditModalBtn.addEventListener('click', () => editModal.style.display = 'none');
+
+  if (editForm) {
+    editForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const habitId = document.getElementById('edit-habit-id').value;
+      const h = (AppState.habits || []).find(item => item.id === habitId);
+      if (!h) return;
+
+      const name = document.getElementById('edit-habit-name').value.trim();
+      const type = document.getElementById('edit-habit-type').value;
+      const target = type === 'COUNTER' ? (parseInt(document.getElementById('edit-habit-target').value, 10) || 4) : 1;
+      const unit = (document.getElementById('edit-habit-unit')?.value || '').trim();
+      const icon = document.getElementById('edit-habit-icon').value;
+
+      h.name = name;
+      h.type = type;
+      h.target = target;
+      h.unit = type === 'COUNTER' ? unit : '';
+      h.icon = icon;
+
+      saveState();
+      renderHabitLedger();
+      renderDashboard();
+      if (editModal) editModal.style.display = 'none';
+      showToast(`✏️ Updated "${h.name}"!`);
+    });
+  }
+
+  if (deleteHabitBtn) {
+    deleteHabitBtn.addEventListener('click', () => {
+      const habitId = document.getElementById('edit-habit-id').value;
+      const h = (AppState.habits || []).find(item => item.id === habitId);
+      if (!h) return;
+
+      if (confirm(`Are you sure you want to delete the habit "${h.name}"?`)) {
+        AppState.habits = AppState.habits.filter(item => item.id !== habitId);
+        saveState();
+        renderHabitLedger();
+        renderDashboard();
+        if (editModal) editModal.style.display = 'none';
+        showToast(`Deleted habit "${h.name}"`);
+      }
     });
   }
 
   renderHabitLedger();
+}
+
+function openEditHabitModal(habit) {
+  const modal = document.getElementById('edit-habit-modal');
+  if (!modal) return;
+
+  document.getElementById('edit-habit-id').value = habit.id;
+  document.getElementById('edit-habit-name').value = habit.name;
+  document.getElementById('edit-habit-type').value = habit.type;
+  document.getElementById('edit-habit-target').value = habit.target || 4;
+  document.getElementById('edit-habit-unit').value = habit.unit || '';
+  document.getElementById('edit-habit-icon').value = habit.icon || '💧';
+
+  const targetGroup = document.getElementById('edit-habit-target-group');
+  const unitGroup = document.getElementById('edit-habit-unit-group');
+  if (targetGroup && unitGroup) {
+    const isCounter = habit.type === 'COUNTER';
+    targetGroup.style.display = isCounter ? 'block' : 'none';
+    unitGroup.style.display = isCounter ? 'block' : 'none';
+  }
+
+  modal.style.display = 'flex';
 }
 
 function renderHabitLedger() {
@@ -3126,145 +3608,190 @@ function renderHabitLedger() {
   const progressBar = document.getElementById('habit-progress-bar');
   const progressText = document.getElementById('habit-progress-text');
 
+  // Synchronize today's habit history record
+  if (!AppState.habitHistory) AppState.habitHistory = {};
+  if (!AppState.habitHistory[TODAY_DATE]) AppState.habitHistory[TODAY_DATE] = {};
+  (AppState.habits || []).forEach(h => {
+    AppState.habitHistory[TODAY_DATE][h.id] = h.current;
+  });
+
+  // 1. Render the Habit Consistency Line Graph
+  renderHabitConsistencyGraph();
+
   if (!container) return;
   container.innerHTML = '';
 
   let totalCompletions = 0;
-  AppState.habits.forEach(h => {
-    totalCompletions += h.completions;
+
+  (AppState.habits || []).forEach(h => {
+    totalCompletions += (h.completions || 0);
 
     const card = document.createElement('div');
     card.className = 'habit-card';
+    card.dataset.habitId = h.id;
 
-    let actionHTML = '';
+    let controlHTML = '';
+
     if (h.type === 'COUNTER') {
-      const isComplete = h.current >= h.target;
-      const isExceeded = h.current > h.target;
-      const icon = isExceeded ? 'fa-star' : (isComplete ? 'fa-check' : 'fa-plus');
-      actionHTML = `
-        <button class="habit-counter-pill ${isComplete ? 'completed' : ''} ${isExceeded ? 'exceeded' : ''}" data-habit-id="${h.id}" title="Click to increment ${h.unit || ''}">
-          <span>${h.current}/${h.target} ${h.unit}</span>
-          <i class="fa-solid ${icon}"></i>
-        </button>
+      const target = h.target || 4;
+      const current = h.current || 0;
+      const isComplete = current >= target;
+      const isExceeded = current > target;
+      const pct = Math.round((current / target) * 100);
+
+      // 44px Circular Progress Ring
+      const radius = 18;
+      const circ = 2 * Math.PI * radius; // 113.1
+      const progressFraction = Math.max(0, Math.min(1, current / target));
+      const dashoffset = circ * (1 - progressFraction);
+
+      const ringColor = isExceeded ? 'var(--chalk-amber)' : 'var(--chalk-mint)';
+      const percentClass = isExceeded ? 'is-exceeded' : (isComplete ? 'is-complete' : '');
+
+      let statusBadge = '';
+      if (isExceeded) {
+        statusBadge = `<span class="habit-badge-exceeded chalk-font"><i class="fa-solid fa-star"></i> Exceeded (+${current - target})</span>`;
+      } else if (isComplete) {
+        statusBadge = `<span class="habit-badge-exceeded chalk-font" style="background:rgba(6,214,160,0.18); color:var(--chalk-mint); border-color:var(--chalk-mint);"><i class="fa-solid fa-check"></i> Goal Met</span>`;
+      }
+
+      controlHTML = `
+        <div class="habit-action-controls">
+          ${statusBadge}
+          <!-- Stepper Controls (Minus / Plus) -->
+          <div class="habit-stepper-wrap">
+            <button type="button" class="habit-step-btn btn-habit-minus" data-habit-id="${h.id}" title="Decrease progress by 1 ${h.unit || ''}" ${current <= 0 ? 'disabled' : ''}>
+              <i class="fa-solid fa-minus"></i>
+            </button>
+            <div class="habit-amount-display chalk-font">
+              <span class="amount-val">${current}</span><span class="amount-target">/${target} ${h.unit || ''}</span>
+            </div>
+            <button type="button" class="habit-step-btn btn-habit-plus" data-habit-id="${h.id}" title="Increase progress by 1 ${h.unit || ''}">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+
+          <!-- Small Circular Progress Ring -->
+          <div class="habit-ring-container" title="${pct}% of daily target completed">
+            <svg class="habit-ring-svg" width="44" height="44" viewBox="0 0 44 44">
+              <circle class="habit-ring-bg" cx="22" cy="22" r="${radius}" fill="none" stroke-width="3.5" />
+              <circle class="habit-ring-bar ${percentClass}"
+                      cx="22" cy="22" r="${radius}" fill="none"
+                      stroke="${ringColor}" stroke-width="3.5" stroke-linecap="round"
+                      stroke-dasharray="${circ}" stroke-dashoffset="${dashoffset}" />
+            </svg>
+            <span class="habit-ring-percent-text chalk-font ${percentClass}">${pct}%</span>
+          </div>
+        </div>
       `;
     } else {
-      const isChecked = h.current >= 1;
-      actionHTML = `
-        <button class="habit-counter-pill ${isChecked ? 'completed' : ''}" data-habit-id="${h.id}" title="Toggle daily completion">
-          <span>${isChecked ? 'Completed' : 'To Do'}</span>
-          <i class="fa-solid ${isChecked ? 'fa-check' : 'fa-plus'}"></i>
-        </button>
+      // Simple yes/no habit checkbox
+      const isChecked = (h.current || 0) >= 1;
+      controlHTML = `
+        <div class="habit-action-controls">
+          <button type="button" class="habit-chalk-checkbox ${isChecked ? 'is-checked' : ''}" data-habit-id="${h.id}" title="${isChecked ? 'Mark incomplete' : 'Mark complete'}">
+            <div class="chalk-check-box">
+              ${isChecked ? '<i class="fa-solid fa-check"></i>' : ''}
+            </div>
+            <span class="chalk-check-label chalk-font">${isChecked ? 'Completed' : 'Mark Done'}</span>
+          </button>
+        </div>
       `;
     }
 
     card.innerHTML = `
       <div class="habit-info-left">
         <span class="habit-icon">${h.icon}</span>
-        <div>
-          <div style="display:flex; align-items:center; gap:6px;">
-            <div class="habit-name">${h.name}</div>
-            <button type="button" class="chalk-icon-btn btn-rename-habit" data-habit-id="${h.id}" title="Rename habit" style="width:20px; height:20px; font-size:9px; opacity:0.65;">
+        <div class="habit-text-wrap">
+          <div class="habit-title-row">
+            <span class="habit-name">${h.name}</span>
+            <button type="button" class="chalk-icon-btn btn-edit-habit" data-habit-id="${h.id}" title="Edit habit details" style="width:22px; height:22px; font-size:10px; opacity:0.75;">
               <i class="fa-solid fa-pen"></i>
             </button>
           </div>
-          <div class="habit-tally">${Math.min(h.completions || 0, TODAY_DAY_NUM)}/${TODAY_DAY_NUM} days completed this month</div>
+          <div class="habit-tally">
+            ${Math.min(h.completions || 0, TODAY_DAY_NUM)}/${TODAY_DAY_NUM} days completed this month • ${h.type === 'COUNTER' ? `Goal: ${h.target} ${h.unit || ''}` : 'Daily Check-in'}
+          </div>
         </div>
       </div>
-      <div class="habit-action-controls">
-        ${actionHTML}
-      </div>
+      ${controlHTML}
     `;
 
-    const renameHabitBtn = card.querySelector('.btn-rename-habit');
-    if (renameHabitBtn) {
-      renameHabitBtn.addEventListener('click', (e) => {
+    // Edit habit click listener
+    const editBtn = card.querySelector('.btn-edit-habit');
+    if (editBtn) {
+      editBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const newName = prompt(`Rename habit "${h.name}":`, h.name);
-        if (newName && newName.trim() && newName.trim() !== h.name) {
-          h.name = newName.trim();
+        openEditHabitModal(h);
+      });
+    }
+
+    // Stepper minus listener
+    const minusBtn = card.querySelector('.btn-habit-minus');
+    if (minusBtn) {
+      minusBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        AudioEngine.playChalkScratch();
+        emitDustParticles(minusBtn.getBoundingClientRect());
+        if (h.current > 0) {
+          h.current -= 1;
+          AppState.habitHistory[TODAY_DATE][h.id] = h.current;
           saveState();
-          AudioEngine.playChalkScratch();
-          showToast(`✏️ Renamed habit to "${h.name}"!`);
           renderHabitLedger();
           renderDashboard();
+          showToast(`Recorded ${h.current}/${h.target} ${h.unit || ''} for ${h.name}`);
         }
       });
     }
 
-    const counterBtn = card.querySelector('.habit-counter-pill');
-    counterBtn.addEventListener('click', () => {
-      AudioEngine.playChalkScratch();
-      emitDustParticles(counterBtn.getBoundingClientRect());
-
-      if (h.type === 'COUNTER') {
+    // Stepper plus listener
+    const plusBtn = card.querySelector('.btn-habit-plus');
+    if (plusBtn) {
+      plusBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        AudioEngine.playChalkScratch();
+        emitDustParticles(plusBtn.getBoundingClientRect());
         h.current += 1;
+        AppState.habitHistory[TODAY_DATE][h.id] = h.current;
+        saveState();
+        renderHabitLedger();
+        renderDashboard();
         if (h.current > h.target) {
-          showToast(`🌟 ${h.name}: ${h.current}/${h.target} ${h.unit} (Target exceeded!)`);
+          showToast(`🌟 ${h.name}: ${h.current}/${h.target} ${h.unit || ''} (Target exceeded!)`);
         } else if (h.current === h.target) {
           showToast(`🎉 ${h.name} target reached for today!`);
         } else {
-          showToast(`Recorded +1 ${h.unit} for ${h.name}`);
+          showToast(`Recorded +1 ${h.unit || ''} for ${h.name}`);
         }
-      } else {
-        h.current = h.current === 1 ? 0 : 1;
-        showToast(`Toggled ${h.name}`);
-      }
+      });
+    }
 
-      saveState();
-      renderHabitLedger();
-      renderDashboard();
-      updateGlobalGrowthMetrics();
-    });
+    // Checkbox click listener
+    const checkboxBtn = card.querySelector('.habit-chalk-checkbox');
+    if (checkboxBtn) {
+      checkboxBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        AudioEngine.playChalkScratch();
+        emitDustParticles(checkboxBtn.getBoundingClientRect());
+        h.current = h.current >= 1 ? 0 : 1;
+        AppState.habitHistory[TODAY_DATE][h.id] = h.current;
+        saveState();
+        renderHabitLedger();
+        renderDashboard();
+        showToast(h.current >= 1 ? `✓ Checked off "${h.name}" for today!` : `Marked "${h.name}" incomplete`);
+      });
+    }
 
     container.appendChild(card);
   });
 
-  const maxMonthlyTarget = AppState.habits.length * 20;
+  // Update top monthly habit summary meter
+  const maxMonthlyTarget = (AppState.habits || []).length * 20;
   const growthPercent = Math.min(100, Math.round((totalCompletions / (maxMonthlyTarget || 1)) * 100));
 
   if (progressBar) progressBar.style.width = `${growthPercent}%`;
-  if (progressText) progressText.innerText = `${totalCompletions} habit completions logged this month (${growthPercent}% of monthly goal)`;
-
-  // Populate Interactive Daily Rhythm Strip (D1 to Today)
-  const daysStrip = document.getElementById('habit-days-strip');
-  if (daysStrip) {
-    daysStrip.innerHTML = '';
-    const totalHabits = AppState.habits.length || 4;
-    const completedToday = AppState.habits.filter(h => h.current >= (h.type === 'COUNTER' ? h.target : 1)).length;
-
-    for (let day = 1; day <= TODAY_DAY_NUM; day++) {
-      const isToday = day === TODAY_DAY_NUM;
-      const dayData = AppState.gardenData[day] || {
-        specimen: BOTANICAL_SPECIMENS[day - 1] || 'Autumn Wildflower',
-        tasks: isToday ? 1 : 5,
-        planned: 5,
-        focus: isToday ? AppState.focusTimeLoggedToday : 90,
-        stage: day <= 3 ? day : 4
-      };
-
-      const dayHabitsDone = isToday ? completedToday : Math.min(totalHabits, 3 + (day % 2));
-      const isAllDone = dayHabitsDone >= totalHabits;
-
-      const pill = document.createElement('button');
-      pill.type = 'button';
-      pill.className = `habit-day-pill chalk-font ${isToday ? 'is-today' : ''} ${isAllDone ? 'all-done' : ''}`;
-      pill.title = `Day ${day}: ${dayHabitsDone}/${totalHabits} habits completed (Click to maximize progress details)`;
-
-      pill.innerHTML = `
-        <span class="day-label">${isToday ? '★ D' + TODAY_DAY_NUM : 'D' + day}</span>
-        <span class="day-count">${dayHabitsDone}/${totalHabits}</span>
-        <span class="day-star">${isAllDone ? '🌟' : '🌱'}</span>
-      `;
-
-      pill.addEventListener('click', (e) => {
-        e.stopPropagation();
-        AudioEngine.playChalkScratch();
-        emitDustParticles(pill.getBoundingClientRect());
-        openGardenDayModal(day, dayData, GROWTH_STAGE_NAMES[dayData.stage || 0]);
-      });
-
-      daysStrip.appendChild(pill);
-    }
+  if (progressText) {
+    progressText.innerText = `${totalCompletions} habit completions logged this month (${growthPercent}% of monthly goal)`;
   }
 }
 
