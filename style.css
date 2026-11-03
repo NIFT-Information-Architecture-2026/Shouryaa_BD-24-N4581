@@ -1333,6 +1333,61 @@ body {
   margin-bottom: 16px;
 }
 
+.meadow-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meadow-month-selector {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.month-nav-btn {
+  width: 26px;
+  height: 26px;
+  font-size: 11px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-chalk);
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.month-nav-btn:hover:not([style*="cursor: default"]) {
+  border-color: var(--chalk-amber);
+  color: var(--chalk-amber);
+  background: rgba(255, 209, 102, 0.12);
+  transform: scale(1.05);
+}
+
+.month-status-pill {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.2px;
+  user-select: none;
+  font-weight: 600;
+}
+
+.month-status-pill.active-pill {
+  background: rgba(6, 214, 160, 0.12);
+  color: var(--chalk-mint);
+  border: 1px solid rgba(6, 214, 160, 0.35);
+}
+
+.month-status-pill.archived-pill {
+  background: rgba(255, 209, 102, 0.12);
+  color: var(--chalk-amber);
+  border: 1px dashed rgba(255, 209, 102, 0.4);
+}
+
 .meadow-heading {
   font-size: 18px;
   font-weight: 700;
@@ -1566,6 +1621,51 @@ body.theme-vintage-green .meadow-scenery-container::after {
 @keyframes gentlePlantBreathe {
   0% { transform: translateY(0); }
   100% { transform: translateY(-1.5px); }
+}
+
+/* Subtle Organic Botanical Growth Pulse Animation */
+@keyframes chalkGrowthPulse {
+  0% {
+    transform: scale(0.94) translateY(3px);
+    opacity: 0.88;
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  50% {
+    transform: scale(1.08) translateY(-3px);
+    opacity: 1;
+    filter: drop-shadow(0 0 10px rgba(6, 214, 160, 0.45));
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    filter: drop-shadow(0 0 0 transparent);
+  }
+}
+
+.plant-growth-anim {
+  animation: chalkGrowthPulse 0.9s cubic-bezier(0.34, 1.36, 0.64, 1);
+  transform-origin: center bottom;
+}
+
+.meadow-plant-hotspot.is-stage-growing {
+  animation: chalkGrowthPulse 1s cubic-bezier(0.34, 1.36, 0.64, 1);
+}
+
+.calendar-day-tile.is-today.tile-growth-pulse {
+  animation: chalkGrowthPulse 0.85s cubic-bezier(0.34, 1.36, 0.64, 1);
+  border-color: var(--chalk-mint) !important;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .plant-growth-anim,
+  .meadow-plant-hotspot.is-stage-growing,
+  .calendar-day-tile.is-today.tile-growth-pulse,
+  .meadow-plant-hotspot.is-today-plant {
+    animation: none !important;
+    transition: none !important;
+    filter: none !important;
+  }
 }
 
 .meadow-chalk-label {

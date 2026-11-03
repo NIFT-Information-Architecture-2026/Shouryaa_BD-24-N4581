@@ -455,7 +455,7 @@ const ChalkMeadowPanorama = {
   renderMeadow(container) {
     if (!container) return;
 
-    const totalDays = CurrentDateInfo ? CurrentDateInfo.daysInMonth : 30;
+    const totalDays = GardenView ? GardenView.daysInMonth : (CurrentDateInfo ? CurrentDateInfo.daysInMonth : 30);
     const slotWidth = 110;
     const startX = 65;
     const totalWidth = startX * 2 + (totalDays - 1) * slotWidth;
@@ -466,10 +466,12 @@ const ChalkMeadowPanorama = {
       meadowSlots.push({ day, x });
     }
 
+    const monthGarden = getGardenDataForMonth(GardenView ? GardenView.monthKey : CurrentDateInfo.monthKey);
+
     const plantsSVG = meadowSlots.map(slot => {
-      const isToday = slot.day === TODAY_DAY_NUM;
-      const isFuture = slot.day > TODAY_DAY_NUM;
-      let dayData = AppState.gardenData[slot.day];
+      const isToday = GardenView.isCurrentMonth && slot.day === TODAY_DAY_NUM;
+      const isFuture = GardenView.isCurrentMonth && slot.day > TODAY_DAY_NUM;
+      let dayData = monthGarden[slot.day];
       if (!dayData) {
         dayData = {
           specimen: BOTANICAL_SPECIMENS[slot.day - 1] || 'Autumn Wildflower',
@@ -558,9 +560,9 @@ const ChalkMeadowPanorama = {
           AudioEngine.playChalkScratch();
           emitDustParticles(hotspot.getBoundingClientRect());
           
-          const isToday = slot.day === TODAY_DAY_NUM;
-          const isFuture = slot.day > TODAY_DAY_NUM;
-          let dayData = AppState.gardenData[slot.day];
+          const isToday = GardenView.isCurrentMonth && slot.day === TODAY_DAY_NUM;
+          const isFuture = GardenView.isCurrentMonth && slot.day > TODAY_DAY_NUM;
+          let dayData = monthGarden[slot.day];
           if (!dayData) {
             dayData = {
               specimen: BOTANICAL_SPECIMENS[slot.day - 1] || 'Autumn Wildflower',
@@ -646,6 +648,8 @@ function getLocalDateInfo() {
     laterSampleStr,
     friendlyStr,
     monthName,
+    monthNum: now.getMonth() + 1,
+    monthKey: `${year}-${month}`,
     year
   };
 }
@@ -657,6 +661,52 @@ let THIS_WEEK_END_DATE = CurrentDateInfo.endOfWeekStr;
 let NEXT_WEEK_START_DATE = CurrentDateInfo.nextWeekStartStr;
 let NEXT_WEEK_END_DATE = CurrentDateInfo.endOfNextWeekStr;
 let TODAY_DAY_NUM = CurrentDateInfo.dayNum;
+let isSystemInitializing = true;
+
+let GardenView = {
+  year: CurrentDateInfo.year,
+  month: CurrentDateInfo.monthNum,
+  get monthKey() {
+    return `${this.year}-${String(this.month).padStart(2, '0')}`;
+  },
+  get isCurrentMonth() {
+    return this.year === CurrentDateInfo.year && this.month === CurrentDateInfo.monthNum;
+  },
+  get daysInMonth() {
+    return new Date(this.year, this.month, 0).getDate();
+  },
+  get monthName() {
+    return new Date(this.year, this.month - 1, 1).toLocaleDateString('en-US', { month: 'long' });
+  }
+};
+
+const OCTOBER_2026_HISTORICAL_GARDEN = {
+  1: { specimen: 'Sunburst Cosmos', tasks: 5, planned: 5, focus: 110, stage: 4 },
+  2: { specimen: 'Purple Wild Aster', tasks: 4, planned: 4, focus: 85, stage: 4 },
+  3: { specimen: 'Dormant Soil', tasks: 0, planned: 0, focus: 0, stage: 0 },
+  4: { specimen: 'White Coneflower', tasks: 6, planned: 6, focus: 120, stage: 4 },
+  5: { specimen: 'Golden Rudbeckia', tasks: 5, planned: 5, focus: 95, stage: 4 },
+  6: { specimen: 'Heather Blossom', tasks: 3, planned: 4, focus: 55, stage: 2 },
+  7: { specimen: 'Autumn Terracotta', tasks: 5, planned: 5, focus: 100, stage: 4 },
+  8: { specimen: 'Meadow Daisy', tasks: 4, planned: 4, focus: 90, stage: 4 },
+  9: { specimen: 'Winter Jasmine', tasks: 5, planned: 5, focus: 105, stage: 4 },
+  10: { specimen: 'Forget-Me-Not', tasks: 0, planned: 0, focus: 0, stage: 0 },
+  11: { specimen: 'Wild Poppy', tasks: 6, planned: 6, focus: 115, stage: 4 },
+  12: { specimen: 'Lavender Sprig', tasks: 4, planned: 5, focus: 75, stage: 3 },
+  13: { specimen: 'Chamomile', tasks: 5, planned: 5, focus: 90, stage: 4 },
+  14: { specimen: 'Coneflower', tasks: 5, planned: 5, focus: 100, stage: 4 },
+  15: { specimen: 'Sunburst Dahlia', tasks: 1, planned: 3, focus: 45, stage: 1 }
+};
+
+function getGardenDataForMonth(monthKey) {
+  if (monthKey === CurrentDateInfo.monthKey) {
+    return AppState.gardenData || {};
+  }
+  if (AppState && AppState.monthlyGardens && AppState.monthlyGardens[monthKey]) {
+    return AppState.monthlyGardens[monthKey];
+  }
+  return {};
+}
 
 function formatShortDate(dateStr) {
   if (!dateStr) return '';
@@ -909,7 +959,11 @@ const DEFAULT_STATE = {
     { id: 'h-4', name: 'Evening Walk / Rest', icon: '🌿', type: 'CHECK', current: 1, target: 1, unit: '', completions: Math.min(12, TODAY_DAY_NUM) }
   ],
   focusTimeLoggedToday: 45,
-  gardenData: buildInitialGardenData(TODAY_DAY_NUM)
+  gardenData: buildInitialGardenData(TODAY_DAY_NUM),
+  monthlyGardens: {
+    '2026-10': OCTOBER_2026_HISTORICAL_GARDEN,
+    [CurrentDateInfo.monthKey]: buildInitialGardenData(TODAY_DAY_NUM)
+  }
 };
 
 let AppState = loadState();
@@ -921,7 +975,13 @@ function loadState() {
       const parsed = JSON.parse(saved);
       if (!parsed.userName) parsed.userName = 'Shouryaa';
       if (!parsed.gardenData) parsed.gardenData = {};
+      if (!parsed.monthlyGardens) parsed.monthlyGardens = {};
       
+      // Ensure historical October 2026 garden is available for previous month navigation
+      if (!parsed.monthlyGardens['2026-10']) {
+        parsed.monthlyGardens['2026-10'] = OCTOBER_2026_HISTORICAL_GARDEN;
+      }
+
       // Preserve all existing historical garden data
       parsed.gardenData = { ...DEFAULT_STATE.gardenData, ...parsed.gardenData };
       if (!parsed.gardenData[TODAY_DAY_NUM]) {
@@ -952,6 +1012,8 @@ function loadState() {
         }
       }
 
+      parsed.monthlyGardens[CurrentDateInfo.monthKey] = parsed.gardenData;
+
       parsed.tasks = processDateCarryOvers(parsed.tasks || DEFAULT_STATE.tasks);
       if (!Array.isArray(parsed.recentlyErasedTasks)) {
         parsed.recentlyErasedTasks = [];
@@ -968,6 +1030,10 @@ function loadState() {
       if (oldState.userName) migrated.userName = oldState.userName;
       if (oldState.focusTimeLoggedToday !== undefined) migrated.focusTimeLoggedToday = oldState.focusTimeLoggedToday;
       migrated.gardenData = { ...DEFAULT_STATE.gardenData, ...(oldState.gardenData || {}) };
+      migrated.monthlyGardens = {
+        '2026-10': OCTOBER_2026_HISTORICAL_GARDEN,
+        [CurrentDateInfo.monthKey]: migrated.gardenData
+      };
       if (!migrated.gardenData[TODAY_DAY_NUM]) {
         migrated.gardenData[TODAY_DAY_NUM] = {
           specimen: BOTANICAL_SPECIMENS[TODAY_DAY_NUM - 1] || 'Sunburst Dahlia',
@@ -1002,6 +1068,10 @@ function loadState() {
 
 function saveState() {
   try {
+    if (!AppState.monthlyGardens) AppState.monthlyGardens = {};
+    if (CurrentDateInfo && CurrentDateInfo.monthKey) {
+      AppState.monthlyGardens[CurrentDateInfo.monthKey] = AppState.gardenData;
+    }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(AppState));
   } catch (e) {
     console.error('Failed to save state:', e);
@@ -1196,6 +1266,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHabitLedger();
   initDeepFocus();
   updateGlobalGrowthMetrics();
+  isSystemInitializing = false;
 });
 
 // --------------------------------------------------------------------------
@@ -2482,10 +2553,20 @@ function initProgressGarden() {
     const newName = renameInput.value.trim();
     const day = parseInt(modal.dataset.currentDay, 10);
     if (newName && day) {
-      if (!AppState.gardenData[day]) {
-        AppState.gardenData[day] = { specimen: newName, tasks: 0, planned: 0, focus: 0, stage: 0 };
+      if (GardenView.isCurrentMonth) {
+        if (!AppState.gardenData[day]) {
+          AppState.gardenData[day] = { specimen: newName, tasks: 0, planned: 0, focus: 0, stage: 0 };
+        }
+        AppState.gardenData[day].specimen = newName;
+      } else {
+        if (!AppState.monthlyGardens[GardenView.monthKey]) {
+          AppState.monthlyGardens[GardenView.monthKey] = {};
+        }
+        if (!AppState.monthlyGardens[GardenView.monthKey][day]) {
+          AppState.monthlyGardens[GardenView.monthKey][day] = { specimen: newName, tasks: 0, planned: 0, focus: 0, stage: 0 };
+        }
+        AppState.monthlyGardens[GardenView.monthKey][day].specimen = newName;
       }
-      AppState.gardenData[day].specimen = newName;
       saveState();
       AudioEngine.playChalkScratch();
       if (saveBtn) emitDustParticles(saveBtn.getBoundingClientRect());
@@ -2493,7 +2574,7 @@ function initProgressGarden() {
       if (renameBox) renameBox.style.display = 'none';
       showToast(`🌸 Renamed Day ${day}'s flower to "${newName}"!`);
       renderProgressGarden();
-      renderDashboard();
+      if (GardenView.isCurrentMonth) renderDashboard();
     }
   };
 
@@ -2594,8 +2675,45 @@ function initProgressGarden() {
     });
   }
 
+  // Month Navigation Buttons
+  const prevMonthBtn = document.getElementById('btn-garden-prev-month');
+  const nextMonthBtn = document.getElementById('btn-garden-next-month');
+
+  if (prevMonthBtn) {
+    prevMonthBtn.addEventListener('click', () => {
+      GardenView.month -= 1;
+      if (GardenView.month < 1) {
+        GardenView.month = 12;
+        GardenView.year -= 1;
+      }
+      AudioEngine.playChalkScratch();
+      renderProgressGarden();
+    });
+  }
+
+  if (nextMonthBtn) {
+    nextMonthBtn.addEventListener('click', () => {
+      if (GardenView.isCurrentMonth) {
+        showToast('You are already viewing the active month.');
+        return;
+      }
+      GardenView.month += 1;
+      if (GardenView.month > 12) {
+        GardenView.month = 1;
+        GardenView.year += 1;
+      }
+      AudioEngine.playChalkScratch();
+      renderProgressGarden();
+    });
+  }
+
   if (centerTodayBtn) {
     centerTodayBtn.addEventListener('click', () => {
+      if (!GardenView.isCurrentMonth) {
+        GardenView.year = CurrentDateInfo.year;
+        GardenView.month = CurrentDateInfo.monthNum;
+        renderProgressGarden();
+      }
       if (meadowViewport) {
         const todayX = 65 + (TODAY_DAY_NUM - 1) * 110;
         const vpWidth = meadowViewport.clientWidth || 800;
@@ -2615,19 +2733,47 @@ function renderProgressGarden() {
   const bloomCountEl = document.getElementById('meadow-bloom-count');
   const totalFocusEl = document.getElementById('meadow-total-focus');
   const monthHeadingEl = document.getElementById('current-month-heading');
+  const statusPillEl = document.getElementById('garden-month-status-pill');
+  const nextMonthBtn = document.getElementById('btn-garden-next-month');
 
   if (monthHeadingEl) {
-    monthHeadingEl.innerText = `${CurrentDateInfo.monthName} ${CurrentDateInfo.year} — Botanical Wildflower Meadow`;
+    monthHeadingEl.innerText = `${GardenView.monthName} ${GardenView.year} — Botanical Wildflower Meadow`;
+  }
+
+  if (statusPillEl) {
+    if (GardenView.isCurrentMonth) {
+      statusPillEl.className = 'month-status-pill active-pill chalk-font';
+      statusPillEl.innerText = 'Active Month';
+    } else {
+      statusPillEl.className = 'month-status-pill archived-pill chalk-font';
+      statusPillEl.innerText = 'Archived Garden';
+    }
+  }
+
+  if (nextMonthBtn) {
+    if (GardenView.isCurrentMonth) {
+      nextMonthBtn.style.opacity = '0.35';
+      nextMonthBtn.style.cursor = 'default';
+      nextMonthBtn.title = 'Cannot navigate into future months';
+    } else {
+      nextMonthBtn.style.opacity = '1';
+      nextMonthBtn.style.cursor = 'pointer';
+      nextMonthBtn.title = 'Next Month';
+    }
   }
 
   // 1. Render Handcrafted Vector Chalk Botanical Meadow Panorama across Full Month
   if (meadowViewport) {
     ChalkMeadowPanorama.renderMeadow(meadowViewport);
-    // Smoothly scroll and center landscape on Today's plot
+    // Smoothly scroll and center landscape on Today's plot (or start for archived months)
     setTimeout(() => {
-      const todayX = 65 + (TODAY_DAY_NUM - 1) * 110;
-      const vpWidth = meadowViewport.clientWidth || 800;
-      meadowViewport.scrollTo({ left: Math.max(0, todayX - (vpWidth / 2)), behavior: 'smooth' });
+      if (GardenView.isCurrentMonth) {
+        const todayX = 65 + (TODAY_DAY_NUM - 1) * 110;
+        const vpWidth = meadowViewport.clientWidth || 800;
+        meadowViewport.scrollTo({ left: Math.max(0, todayX - (vpWidth / 2)), behavior: 'smooth' });
+      } else {
+        meadowViewport.scrollTo({ left: 0, behavior: 'smooth' });
+      }
       const sceneryWrap = document.getElementById('meadow-scenery-wrap');
       const leftBtn = document.getElementById('btn-meadow-scroll-left');
       const rightBtn = document.getElementById('btn-meadow-scroll-right');
@@ -2653,12 +2799,13 @@ function renderProgressGarden() {
     grid.innerHTML = '';
     let fullBlooms = 0;
     let totalFocusMinutes = 0;
-    const totalDays = CurrentDateInfo ? CurrentDateInfo.daysInMonth : 30;
+    const totalDays = GardenView ? GardenView.daysInMonth : (CurrentDateInfo ? CurrentDateInfo.daysInMonth : 30);
+    const monthGarden = getGardenDataForMonth(GardenView ? GardenView.monthKey : CurrentDateInfo.monthKey);
 
     for (let day = 1; day <= totalDays; day++) {
-      const isToday = day === TODAY_DAY_NUM;
-      const isFuture = day > TODAY_DAY_NUM;
-      let dayData = AppState.gardenData[day];
+      const isToday = GardenView.isCurrentMonth && day === TODAY_DAY_NUM;
+      const isFuture = GardenView.isCurrentMonth && day > TODAY_DAY_NUM;
+      let dayData = monthGarden[day];
       if (!dayData) {
         dayData = {
           specimen: BOTANICAL_SPECIMENS[day - 1] || 'Autumn Wildflower',
@@ -2719,8 +2866,8 @@ function openGardenDayModal(day, dayData, stageName = null) {
   const renameBox = document.getElementById('modal-rename-box');
   if (renameBox) renameBox.style.display = 'none';
 
-  const isToday = day === TODAY_DAY_NUM;
-  const isFuture = day > TODAY_DAY_NUM && !dayData?.isImported;
+  const isToday = GardenView.isCurrentMonth && day === TODAY_DAY_NUM;
+  const isFuture = GardenView.isCurrentMonth && day > TODAY_DAY_NUM && !dayData?.isImported;
 
   const currentStage = isFuture ? 0 : (dayData ? (dayData.stage ?? 0) : 0);
   const currentStageName = isFuture ? 'Resting Seed (Upcoming Plot)' : (stageName || GROWTH_STAGE_NAMES[currentStage] || 'Resting Seed');
@@ -2728,7 +2875,7 @@ function openGardenDayModal(day, dayData, stageName = null) {
   const tasksRatio = isFuture ? '0 / 0 tasks' : `${dayData?.tasks ?? 0} / ${dayData?.planned || dayData?.tasks || 5} tasks`;
   const focusTime = isFuture ? '0 mins' : `${dayData?.focus ?? 0} mins`;
 
-  // Calculate habit completions for this day
+  // Calculate habit completions for this day (tracked independently by Habit Ledger)
   const totalHabits = AppState.habits.length || 4;
   const completedHabitsToday = AppState.habits.filter(h => h.current >= (h.type === 'COUNTER' ? h.target : 1)).length;
   const habitsRatio = isFuture
@@ -2747,7 +2894,7 @@ function openGardenDayModal(day, dayData, stageName = null) {
   const quoteEl = document.getElementById('modal-encouragement-quote');
 
   if (speciesNameEl) speciesNameEl.innerText = `🌸 ${specimenName}`;
-  if (dateTitleEl) dateTitleEl.innerText = `${CurrentDateInfo.monthName} ${day}, ${CurrentDateInfo.year}`;
+  if (dateTitleEl) dateTitleEl.innerText = `${GardenView.monthName} ${day}, ${GardenView.year}`;
   if (flowerVisualEl) flowerVisualEl.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 74, day);
   if (growthStageEl) growthStageEl.innerText = currentStageName;
   if (tasksRatioEl) tasksRatioEl.innerText = tasksRatio;
@@ -3187,42 +3334,51 @@ function updateGlobalGrowthMetrics() {
   const completedCount = activeCompleted + erasedCount;
   const effectivePlanned = Math.max(todayTasks.length + erasedCount, dayGarden.planned || 0, completedCount);
   const focusMins = AppState.focusTimeLoggedToday || 0;
-  const totalHabits = AppState.habits.length || 4;
-  const completedHabits = AppState.habits.filter(h => h.current >= (h.type === 'COUNTER' ? h.target : 1)).length;
 
-  let stage = 0;
-  if (completedCount === 0 && focusMins === 0 && completedHabits === 0) {
-    stage = 0; // Resting Seed
+  // 1. Separate Progress Garden & Habit Ledger:
+  // Growth stage depends purely on completed tasks & focus minutes (Habit Ledger tracks habit rhythms independently)
+  let calculatedStage = 0;
+  if (completedCount === 0 && focusMins === 0) {
+    calculatedStage = 0; // Resting Seed
   } else if (
-    (effectivePlanned > 0 && completedCount === effectivePlanned && (focusMins >= 45 || completedHabits >= 3)) ||
+    (effectivePlanned > 0 && completedCount === effectivePlanned && focusMins >= 45) ||
     completedCount >= 5 ||
     focusMins >= 90
   ) {
-    stage = 4; // Full Bloom
+    calculatedStage = 4; // Full Bloom
   } else if (
     (effectivePlanned > 0 && (completedCount / effectivePlanned) >= 0.6) ||
     completedCount >= 3 ||
-    focusMins >= 55 ||
-    (completedCount >= 2 && completedHabits >= 2)
+    focusMins >= 55
   ) {
-    stage = 3; // Swelling Bud
+    calculatedStage = 3; // Swelling Bud
   } else if (
     completedCount >= 2 ||
     focusMins >= 30 ||
-    (completedCount >= 1 && (focusMins >= 15 || completedHabits >= 1))
+    (completedCount >= 1 && focusMins >= 15)
   ) {
-    stage = 2; // Branching Stem
+    calculatedStage = 2; // Branching Stem
   } else {
-    stage = 1; // The Sprout
+    calculatedStage = 1; // The Sprout
   }
 
+  // 2. Preserve Earned Flower Growth:
+  // Once a flower reaches a growth stage, it never shrinks if a task is reopened or edited.
+  const previousStage = dayGarden.stage ?? 0;
+  const earnedStage = Math.max(calculatedStage, previousStage);
+  const hasGrown = earnedStage > previousStage;
+
   if (!AppState.gardenData[TODAY_DAY_NUM]) {
-    AppState.gardenData[TODAY_DAY_NUM] = { specimen: 'Sunburst Dahlia', tasks: 0, planned: 0, focus: 0, stage: 0 };
+    AppState.gardenData[TODAY_DAY_NUM] = { specimen: BOTANICAL_SPECIMENS[TODAY_DAY_NUM - 1] || 'Sunburst Dahlia', tasks: 0, planned: 0, focus: 0, stage: 0 };
   }
   AppState.gardenData[TODAY_DAY_NUM].tasks = completedCount;
   AppState.gardenData[TODAY_DAY_NUM].planned = effectivePlanned;
   AppState.gardenData[TODAY_DAY_NUM].focus = focusMins;
-  AppState.gardenData[TODAY_DAY_NUM].stage = stage;
+  AppState.gardenData[TODAY_DAY_NUM].stage = earnedStage;
+
+  if (!AppState.monthlyGardens) AppState.monthlyGardens = {};
+  AppState.monthlyGardens[CurrentDateInfo.monthKey] = AppState.gardenData;
+
   saveState();
 
   const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
@@ -3233,10 +3389,60 @@ function updateGlobalGrowthMetrics() {
   const finalStage = AppState.gardenData[TODAY_DAY_NUM].stage;
   if (topIcon) topIcon.innerHTML = ChalkBotanicals.getBotanicalSVG(finalStage, 28, TODAY_DAY_NUM);
   if (topStage) topStage.innerText = stageNames[finalStage];
-  if (topMeta) topMeta.innerText = `${completedCount} tasks • ${focusMins}m focus • ${completedHabits} habits`;
+  if (topMeta) topMeta.innerText = `${completedCount} tasks • ${focusMins}m focus`;
 
   renderDashboard();
   renderProgressGarden();
+
+  // 3. Subtle Organic Growth Animation when new stage is reached (not on initial load)
+  if (hasGrown && !isSystemInitializing) {
+    triggerBotanicalGrowthAnimation(earnedStage);
+  }
+}
+
+function triggerBotanicalGrowthAnimation(newStage) {
+  // A. Dashboard flower visual
+  const dashVisual = document.getElementById('dash-today-flower-visual');
+  if (dashVisual) {
+    dashVisual.classList.remove('plant-growth-anim');
+    void dashVisual.offsetWidth; // trigger reflow
+    dashVisual.classList.add('plant-growth-anim');
+    setTimeout(() => {
+      if (dashVisual) dashVisual.classList.remove('plant-growth-anim');
+    }, 1000);
+  }
+
+  // B. Top navigation flower icon
+  const topIcon = document.getElementById('top-flower-icon');
+  if (topIcon) {
+    topIcon.classList.remove('plant-growth-anim');
+    void topIcon.offsetWidth;
+    topIcon.classList.add('plant-growth-anim');
+    setTimeout(() => {
+      if (topIcon) topIcon.classList.remove('plant-growth-anim');
+    }, 1000);
+  }
+
+  // C. Progress Garden landscape plant hotspot
+  const todayHotspot = document.getElementById(`plant-hotspot-d${TODAY_DAY_NUM}`);
+  if (todayHotspot) {
+    todayHotspot.classList.add('is-stage-growing');
+    setTimeout(() => {
+      if (todayHotspot) todayHotspot.classList.remove('is-stage-growing');
+    }, 1200);
+  }
+
+  // D. Nature journal calendar tile
+  const todayTile = document.querySelector('.calendar-day-tile.is-today');
+  if (todayTile) {
+    todayTile.classList.add('tile-growth-pulse');
+    setTimeout(() => {
+      if (todayTile) todayTile.classList.remove('tile-growth-pulse');
+    }, 1000);
+  }
+
+  const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
+  showToast(`🌱 Botanical Growth: Reached ${stageNames[newStage] || 'new stage'}!`);
 }
 
 // --------------------------------------------------------------------------
