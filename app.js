@@ -541,6 +541,8 @@ const ChalkMeadowPanorama = {
 
     const monthGarden = getGardenDataForMonth(GardenView ? GardenView.monthKey : CurrentDateInfo.monthKey);
 
+    const isFirstGardenEntrance = !hasVisitedGardenThisSession && (AppState.activeSurface === 'progress-garden' || !AppState.activeSurface);
+
     const plantsSVG = meadowSlots.map(slot => {
       const isToday = GardenView.isCurrentMonth && slot.day === TODAY_DAY_NUM;
       const isFuture = GardenView.isCurrentMonth && slot.day > TODAY_DAY_NUM;
@@ -566,16 +568,16 @@ const ChalkMeadowPanorama = {
         // Active botanical stage evolution taking place right now!
         animClass = activeStageEvolutionClass;
         animDelay = 0;
-      } else if (GardenView.isCurrentMonth && !hasVisitedGardenThisSession) {
-        // First visit to garden this session: staggered emergence centered around Today
+      } else if (isFirstGardenEntrance) {
+        // First visible visit to garden this session: staggered emergence centered around Today
         const distFromToday = Math.abs(slot.day - TODAY_DAY_NUM);
-        animDelay = distFromToday <= 3 ? distFromToday * 0.12 : 0.36 + (distFromToday - 3) * 0.05;
+        animDelay = distFromToday <= 3 ? distFromToday * 0.15 : 0.45 + (distFromToday - 3) * 0.06;
         animClass = 'garden-entrance-anim';
-      } else if (GardenView.isCurrentMonth) {
-        // Subsequent visits: gentle living breathing sway
-        animClass = 'subtle-visit-sway';
+      } else {
+        // Gentle living wind sway
+        animClass = 'is-wind-swaying';
         const distFromToday = Math.abs(slot.day - TODAY_DAY_NUM);
-        animDelay = (distFromToday % 6) * 0.22;
+        animDelay = ((slot.day * 3) % 7) * 0.35;
       }
 
       return this.renderPlantStage(slot.x, slot.day, dayData, isToday, isFuture, animClass, animDelay);
@@ -643,8 +645,17 @@ const ChalkMeadowPanorama = {
     `;
 
     container.innerHTML = svgHTML;
-    if (GardenView.isCurrentMonth) {
-      hasVisitedGardenThisSession = true;
+
+    if (isFirstGardenEntrance) {
+      setTimeout(() => {
+        hasVisitedGardenThisSession = true;
+        const entranceHotspots = container.querySelectorAll('.garden-entrance-anim');
+        entranceHotspots.forEach((el, idx) => {
+          el.classList.remove('garden-entrance-anim');
+          el.classList.add('is-wind-swaying');
+          el.style.setProperty('--sway-delay', `${((idx * 3) % 7) * 0.35}s`);
+        });
+      }, 3400);
     }
 
     // Attach click listeners to all active specimen hotspots
@@ -3584,14 +3595,19 @@ function triggerBotanicalGrowthAnimation(newStage) {
   const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
   showToast(`🌱 Botanical Growth: Reached ${stageNames[newStage] || 'new stage'}!`);
 
-  // Clear active stage evolution after animation completes (2.2s)
+  // Clear active stage evolution after physical growth finishes (2.8s) and transition smoothly to living breeze sway
   setTimeout(() => {
     activeStageEvolutionDay = null;
     activeStageEvolutionClass = '';
+    const todayHotspot = document.getElementById(`plant-hotspot-d${TODAY_DAY_NUM}`);
+    if (todayHotspot) {
+      todayHotspot.classList.remove('anim-emerge-sprout', 'anim-grow-stem', 'anim-swell-bud', 'anim-unfurl-bloom');
+      todayHotspot.classList.add('is-wind-swaying');
+    }
     if (dashVisual) dashVisual.classList.remove('plant-growth-anim');
     if (topIcon) topIcon.classList.remove('plant-growth-anim');
     if (todayTile) todayTile.classList.remove('tile-growth-pulse');
-  }, 2200);
+  }, 2800);
 }
 
 // --------------------------------------------------------------------------
