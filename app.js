@@ -293,7 +293,7 @@ const ChalkMeadowPanorama = {
           <!-- Soil Mound (Dotted for Future Plots, Solid for Recorded Days) -->
           <path class="plant-soil-mound" d="M -22 215 Q 0 206 22 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" ${moundStroke} />
           <!-- Sleeping / Resting Chalk Seed in Soil (Settles organically on entrance) -->
-          <ellipse class="plant-seed" cx="0" cy="217" rx="4" ry="2.5" fill="#FAF0CA" opacity="${seedOpacity}" stroke="var(--chalk-amber)" stroke-width="1" style="transform-origin: 0px 217px;" />
+          <ellipse class="plant-seed" cx="0" cy="217" rx="4" ry="2.5" fill="#FAF0CA" opacity="${seedOpacity}" stroke="var(--chalk-amber)" stroke-width="1" />
           <circle cx="-7" cy="218" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
           <circle cx="8" cy="216" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
           <!-- Subtle resting chalk whisper -->
@@ -308,9 +308,9 @@ const ChalkMeadowPanorama = {
           <!-- Soil Mound -->
           <path class="plant-soil-mound" d="M -20 215 Q 0 207 20 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
           <!-- Emerging Sprout Stem (Extends upward from soil line 0, 215) -->
-          <path class="plant-stem" d="M 0 215 Q 1 195 0 178" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
+          <path class="plant-stem" d="M 0 215 Q 1 195 0 178" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
           <!-- Left & Right Cotyledon Leaves (Unfurl from shoot node) -->
-          <g class="plant-leaves" style="transform-origin: 0px 178px;">
+          <g class="plant-leaves">
             <path d="M 0 178 C -14 173 -22 179 -19 187 C -14 191 -6 186 0 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
             <path d="M 0 179 Q -9 182 -16 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
             <path d="M 0 178 C 14 173 22 179 19 187 C 14 191 6 186 0 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
@@ -327,9 +327,9 @@ const ChalkMeadowPanorama = {
           <!-- Soil Mound -->
           <path class="plant-soil-mound" d="M -18 215 Q 0 209 18 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
           <!-- Main Stem growing to 145 -->
-          <path class="plant-stem" d="M 0 215 Q -2 180 0 145" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
+          <path class="plant-stem" d="M 0 215 Q -2 180 0 145" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
           <!-- Branching Foliage Leaves (Unfurl outward) -->
-          <g class="plant-leaves" style="transform-origin: 0px 175px;">
+          <g class="plant-leaves">
             <path d="M -1 195 C -19 190 -28 197 -24 205 C -16 208 -7 202 -1 196 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
             <path d="M 0 188 C 19 183 28 189 25 197 C 18 201 7 195 0 190 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
             <path d="M -1 170 C -17 163 -25 169 -21 177 C -14 180 -6 175 -1 171 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
@@ -345,15 +345,15 @@ const ChalkMeadowPanorama = {
         // STAGE 3: SWELLING BUD (High stem, rich foliage, swelling floral teardrop bud)
         plantArtwork = `
           <!-- Main Stem growing to 118 -->
-          <path class="plant-stem" d="M 0 215 Q -2 165 0 118" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
+          <path class="plant-stem" d="M 0 215 Q -2 165 0 118" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
           <!-- Foliage leaves -->
-          <g class="plant-leaves" style="transform-origin: 0px 165px;">
+          <g class="plant-leaves">
             <path d="M -1 185 C -19 178 -27 188 -19 195 C -11 196 -5 190 -1 186 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
             <path d="M 0 172 C 19 165 25 174 19 182 C 11 183 5 177 0 173 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
             <path d="M -1 150 C -17 142 -21 150 -15 156 C -8 157 -4 153 -1 151 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
           </g>
           <!-- Green Sepals & Floral Bud with glowing chalk tip (Swells at apex) -->
-          <g class="plant-bud" style="transform-origin: 0px 118px;">
+          <g class="plant-bud">
             <path d="M -3 122 C -10 116 -9 107 -1 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
             <path d="M 3 122 C 10 116 9 107 1 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
             <path d="M 0 116 C -9 104 -5 92 0 86 C 5 92 9 104 0 116 Z" fill="rgba(239, 71, 111, 0.35)" stroke="#EF476F" stroke-width="2.2" />
@@ -370,13 +370,13 @@ const ChalkMeadowPanorama = {
         if (variety === 0) {
           // Coral Daisy / Cosmos (Center at 0, 100)
           plantArtwork = `
-            <path class="plant-stem" d="M 0 215 Q -3 155 0 108" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
-            <g class="plant-leaves" style="transform-origin: 0px 165px;">
+            <path class="plant-stem" d="M 0 215 Q -3 155 0 108" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+            <g class="plant-leaves">
               <path d="M -1 175 C -19 168 -25 178 -17 184 C -10 184 -5 180 -1 176 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
               <path d="M 0 155 C 17 148 23 156 17 163 C 10 164 5 159 0 156 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
             </g>
-            <g class="plant-petals-wrap" style="transform-origin: 0px 100px;">
-              <g class="plant-petals" transform="translate(0, 100)">
+            <g transform="translate(0, 100)">
+              <g class="plant-petals">
                 <ellipse cx="0" cy="-18" rx="4.5" ry="9" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
                 <ellipse cx="11" cy="-14" rx="4.5" ry="9" transform="rotate(36 11 -14)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
                 <ellipse cx="17" cy="-5" rx="4.5" ry="9" transform="rotate(72 17 -5)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
@@ -387,9 +387,7 @@ const ChalkMeadowPanorama = {
                 <ellipse cx="-17" cy="-5" rx="4.5" ry="9" transform="rotate(288 -17 -5)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
                 <ellipse cx="-11" cy="-14" rx="4.5" ry="9" transform="rotate(324 -11 -14)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
               </g>
-            </g>
-            <g class="plant-core-wrap" style="transform-origin: 0px 100px;">
-              <g class="plant-bloom-core" transform="translate(0, 100)">
+              <g class="plant-bloom-core">
                 <circle cx="0" cy="0" r="8.5" fill="#FFD166" stroke="#FAF0CA" stroke-width="2.2" />
                 <circle cx="0" cy="0" r="5" fill="none" stroke="#181A1D" stroke-width="1" stroke-dasharray="2,2" opacity="0.6" />
               </g>
@@ -403,13 +401,13 @@ const ChalkMeadowPanorama = {
         } else if (variety === 1) {
           // Purple Wild Aster (Center at 0, 85)
           plantArtwork = `
-            <path class="plant-stem" d="M 0 215 Q -2 150 0 95" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
-            <g class="plant-leaves" style="transform-origin: 0px 165px;">
+            <path class="plant-stem" d="M 0 215 Q -2 150 0 95" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+            <g class="plant-leaves">
               <path d="M -1 180 Q -20 175 -28 168 M 0 172 Q -18 168 -22 158" stroke="var(--chalk-mint)" stroke-width="1.6" fill="none" />
               <path d="M 1 165 Q 18 160 26 154 M 1 155 Q 17 150 22 142" stroke="var(--chalk-mint)" stroke-width="1.6" fill="none" />
             </g>
-            <g class="plant-petals-wrap" style="transform-origin: 0px 85px;">
-              <g class="plant-petals" transform="translate(0, 85)">
+            <g transform="translate(0, 85)">
+              <g class="plant-petals">
                 <line x1="0" y1="0" x2="0" y2="-22" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
                 <line x1="0" y1="0" x2="8" y2="-20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
                 <line x1="0" y1="0" x2="16" y2="-15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
@@ -428,9 +426,7 @@ const ChalkMeadowPanorama = {
                 <line x1="0" y1="0" x2="-8" y2="-20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
                 <circle cx="0" cy="0" r="12" fill="none" stroke="#D8B4FE" stroke-width="1.8" stroke-dasharray="3,2" />
               </g>
-            </g>
-            <g class="plant-core-wrap" style="transform-origin: 0px 85px;">
-              <g class="plant-bloom-core" transform="translate(0, 85)">
+              <g class="plant-bloom-core">
                 <circle cx="0" cy="0" r="7.5" fill="#FFD166" stroke="#FAF0CA" stroke-width="2" />
               </g>
             </g>
@@ -443,22 +439,20 @@ const ChalkMeadowPanorama = {
         } else if (variety === 2) {
           // White Coneflower (Center at 0, 80)
           plantArtwork = `
-            <path class="plant-stem" d="M 0 215 Q -3 145 0 85" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
-            <g class="plant-leaves" style="transform-origin: 0px 160px;">
+            <path class="plant-stem" d="M 0 215 Q -3 145 0 85" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" />
+            <g class="plant-leaves">
               <path d="M -1 175 C -23 165 -31 178 -21 187 C -11 188 -5 181 -1 176 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
               <path d="M 0 150 C 21 140 29 152 21 161 C 12 162 6 155 0 151 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
             </g>
-            <g class="plant-petals-wrap" style="transform-origin: 0px 80px;">
-              <g class="plant-petals" transform="translate(0, 80)">
+            <g transform="translate(0, 80)">
+              <g class="plant-petals">
                 <path d="M -16 5 C -24 15 -22 36 -18 42 C -15 36 -12 20 -10 5 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
                 <path d="M -10 6 C -14 20 -12 40 -8 46 C -5 40 -4 22 -3 6 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
                 <path d="M -3 7 C -4 22 -3 42 0 48 C 3 42 4 22 3 7 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
                 <path d="M 3 6 C 4 22 5 40 8 46 C 12 40 14 20 10 6 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
                 <path d="M 10 5 C 12 20 15 36 18 42 C 22 36 24 15 16 5 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
               </g>
-            </g>
-            <g class="plant-core-wrap" style="transform-origin: 0px 80px;">
-              <g class="plant-bloom-core" transform="translate(0, 80)">
+              <g class="plant-bloom-core">
                 <path d="M -14 5 C -14 -12 14 -12 14 5 Z" fill="#FFD166" stroke="#FAF0CA" stroke-width="2.2" />
                 <path d="M -10 0 L 10 0 M -8 -4 L 8 -4 M -5 -8 L 5 -8" stroke="#181A1D" stroke-width="1.2" opacity="0.65" />
               </g>
@@ -472,13 +466,13 @@ const ChalkMeadowPanorama = {
         } else {
           // Golden Sunflower / Rudbeckia / Dahlia (Center at 0, 52)
           plantArtwork = `
-            <path class="plant-stem" d="M 0 215 Q -3 125 0 58" stroke="var(--chalk-mint)" stroke-width="3.4" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
-            <g class="plant-leaves" style="transform-origin: 0px 150px;">
+            <path class="plant-stem" d="M 0 215 Q -3 125 0 58" stroke="var(--chalk-mint)" stroke-width="3.4" stroke-linecap="round" fill="none" />
+            <g class="plant-leaves">
               <path d="M -2 170 C -35 155 -45 176 -29 190 C -13 192 -6 180 -2 172 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
               <path d="M 1 138 C 35 122 47 144 30 158 C 13 160 5 148 1 140 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
             </g>
-            <g class="plant-petals-wrap" style="transform-origin: 0px 52px;">
-              <g class="plant-petals" transform="translate(0, 52)">
+            <g transform="translate(0, 52)">
+              <g class="plant-petals">
                 <ellipse cx="0" cy="-24" rx="5.5" ry="12" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
                 <ellipse cx="9" cy="-22" rx="5.5" ry="12" transform="rotate(22.5 9 -22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
                 <ellipse cx="17" cy="-17" rx="5.5" ry="12" transform="rotate(45 17 -17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
@@ -496,9 +490,7 @@ const ChalkMeadowPanorama = {
                 <ellipse cx="-17" cy="-17" rx="5.5" ry="12" transform="rotate(315 -17 -17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
                 <ellipse cx="-9" cy="-22" rx="5.5" ry="12" transform="rotate(337.5 -9 -22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
               </g>
-            </g>
-            <g class="plant-core-wrap" style="transform-origin: 0px 52px;">
-              <g class="plant-bloom-core" transform="translate(0, 52)">
+              <g class="plant-bloom-core">
                 <circle cx="0" cy="0" r="14" fill="#2E1D0E" stroke="#FFD166" stroke-width="2.4" />
                 <circle cx="0" cy="0" r="10" fill="none" stroke="#FAF0CA" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.8" />
                 <circle cx="0" cy="0" r="6" fill="none" stroke="#FFD166" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.8" />
