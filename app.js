@@ -3251,6 +3251,22 @@ function formatHabitAmount(val) {
   return parseFloat(rounded.toFixed(2)).toString();
 }
 
+function getHabitDisplayUnit(habit) {
+  const u = (habit?.unit || '').trim();
+  if (!u) return '';
+  const lower = u.toLowerCase();
+  if (lower === 'm' || lower === 'min' || lower === 'mins' || lower === 'minute' || lower === 'minutes') {
+    return 'min';
+  }
+  if (lower === 'l' || lower === 'liter' || lower === 'liters' || lower === 'litre' || lower === 'litres') {
+    return 'L';
+  }
+  if (lower === 'h' || lower === 'hr' || lower === 'hrs' || lower === 'hour' || lower === 'hours') {
+    return 'hr';
+  }
+  return u;
+}
+
 function renderHabitConsistencyGraph() {
   const container = document.getElementById('habit-graph-viewport');
   if (!container) return;
@@ -3783,59 +3799,53 @@ function renderHabitLedger() {
     card.className = 'habit-card';
     card.dataset.habitId = h.id;
 
-    let controlHTML = '';
+    const isMeasurable = h.type === 'COUNTER';
+    const displayUnit = getHabitDisplayUnit(h);
+    const unitSuffix = displayUnit ? ` ${displayUnit}` : '';
 
-    if (h.type === 'COUNTER') {
+    let controlHTML = '';
+    let progressBarHTML = '';
+
+    if (isMeasurable) {
       const target = h.target || 4;
       const current = h.current !== undefined ? h.current : 0;
       const step = getHabitStep(h);
       const isComplete = current >= target;
       const isExceeded = current > target;
       const pct = target > 0 ? Math.round((current / target) * 100) : 0;
-
-      // 44px Circular Progress Ring
-      const radius = 18;
-      const circ = 2 * Math.PI * radius; // ~113.1
-      const progressFraction = Math.max(0, Math.min(1, current / target));
-      const dashoffset = circ * (1 - progressFraction);
-
-      const ringColor = isExceeded ? 'var(--chalk-amber)' : 'var(--chalk-mint)';
-      const percentClass = isExceeded ? 'is-exceeded' : (isComplete ? 'is-complete' : '');
+      const progressPercent = Math.min(100, Math.max(0, pct));
 
       let statusBadge = '';
       if (isExceeded) {
         const exceededBy = formatHabitAmount(Math.round((current - target) * 100) / 100);
-        statusBadge = `<span class="habit-badge-exceeded chalk-font"><i class="fa-solid fa-star"></i> Exceeded (+${exceededBy} ${h.unit || ''})</span>`;
+        statusBadge = `<span class="habit-badge-exceeded chalk-font"><i class="fa-solid fa-star"></i> Exceeded (+${exceededBy}${unitSuffix})</span>`;
       } else if (isComplete) {
-        statusBadge = `<span class="habit-badge-exceeded chalk-font" style="background:rgba(6,214,160,0.18); color:var(--chalk-mint); border-color:var(--chalk-mint);"><i class="fa-solid fa-check"></i> Goal Met</span>`;
+        statusBadge = `<span class="habit-badge-exceeded chalk-font is-goal-met"><i class="fa-solid fa-check"></i> Goal Met</span>`;
       }
 
       controlHTML = `
         <div class="habit-action-controls">
           ${statusBadge}
-          <!-- Stepper Controls (Minus / Plus) -->
+          <!-- Stepper Controls (Minus / Plus) with Clear Progress Display -->
           <div class="habit-stepper-wrap">
-            <button type="button" class="habit-step-btn btn-habit-minus" data-habit-id="${h.id}" title="Decrease progress by ${formatHabitAmount(step)} ${h.unit || ''}" ${current <= 0 ? 'disabled' : ''}>
+            <button type="button" class="habit-step-btn btn-habit-minus" data-habit-id="${h.id}" title="Decrease progress by ${formatHabitAmount(step)}${unitSuffix}" ${current <= 0 ? 'disabled' : ''}>
               <i class="fa-solid fa-minus"></i>
             </button>
             <div class="habit-amount-display chalk-font">
-              <span class="amount-val">${formatHabitAmount(current)}</span><span class="amount-target">/${formatHabitAmount(target)} ${h.unit || ''}</span>
+              <span class="amount-val">${formatHabitAmount(current)}</span><span class="amount-target"> / ${formatHabitAmount(target)}${unitSuffix}</span>
             </div>
-            <button type="button" class="habit-step-btn btn-habit-plus" data-habit-id="${h.id}" title="Increase progress by ${formatHabitAmount(step)} ${h.unit || ''}">
+            <button type="button" class="habit-step-btn btn-habit-plus" data-habit-id="${h.id}" title="Increase progress by ${formatHabitAmount(step)}${unitSuffix}">
               <i class="fa-solid fa-plus"></i>
             </button>
           </div>
+        </div>
+      `;
 
-          <!-- Small Circular Progress Ring -->
-          <div class="habit-ring-container" title="${pct}% of daily target completed">
-            <svg class="habit-ring-svg" width="44" height="44" viewBox="0 0 44 44">
-              <circle class="habit-ring-bg" cx="22" cy="22" r="${radius}" fill="none" stroke-width="3.5" />
-              <circle class="habit-ring-bar ${percentClass}"
-                      cx="22" cy="22" r="${radius}" fill="none"
-                      stroke="${ringColor}" stroke-width="3.5" stroke-linecap="round"
-                      stroke-dasharray="${circ}" stroke-dashoffset="${dashoffset}" />
-            </svg>
-            <span class="habit-ring-percent-text chalk-font ${percentClass}">${pct}%</span>
+      // Slim horizontal progress bar matching Chalkflow design language
+      progressBarHTML = `
+        <div class="habit-card-bar-wrap" title="${formatHabitAmount(current)} / ${formatHabitAmount(target)}${unitSuffix} (${pct}%)">
+          <div class="habit-card-bar-track">
+            <div class="habit-card-bar-fill ${isExceeded ? 'is-exceeded' : (isComplete ? 'is-complete' : '')}" style="width: ${progressPercent}%;"></div>
           </div>
         </div>
       `;
@@ -3855,21 +3865,24 @@ function renderHabitLedger() {
     }
 
     card.innerHTML = `
-      <div class="habit-info-left">
-        <span class="habit-icon">${h.icon || '🌱'}</span>
-        <div class="habit-text-wrap">
-          <div class="habit-title-row">
-            <span class="habit-name">${h.name}</span>
-            <button type="button" class="chalk-icon-btn btn-edit-habit" data-habit-id="${h.id}" title="Edit habit details" style="width:22px; height:22px; font-size:10px; opacity:0.75;">
-              <i class="fa-solid fa-pen"></i>
-            </button>
-          </div>
-          <div class="habit-tally">
-            ${daysReached}/${daysScheduled} days completed this month • ${h.type === 'COUNTER' ? `Goal: ${formatHabitAmount(h.target)} ${h.unit || ''}` : 'Daily Check-in'}
+      <div class="habit-card-main">
+        <div class="habit-info-left">
+          <span class="habit-icon">${h.icon || '🌱'}</span>
+          <div class="habit-text-wrap">
+            <div class="habit-title-row">
+              <span class="habit-name">${h.name}</span>
+              <button type="button" class="chalk-icon-btn btn-edit-habit" data-habit-id="${h.id}" title="Edit habit details" style="width:22px; height:22px; font-size:10px; opacity:0.75;">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+            </div>
+            <div class="habit-tally">
+              ${daysReached}/${daysScheduled} days completed this month • ${isMeasurable ? `Goal: ${formatHabitAmount(h.target)}${unitSuffix}` : 'Daily Check-in'}
+            </div>
           </div>
         </div>
+        ${controlHTML}
       </div>
-      ${controlHTML}
+      ${progressBarHTML}
     `;
 
     // Edit habit click listener
@@ -3896,7 +3909,7 @@ function renderHabitLedger() {
           saveState();
           renderHabitLedger();
           renderDashboard();
-          showToast(`Recorded ${formatHabitAmount(h.current)}/${formatHabitAmount(h.target)} ${h.unit || ''} for ${h.name}`);
+          showToast(`Recorded ${formatHabitAmount(h.current)} / ${formatHabitAmount(h.target)}${unitSuffix} for ${h.name}`);
         }
       });
     }
@@ -3916,11 +3929,11 @@ function renderHabitLedger() {
         renderHabitLedger();
         renderDashboard();
         if (h.current > h.target) {
-          showToast(`🌟 ${h.name}: ${formatHabitAmount(h.current)}/${formatHabitAmount(h.target)} ${h.unit || ''} (Target exceeded!)`);
+          showToast(`🌟 ${h.name}: ${formatHabitAmount(h.current)} / ${formatHabitAmount(h.target)}${unitSuffix} (Target exceeded!)`);
         } else if (h.current === h.target) {
           showToast(`🎉 ${h.name} target reached for today!`);
         } else {
-          showToast(`Recorded +${formatHabitAmount(step)} ${h.unit || ''} for ${h.name}`);
+          showToast(`Recorded +${formatHabitAmount(step)}${unitSuffix} for ${h.name}`);
         }
       });
     }

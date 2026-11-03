@@ -2516,16 +2516,15 @@ body.theme-white-board .habit-graph-viewport-wrap {
   gap: 10px;
 }
 
-/* Habit Card with Circular Ring & Stepper */
+/* Habit Card with Slim Horizontal Progress Bar & Stepper */
 .habit-card {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   border-radius: var(--radius-sm);
-  padding: 12px 16px;
+  padding: 11px 16px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+  flex-direction: column;
+  gap: 8px;
   transition: all 0.2s ease;
 }
 
@@ -2533,6 +2532,14 @@ body.theme-white-board .habit-graph-viewport-wrap {
   border-color: var(--chalk-mint);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.habit-card-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
 }
 
 .habit-info-left {
@@ -2580,7 +2587,7 @@ body.theme-white-board .habit-graph-viewport-wrap {
 .habit-action-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-shrink: 0;
 }
 
@@ -2592,12 +2599,12 @@ body.theme-white-board .habit-graph-viewport-wrap {
   background: var(--bg-hover);
   border: 1px solid var(--border-chalk);
   border-radius: 20px;
-  padding: 3px 6px;
+  padding: 3px 8px;
 }
 
 .habit-step-btn {
-  width: 26px;
-  height: 26px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   border: 1px solid var(--border-chalk);
   background: var(--bg-surface-elevated);
@@ -2625,8 +2632,8 @@ body.theme-white-board .habit-graph-viewport-wrap {
 .habit-amount-display {
   display: flex;
   align-items: baseline;
-  gap: 2px;
-  min-width: 54px;
+  gap: 3px;
+  min-width: 64px;
   justify-content: center;
   font-size: 13px;
   font-weight: 700;
@@ -2639,52 +2646,35 @@ body.theme-white-board .habit-graph-viewport-wrap {
   font-weight: normal;
 }
 
-/* Circular Progress Ring */
-.habit-ring-container {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Slim Horizontal Progress Bar for Measurable Habits */
+.habit-card-bar-wrap {
+  width: 100%;
+  padding-left: 44px; /* aligned precisely with habit text, indented past the icon */
 }
 
-.habit-ring-svg {
-  width: 44px;
-  height: 44px;
-  transform: rotate(-90deg);
+.habit-card-bar-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--border-chalk);
+  border-radius: 3px;
+  overflow: hidden;
 }
 
-.habit-ring-bg {
-  stroke: var(--border-chalk);
-  opacity: 0.35;
+body.theme-white-board .habit-card-bar-track {
+  background: rgba(0, 0, 0, 0.08);
 }
 
-.habit-ring-bar {
-  stroke: var(--chalk-mint);
-  transition: stroke-dashoffset 0.35s ease, stroke 0.25s ease;
+.habit-card-bar-fill {
+  height: 100%;
+  background: var(--chalk-mint);
+  border-radius: 2px;
+  transition: width 0.28s ease, background-color 0.22s ease;
 }
 
-.habit-ring-bar.is-complete {
-  stroke: var(--chalk-mint);
-}
-
-.habit-ring-bar.is-exceeded {
-  stroke: var(--chalk-amber);
-}
-
-.habit-ring-percent-text {
-  position: absolute;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-primary);
-  pointer-events: none;
-}
-
-.habit-ring-percent-text.is-exceeded {
-  color: var(--chalk-amber);
-  font-size: 10px;
+.habit-card-bar-fill.is-exceeded {
+  background: var(--chalk-amber);
+  box-shadow: 0 0 6px rgba(255, 209, 102, 0.45);
 }
 
 /* Yes/No Chalkboard Checkbox */
@@ -2740,26 +2730,37 @@ body.theme-white-board .habit-graph-viewport-wrap {
   color: var(--chalk-mint);
 }
 
-/* Exceeded Badge */
+/* Goal Met & Exceeded Badges */
 .habit-badge-exceeded {
   font-size: 10px;
   background: rgba(255, 209, 102, 0.18);
   color: var(--chalk-amber);
   border: 1px solid var(--chalk-amber);
-  padding: 2px 6px;
-  border-radius: 10px;
+  padding: 2px 7px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   white-space: nowrap;
 }
 
+.habit-badge-exceeded.is-goal-met {
+  background: rgba(6, 214, 160, 0.18);
+  color: var(--chalk-mint);
+  border-color: var(--chalk-mint);
+}
+
 @media (max-width: 640px) {
-  .habit-card {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+  .habit-card-main {
+    flex-wrap: wrap;
+    gap: 10px;
   }
   .habit-action-controls {
     width: 100%;
     justify-content: space-between;
+  }
+  .habit-card-bar-wrap {
+    padding-left: 0;
   }
 }
 
