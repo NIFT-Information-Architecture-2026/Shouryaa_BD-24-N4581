@@ -1383,29 +1383,61 @@ body {
 .meadow-nav-buttons {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   background: var(--bg-surface-elevated);
   border: 1px dashed var(--border-chalk);
-  padding: 3px 6px;
+  padding: 4px 8px;
   border-radius: var(--radius-sm);
 }
 
 .meadow-scroll-btn {
-  width: 26px;
-  height: 26px;
-  font-size: 11px;
+  width: 28px;
+  height: 28px;
+  font-size: 11.5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-chalk);
+  border-radius: 4px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.meadow-scroll-btn:hover:not([style*="cursor: default"]) {
+  border-color: var(--chalk-amber);
+  color: var(--chalk-amber);
+  background: rgba(255, 209, 102, 0.1);
+  transform: scale(1.05);
+}
+
+.meadow-scroll-btn:active:not([style*="cursor: default"]) {
+  transform: scale(0.95);
 }
 
 .meadow-today-btn {
-  padding: 3px 9px;
-  font-size: 11.5px;
+  padding: 4px 11px;
+  font-size: 12px;
+  font-weight: 700;
   color: var(--chalk-amber);
-  border-color: var(--chalk-amber);
+  border: 1px solid var(--chalk-amber);
+  border-radius: 4px;
+  background: rgba(255, 209, 102, 0.08);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .meadow-today-btn:hover {
   background: var(--chalk-amber);
   color: #181A1D;
+  box-shadow: 0 0 10px rgba(255, 209, 102, 0.35);
+  transform: translateY(-1px);
+}
+
+.meadow-today-btn:active {
+  transform: translateY(1px);
 }
 
 /* Rich Wildflower Panoramic Meadow (Continuous Illustrated Landscape across Month) */
@@ -1418,15 +1450,62 @@ body {
   padding: 2px;
 }
 
+/* Subtle edge gradient shadows indicating scrollable meadow landscape beyond view */
+.meadow-scenery-container::before,
+.meadow-scenery-container::after {
+  content: '';
+  position: absolute;
+  top: 32px;
+  bottom: 0;
+  width: 44px;
+  pointer-events: none;
+  z-index: 6;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+}
+
+.meadow-scenery-container::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.96), transparent);
+}
+
+.meadow-scenery-container::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.96), transparent);
+}
+
+body.theme-dark-slate .meadow-scenery-container::before {
+  background: linear-gradient(to right, rgba(28, 29, 33, 0.96), transparent);
+}
+body.theme-dark-slate .meadow-scenery-container::after {
+  background: linear-gradient(to left, rgba(28, 29, 33, 0.96), transparent);
+}
+
+body.theme-vintage-green .meadow-scenery-container::before {
+  background: linear-gradient(to right, rgba(27, 46, 35, 0.96), transparent);
+}
+body.theme-vintage-green .meadow-scenery-container::after {
+  background: linear-gradient(to left, rgba(27, 46, 35, 0.96), transparent);
+}
+
+.meadow-scenery-container.can-scroll-left::before {
+  opacity: 1;
+}
+
+.meadow-scenery-container.can-scroll-right::after {
+  opacity: 1;
+}
+
 .meadow-scroll-hint-bar {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 10px;
+  padding: 5px 12px;
   background: var(--bg-surface-elevated);
   border-bottom: 1px dashed var(--border-chalk);
   font-size: 11px;
   color: var(--text-muted);
+  user-select: none;
 }
 
 .meadow-panorama-viewport {
@@ -1438,19 +1517,29 @@ body {
   scrollbar-width: thin;
   scrollbar-color: var(--border-chalk) transparent;
   -webkit-overflow-scrolling: touch;
+  cursor: grab;
+}
+
+.meadow-panorama-viewport.is-panning {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .meadow-panorama-viewport::-webkit-scrollbar {
-  height: 6px;
+  height: 7px;
 }
 
 .meadow-panorama-viewport::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .meadow-panorama-viewport::-webkit-scrollbar-thumb {
   background: var(--border-chalk);
   border-radius: 4px;
+}
+
+.meadow-panorama-viewport::-webkit-scrollbar-thumb:hover {
+  background: var(--chalk-amber);
 }
 
 .meadow-panorama-svg {
@@ -1628,6 +1717,27 @@ body {
   background: var(--chalk-amber);
   font-weight: 700;
   border: none;
+}
+
+.stage-tag.future-tag {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-chalk);
+  opacity: 0.75;
+}
+
+.calendar-day-tile.is-future-tile {
+  opacity: 0.68;
+  border-style: dashed;
+}
+
+.calendar-day-tile.is-future-tile:hover {
+  opacity: 0.95;
+  border-color: var(--chalk-mint);
+}
+
+.calendar-day-tile.is-future-tile .tile-bottom {
+  opacity: 0.75;
 }
 
 /* --------------------------------------------------------------------------

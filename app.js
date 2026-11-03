@@ -238,23 +238,28 @@ const ChalkMascot = {
 };
 
 const ChalkMeadowPanorama = {
-  renderPlantStage(x, day, dayData, isToday) {
+  renderPlantStage(x, day, dayData, isToday, isFuture = false) {
     const stage = dayData ? (dayData.stage ?? 0) : 0;
     const variety = day % 4;
     let plantArtwork = '';
 
     switch (stage) {
       case 0:
-        // STAGE 0: RESTING SEED / SOIL MOUND
+        // STAGE 0: RESTING SEED / SOIL MOUND / SUBTLE SEED PLACEHOLDER
+        const whisperText = isFuture ? 'Seed' : 'Resting';
+        const whisperColor = isToday ? 'var(--chalk-amber)' : 'var(--text-muted)';
+        const whisperOpacity = isToday ? '0.9' : (isFuture ? '0.5' : '0.75');
+        const moundStroke = isFuture ? 'stroke-dasharray="3,2" opacity="0.65"' : '';
+        const seedOpacity = isFuture ? '0.45' : '0.65';
         plantArtwork = `
-          <!-- Soil Mound -->
-          <path d="M ${x - 22} 215 Q ${x} 206 ${x + 22} 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
+          <!-- Soil Mound (Dotted for Future Calm Plots, Solid for Recorded Days) -->
+          <path d="M ${x - 22} 215 Q ${x} 206 ${x + 22} 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" ${moundStroke} />
           <!-- Sleeping / Resting Chalk Seed in Soil -->
-          <ellipse cx="${x}" cy="217" rx="4" ry="2.5" fill="#FAF0CA" opacity="0.65" stroke="var(--chalk-amber)" stroke-width="1" />
-          <circle cx="${x - 7}" cy="218" r="0.9" fill="var(--border-chalk)" opacity="0.6" />
-          <circle cx="${x + 8}" cy="216" r="0.9" fill="var(--border-chalk)" opacity="0.6" />
+          <ellipse cx="${x}" cy="217" rx="4" ry="2.5" fill="#FAF0CA" opacity="${seedOpacity}" stroke="var(--chalk-amber)" stroke-width="1" />
+          <circle cx="${x - 7}" cy="218" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
+          <circle cx="${x + 8}" cy="216" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
           <!-- Subtle resting chalk whisper -->
-          <text x="${x}" y="196" font-family="'Kalam', cursive" font-size="10" fill="var(--text-muted)" text-anchor="middle" opacity="0.75">Resting</text>
+          <text x="${x}" y="196" font-family="'Kalam', cursive" font-size="10" fill="${whisperColor}" text-anchor="middle" opacity="${whisperOpacity}">${whisperText}</text>
         `;
         break;
 
@@ -427,8 +432,8 @@ const ChalkMeadowPanorama = {
         break;
     }
 
-    const labelColor = isToday ? 'style="fill: var(--chalk-amber); font-weight:700;"' : '';
-    const underlineColor = isToday ? 'stroke="var(--chalk-amber)" stroke-width="2.2"' : 'stroke="var(--text-primary)" stroke-width="2" opacity="0.8"';
+    const labelColor = isToday ? 'style="fill: var(--chalk-amber); font-weight:700;"' : (isFuture ? 'style="opacity: 0.55;"' : '');
+    const underlineColor = isToday ? 'stroke="var(--chalk-amber)" stroke-width="2.2"' : (isFuture ? 'stroke="var(--border-chalk)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.45"' : 'stroke="var(--text-primary)" stroke-width="2" opacity="0.8"');
     const todayBadge = isToday ? `<text x="${x}" y="253" font-family="'Kalam', cursive" font-size="12" font-weight="700" fill="var(--chalk-amber)" text-anchor="middle">★ Today</text>` : '';
     const todayPedestal = isToday ? `
       <!-- Soft Amber Soil Pedestal Aura for Today's Specimen -->
@@ -436,7 +441,7 @@ const ChalkMeadowPanorama = {
     ` : '';
 
     return `
-      <g class="meadow-plant-hotspot ${isToday ? 'is-today-plant' : ''}" data-day="${day}" id="plant-hotspot-d${day}">
+      <g class="meadow-plant-hotspot ${isToday ? 'is-today-plant' : ''} ${isFuture ? 'is-future-plant' : ''}" data-day="${day}" id="plant-hotspot-d${day}">
         <rect x="${x - 45}" y="10" width="90" height="245" fill="transparent" />
         ${todayPedestal}
         ${plantArtwork}
@@ -463,14 +468,21 @@ const ChalkMeadowPanorama = {
 
     const plantsSVG = meadowSlots.map(slot => {
       const isToday = slot.day === TODAY_DAY_NUM;
-      const dayData = AppState.gardenData[slot.day] || {
-        specimen: BOTANICAL_SPECIMENS[slot.day - 1] || 'Autumn Wildflower',
-        tasks: isToday ? 1 : (slot.day < TODAY_DAY_NUM ? 5 : 0),
-        planned: 5,
-        focus: isToday ? AppState.focusTimeLoggedToday : (slot.day < TODAY_DAY_NUM ? 90 : 0),
-        stage: isToday ? 1 : (slot.day < TODAY_DAY_NUM ? 4 : 0)
-      };
-      return this.renderPlantStage(slot.x, slot.day, dayData, isToday);
+      const isFuture = slot.day > TODAY_DAY_NUM;
+      let dayData = AppState.gardenData[slot.day];
+      if (!dayData) {
+        dayData = {
+          specimen: BOTANICAL_SPECIMENS[slot.day - 1] || 'Autumn Wildflower',
+          tasks: 0,
+          planned: 0,
+          focus: 0,
+          stage: 0
+        };
+      } else if (isFuture && !dayData.isImported) {
+        // Enforce stage 0 resting seed placeholder for future dates
+        dayData = { ...dayData, stage: 0, tasks: 0, focus: 0 };
+      }
+      return this.renderPlantStage(slot.x, slot.day, dayData, isToday, isFuture);
     }).join('\n');
 
     // Generate continuous ground tufts & pebbles between each day's plant
@@ -541,18 +553,25 @@ const ChalkMeadowPanorama = {
       const hotspot = container.querySelector(`#plant-hotspot-d${slot.day}`);
       if (hotspot) {
         hotspot.addEventListener('click', (e) => {
+          if (container.dataset.hasDragged === 'true') return;
           e.stopPropagation();
           AudioEngine.playChalkScratch();
           emitDustParticles(hotspot.getBoundingClientRect());
           
           const isToday = slot.day === TODAY_DAY_NUM;
-          const dayData = AppState.gardenData[slot.day] || {
-            specimen: BOTANICAL_SPECIMENS[slot.day - 1] || 'Autumn Wildflower',
-            tasks: isToday ? 1 : 5,
-            planned: 5,
-            focus: isToday ? AppState.focusTimeLoggedToday : 90,
-            stage: isToday ? 1 : 4
-          };
+          const isFuture = slot.day > TODAY_DAY_NUM;
+          let dayData = AppState.gardenData[slot.day];
+          if (!dayData) {
+            dayData = {
+              specimen: BOTANICAL_SPECIMENS[slot.day - 1] || 'Autumn Wildflower',
+              tasks: 0,
+              planned: 0,
+              focus: 0,
+              stage: 0
+            };
+          } else if (isFuture && !dayData.isImported) {
+            dayData = { ...dayData, stage: 0, tasks: 0, focus: 0 };
+          }
           openGardenDayModal(slot.day, dayData, GROWTH_STAGE_NAMES[dayData.stage || 0]);
         });
       }
@@ -685,6 +704,51 @@ function processDateCarryOvers(tasks) {
   });
 
   return deduplicated;
+}
+
+function buildInitialGardenData(todayDay) {
+  const data = {};
+  const samplePast = [
+    { specimen: 'Sunburst Cosmos', tasks: 5, planned: 5, focus: 110, stage: 4 },
+    { specimen: 'Purple Wild Aster', tasks: 4, planned: 4, focus: 85, stage: 4 },
+    { specimen: 'White Coneflower', tasks: 4, planned: 5, focus: 75, stage: 3 },
+    { specimen: 'Golden Rudbeckia', tasks: 5, planned: 5, focus: 95, stage: 4 },
+    { specimen: 'Heather Blossom', tasks: 3, planned: 4, focus: 55, stage: 2 },
+    { specimen: 'Autumn Terracotta', tasks: 5, planned: 5, focus: 100, stage: 4 },
+    { specimen: 'Meadow Daisy', tasks: 4, planned: 4, focus: 90, stage: 4 },
+    { specimen: 'Winter Jasmine', tasks: 5, planned: 5, focus: 105, stage: 4 }
+  ];
+
+  for (let d = 1; d <= 31; d++) {
+    if (d < todayDay) {
+      const s = samplePast[(d - 1) % samplePast.length];
+      data[d] = {
+        specimen: BOTANICAL_SPECIMENS[d - 1] || s.specimen,
+        tasks: s.tasks,
+        planned: s.planned,
+        focus: s.focus,
+        stage: s.stage
+      };
+    } else if (d === todayDay) {
+      data[d] = {
+        specimen: BOTANICAL_SPECIMENS[todayDay - 1] || 'Sunburst Dahlia',
+        tasks: 1,
+        planned: 3,
+        focus: 45,
+        stage: 2
+      };
+    } else {
+      // Future dates: Resting seeds, empty plots (never bloomed or completed)
+      data[d] = {
+        specimen: BOTANICAL_SPECIMENS[d - 1] || 'Autumn Wildflower',
+        tasks: 0,
+        planned: 0,
+        focus: 0,
+        stage: 0
+      };
+    }
+  }
+  return data;
 }
 
 const DEFAULT_STATE = {
@@ -845,34 +909,8 @@ const DEFAULT_STATE = {
     { id: 'h-4', name: 'Evening Walk / Rest', icon: '🌿', type: 'CHECK', current: 1, target: 1, unit: '', completions: Math.min(12, TODAY_DAY_NUM) }
   ],
   focusTimeLoggedToday: 45,
-  gardenData: {
-    1: { specimen: 'Sunburst Cosmos', tasks: 5, planned: 5, focus: 110, stage: 4 },
-    2: { specimen: 'Purple Wild Aster', tasks: 4, planned: 4, focus: 85, stage: 4 },
-    3: { specimen: 'Dormant Soil', tasks: 0, planned: 0, focus: 0, stage: 0 },
-    4: { specimen: 'White Coneflower', tasks: 6, planned: 6, focus: 120, stage: 4 },
-    5: { specimen: 'Golden Rudbeckia', tasks: 5, planned: 5, focus: 95, stage: 4 },
-    6: { specimen: 'Heather Blossom', tasks: 3, planned: 4, focus: 55, stage: 2 },
-    7: { specimen: 'Autumn Terracotta', tasks: 5, planned: 5, focus: 100, stage: 4 },
-    8: { specimen: 'Meadow Daisy', tasks: 4, planned: 4, focus: 90, stage: 4 },
-    9: { specimen: 'Winter Jasmine', tasks: 5, planned: 5, focus: 105, stage: 4 },
-    10: { specimen: 'Forget-Me-Not', tasks: 0, planned: 0, focus: 0, stage: 0 },
-    11: { specimen: 'Wild Poppy', tasks: 6, planned: 6, focus: 115, stage: 4 },
-    12: { specimen: 'Lavender Sprig', tasks: 4, planned: 5, focus: 75, stage: 3 },
-    13: { specimen: 'Chamomile', tasks: 5, planned: 5, focus: 90, stage: 4 },
-    14: { specimen: 'Coneflower', tasks: 5, planned: 5, focus: 100, stage: 4 },
-    15: { specimen: 'Sunburst Dahlia', tasks: 1, planned: 3, focus: 45, stage: 1 }
-  }
+  gardenData: buildInitialGardenData(TODAY_DAY_NUM)
 };
-
-if (!DEFAULT_STATE.gardenData[TODAY_DAY_NUM]) {
-  DEFAULT_STATE.gardenData[TODAY_DAY_NUM] = {
-    specimen: BOTANICAL_SPECIMENS[TODAY_DAY_NUM - 1] || 'Sunburst Dahlia',
-    tasks: 1,
-    planned: 3,
-    focus: 45,
-    stage: 1
-  };
-}
 
 let AppState = loadState();
 
@@ -896,6 +934,24 @@ function loadState() {
         };
       }
       
+      // Sanitize future dates: Ensure days > TODAY_DAY_NUM never display completed or bloomed flowers
+      // unless legitimately imported data is present
+      for (let d = TODAY_DAY_NUM + 1; d <= 31; d++) {
+        if (!parsed.gardenData[d]) {
+          parsed.gardenData[d] = {
+            specimen: BOTANICAL_SPECIMENS[d - 1] || 'Autumn Wildflower',
+            tasks: 0,
+            planned: 0,
+            focus: 0,
+            stage: 0
+          };
+        } else if (!parsed.gardenData[d].isImported) {
+          parsed.gardenData[d].stage = 0;
+          parsed.gardenData[d].tasks = 0;
+          parsed.gardenData[d].focus = 0;
+        }
+      }
+
       parsed.tasks = processDateCarryOvers(parsed.tasks || DEFAULT_STATE.tasks);
       if (!Array.isArray(parsed.recentlyErasedTasks)) {
         parsed.recentlyErasedTasks = [];
@@ -920,6 +976,21 @@ function loadState() {
           focus: 0,
           stage: 0
         };
+      }
+      for (let d = TODAY_DAY_NUM + 1; d <= 31; d++) {
+        if (!migrated.gardenData[d]) {
+          migrated.gardenData[d] = {
+            specimen: BOTANICAL_SPECIMENS[d - 1] || 'Autumn Wildflower',
+            tasks: 0,
+            planned: 0,
+            focus: 0,
+            stage: 0
+          };
+        } else if (!migrated.gardenData[d].isImported) {
+          migrated.gardenData[d].stage = 0;
+          migrated.gardenData[d].tasks = 0;
+          migrated.gardenData[d].focus = 0;
+        }
       }
       return migrated;
     }
@@ -1568,7 +1639,9 @@ function renderDashboard() {
     const bloomedDays = [];
     for (let d = 1; d <= 31; d++) {
       if (AppState.gardenData[d] && AppState.gardenData[d].stage === 4) {
-        bloomedDays.push(d);
+        if (d <= TODAY_DAY_NUM || AppState.gardenData[d].isImported) {
+          bloomedDays.push(d);
+        }
       }
     }
     if (currentStage === 4 && !bloomedDays.includes(TODAY_DAY_NUM)) {
@@ -2438,30 +2511,97 @@ function initProgressGarden() {
 
   // Meadow Landscape Navigation Scroll Buttons
   const scrollLeftBtn = document.getElementById('btn-meadow-scroll-left');
+  const scrollRightBtn = document.getElementById('btn-meadow-scroll-right');
+  const centerTodayBtn = document.getElementById('btn-meadow-center-today');
+  const meadowViewport = document.getElementById('meadow-panorama-viewport');
+  const sceneryWrap = document.getElementById('meadow-scenery-wrap');
+
+  function updateMeadowScrollIndicators() {
+    if (!meadowViewport) return;
+    const scrollLeft = meadowViewport.scrollLeft;
+    const maxScroll = meadowViewport.scrollWidth - meadowViewport.clientWidth;
+    const canLeft = scrollLeft > 10;
+    const canRight = scrollLeft < (maxScroll - 10);
+
+    if (sceneryWrap) {
+      sceneryWrap.classList.toggle('can-scroll-left', canLeft);
+      sceneryWrap.classList.toggle('can-scroll-right', canRight);
+    }
+    if (scrollLeftBtn) {
+      scrollLeftBtn.style.opacity = canLeft ? '1' : '0.4';
+      scrollLeftBtn.style.cursor = canLeft ? 'pointer' : 'default';
+    }
+    if (scrollRightBtn) {
+      scrollRightBtn.style.opacity = canRight ? '1' : '0.4';
+      scrollRightBtn.style.cursor = canRight ? 'pointer' : 'default';
+    }
+  }
+
+  if (meadowViewport) {
+    meadowViewport.addEventListener('scroll', updateMeadowScrollIndicators, { passive: true });
+    window.addEventListener('resize', updateMeadowScrollIndicators);
+
+    // Mouse drag-to-scroll panning for desktop users without horizontal wheels
+    let isDown = false;
+    let startX = 0;
+    let initialScroll = 0;
+
+    meadowViewport.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      isDown = true;
+      meadowViewport.dataset.hasDragged = 'false';
+      startX = e.pageX - meadowViewport.offsetLeft;
+      initialScroll = meadowViewport.scrollLeft;
+      meadowViewport.classList.add('is-panning');
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isDown) {
+        isDown = false;
+        meadowViewport.classList.remove('is-panning');
+        setTimeout(() => {
+          if (meadowViewport) meadowViewport.dataset.hasDragged = 'false';
+        }, 80);
+      }
+    });
+
+    meadowViewport.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      const x = e.pageX - meadowViewport.offsetLeft;
+      const walk = (x - startX);
+      if (Math.abs(walk) > 6) {
+        meadowViewport.dataset.hasDragged = 'true';
+      }
+      meadowViewport.scrollLeft = initialScroll - walk;
+    });
+  }
+
   if (scrollLeftBtn) {
     scrollLeftBtn.addEventListener('click', () => {
-      const vp = document.getElementById('meadow-panorama-viewport');
-      if (vp) vp.scrollBy({ left: -330, behavior: 'smooth' });
+      if (meadowViewport) {
+        meadowViewport.scrollBy({ left: -330, behavior: 'smooth' });
+        setTimeout(updateMeadowScrollIndicators, 350);
+      }
     });
   }
 
-  const scrollRightBtn = document.getElementById('btn-meadow-scroll-right');
   if (scrollRightBtn) {
     scrollRightBtn.addEventListener('click', () => {
-      const vp = document.getElementById('meadow-panorama-viewport');
-      if (vp) vp.scrollBy({ left: 330, behavior: 'smooth' });
+      if (meadowViewport) {
+        meadowViewport.scrollBy({ left: 330, behavior: 'smooth' });
+        setTimeout(updateMeadowScrollIndicators, 350);
+      }
     });
   }
 
-  const centerTodayBtn = document.getElementById('btn-meadow-center-today');
   if (centerTodayBtn) {
     centerTodayBtn.addEventListener('click', () => {
-      const vp = document.getElementById('meadow-panorama-viewport');
-      if (vp) {
+      if (meadowViewport) {
         const todayX = 65 + (TODAY_DAY_NUM - 1) * 110;
-        const vpWidth = vp.clientWidth || 800;
-        vp.scrollTo({ left: Math.max(0, todayX - (vpWidth / 2)), behavior: 'smooth' });
+        const vpWidth = meadowViewport.clientWidth || 800;
+        meadowViewport.scrollTo({ left: Math.max(0, todayX - (vpWidth / 2)), behavior: 'smooth' });
         AudioEngine.playChalkScratch();
+        setTimeout(updateMeadowScrollIndicators, 350);
       }
     });
   }
@@ -2488,7 +2628,24 @@ function renderProgressGarden() {
       const todayX = 65 + (TODAY_DAY_NUM - 1) * 110;
       const vpWidth = meadowViewport.clientWidth || 800;
       meadowViewport.scrollTo({ left: Math.max(0, todayX - (vpWidth / 2)), behavior: 'smooth' });
-    }, 50);
+      const sceneryWrap = document.getElementById('meadow-scenery-wrap');
+      const leftBtn = document.getElementById('btn-meadow-scroll-left');
+      const rightBtn = document.getElementById('btn-meadow-scroll-right');
+      if (sceneryWrap) {
+        const canLeft = meadowViewport.scrollLeft > 10;
+        const canRight = meadowViewport.scrollLeft < (meadowViewport.scrollWidth - meadowViewport.clientWidth - 10);
+        sceneryWrap.classList.toggle('can-scroll-left', canLeft);
+        sceneryWrap.classList.toggle('can-scroll-right', canRight);
+        if (leftBtn) {
+          leftBtn.style.opacity = canLeft ? '1' : '0.4';
+          leftBtn.style.cursor = canLeft ? 'pointer' : 'default';
+        }
+        if (rightBtn) {
+          rightBtn.style.opacity = canRight ? '1' : '0.4';
+          rightBtn.style.cursor = canRight ? 'pointer' : 'default';
+        }
+      }
+    }, 60);
   }
 
   // 2. Illustrated Nature Journal Grid
@@ -2500,29 +2657,37 @@ function renderProgressGarden() {
 
     for (let day = 1; day <= totalDays; day++) {
       const isToday = day === TODAY_DAY_NUM;
-      const dayData = AppState.gardenData[day] || {
-        specimen: BOTANICAL_SPECIMENS[day - 1] || 'Autumn Wildflower',
-        tasks: 0,
-        planned: 0,
-        focus: 0,
-        stage: 0
-      };
+      const isFuture = day > TODAY_DAY_NUM;
+      let dayData = AppState.gardenData[day];
+      if (!dayData) {
+        dayData = {
+          specimen: BOTANICAL_SPECIMENS[day - 1] || 'Autumn Wildflower',
+          tasks: 0,
+          planned: 0,
+          focus: 0,
+          stage: 0
+        };
+      } else if (isFuture && !dayData.isImported) {
+        // Enforce stage 0 resting seed placeholder for future dates
+        dayData = { ...dayData, stage: 0, tasks: 0, focus: 0 };
+      }
 
+      // Only count blooms and focus from past days and today (or legitimate imports)
       if (dayData.stage === 4) fullBlooms++;
-      totalFocusMinutes += dayData.focus;
+      if (!isFuture || dayData.isImported) totalFocusMinutes += (dayData.focus || 0);
 
       const stageNamesShort = ['Seed', 'Sprout', 'Stem', 'Bud', 'Bloom'];
       const currentStage = dayData ? (dayData.stage ?? 0) : 0;
-      const stageTagText = isToday ? '★ Today' : (stageNamesShort[currentStage] || 'Seed');
+      const stageTagText = isToday ? '★ Today' : (isFuture ? 'Seed' : (stageNamesShort[currentStage] || 'Seed'));
 
       const tile = document.createElement('div');
-      tile.className = `calendar-day-tile ${isToday ? 'is-today' : ''}`;
+      tile.className = `calendar-day-tile ${isToday ? 'is-today' : ''} ${isFuture ? 'is-future-tile' : ''}`;
       tile.dataset.day = day;
-      tile.title = `Day ${day}: ${dayData.specimen} (${GROWTH_STAGE_NAMES[currentStage] || 'Resting Seed'})`;
+      tile.title = `Day ${day}: ${dayData.specimen} (${isFuture ? 'Upcoming Plot - Resting Seed' : (GROWTH_STAGE_NAMES[currentStage] || 'Resting Seed')})`;
       tile.innerHTML = `
         <div class="tile-top">
           <span class="day-num">${day < 10 ? '0' + day : day}</span>
-          <span class="stage-tag stage-${currentStage} ${isToday ? 'today-tag' : ''}">${stageTagText}</span>
+          <span class="stage-tag stage-${currentStage} ${isToday ? 'today-tag' : ''} ${isFuture ? 'future-tag' : ''}">${stageTagText}</span>
         </div>
         <div class="tile-artwork-svg">${ChalkBotanicals.getBotanicalSVG(currentStage, 34, day)}</div>
         <div class="tile-bottom chalk-font" title="${dayData.specimen}">${dayData.specimen}</div>
@@ -2554,19 +2719,23 @@ function openGardenDayModal(day, dayData, stageName = null) {
   const renameBox = document.getElementById('modal-rename-box');
   if (renameBox) renameBox.style.display = 'none';
 
-  const currentStage = dayData ? (dayData.stage ?? 0) : 0;
-  const currentStageName = stageName || GROWTH_STAGE_NAMES[currentStage] || 'Resting Seed';
+  const isToday = day === TODAY_DAY_NUM;
+  const isFuture = day > TODAY_DAY_NUM && !dayData?.isImported;
+
+  const currentStage = isFuture ? 0 : (dayData ? (dayData.stage ?? 0) : 0);
+  const currentStageName = isFuture ? 'Resting Seed (Upcoming Plot)' : (stageName || GROWTH_STAGE_NAMES[currentStage] || 'Resting Seed');
   const specimenName = dayData?.specimen || (BOTANICAL_SPECIMENS[day - 1] || 'Autumn Wildflower');
-  const tasksRatio = `${dayData?.tasks ?? 0} / ${dayData?.planned || dayData?.tasks || 5} tasks`;
-  const focusTime = `${dayData?.focus ?? 0} mins`;
+  const tasksRatio = isFuture ? '0 / 0 tasks' : `${dayData?.tasks ?? 0} / ${dayData?.planned || dayData?.tasks || 5} tasks`;
+  const focusTime = isFuture ? '0 mins' : `${dayData?.focus ?? 0} mins`;
 
   // Calculate habit completions for this day
-  const isToday = day === TODAY_DAY_NUM;
   const totalHabits = AppState.habits.length || 4;
   const completedHabitsToday = AppState.habits.filter(h => h.current >= (h.type === 'COUNTER' ? h.target : 1)).length;
-  const habitsRatio = isToday
-    ? `${completedHabitsToday} / ${totalHabits} habits`
-    : (day < TODAY_DAY_NUM ? `${Math.min(totalHabits, 3 + (day % 2))} / ${totalHabits} habits` : `0 / ${totalHabits} habits`);
+  const habitsRatio = isFuture
+    ? `0 / ${totalHabits} habits`
+    : (isToday
+      ? `${completedHabitsToday} / ${totalHabits} habits`
+      : `${Math.min(totalHabits, 3 + (day % 2))} / ${totalHabits} habits`);
 
   const speciesNameEl = document.getElementById('modal-species-name');
   const dateTitleEl = document.getElementById('modal-date-title');
@@ -2586,7 +2755,9 @@ function openGardenDayModal(day, dayData, stageName = null) {
   if (focusTimeEl) focusTimeEl.innerText = focusTime;
 
   if (quoteEl) {
-    if (currentStage === 0) {
+    if (isFuture) {
+      quoteEl.innerText = '"An upcoming plot waiting for tomorrow\'s sunlight. Plant your intentions when the day arrives."';
+    } else if (currentStage === 0) {
       quoteEl.innerText = '"A quiet day of rest. Growth happens below the soil, too."';
     } else if (currentStage === 4) {
       quoteEl.innerText = '"Full bloom dedication. Your hard work is permanently captured in your daily rhythm."';
@@ -3051,7 +3222,7 @@ function updateGlobalGrowthMetrics() {
   AppState.gardenData[TODAY_DAY_NUM].tasks = completedCount;
   AppState.gardenData[TODAY_DAY_NUM].planned = effectivePlanned;
   AppState.gardenData[TODAY_DAY_NUM].focus = focusMins;
-  AppState.gardenData[TODAY_DAY_NUM].stage = Math.max(stage, dayGarden.stage || 0);
+  AppState.gardenData[TODAY_DAY_NUM].stage = stage;
   saveState();
 
   const stageNames = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
