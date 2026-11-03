@@ -759,6 +759,9 @@ let NEXT_WEEK_START_DATE = CurrentDateInfo.nextWeekStartStr;
 let NEXT_WEEK_END_DATE = CurrentDateInfo.endOfNextWeekStr;
 let TODAY_DAY_NUM = CurrentDateInfo.dayNum;
 let isSystemInitializing = true;
+let hasVisitedGardenThisSession = false;
+let activeStageEvolutionDay = null;
+let activeStageEvolutionClass = '';
 
 let GardenView = {
   year: CurrentDateInfo.year,
@@ -801,6 +804,9 @@ function getGardenDataForMonth(monthKey) {
   }
   if (AppState && AppState.monthlyGardens && AppState.monthlyGardens[monthKey]) {
     return AppState.monthlyGardens[monthKey];
+  }
+  if (monthKey === '2026-10') {
+    return OCTOBER_2026_HISTORICAL_GARDEN;
   }
   return {};
 }
