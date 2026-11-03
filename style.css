@@ -2273,10 +2273,10 @@ svg.anim-unfurl-bloom .plant-stage-label {
    HABIT CONSISTENCY LINE GRAPH CARD
    -------------------------------------------------------------------------- */
 .habit-graph-card {
-  padding: 18px 20px;
+  padding: 14px 18px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .habit-graph-header {
@@ -2431,6 +2431,65 @@ body.theme-white-board .habit-graph-viewport-wrap {
   font-size: 11px;
   color: var(--text-muted);
   font-style: italic;
+}
+
+/* Empty States for Habit Ledger */
+.habit-graph-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  text-align: center;
+  gap: 6px;
+}
+
+.habit-empty-icon {
+  font-size: 30px;
+  opacity: 0.85;
+}
+
+.habit-empty-title {
+  font-size: 15px;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.habit-empty-subtext {
+  font-size: 12px;
+  color: var(--text-muted);
+  max-width: 400px;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.habit-list-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  text-align: center;
+  gap: 8px;
+  background: var(--bg-surface-elevated);
+  border: 1px dashed var(--border-chalk);
+  border-radius: var(--radius-sm);
+}
+
+.habit-empty-sprout {
+  font-size: 28px;
+  opacity: 0.8;
+}
+
+.habit-empty-msg {
+  font-size: 15px;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.habit-empty-hint {
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 .habit-header-row {
