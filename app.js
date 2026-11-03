@@ -282,7 +282,7 @@ const ChalkMeadowPanorama = {
     let plantArtwork = '';
 
     switch (stage) {
-      case 0:
+      case 0: {
         // STAGE 0: RESTING SEED / SOIL MOUND / SUBTLE SEED PLACEHOLDER
         const whisperText = isFuture ? 'Seed' : 'Resting';
         const whisperColor = isToday ? 'var(--chalk-amber)' : 'var(--text-muted)';
@@ -290,218 +290,239 @@ const ChalkMeadowPanorama = {
         const moundStroke = isFuture ? 'stroke-dasharray="3,2" opacity="0.65"' : '';
         const seedOpacity = isFuture ? '0.45' : '0.65';
         plantArtwork = `
-          <!-- Soil Mound (Dotted for Future Calm Plots, Solid for Recorded Days) -->
-          <path class="plant-soil-mound" d="M ${x - 22} 215 Q ${x} 206 ${x + 22} 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" ${moundStroke} />
-          <!-- Sleeping / Resting Chalk Seed in Soil -->
-          <ellipse class="plant-seed" cx="${x}" cy="217" rx="4" ry="2.5" fill="#FAF0CA" opacity="${seedOpacity}" stroke="var(--chalk-amber)" stroke-width="1" />
-          <circle cx="${x - 7}" cy="218" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
-          <circle cx="${x + 8}" cy="216" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
+          <!-- Soil Mound (Dotted for Future Plots, Solid for Recorded Days) -->
+          <path class="plant-soil-mound" d="M -22 215 Q 0 206 22 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" ${moundStroke} />
+          <!-- Sleeping / Resting Chalk Seed in Soil (Settles organically on entrance) -->
+          <ellipse class="plant-seed" cx="0" cy="217" rx="4" ry="2.5" fill="#FAF0CA" opacity="${seedOpacity}" stroke="var(--chalk-amber)" stroke-width="1" style="transform-origin: 0px 217px;" />
+          <circle cx="-7" cy="218" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
+          <circle cx="8" cy="216" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
           <!-- Subtle resting chalk whisper -->
-          <text class="plant-stage-label" x="${x}" y="196" font-family="'Kalam', cursive" font-size="10" fill="${whisperColor}" text-anchor="middle" opacity="${whisperOpacity}">${whisperText}</text>
+          <text class="plant-stage-label" x="0" y="196" font-family="'Kalam', cursive" font-size="10" fill="${whisperColor}" text-anchor="middle" opacity="${whisperOpacity}">${whisperText}</text>
         `;
         break;
+      }
 
-      case 1:
+      case 1: {
         // STAGE 1: THE SPROUT (First green shoot emerging from soil)
         plantArtwork = `
           <!-- Soil Mound -->
-          <path class="plant-soil-mound" d="M ${x - 20} 215 Q ${x} 207 ${x + 20} 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
-          <!-- Emerging Sprout Stem -->
-          <path class="plant-stem" d="M ${x} 209 Q ${x + 1} 195 ${x} 178" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-          <!-- Left & Right Cotyledon Leaves -->
-          <g class="plant-leaves">
-            <path d="M ${x} 178 C ${x - 14} 173 ${x - 22} 179 ${x - 19} 187 C ${x - 14} 191 ${x - 6} 186 ${x} 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
-            <path d="M ${x} 179 Q ${x - 9} 182 ${x - 16} 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
-            <path d="M ${x} 178 C ${x + 14} 173 ${x + 22} 179 ${x + 19} 187 C ${x + 14} 191 ${x + 6} 186 ${x} 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
-            <path d="M ${x} 179 Q ${x + 9} 182 ${x + 16} 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
+          <path class="plant-soil-mound" d="M -20 215 Q 0 207 20 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
+          <!-- Emerging Sprout Stem (Extends upward from soil line 0, 215) -->
+          <path class="plant-stem" d="M 0 215 Q 1 195 0 178" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
+          <!-- Left & Right Cotyledon Leaves (Unfurl from shoot node) -->
+          <g class="plant-leaves" style="transform-origin: 0px 178px;">
+            <path d="M 0 178 C -14 173 -22 179 -19 187 C -14 191 -6 186 0 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+            <path d="M 0 179 Q -9 182 -16 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
+            <path d="M 0 178 C 14 173 22 179 19 187 C 14 191 6 186 0 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+            <path d="M 0 179 Q 9 182 16 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
           </g>
-          <text class="plant-stage-label" x="${x}" y="166" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-mint)" text-anchor="middle">Sprout</text>
+          <text class="plant-stage-label" x="0" y="166" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-mint)" text-anchor="middle">Sprout</text>
         `;
         break;
+      }
 
-      case 2:
-        // STAGE 2: BRANCHING STEM (Growing taller, multiple leaves, finding light)
+      case 2: {
+        // STAGE 2: BRANCHING STEM (Growing taller, multiple leaves unfolding)
         plantArtwork = `
           <!-- Soil Mound -->
-          <path class="plant-soil-mound" d="M ${x - 18} 215 Q ${x} 209 ${x + 18} 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
+          <path class="plant-soil-mound" d="M -18 215 Q 0 209 18 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
           <!-- Main Stem growing to 145 -->
-          <path class="plant-stem" d="M ${x} 215 Q ${x - 2} 180 ${x} 145" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-          <!-- Branching Foliage Leaves -->
-          <g class="plant-leaves">
-            <path d="M ${x - 1} 195 C ${x - 19} 190 ${x - 28} 197 ${x - 24} 205 C ${x - 16} 208 ${x - 7} 202 ${x - 1} 196 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M ${x} 188 C ${x + 19} 183 ${x + 28} 189 ${x + 25} 197 C ${x + 18} 201 ${x + 7} 195 ${x} 190 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M ${x - 1} 170 C ${x - 17} 163 ${x - 25} 169 ${x - 21} 177 C ${x - 14} 180 ${x - 6} 175 ${x - 1} 171 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M ${x} 163 C ${x + 16} 156 ${x + 23} 162 ${x + 21} 170 C ${x + 15} 173 ${x + 6} 168 ${x} 164 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M ${x} 145 C ${x - 6} 135 ${x} 130 ${x} 130 C ${x} 130 ${x + 6} 135 ${x} 145 Z" fill="rgba(6, 214, 160, 0.28)" stroke="var(--chalk-mint)" stroke-width="1.6" />
+          <path class="plant-stem" d="M 0 215 Q -2 180 0 145" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
+          <!-- Branching Foliage Leaves (Unfurl outward) -->
+          <g class="plant-leaves" style="transform-origin: 0px 175px;">
+            <path d="M -1 195 C -19 190 -28 197 -24 205 C -16 208 -7 202 -1 196 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 0 188 C 19 183 28 189 25 197 C 18 201 7 195 0 190 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M -1 170 C -17 163 -25 169 -21 177 C -14 180 -6 175 -1 171 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 0 163 C 16 156 23 162 21 170 C 15 173 6 168 0 164 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 0 145 C -6 135 0 130 0 130 C 0 130 6 135 0 145 Z" fill="rgba(6, 214, 160, 0.28)" stroke="var(--chalk-mint)" stroke-width="1.6" />
           </g>
-          <text class="plant-stage-label" x="${x}" y="122" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-mint)" text-anchor="middle">Branching</text>
+          <text class="plant-stage-label" x="0" y="122" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-mint)" text-anchor="middle">Branching</text>
         `;
         break;
+      }
 
-      case 3:
+      case 3: {
         // STAGE 3: SWELLING BUD (High stem, rich foliage, swelling floral teardrop bud)
         plantArtwork = `
           <!-- Main Stem growing to 118 -->
-          <path class="plant-stem" d="M ${x} 215 Q ${x - 2} 165 ${x} 118" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <path class="plant-stem" d="M 0 215 Q -2 165 0 118" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
           <!-- Foliage leaves -->
-          <g class="plant-leaves">
-            <path d="M ${x - 1} 185 C ${x - 19} 178 ${x - 27} 188 ${x - 19} 195 C ${x - 11} 196 ${x - 5} 190 ${x - 1} 186 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M ${x} 172 C ${x + 19} 165 ${x + 25} 174 ${x + 19} 182 C ${x + 11} 183 ${x + 5} 177 ${x} 173 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M ${x - 1} 150 C ${x - 17} 142 ${x - 21} 150 ${x - 15} 156 C ${x - 8} 157 ${x - 4} 153 ${x - 1} 151 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          <g class="plant-leaves" style="transform-origin: 0px 165px;">
+            <path d="M -1 185 C -19 178 -27 188 -19 195 C -11 196 -5 190 -1 186 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 0 172 C 19 165 25 174 19 182 C 11 183 5 177 0 173 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M -1 150 C -17 142 -21 150 -15 156 C -8 157 -4 153 -1 151 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
           </g>
-          <!-- Green Sepals & Floral Bud with glowing chalk tip -->
-          <g class="plant-bud">
-            <path d="M ${x - 3} 122 C ${x - 10} 116 ${x - 9} 107 ${x - 1} 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
-            <path d="M ${x + 3} 122 C ${x + 10} 116 ${x + 9} 107 ${x + 1} 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
-            <path d="M ${x} 116 C ${x - 9} 104 ${x - 5} 92 ${x} 86 C ${x + 5} 92 ${x + 9} 104 ${x} 116 Z" fill="rgba(239, 71, 111, 0.35)" stroke="#EF476F" stroke-width="2.2" />
-            <path d="M ${x} 108 Q ${x} 92 ${x} 88" stroke="#FAF0CA" stroke-width="1" fill="none" opacity="0.8" />
+          <!-- Green Sepals & Floral Bud with glowing chalk tip (Swells at apex) -->
+          <g class="plant-bud" style="transform-origin: 0px 118px;">
+            <path d="M -3 122 C -10 116 -9 107 -1 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
+            <path d="M 3 122 C 10 116 9 107 1 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
+            <path d="M 0 116 C -9 104 -5 92 0 86 C 5 92 9 104 0 116 Z" fill="rgba(239, 71, 111, 0.35)" stroke="#EF476F" stroke-width="2.2" />
+            <path d="M 0 108 Q 0 92 0 88" stroke="#FAF0CA" stroke-width="1" fill="none" opacity="0.8" />
           </g>
-          <text class="plant-stage-label" x="${x}" y="78" font-family="'Kalam', cursive" font-size="10" fill="#EF476F" text-anchor="middle">Budding</text>
+          <text class="plant-stage-label" x="0" y="78" font-family="'Kalam', cursive" font-size="10" fill="#EF476F" text-anchor="middle">Budding</text>
         `;
         break;
+      }
 
       case 4:
-      default:
+      default: {
         // STAGE 4: FULL BLOOM (Magnificent chalk flower artwork tailored to variety)
         if (variety === 0) {
-          // Coral Daisy / Cosmos
+          // Coral Daisy / Cosmos (Center at 0, 100)
           plantArtwork = `
-            <path class="plant-stem" d="M ${x} 215 Q ${x - 3} 155 ${x} 108" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-            <g class="plant-leaves">
-              <path d="M ${x - 1} 175 C ${x - 19} 168 ${x - 25} 178 ${x - 17} 184 C ${x - 10} 184 ${x - 5} 180 ${x - 1} 176 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-              <path d="M ${x} 155 C ${x + 17} 148 ${x + 23} 156 ${x + 17} 163 C ${x + 10} 164 ${x + 5} 159 ${x} 156 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path class="plant-stem" d="M 0 215 Q -3 155 0 108" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
+            <g class="plant-leaves" style="transform-origin: 0px 165px;">
+              <path d="M -1 175 C -19 168 -25 178 -17 184 C -10 184 -5 180 -1 176 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+              <path d="M 0 155 C 17 148 23 156 17 163 C 10 164 5 159 0 156 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
             </g>
-            <g class="plant-petals" transform="translate(${x}, 100)">
-              <ellipse cx="0" cy="-18" rx="4.5" ry="9" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-              <ellipse cx="11" cy="-14" rx="4.5" ry="9" transform="rotate(36 11 -14)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-              <ellipse cx="17" cy="-5" rx="4.5" ry="9" transform="rotate(72 17 -5)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-              <ellipse cx="15" cy="11" rx="4.5" ry="9" transform="rotate(108 15 11)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-              <ellipse cx="6" cy="17" rx="4.5" ry="9" transform="rotate(144 6 17)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-              <ellipse cx="-6" cy="17" rx="4.5" ry="9" transform="rotate(216 -6 17)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-              <ellipse cx="-15" cy="11" rx="4.5" ry="9" transform="rotate(252 -15 11)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-              <ellipse cx="-17" cy="-5" rx="4.5" ry="9" transform="rotate(288 -17 -5)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-              <ellipse cx="-11" cy="-14" rx="4.5" ry="9" transform="rotate(324 -11 -14)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
+            <g class="plant-petals-wrap" style="transform-origin: 0px 100px;">
+              <g class="plant-petals" transform="translate(0, 100)">
+                <ellipse cx="0" cy="-18" rx="4.5" ry="9" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
+                <ellipse cx="11" cy="-14" rx="4.5" ry="9" transform="rotate(36 11 -14)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
+                <ellipse cx="17" cy="-5" rx="4.5" ry="9" transform="rotate(72 17 -5)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
+                <ellipse cx="15" cy="11" rx="4.5" ry="9" transform="rotate(108 15 11)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
+                <ellipse cx="6" cy="17" rx="4.5" ry="9" transform="rotate(144 6 17)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
+                <ellipse cx="-6" cy="17" rx="4.5" ry="9" transform="rotate(216 -6 17)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
+                <ellipse cx="-15" cy="11" rx="4.5" ry="9" transform="rotate(252 -15 11)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
+                <ellipse cx="-17" cy="-5" rx="4.5" ry="9" transform="rotate(288 -17 -5)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
+                <ellipse cx="-11" cy="-14" rx="4.5" ry="9" transform="rotate(324 -11 -14)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
+              </g>
             </g>
-            <g class="plant-bloom-core" transform="translate(${x}, 100)">
-              <circle cx="0" cy="0" r="8.5" fill="#FFD166" stroke="#FAF0CA" stroke-width="2.2" />
-              <circle cx="0" cy="0" r="5" fill="none" stroke="#181A1D" stroke-width="1" stroke-dasharray="2,2" opacity="0.6" />
+            <g class="plant-core-wrap" style="transform-origin: 0px 100px;">
+              <g class="plant-bloom-core" transform="translate(0, 100)">
+                <circle cx="0" cy="0" r="8.5" fill="#FFD166" stroke="#FAF0CA" stroke-width="2.2" />
+                <circle cx="0" cy="0" r="5" fill="none" stroke="#181A1D" stroke-width="1" stroke-dasharray="2,2" opacity="0.6" />
+              </g>
             </g>
             <g class="plant-sparkles">
-              <text x="${x - 22}" y="88" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
-              <text x="${x + 20}" y="92" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
+              <text x="-22" y="88" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
+              <text x="20" y="92" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
             </g>
-            <text class="plant-stage-label" x="${x}" y="65" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)" text-anchor="middle">Bloomed</text>
+            <text class="plant-stage-label" x="0" y="65" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)" text-anchor="middle">Bloomed</text>
           `;
         } else if (variety === 1) {
-          // Purple Wild Aster
+          // Purple Wild Aster (Center at 0, 85)
           plantArtwork = `
-            <path class="plant-stem" d="M ${x} 215 Q ${x - 2} 150 ${x} 95" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-            <g class="plant-leaves">
-              <path d="M ${x - 1} 180 Q ${x - 20} 175 ${x - 28} 168 M ${x} 172 Q ${x - 18} 168 ${x - 22} 158" stroke="var(--chalk-mint)" stroke-width="1.6" fill="none" />
-              <path d="M ${x + 1} 165 Q ${x + 18} 160 ${x + 26} 154 M ${x + 1} 155 Q ${x + 17} 150 ${x + 22} 142" stroke="var(--chalk-mint)" stroke-width="1.6" fill="none" />
+            <path class="plant-stem" d="M 0 215 Q -2 150 0 95" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
+            <g class="plant-leaves" style="transform-origin: 0px 165px;">
+              <path d="M -1 180 Q -20 175 -28 168 M 0 172 Q -18 168 -22 158" stroke="var(--chalk-mint)" stroke-width="1.6" fill="none" />
+              <path d="M 1 165 Q 18 160 26 154 M 1 155 Q 17 150 22 142" stroke="var(--chalk-mint)" stroke-width="1.6" fill="none" />
             </g>
-            <g class="plant-petals" transform="translate(${x}, 85)">
-              <line x1="0" y1="0" x2="0" y2="-22" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="8" y2="-20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="16" y2="-15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="21" y2="-8" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="22" y2="0" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="21" y2="8" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="16" y2="15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="8" y2="20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="0" y2="22" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="-8" y2="20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="-16" y2="15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="-21" y2="8" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="-22" y2="0" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="-21" y2="-8" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="-16" y2="-15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <line x1="0" y1="0" x2="-8" y2="-20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-              <circle cx="0" cy="0" r="12" fill="none" stroke="#D8B4FE" stroke-width="1.8" stroke-dasharray="3,2" />
+            <g class="plant-petals-wrap" style="transform-origin: 0px 85px;">
+              <g class="plant-petals" transform="translate(0, 85)">
+                <line x1="0" y1="0" x2="0" y2="-22" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="8" y2="-20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="16" y2="-15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="21" y2="-8" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="22" y2="0" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="21" y2="8" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="16" y2="15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="8" y2="20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="0" y2="22" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="-8" y2="20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="-16" y2="15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="-21" y2="8" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="-22" y2="0" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="-21" y2="-8" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="-16" y2="-15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <line x1="0" y1="0" x2="-8" y2="-20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
+                <circle cx="0" cy="0" r="12" fill="none" stroke="#D8B4FE" stroke-width="1.8" stroke-dasharray="3,2" />
+              </g>
             </g>
-            <g class="plant-bloom-core" transform="translate(${x}, 85)">
-              <circle cx="0" cy="0" r="7.5" fill="#FFD166" stroke="#FAF0CA" stroke-width="2" />
+            <g class="plant-core-wrap" style="transform-origin: 0px 85px;">
+              <g class="plant-bloom-core" transform="translate(0, 85)">
+                <circle cx="0" cy="0" r="7.5" fill="#FFD166" stroke="#FAF0CA" stroke-width="2" />
+              </g>
             </g>
             <g class="plant-sparkles">
-              <text x="${x - 22}" y="74" font-family="'Kalam', cursive" font-size="12" fill="#B388FF">✦</text>
-              <text x="${x + 22}" y="78" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
+              <text x="-22" y="74" font-family="'Kalam', cursive" font-size="12" fill="#B388FF">✦</text>
+              <text x="22" y="78" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
             </g>
-            <text class="plant-stage-label" x="${x}" y="50" font-family="'Kalam', cursive" font-size="10" fill="#B388FF" text-anchor="middle">Bloomed</text>
+            <text class="plant-stage-label" x="0" y="50" font-family="'Kalam', cursive" font-size="10" fill="#B388FF" text-anchor="middle">Bloomed</text>
           `;
         } else if (variety === 2) {
-          // White Coneflower
+          // White Coneflower (Center at 0, 80)
           plantArtwork = `
-            <path class="plant-stem" d="M ${x} 215 Q ${x - 3} 145 ${x} 85" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" />
-            <g class="plant-leaves">
-              <path d="M ${x - 1} 175 C ${x - 23} 165 ${x - 31} 178 ${x - 21} 187 C ${x - 11} 188 ${x - 5} 181 ${x - 1} 176 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-              <path d="M ${x} 150 C ${x + 21} 140 ${x + 29} 152 ${x + 21} 161 C ${x + 12} 162 ${x + 6} 155 ${x} 151 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path class="plant-stem" d="M 0 215 Q -3 145 0 85" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
+            <g class="plant-leaves" style="transform-origin: 0px 160px;">
+              <path d="M -1 175 C -23 165 -31 178 -21 187 C -11 188 -5 181 -1 176 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+              <path d="M 0 150 C 21 140 29 152 21 161 C 12 162 6 155 0 151 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
             </g>
-            <g class="plant-petals" transform="translate(${x}, 80)">
-              <path d="M -16 5 C -24 15 -22 36 -18 42 C -15 36 -12 20 -10 5 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
-              <path d="M -10 6 C -14 20 -12 40 -8 46 C -5 40 -4 22 -3 6 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
-              <path d="M -3 7 C -4 22 -3 42 0 48 C 3 42 4 22 3 7 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
-              <path d="M 3 6 C 4 22 5 40 8 46 C 12 40 14 20 10 6 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
-              <path d="M 10 5 C 12 20 15 36 18 42 C 22 36 24 15 16 5 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
+            <g class="plant-petals-wrap" style="transform-origin: 0px 80px;">
+              <g class="plant-petals" transform="translate(0, 80)">
+                <path d="M -16 5 C -24 15 -22 36 -18 42 C -15 36 -12 20 -10 5 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
+                <path d="M -10 6 C -14 20 -12 40 -8 46 C -5 40 -4 22 -3 6 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
+                <path d="M -3 7 C -4 22 -3 42 0 48 C 3 42 4 22 3 7 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
+                <path d="M 3 6 C 4 22 5 40 8 46 C 12 40 14 20 10 6 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
+                <path d="M 10 5 C 12 20 15 36 18 42 C 22 36 24 15 16 5 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
+              </g>
             </g>
-            <g class="plant-bloom-core" transform="translate(${x}, 80)">
-              <path d="M -14 5 C -14 -12 14 -12 14 5 Z" fill="#FFD166" stroke="#FAF0CA" stroke-width="2.2" />
-              <path d="M -10 0 L 10 0 M -8 -4 L 8 -4 M -5 -8 L 5 -8" stroke="#181A1D" stroke-width="1.2" opacity="0.65" />
+            <g class="plant-core-wrap" style="transform-origin: 0px 80px;">
+              <g class="plant-bloom-core" transform="translate(0, 80)">
+                <path d="M -14 5 C -14 -12 14 -12 14 5 Z" fill="#FFD166" stroke="#FAF0CA" stroke-width="2.2" />
+                <path d="M -10 0 L 10 0 M -8 -4 L 8 -4 M -5 -8 L 5 -8" stroke="#181A1D" stroke-width="1.2" opacity="0.65" />
+              </g>
             </g>
             <g class="plant-sparkles">
-              <text x="${x - 20}" y="66" font-family="'Kalam', cursive" font-size="12" fill="#FAF0CA">✦</text>
-              <text x="${x + 20}" y="70" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
+              <text x="-20" y="66" font-family="'Kalam', cursive" font-size="12" fill="#FAF0CA">✦</text>
+              <text x="20" y="70" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
             </g>
-            <text class="plant-stage-label" x="${x}" y="52" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA" text-anchor="middle">Bloomed</text>
+            <text class="plant-stage-label" x="0" y="52" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA" text-anchor="middle">Bloomed</text>
           `;
         } else {
-          // Golden Sunflower / Rudbeckia / Dahlia
+          // Golden Sunflower / Rudbeckia / Dahlia (Center at 0, 52)
           plantArtwork = `
-            <path class="plant-stem" d="M ${x} 215 Q ${x - 3} 125 ${x} 58" stroke="var(--chalk-mint)" stroke-width="3.4" stroke-linecap="round" fill="none" />
-            <g class="plant-leaves">
-              <path d="M ${x - 2} 170 C ${x - 35} 155 ${x - 45} 176 ${x - 29} 190 C ${x - 13} 192 ${x - 6} 180 ${x - 2} 172 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
-              <path d="M ${x + 1} 138 C ${x + 35} 122 ${x + 47} 144 ${x + 30} 158 C ${x + 13} 160 ${x + 5} 148 ${x + 1} 140 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
+            <path class="plant-stem" d="M 0 215 Q -3 125 0 58" stroke="var(--chalk-mint)" stroke-width="3.4" stroke-linecap="round" fill="none" style="transform-origin: 0px 215px;" />
+            <g class="plant-leaves" style="transform-origin: 0px 150px;">
+              <path d="M -2 170 C -35 155 -45 176 -29 190 C -13 192 -6 180 -2 172 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
+              <path d="M 1 138 C 35 122 47 144 30 158 C 13 160 5 148 1 140 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
             </g>
-            <g class="plant-petals" transform="translate(${x}, 52)">
-              <ellipse cx="0" cy="-24" rx="5.5" ry="12" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="9" cy="-22" rx="5.5" ry="12" transform="rotate(22.5 9 -22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="17" cy="-17" rx="5.5" ry="12" transform="rotate(45 17 -17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="22" cy="-9" rx="5.5" ry="12" transform="rotate(67.5 22 -9)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="24" cy="0" rx="5.5" ry="12" transform="rotate(90 24 0)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="22" cy="9" rx="5.5" ry="12" transform="rotate(112.5 22 9)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="17" cy="17" rx="5.5" ry="12" transform="rotate(135 17 17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="9" cy="22" rx="5.5" ry="12" transform="rotate(157.5 9 22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="0" cy="24" rx="5.5" ry="12" transform="rotate(180 0 24)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="-9" cy="22" rx="5.5" ry="12" transform="rotate(202.5 -9 22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="-17" cy="17" rx="5.5" ry="12" transform="rotate(225 -17 17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="-22" cy="9" rx="5.5" ry="12" transform="rotate(247.5 -22 9)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="-24" cy="0" rx="5.5" ry="12" transform="rotate(270 -24 0)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="-22" cy="-9" rx="5.5" ry="12" transform="rotate(292.5 -22 -9)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="-17" cy="-17" rx="5.5" ry="12" transform="rotate(315 -17 -17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              <ellipse cx="-9" cy="-22" rx="5.5" ry="12" transform="rotate(337.5 -9 -22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+            <g class="plant-petals-wrap" style="transform-origin: 0px 52px;">
+              <g class="plant-petals" transform="translate(0, 52)">
+                <ellipse cx="0" cy="-24" rx="5.5" ry="12" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="9" cy="-22" rx="5.5" ry="12" transform="rotate(22.5 9 -22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="17" cy="-17" rx="5.5" ry="12" transform="rotate(45 17 -17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="22" cy="-9" rx="5.5" ry="12" transform="rotate(67.5 22 -9)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="24" cy="0" rx="5.5" ry="12" transform="rotate(90 24 0)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="22" cy="9" rx="5.5" ry="12" transform="rotate(112.5 22 9)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="17" cy="17" rx="5.5" ry="12" transform="rotate(135 17 17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="9" cy="22" rx="5.5" ry="12" transform="rotate(157.5 9 22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="0" cy="24" rx="5.5" ry="12" transform="rotate(180 0 24)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="-9" cy="22" rx="5.5" ry="12" transform="rotate(202.5 -9 22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="-17" cy="17" rx="5.5" ry="12" transform="rotate(225 -17 17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="-22" cy="9" rx="5.5" ry="12" transform="rotate(247.5 -22 9)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="-24" cy="0" rx="5.5" ry="12" transform="rotate(270 -24 0)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="-22" cy="-9" rx="5.5" ry="12" transform="rotate(292.5 -22 -9)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="-17" cy="-17" rx="5.5" ry="12" transform="rotate(315 -17 -17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+                <ellipse cx="-9" cy="-22" rx="5.5" ry="12" transform="rotate(337.5 -9 -22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
+              </g>
             </g>
-            <g class="plant-bloom-core" transform="translate(${x}, 52)">
-              <circle cx="0" cy="0" r="14" fill="#2E1D0E" stroke="#FFD166" stroke-width="2.4" />
-              <circle cx="0" cy="0" r="10" fill="none" stroke="#FAF0CA" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.8" />
-              <circle cx="0" cy="0" r="6" fill="none" stroke="#FFD166" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.8" />
-              <circle cx="0" cy="0" r="2.5" fill="#FAF0CA" />
+            <g class="plant-core-wrap" style="transform-origin: 0px 52px;">
+              <g class="plant-bloom-core" transform="translate(0, 52)">
+                <circle cx="0" cy="0" r="14" fill="#2E1D0E" stroke="#FFD166" stroke-width="2.4" />
+                <circle cx="0" cy="0" r="10" fill="none" stroke="#FAF0CA" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.8" />
+                <circle cx="0" cy="0" r="6" fill="none" stroke="#FFD166" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.8" />
+                <circle cx="0" cy="0" r="2.5" fill="#FAF0CA" />
+              </g>
             </g>
             <g class="plant-sparkles">
-              <text x="${x - 39}" y="44" font-family="'Kalam', cursive" font-size="14" fill="var(--chalk-amber)">✦</text>
-              <text x="${x + 39}" y="48" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
-              <text x="${x + 21}" y="24" font-family="'Kalam', cursive" font-size="15" fill="#FAF0CA">✦</text>
+              <text x="-39" y="44" font-family="'Kalam', cursive" font-size="14" fill="var(--chalk-amber)">✦</text>
+              <text x="39" y="48" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
+              <text x="21" y="24" font-family="'Kalam', cursive" font-size="15" fill="#FAF0CA">✦</text>
             </g>
-            <text class="plant-stage-label" x="${x}" y="20" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)" text-anchor="middle">Bloomed</text>
+            <text class="plant-stage-label" x="0" y="20" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)" text-anchor="middle">Bloomed</text>
           `;
         }
         break;
+      }
     }
 
     const labelColor = isToday ? 'style="fill: var(--chalk-amber); font-weight:700;"' : (isFuture ? 'style="opacity: 0.55;"' : '');
     const underlineColor = isToday ? 'stroke="var(--chalk-amber)" stroke-width="2.2"' : (isFuture ? 'stroke="var(--border-chalk)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.45"' : 'stroke="var(--text-primary)" stroke-width="2" opacity="0.8"');
-    const todayBadge = isToday ? `<text x="${x}" y="253" font-family="'Kalam', cursive" font-size="12" font-weight="700" fill="var(--chalk-amber)" text-anchor="middle">★ Today</text>` : '';
+    const todayBadge = isToday ? `<text x="0" y="253" font-family="'Kalam', cursive" font-size="12" font-weight="700" fill="var(--chalk-amber)" text-anchor="middle">★ Today</text>` : '';
     const todayPedestal = isToday ? `
       <!-- Soft Amber Soil Pedestal Aura for Today's Specimen -->
-      <ellipse cx="${x}" cy="222" rx="42" ry="11" fill="rgba(255, 209, 102, 0.12)" stroke="var(--chalk-amber)" stroke-width="1.2" stroke-dasharray="3,2" />
+      <ellipse cx="0" cy="222" rx="42" ry="11" fill="rgba(255, 209, 102, 0.12)" stroke="var(--chalk-amber)" stroke-width="1.2" stroke-dasharray="3,2" />
     ` : '';
 
     const hotspotClasses = [
@@ -514,12 +535,17 @@ const ChalkMeadowPanorama = {
     const delayStyle = animDelay ? `style="--plant-delay: ${animDelay.toFixed(2)}s;"` : '';
 
     return `
-      <g class="${hotspotClasses}" ${delayStyle} data-day="${day}" id="plant-hotspot-d${day}">
-        <rect x="${x - 45}" y="10" width="90" height="245" fill="transparent" />
+      <g class="meadow-day-column" transform="translate(${x}, 0)" data-day="${day}" id="meadow-day-${day}">
+        <!-- Full-column click target hitbox -->
+        <rect x="-45" y="10" width="90" height="245" fill="transparent" class="meadow-day-click-target" style="cursor: pointer;" />
         ${todayPedestal}
-        ${plantArtwork}
-        <text x="${x}" y="${isToday ? 234 : 238}" class="meadow-chalk-label" ${labelColor}>D${day}</text>
-        <path d="M ${x - 17} ${isToday ? 240 : 244} Q ${x} ${isToday ? 242 : 246} ${x + 17} ${isToday ? 240 : 244}" ${underlineColor} stroke-linecap="round" fill="none" />
+        <!-- Living Plant Specimen (anchored at soil line 0, 215) -->
+        <g class="${hotspotClasses}" ${delayStyle} id="plant-hotspot-d${day}">
+          ${plantArtwork}
+        </g>
+        <!-- Ground Day Number, Underline & Today Badge (anchored, static) -->
+        <text x="0" y="${isToday ? 234 : 238}" class="meadow-chalk-label" ${labelColor} text-anchor="middle">D${day}</text>
+        <path d="M -17 ${isToday ? 240 : 244} Q 0 ${isToday ? 242 : 246} 17 ${isToday ? 240 : 244}" ${underlineColor} stroke-linecap="round" fill="none" />
         ${todayBadge}
       </g>
     `;
@@ -658,15 +684,17 @@ const ChalkMeadowPanorama = {
       }, 3400);
     }
 
-    // Attach click listeners to all active specimen hotspots
+    // Attach click listeners to all active specimen day columns & hotspots
     meadowSlots.forEach(slot => {
+      const dayCol = container.querySelector(`#meadow-day-${slot.day}`);
       const hotspot = container.querySelector(`#plant-hotspot-d${slot.day}`);
-      if (hotspot) {
-        hotspot.addEventListener('click', (e) => {
+      const clickTarget = dayCol || hotspot;
+      if (clickTarget) {
+        clickTarget.addEventListener('click', (e) => {
           if (container.dataset.hasDragged === 'true') return;
           e.stopPropagation();
           AudioEngine.playChalkScratch();
-          emitDustParticles(hotspot.getBoundingClientRect());
+          emitDustParticles((hotspot || clickTarget).getBoundingClientRect());
           
           const isToday = GardenView.isCurrentMonth && slot.day === TODAY_DAY_NUM;
           const isFuture = GardenView.isCurrentMonth && slot.day > TODAY_DAY_NUM;
@@ -2862,7 +2890,9 @@ function initProgressGarden() {
     });
   }
 
-  renderProgressGarden();
+  if (AppState.activeSurface === 'progress-garden') {
+    renderProgressGarden();
+  }
 }
 
 function renderProgressGarden() {
