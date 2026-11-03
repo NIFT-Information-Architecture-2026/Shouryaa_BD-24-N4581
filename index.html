@@ -68,12 +68,6 @@
             <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
             <span class="nav-label chalk-font">Habit Ledger</span>
           </button>
-
-          <button class="nav-item" data-surface="deep-focus" title="Deep Focus">
-            <span class="nav-icon"><i class="fa-solid fa-hourglass-half"></i></span>
-            <span class="nav-label chalk-font">Deep Focus</span>
-            <span class="nav-indicator-live" id="focus-live-indicator" style="display:none;"></span>
-          </button>
         </nav>
 
         <!-- Bottom Sidebar Controls: User Profile & Theme Switcher -->
@@ -214,6 +208,9 @@
                   <span class="metric-micro-tag">DEEP FOCUS</span>
                   <h4 class="metric-title chalk-font" id="dash-focus-ratio">0 / 60m</h4>
                   <p class="metric-caption" id="dash-focus-sub">Daily focus target</p>
+                  <button type="button" class="dash-free-focus-btn chalk-font" id="btn-dash-free-focus" title="Start unanchored mindful focus session">
+                    <i class="fa-solid fa-play"></i> Start Free Focus
+                  </button>
                 </div>
               </div>
             </div>
@@ -664,8 +661,12 @@
           
           <div class="deep-focus-fullscreen-container chalk-card" id="deep-focus-panel">
             
-            <!-- Top: Mode Toggle, Task Anchor & Maximize Option -->
+            <!-- Top: Return, Mode Toggle & Maximize Option -->
             <div class="focus-top-bar">
+              <button class="chalk-btn secondary-btn chalk-font return-focus-btn" id="btn-focus-return" title="Leave or end session and return">
+                <i class="fa-solid fa-arrow-left"></i> <span id="btn-focus-return-label">Return to Tasks</span>
+              </button>
+
               <div class="focus-mode-toggle">
                 <button class="mode-pill active chalk-font" id="mode-btn-focus" data-mode="FOCUS">
                   <i class="fa-solid fa-brain"></i> Deep Focus
@@ -675,18 +676,22 @@
                 </button>
               </div>
 
-              <!-- Linked Task Pill -->
-              <div class="linked-task-pill">
-                <span class="chalk-font"><i class="fa-solid fa-link"></i> Anchor:</span>
-                <select id="focus-linked-task-select" class="chalk-select linked-select">
-                  <option value="">-- No specific task --</option>
-                </select>
-              </div>
-
               <!-- Maximize Focus View Button -->
               <button class="chalk-btn secondary-btn chalk-font maximize-focus-btn" id="btn-focus-maximize" title="Toggle Fullscreen Focus Mode">
                 <i class="fa-solid fa-expand" id="maximize-icon"></i> <span id="maximize-label">Maximize</span>
               </button>
+            </div>
+
+            <!-- Focused Task Banner -->
+            <div class="focus-task-headline-wrap" id="focus-task-headline-wrap">
+              <span class="focus-task-badge chalk-font" id="focus-task-badge"><i class="fa-solid fa-bullseye"></i> Focusing on</span>
+              <h2 class="focus-task-title-text chalk-font" id="focus-task-title-display">Complete CAT Quantitative Mock #4</h2>
+              <!-- Hidden anchor select for compatibility -->
+              <div class="linked-task-pill" style="display:none;">
+                <select id="focus-linked-task-select" class="chalk-select linked-select">
+                  <option value="">-- No specific task --</option>
+                </select>
+              </div>
             </div>
 
             <!-- Center: Minimalist Round Chalk Clock -->
@@ -714,10 +719,13 @@
                 <button class="adjust-btn chalk-font" id="btn-time-plus-5" title="Plus 5 minutes">+5m</button>
               </div>
 
-              <!-- Primary Action Buttons -->
+              <!-- Primary Action Buttons: Start/Pause/Resume, End Session, Reset -->
               <div class="timer-action-row">
                 <button class="chalk-btn timer-btn play-btn chalk-font" id="btn-timer-toggle">
                   <i class="fa-solid fa-play" id="timer-icon-state"></i> <span id="timer-action-text">Begin Session</span>
+                </button>
+                <button class="chalk-btn timer-btn end-btn chalk-font" id="btn-timer-end" title="End session and record completed focus minutes">
+                  <i class="fa-solid fa-flag-checkered"></i> End Session
                 </button>
                 <button class="chalk-btn timer-btn reset-btn chalk-font" id="btn-timer-reset" title="Reset Session">
                   <i class="fa-solid fa-rotate-left"></i> Reset

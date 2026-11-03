@@ -2883,6 +2883,56 @@ body.focus-maximized .soundscape-pills .sound-pill {
   border-color: var(--text-primary);
 }
 
+.return-focus-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 5px 12px;
+}
+
+.focus-task-headline-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 14px;
+  margin-bottom: 4px;
+  max-width: 680px;
+}
+
+.focus-task-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--chalk-amber);
+  background: var(--bg-surface-elevated);
+  padding: 2px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border-chalk);
+  margin-bottom: 6px;
+}
+
+.focus-task-title-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  text-align: center;
+  line-height: 1.3;
+}
+
+body.focus-maximized .focus-task-headline-wrap {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+body.focus-maximized .focus-task-title-text {
+  font-size: 24px;
+}
+
 .focus-top-bar {
   width: 100%;
   display: flex;
@@ -3032,6 +3082,52 @@ body.mode-gentle-rest .ring-progress {
 
 .play-btn.running {
   background: var(--chalk-amber);
+}
+
+.timer-btn.end-btn {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk);
+  color: var(--chalk-coral);
+  transition: all 0.2s ease;
+}
+
+.timer-btn.end-btn:hover {
+  background: rgba(239, 71, 111, 0.15);
+  border-color: var(--chalk-coral);
+  color: #fff;
+}
+
+.dash-free-focus-btn {
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  font-size: 11px;
+  border-radius: 12px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk);
+  color: var(--chalk-mint);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dash-free-focus-btn:hover {
+  background: var(--chalk-mint);
+  color: var(--bg-base);
+  border-color: var(--chalk-mint);
+}
+
+.task-card-highlighted {
+  outline: 2px dashed var(--chalk-amber) !important;
+  outline-offset: 4px;
+  animation: pulseHighlight 1.5s ease-in-out;
+}
+
+@keyframes pulseHighlight {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.015); box-shadow: 0 0 15px rgba(255, 209, 102, 0.4); }
+  100% { transform: scale(1); }
 }
 
 .focus-soundscapes-bottom-bar {

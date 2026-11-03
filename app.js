@@ -918,8 +918,8 @@ function buildInitialGardenData(todayDay) {
         specimen: BOTANICAL_SPECIMENS[todayDay - 1] || 'Sunburst Dahlia',
         tasks: 1,
         planned: 3,
-        focus: 45,
-        stage: 2
+        focus: 0,
+        stage: 1
       };
     } else {
       // Future dates: Resting seeds, empty plots (never bloomed or completed)
@@ -1092,7 +1092,8 @@ const DEFAULT_STATE = {
     { id: 'h-3', name: 'Morning Sketchbook Drill', icon: '🎨', type: 'CHECK', current: 1, target: 1, unit: '', completions: Math.min(11, TODAY_DAY_NUM) },
     { id: 'h-4', name: 'Evening Walk / Rest', icon: '🌿', type: 'CHECK', current: 1, target: 1, unit: '', completions: Math.min(12, TODAY_DAY_NUM) }
   ],
-  focusTimeLoggedToday: 45,
+  focusTimeLoggedToday: 0,
+  focusSessions: [],
   habitHistory: {},
   gardenData: buildInitialGardenData(TODAY_DAY_NUM),
   monthlyGardens: {
@@ -1100,6 +1101,57 @@ const DEFAULT_STATE = {
     [CurrentDateInfo.monthKey]: buildInitialGardenData(TODAY_DAY_NUM)
   }
 };
+
+function sanitizeFocusAndGrowthData(state) {
+  // 1. Safety backup of raw localStorage before any mutation
+  try {
+    const rawSaved = localStorage.getItem(STORAGE_KEY);
+    if (rawSaved && !localStorage.getItem('chalkflow_backup_before_focus_fix')) {
+      localStorage.setItem('chalkflow_backup_before_focus_fix', rawSaved);
+    }
+  } catch (e) {
+    console.warn('Focus fix backup warning:', e);
+  }
+
+  // 2. Ensure genuine focusSessions array exists
+  if (!Array.isArray(state.focusSessions)) {
+    state.focusSessions = [];
+  }
+
+  // 3. Compute genuine focus minutes earned today from recorded sessions
+  const genuineTodaySessions = state.focusSessions.filter(s => s && s.date === TODAY_DATE);
+  const genuineTodayMins = genuineTodaySessions.reduce((sum, s) => sum + (Number(s.durationMins) || 0), 0);
+
+  // If there are no genuine recorded sessions, the 45m was purely demonstration seed data.
+  // Safely reset it to 0 genuine minutes without modifying genuine tasks or habits.
+  if (state.focusSessions.length === 0) {
+    state.focusTimeLoggedToday = 0;
+  } else {
+    state.focusTimeLoggedToday = genuineTodayMins;
+  }
+
+  // 4. Synchronize today's gardenData focus
+  if (state.gardenData && state.gardenData[TODAY_DAY_NUM]) {
+    state.gardenData[TODAY_DAY_NUM].focus = state.focusTimeLoggedToday;
+
+    // Strict Full Bloom check:
+    // If today's flower was awarded Full Bloom (Stage 4) using fake focus data, correct it down to Stage 3 or lower
+    if (state.gardenData[TODAY_DAY_NUM].stage === 4 || state.gardenData[TODAY_DAY_NUM].highestEarnedStage === 4) {
+      if (state.focusTimeLoggedToday < 45) {
+        state.gardenData[TODAY_DAY_NUM].stage = Math.min(3, state.gardenData[TODAY_DAY_NUM].stage || 3);
+        state.gardenData[TODAY_DAY_NUM].highestEarnedStage = Math.min(3, state.gardenData[TODAY_DAY_NUM].highestEarnedStage || 3);
+      }
+    }
+  }
+
+  if (state.monthlyGardens && state.monthlyGardens[CurrentDateInfo.monthKey]) {
+    state.monthlyGardens[CurrentDateInfo.monthKey] = state.gardenData;
+  }
+
+  if (state.activeSurface === 'deep-focus') {
+    state.activeSurface = 'dashboard';
+  }
+}
 
 let AppState = loadState();
 
@@ -1155,6 +1207,7 @@ function loadState() {
       if (!Array.isArray(parsed.recentlyErasedTasks)) {
         parsed.recentlyErasedTasks = [];
       }
+      sanitizeFocusAndGrowthData(parsed);
       return parsed;
     }
     const oldSaved = localStorage.getItem('chalkflow_state_v7') || localStorage.getItem('chalkflow_state_v6');
@@ -1196,6 +1249,7 @@ function loadState() {
         }
       }
       ensureHabitHistoryInitialized(migrated);
+      sanitizeFocusAndGrowthData(migrated);
       return migrated;
     }
     return DEFAULT_STATE;
@@ -1663,6 +1717,15 @@ function initDashboard() {
       } else if (e.key === 'Escape') {
         if (renameTodayBox) renameTodayBox.style.display = 'none';
       }
+    });
+  }
+
+  // Dashboard "Start Free Focus" action for unanchored mindful focus
+  const freeFocusBtn = document.getElementById('btn-dash-free-focus');
+  if (freeFocusBtn) {
+    freeFocusBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openFocusSession(null);
     });
   }
 
@@ -2229,7 +2292,7 @@ function createTaskCardElement(task) {
   const focusBtn = card.querySelector('[data-focus-task]');
   focusBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    navigateToSurface('deep-focus', task.id);
+    openFocusSession(task.id);
   });
 
   // Subtask Checkbox Handlers
@@ -3978,19 +4041,177 @@ function renderHabitLedger() {
 }
 
 // --------------------------------------------------------------------------
-// G. DEEP FOCUS (WITH MAXIMIZE FULLSCREEN OPTION)
+// G. DEEP FOCUS & WORKFLOW INTEGRATION
 // --------------------------------------------------------------------------
 let FocusTimer = {
   mode: 'FOCUS',
   durationSeconds: 25 * 60,
   remainingSeconds: 25 * 60,
+  elapsedSeconds: 0,
+  creditedMinutes: 0,
   isRunning: false,
-  intervalId: null
+  intervalId: null,
+  lastTickTimestamp: null,
+  currentTaskId: null,
+  currentTaskTitle: '',
+  returnSurface: 'today-slate',
+  returnTaskId: null
 };
+
+function creditFocusMinutes(mins, taskId, taskTitle) {
+  if (!mins || mins <= 0) return;
+  AppState.focusTimeLoggedToday = (AppState.focusTimeLoggedToday || 0) + mins;
+
+  if (!AppState.gardenData[TODAY_DAY_NUM]) {
+    AppState.gardenData[TODAY_DAY_NUM] = {
+      specimen: BOTANICAL_SPECIMENS[TODAY_DAY_NUM - 1] || 'Sunburst Dahlia',
+      tasks: 0,
+      planned: 0,
+      focus: 0,
+      stage: 0
+    };
+  }
+  AppState.gardenData[TODAY_DAY_NUM].focus = AppState.focusTimeLoggedToday;
+  if (!AppState.monthlyGardens) AppState.monthlyGardens = {};
+  AppState.monthlyGardens[CurrentDateInfo.monthKey] = AppState.gardenData;
+
+  if (!Array.isArray(AppState.focusSessions)) AppState.focusSessions = [];
+  AppState.focusSessions.push({
+    id: 'fs-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+    date: TODAY_DATE,
+    timestamp: new Date().toISOString(),
+    durationMins: mins,
+    taskId: taskId || null,
+    taskTitle: taskTitle || (FocusTimer.mode === 'FOCUS' ? 'Free Mindful Focus' : 'Gentle Rest'),
+    mode: FocusTimer.mode
+  });
+
+  saveState();
+  updateGlobalGrowthMetrics();
+}
+
+function openFocusSession(taskId = null) {
+  FocusTimer.currentTaskId = taskId;
+  FocusTimer.returnSurface = (AppState.activeSurface === 'deep-focus' || !AppState.activeSurface) ? 'today-slate' : AppState.activeSurface;
+
+  const titleDisplay = document.getElementById('focus-task-title-display');
+  const badgeDisplay = document.getElementById('focus-task-badge');
+  const returnBtnLabel = document.getElementById('btn-focus-return-label');
+  const selectEl = document.getElementById('focus-linked-task-select');
+
+  if (taskId) {
+    const task = AppState.tasks.find(t => t.id === taskId);
+    FocusTimer.currentTaskTitle = task ? task.title : 'Selected Task';
+    FocusTimer.returnTaskId = taskId;
+    if (badgeDisplay) badgeDisplay.innerHTML = '<i class="fa-solid fa-bullseye"></i> Focusing on';
+    if (titleDisplay) titleDisplay.innerText = FocusTimer.currentTaskTitle;
+    if (returnBtnLabel) returnBtnLabel.innerText = 'Return to Slate';
+    if (selectEl) selectEl.value = taskId;
+  } else {
+    FocusTimer.currentTaskTitle = 'Free Mindful Focus';
+    FocusTimer.returnTaskId = null;
+    if (badgeDisplay) badgeDisplay.innerHTML = '<i class="fa-solid fa-brain"></i> Mindful Session';
+    if (titleDisplay) titleDisplay.innerText = 'Free Mindful Focus';
+    if (returnBtnLabel) returnBtnLabel.innerText = FocusTimer.returnSurface === 'dashboard' ? 'Return to Dashboard' : 'Return to Slate';
+    if (selectEl) selectEl.value = '';
+  }
+
+  // If timer is not currently running, reset elapsed and set ready
+  if (!FocusTimer.isRunning) {
+    FocusTimer.elapsedSeconds = 0;
+    FocusTimer.creditedMinutes = 0;
+    const mins = Math.floor(FocusTimer.durationSeconds / 60) || 25;
+    FocusTimer.durationSeconds = mins * 60;
+    FocusTimer.remainingSeconds = FocusTimer.durationSeconds;
+    const display = document.getElementById('timer-display');
+    const ring = document.getElementById('clock-ring-progress');
+    const statusLabel = document.getElementById('timer-status-label');
+    if (display) display.innerText = `${mins < 10 ? '0' + mins : mins}:00`;
+    if (ring) ring.style.strokeDashoffset = '666';
+    if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to begin';
+  }
+
+  navigateToSurface('deep-focus');
+}
+
+function endFocusSession() {
+  if (FocusTimer.isRunning) {
+    clearInterval(FocusTimer.intervalId);
+    FocusTimer.isRunning = false;
+    const toggleBtn = document.getElementById('btn-timer-toggle');
+    const actionText = document.getElementById('timer-action-text');
+    const iconState = document.getElementById('timer-icon-state');
+    const liveDot = document.getElementById('focus-live-indicator');
+    if (toggleBtn) toggleBtn.classList.remove('running');
+    if (actionText) actionText.innerText = 'Begin Session';
+    if (iconState) iconState.className = 'fa-solid fa-play';
+    if (liveDot) liveDot.style.display = 'none';
+  }
+
+  // Finalize any full earned minute accrued prior to ending
+  if (FocusTimer.mode === 'FOCUS') {
+    const totalEarnedMins = Math.floor(FocusTimer.elapsedSeconds / 60);
+    const uncreditedMins = totalEarnedMins - FocusTimer.creditedMinutes;
+    if (uncreditedMins > 0) {
+      FocusTimer.creditedMinutes += uncreditedMins;
+      creditFocusMinutes(uncreditedMins, FocusTimer.currentTaskId, FocusTimer.currentTaskTitle);
+    }
+  }
+
+  const sessionMins = FocusTimer.creditedMinutes;
+  if (sessionMins > 0) {
+    showToast(`🌿 Recorded ${sessionMins}m of Deep Focus on "${FocusTimer.currentTaskTitle}". Progress saved!`);
+  } else {
+    showToast('Focus session ended. No completed minutes recorded.');
+  }
+
+  // Exit fullscreen / maximized if active
+  if (document.body.classList.contains('focus-maximized')) {
+    document.body.classList.remove('focus-maximized');
+    const maximizeIcon = document.getElementById('maximize-icon');
+    const maximizeLabel = document.getElementById('maximize-label');
+    if (maximizeIcon) maximizeIcon.className = 'fa-solid fa-expand';
+    if (maximizeLabel) maximizeLabel.innerText = 'Maximize';
+  }
+
+  // Stop ambient sound
+  AudioEngine.stopAll();
+  document.querySelectorAll('.sound-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.sound === 'none');
+  });
+
+  // Reset session elapsed state for next fresh session
+  FocusTimer.elapsedSeconds = 0;
+  FocusTimer.creditedMinutes = 0;
+  FocusTimer.remainingSeconds = FocusTimer.durationSeconds;
+  const display = document.getElementById('timer-display');
+  const ring = document.getElementById('clock-ring-progress');
+  const statusLabel = document.getElementById('timer-status-label');
+  const mins = Math.floor(FocusTimer.durationSeconds / 60);
+  if (display) display.innerText = `${mins < 10 ? '0' + mins : mins}:00`;
+  if (ring) ring.style.strokeDashoffset = '666';
+  if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to begin';
+
+  const targetSurface = FocusTimer.returnSurface || 'today-slate';
+  navigateToSurface(targetSurface);
+
+  if (FocusTimer.returnTaskId && targetSurface === 'today-slate') {
+    setTimeout(() => {
+      const taskCard = document.querySelector(`[data-task-id="${FocusTimer.returnTaskId}"]`);
+      if (taskCard) {
+        taskCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        taskCard.classList.add('task-card-highlighted');
+        setTimeout(() => taskCard.classList.remove('task-card-highlighted'), 2000);
+      }
+    }, 150);
+  }
+}
 
 function initDeepFocus() {
   const display = document.getElementById('timer-display');
   const toggleBtn = document.getElementById('btn-timer-toggle');
+  const endBtn = document.getElementById('btn-timer-end');
+  const returnBtn = document.getElementById('btn-focus-return');
   const resetBtn = document.getElementById('btn-timer-reset');
   const ring = document.getElementById('clock-ring-progress');
   const actionText = document.getElementById('timer-action-text');
@@ -4009,14 +4230,28 @@ function initDeepFocus() {
     maximizeBtn.addEventListener('click', () => {
       const isMax = document.body.classList.toggle('focus-maximized');
       if (isMax) {
-        maximizeIcon.className = 'fa-solid fa-compress';
-        maximizeLabel.innerText = 'Exit';
+        if (maximizeIcon) maximizeIcon.className = 'fa-solid fa-compress';
+        if (maximizeLabel) maximizeLabel.innerText = 'Exit';
         showToast('Entering Distraction-Free Fullscreen Focus 🌿');
       } else {
-        maximizeIcon.className = 'fa-solid fa-expand';
-        maximizeLabel.innerText = 'Maximize';
+        if (maximizeIcon) maximizeIcon.className = 'fa-solid fa-expand';
+        if (maximizeLabel) maximizeLabel.innerText = 'Maximize';
         showToast('Exited Fullscreen Focus');
       }
+    });
+  }
+
+  // Return to previous task or dashboard
+  if (returnBtn) {
+    returnBtn.addEventListener('click', () => {
+      endFocusSession();
+    });
+  }
+
+  // End Session button
+  if (endBtn) {
+    endBtn.addEventListener('click', () => {
+      endFocusSession();
     });
   }
 
@@ -4029,25 +4264,28 @@ function initDeepFocus() {
     if (FocusTimer.isRunning) {
       clearInterval(FocusTimer.intervalId);
       FocusTimer.isRunning = false;
-      toggleBtn.classList.remove('running');
-      actionText.innerText = 'Begin Session';
-      iconState.className = 'fa-solid fa-play';
+      if (toggleBtn) toggleBtn.classList.remove('running');
+      if (actionText) actionText.innerText = 'Begin Session';
+      if (iconState) iconState.className = 'fa-solid fa-play';
       if (liveDot) liveDot.style.display = 'none';
     }
 
     FocusTimer.mode = newMode;
+    FocusTimer.elapsedSeconds = 0;
+    FocusTimer.creditedMinutes = 0;
+
     if (newMode === 'REST') {
       document.body.classList.add('mode-gentle-rest');
       modeBtnRest.classList.add('active');
       modeBtnFocus.classList.remove('active');
-      statusLabel.innerText = 'Gentle Rest & Recharge';
+      if (statusLabel) statusLabel.innerText = 'Gentle Rest & Recharge';
       setTimerDuration(5);
       showToast('Switched to 5-min Gentle Rest Mode ☕');
     } else {
       document.body.classList.remove('mode-gentle-rest');
       modeBtnFocus.classList.add('active');
       modeBtnRest.classList.remove('active');
-      statusLabel.innerText = 'Ready for deep immersion';
+      if (statusLabel) statusLabel.innerText = 'Ready for deep immersion';
       setTimerDuration(25);
       showToast('Switched to Deep Focus Mode 🎯');
     }
@@ -4062,10 +4300,15 @@ function initDeepFocus() {
     });
   });
 
-  document.getElementById('btn-time-minus-5').addEventListener('click', () => adjustTimerMinutes(-5));
-  document.getElementById('btn-time-minus-1').addEventListener('click', () => adjustTimerMinutes(-1));
-  document.getElementById('btn-time-plus-1').addEventListener('click', () => adjustTimerMinutes(1));
-  document.getElementById('btn-time-plus-5').addEventListener('click', () => adjustTimerMinutes(5));
+  const minus5Btn = document.getElementById('btn-time-minus-5');
+  const minus1Btn = document.getElementById('btn-time-minus-1');
+  const plus1Btn = document.getElementById('btn-time-plus-1');
+  const plus5Btn = document.getElementById('btn-time-plus-5');
+
+  if (minus5Btn) minus5Btn.addEventListener('click', () => adjustTimerMinutes(-5));
+  if (minus1Btn) minus1Btn.addEventListener('click', () => adjustTimerMinutes(-1));
+  if (plus1Btn) plus1Btn.addEventListener('click', () => adjustTimerMinutes(1));
+  if (plus5Btn) plus5Btn.addEventListener('click', () => adjustTimerMinutes(5));
 
   function adjustTimerMinutes(delta) {
     if (FocusTimer.isRunning) return;
@@ -4077,6 +4320,8 @@ function initDeepFocus() {
   function setTimerDuration(mins) {
     FocusTimer.durationSeconds = mins * 60;
     FocusTimer.remainingSeconds = FocusTimer.durationSeconds;
+    FocusTimer.elapsedSeconds = 0;
+    FocusTimer.creditedMinutes = 0;
     updateDisplay();
   }
 
@@ -4087,7 +4332,7 @@ function initDeepFocus() {
 
     if (ring) {
       const totalOffset = 666;
-      const progress = (FocusTimer.durationSeconds - FocusTimer.remainingSeconds) / FocusTimer.durationSeconds;
+      const progress = FocusTimer.durationSeconds > 0 ? (FocusTimer.durationSeconds - FocusTimer.remainingSeconds) / FocusTimer.durationSeconds : 0;
       ring.style.strokeDashoffset = totalOffset - (progress * totalOffset);
     }
   }
@@ -4095,44 +4340,61 @@ function initDeepFocus() {
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
       if (FocusTimer.isRunning) {
+        // Pause timer
         clearInterval(FocusTimer.intervalId);
         FocusTimer.isRunning = false;
         toggleBtn.classList.remove('running');
         actionText.innerText = 'Resume';
         iconState.className = 'fa-solid fa-play';
         if (liveDot) liveDot.style.display = 'none';
+        if (statusLabel) statusLabel.innerText = 'Session paused';
       } else {
+        // Start or resume timer
         AudioEngine.initContext();
         FocusTimer.isRunning = true;
+        FocusTimer.lastTickTimestamp = Date.now();
         toggleBtn.classList.add('running');
         actionText.innerText = 'Pause';
         iconState.className = 'fa-solid fa-pause';
         if (liveDot) liveDot.style.display = 'inline-block';
+        if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Resting & recharging...' : 'Deep immersion in progress...';
 
         FocusTimer.intervalId = setInterval(() => {
-          FocusTimer.remainingSeconds--;
-          updateDisplay();
+          const now = Date.now();
+          let deltaSec = Math.floor((now - FocusTimer.lastTickTimestamp) / 1000);
+          if (deltaSec >= 1) {
+            FocusTimer.lastTickTimestamp = now;
+            deltaSec = Math.min(deltaSec, FocusTimer.remainingSeconds);
+            FocusTimer.remainingSeconds -= deltaSec;
+            FocusTimer.elapsedSeconds += deltaSec;
 
-          if (FocusTimer.remainingSeconds <= 0) {
-            clearInterval(FocusTimer.intervalId);
-            FocusTimer.isRunning = false;
-            toggleBtn.classList.remove('running');
-            actionText.innerText = 'Begin Session';
-            iconState.className = 'fa-solid fa-play';
-            if (liveDot) liveDot.style.display = 'none';
-
+            // Accurate elapsed minute accumulation:
+            // Every full 60 seconds accrued in FOCUS mode earns 1 real minute
             if (FocusTimer.mode === 'FOCUS') {
-              const loggedMins = Math.floor(FocusTimer.durationSeconds / 60);
-              AppState.focusTimeLoggedToday += loggedMins;
-              if (!AppState.gardenData[TODAY_DAY_NUM]) {
-                AppState.gardenData[TODAY_DAY_NUM] = { specimen: 'Sunburst Dahlia', tasks: 0, planned: 0, focus: 0, stage: 0 };
+              const totalEarnedMins = Math.floor(FocusTimer.elapsedSeconds / 60);
+              const uncreditedMins = totalEarnedMins - FocusTimer.creditedMinutes;
+              if (uncreditedMins > 0) {
+                FocusTimer.creditedMinutes += uncreditedMins;
+                creditFocusMinutes(uncreditedMins, FocusTimer.currentTaskId, FocusTimer.currentTaskTitle);
               }
-              AppState.gardenData[TODAY_DAY_NUM].focus += loggedMins;
-              saveState();
-              updateGlobalGrowthMetrics();
-              showToast(`🌸 Focus complete! ${loggedMins}m credited to today's garden flower.`);
-            } else {
-              showToast('🌱 Gentle rest complete. Mind refreshed & centered!');
+            }
+
+            updateDisplay();
+
+            if (FocusTimer.remainingSeconds <= 0) {
+              clearInterval(FocusTimer.intervalId);
+              FocusTimer.isRunning = false;
+              toggleBtn.classList.remove('running');
+              actionText.innerText = 'Begin Session';
+              iconState.className = 'fa-solid fa-play';
+              if (liveDot) liveDot.style.display = 'none';
+              if (statusLabel) statusLabel.innerText = 'Session complete!';
+
+              if (FocusTimer.mode === 'FOCUS') {
+                showToast(`🌸 Focus complete! ${FocusTimer.creditedMinutes}m credited to today's garden flower.`);
+              } else {
+                showToast('🌱 Gentle rest complete. Mind refreshed & centered!');
+              }
             }
           }
         }, 1000);
@@ -4145,10 +4407,13 @@ function initDeepFocus() {
       clearInterval(FocusTimer.intervalId);
       FocusTimer.isRunning = false;
       FocusTimer.remainingSeconds = FocusTimer.durationSeconds;
-      toggleBtn.classList.remove('running');
-      actionText.innerText = 'Begin Session';
-      iconState.className = 'fa-solid fa-play';
+      FocusTimer.elapsedSeconds = 0;
+      FocusTimer.creditedMinutes = 0;
+      if (toggleBtn) toggleBtn.classList.remove('running');
+      if (actionText) actionText.innerText = 'Begin Session';
+      if (iconState) iconState.className = 'fa-solid fa-play';
       if (liveDot) liveDot.style.display = 'none';
+      if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to begin';
       updateDisplay();
     });
   }
@@ -4229,8 +4494,8 @@ function updateGlobalGrowthMetrics() {
   if (completedCount === 0 && focusMins === 0) {
     calculatedStage = 0; // Stage 0: Resting Seed
   } else if (allTasksDone && focusMins >= 45) {
-    // Stage 4: Full Bloom strictly requires BOTH: 100% planned tasks completed AND >= 45m focus.
-    // (All alternative shortcuts such as 5 tasks or 90m focus alone have been removed).
+    // Stage 4: Full Bloom strictly requires BOTH: 100% planned tasks completed AND >= 45m genuine focus recorded today.
+    // Completing all tasks without focus must not bloom; reaching 45m focus without all tasks must not bloom.
     calculatedStage = 4;
   } else if (
     allTasksDone ||
@@ -4253,12 +4518,19 @@ function updateGlobalGrowthMetrics() {
     calculatedStage = 1;
   }
 
-  // 2. Preserve Earned Flower Growth:
-  // Once a flower reaches a growth stage through genuine effort, it never shrinks if a task is reopened.
+  // 2. Strict Full Bloom Preservation Policy:
+  // Stage 4 (Full Bloom) is strictly guarded: it CANNOT be grandfathered if current conditions don't satisfy it (both 100% tasks done and focusMins >= 45).
+  // If either condition is missing, capped at Stage 3 (Swelling Bud).
   const previousStage = dayGarden.stage ?? 0;
-  const highestEarned = Math.max(calculatedStage, dayGarden.highestEarnedStage || 0, previousStage);
-  dayGarden.highestEarnedStage = highestEarned;
-  const earnedStage = highestEarned;
+  let earnedStage;
+  if (calculatedStage === 4) {
+    earnedStage = 4;
+    dayGarden.highestEarnedStage = 4;
+  } else {
+    const cappedHistorical = Math.min(3, dayGarden.highestEarnedStage || 0, previousStage);
+    earnedStage = Math.max(calculatedStage, cappedHistorical);
+    dayGarden.highestEarnedStage = earnedStage;
+  }
   const hasGrown = earnedStage > previousStage;
 
   if (!AppState.gardenData[TODAY_DAY_NUM]) {
@@ -4268,7 +4540,7 @@ function updateGlobalGrowthMetrics() {
   AppState.gardenData[TODAY_DAY_NUM].planned = effectivePlanned;
   AppState.gardenData[TODAY_DAY_NUM].focus = focusMins;
   AppState.gardenData[TODAY_DAY_NUM].stage = earnedStage;
-  AppState.gardenData[TODAY_DAY_NUM].highestEarnedStage = highestEarned;
+  AppState.gardenData[TODAY_DAY_NUM].highestEarnedStage = earnedStage;
   AppState.gardenData[TODAY_DAY_NUM].highestPlannedCount = genuineBaseline;
 
   if (!AppState.monthlyGardens) AppState.monthlyGardens = {};
