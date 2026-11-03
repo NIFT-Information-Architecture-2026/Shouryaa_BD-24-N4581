@@ -68,6 +68,12 @@
             <span class="nav-icon"><i class="fa-solid fa-calendar-check"></i></span>
             <span class="nav-label chalk-font">Habit Ledger</span>
           </button>
+
+          <button class="nav-item" data-surface="deep-focus" title="Deep Focus">
+            <span class="nav-icon"><i class="fa-solid fa-hourglass-half"></i></span>
+            <span class="nav-label chalk-font">Deep Focus</span>
+            <span class="nav-indicator-live" id="focus-live-indicator" style="display:none;"></span>
+          </button>
         </nav>
 
         <!-- Bottom Sidebar Controls: User Profile & Theme Switcher -->
@@ -686,10 +692,10 @@
             <div class="focus-task-headline-wrap" id="focus-task-headline-wrap">
               <span class="focus-task-badge chalk-font" id="focus-task-badge"><i class="fa-solid fa-bullseye"></i> Focusing on</span>
               <h2 class="focus-task-title-text chalk-font" id="focus-task-title-display">Complete CAT Quantitative Mock #4</h2>
-              <!-- Hidden anchor select for compatibility -->
-              <div class="linked-task-pill" style="display:none;">
+              <div class="linked-task-pill">
+                <span class="chalk-font"><i class="fa-solid fa-link"></i> Task Anchor:</span>
                 <select id="focus-linked-task-select" class="chalk-select linked-select">
-                  <option value="">-- No specific task --</option>
+                  <option value="">-- Free Focus (No specific task) --</option>
                 </select>
               </div>
             </div>

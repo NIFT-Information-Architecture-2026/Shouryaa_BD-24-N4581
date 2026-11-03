@@ -2933,6 +2933,10 @@ body.focus-maximized .focus-task-title-text {
   font-size: 24px;
 }
 
+.focus-task-headline-wrap .linked-task-pill {
+  margin-top: 8px;
+}
+
 .focus-top-bar {
   width: 100%;
   display: flex;

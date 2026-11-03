@@ -1147,10 +1147,6 @@ function sanitizeFocusAndGrowthData(state) {
   if (state.monthlyGardens && state.monthlyGardens[CurrentDateInfo.monthKey]) {
     state.monthlyGardens[CurrentDateInfo.monthKey] = state.gardenData;
   }
-
-  if (state.activeSurface === 'deep-focus') {
-    state.activeSurface = 'dashboard';
-  }
 }
 
 let AppState = loadState();
@@ -1616,11 +1612,24 @@ function navigateToSurface(surfaceId, linkedTaskId = null) {
   if (surfaceId === 'progress-garden') renderProgressGarden();
   if (surfaceId === 'habit-ledger') renderHabitLedger();
 
-  if (surfaceId === 'deep-focus' && linkedTaskId) {
-    const focusSelect = document.getElementById('focus-linked-task-select');
-    if (focusSelect) {
-      focusSelect.value = linkedTaskId;
-      showToast('Task anchored to Deep Focus');
+  if (surfaceId === 'deep-focus') {
+    populateFocusTaskDropdown();
+    if (linkedTaskId) {
+      openFocusSession(linkedTaskId);
+    } else {
+      const focusSelect = document.getElementById('focus-linked-task-select');
+      if (focusSelect) {
+        focusSelect.value = FocusTimer.currentTaskId || '';
+      }
+      const titleDisplay = document.getElementById('focus-task-title-display');
+      const badgeDisplay = document.getElementById('focus-task-badge');
+      if (FocusTimer.currentTaskId && FocusTimer.currentTaskTitle) {
+        if (badgeDisplay) badgeDisplay.innerHTML = '<i class="fa-solid fa-bullseye"></i> Focusing on';
+        if (titleDisplay) titleDisplay.innerText = FocusTimer.currentTaskTitle;
+      } else {
+        if (badgeDisplay) badgeDisplay.innerHTML = '<i class="fa-solid fa-brain"></i> Mindful Session';
+        if (titleDisplay) titleDisplay.innerText = 'Free Mindful Focus';
+      }
     }
   }
 }
@@ -4255,6 +4264,32 @@ function initDeepFocus() {
     });
   }
 
+  // Linked Task selector change handler
+  const focusSelect = document.getElementById('focus-linked-task-select');
+  if (focusSelect) {
+    focusSelect.addEventListener('change', () => {
+      const selectedId = focusSelect.value;
+      const titleDisplay = document.getElementById('focus-task-title-display');
+      const badgeDisplay = document.getElementById('focus-task-badge');
+      if (selectedId) {
+        const task = AppState.tasks.find(t => t.id === selectedId);
+        FocusTimer.currentTaskId = selectedId;
+        FocusTimer.currentTaskTitle = task ? task.title : 'Selected Task';
+        FocusTimer.returnTaskId = selectedId;
+        if (badgeDisplay) badgeDisplay.innerHTML = '<i class="fa-solid fa-bullseye"></i> Focusing on';
+        if (titleDisplay) titleDisplay.innerText = FocusTimer.currentTaskTitle;
+        showToast(`Anchored focus to "${FocusTimer.currentTaskTitle}"`);
+      } else {
+        FocusTimer.currentTaskId = null;
+        FocusTimer.currentTaskTitle = 'Free Mindful Focus';
+        FocusTimer.returnTaskId = null;
+        if (badgeDisplay) badgeDisplay.innerHTML = '<i class="fa-solid fa-brain"></i> Mindful Session';
+        if (titleDisplay) titleDisplay.innerText = 'Free Mindful Focus';
+        showToast('Switched to Free Mindful Focus');
+      }
+    });
+  }
+
   if (modeBtnFocus && modeBtnRest) {
     modeBtnFocus.addEventListener('click', () => setFocusMode('FOCUS'));
     modeBtnRest.addEventListener('click', () => setFocusMode('REST'));
@@ -4444,8 +4479,8 @@ function populateFocusTaskDropdown() {
   const select = document.getElementById('focus-linked-task-select');
   if (!select) return;
 
-  const currentVal = select.value;
-  select.innerHTML = '<option value="">-- No specific task --</option>';
+  const currentVal = select.value || FocusTimer.currentTaskId || '';
+  select.innerHTML = '<option value="">-- Free Focus (No specific task) --</option>';
 
   const activeTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE && t.status !== 'COMPLETED');
   activeTasks.forEach(t => {
