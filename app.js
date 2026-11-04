@@ -6,216 +6,1278 @@
  */
 
 // ==========================================================================
-// 1. CHALK BOTANICAL SVG ARTWORK RENDERER (MEADOW WILDFLOWERS & GROWTH STAGES)
 // ==========================================================================
-const ChalkBotanicals = {
+// 1. CHALK BOTANICAL SPECIES LIBRARY & SVG ARTWORK ENGINE
+// ==========================================================================
+const BotanicalSpeciesLibrary = {
+  SPECIES_ORDER: [
+    'cosmos', 'cornflower', 'iris', 'daisy', 'sunflower', 'lavender',
+    'calendula', 'poppy', 'bluebell', 'forget-me-not', 'tulip', 'anemone'
+  ],
 
-  // STAGE 0: Resting Seed & Downward Taproots (Reference Image 2)
-  renderRestingSeed(size = 36, animClass = '') {
-    return `
-      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
-        <path class="plant-soil-mound" d="M 15 72 Q 50 68 85 72" stroke="var(--border-chalk)" stroke-width="2" stroke-dasharray="4,3" fill="none" />
-        <path class="plant-soil-mound" d="M 25 76 Q 50 73 75 76" stroke="var(--border-chalk)" stroke-width="1.2" stroke-dasharray="2,4" fill="none" opacity="0.6" />
-        <circle cx="50" cy="50" r="16" class="plant-seed" fill="var(--bg-surface-elevated)" stroke="#FAF0CA" stroke-width="2.2" stroke-dasharray="25,1.5" />
-        <path d="M 42 44 Q 50 40 56 46" stroke="#FAF0CA" stroke-width="1.2" fill="none" opacity="0.8" />
-        <circle cx="50" cy="50" r="11" fill="none" stroke="var(--chalk-amber)" stroke-width="1" stroke-dasharray="3,2" opacity="0.7" />
-        <path d="M 50 66 Q 50 78 48 92" stroke="var(--chalk-amber)" stroke-width="2.2" stroke-linecap="round" fill="none" />
-        <path d="M 49 72 Q 40 76 34 82" stroke="var(--chalk-amber)" stroke-width="1.8" stroke-linecap="round" fill="none" />
-        <path d="M 50 74 Q 60 78 66 84" stroke="var(--chalk-amber)" stroke-width="1.8" stroke-linecap="round" fill="none" />
-        <path d="M 58 38 Q 72 26 66 18 Q 54 24 54 36 Z" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-      </svg>
-    `;
+  resolveSpeciesKey(specimenName, day = 1) {
+    if (specimenName && typeof specimenName === 'string') {
+      const s = specimenName.toLowerCase();
+      if (s.includes('lavender') || s.includes('heather') || s.includes('lupine') || s.includes('spike')) return 'lavender';
+      if (s.includes('sunflower') || s.includes('rudbeckia') || s.includes('dahlia') || s.includes('helianthus')) return 'sunflower';
+      if (s.includes('bluebell') || s.includes('bell') || s.includes('harebell') || s.includes('campanula')) return 'bluebell';
+      if (s.includes('iris') || s.includes('orchid') || s.includes('pansy') || s.includes('violet')) return 'iris';
+      if (s.includes('poppy') || s.includes('carnation') || s.includes('papaver')) return 'poppy';
+      if (s.includes('tulip') || s.includes('crocus') || s.includes('tulipa')) return 'tulip';
+      if (s.includes('forget') || s.includes('jasmine') || s.includes('hydrangea') || s.includes('myosotis')) return 'forget-me-not';
+      if (s.includes('calendula') || s.includes('marigold') || s.includes('zinnia') || s.includes('terracotta')) return 'calendula';
+      if (s.includes('cornflower') || s.includes('aster') || s.includes('bachelor') || s.includes('centaurea')) return 'cornflower';
+      if (s.includes('anemone') || s.includes('hibiscus') || s.includes('william') || s.includes('windflower')) return 'anemone';
+      if (s.includes('cosmos')) return 'cosmos';
+      if (s.includes('daisy') || s.includes('chamomile') || s.includes('coneflower') || s.includes('buttercup') || s.includes('primrose')) return 'daisy';
+    }
+    const safeDay = Math.max(1, parseInt(day, 10) || 1);
+    return this.SPECIES_ORDER[(safeDay - 1) % this.SPECIES_ORDER.length];
   },
 
-  // STAGE 1: Cotyledon Sprout on Shaded Soil Mound (Reference Images 1 & 3)
-  renderFirstSprout(size = 36, animClass = '') {
-    return `
-      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
-        <path class="plant-soil-mound" d="M 10 82 Q 50 80 90 82" stroke="var(--text-primary)" stroke-width="2" stroke-dasharray="5,3" fill="none" opacity="0.6" />
-        <path class="plant-soil-mound" d="M 32 82 Q 50 64 68 82 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="2" />
-        <path class="plant-soil-mound" d="M 36 80 L 64 72 M 38 76 L 62 68 M 42 72 L 58 66" stroke="var(--border-chalk)" stroke-width="1.2" opacity="0.75" />
-        <path class="plant-stem" d="M 50 66 Q 52 50 48 38" stroke="#FAF0CA" stroke-width="2.6" stroke-linecap="round" fill="none" />
-        <g class="plant-leaves">
-          <path d="M 48 38 C 30 32 18 36 20 48 C 24 54 38 52 48 40 Z" fill="none" stroke="#FAF0CA" stroke-width="2.2" />
-          <path d="M 48 39 Q 34 42 22 46" stroke="var(--chalk-mint)" stroke-width="1.2" fill="none" opacity="0.8" />
-          <path d="M 48 38 C 66 32 78 36 76 48 C 72 54 58 52 48 40 Z" fill="none" stroke="#FAF0CA" stroke-width="2.2" />
-          <path d="M 48 39 Q 62 42 74 46" stroke="var(--chalk-mint)" stroke-width="1.2" fill="none" opacity="0.8" />
-        </g>
-      </svg>
-    `;
+  getSpeciesDisplayName(key) {
+    const names = {
+      'daisy': 'Meadow Daisy',
+      'lavender': 'Wild Lavender',
+      'poppy': 'Flanders Poppy',
+      'tulip': 'Garden Tulip',
+      'cosmos': 'Sunburst Cosmos',
+      'sunflower': 'Golden Sunflower',
+      'bluebell': 'Woodland Bluebell',
+      'iris': 'Royal Iris',
+      'forget-me-not': 'Sky Forget-Me-Not',
+      'calendula': 'Sunset Calendula',
+      'cornflower': 'Blue Cornflower',
+      'anemone': 'French Anemone'
+    };
+    return names[key] || 'Wild Botanical';
   },
 
-  // STAGE 2: Branching Stem & Foliage (Reference Image 4)
-  renderBranchingStem(size = 38, animClass = '') {
-    return `
-      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
-        <path class="plant-soil-mound" d="M 20 90 Q 50 88 80 90" stroke="var(--border-chalk)" stroke-width="1.5" stroke-dasharray="4,3" fill="none" />
-        <path class="plant-stem" d="M 50 90 Q 46 65 50 24" stroke="var(--chalk-mint)" stroke-width="2.2" stroke-linecap="round" fill="none" />
-        <g class="plant-leaves">
-          <path d="M 48 76 Q 25 70 12 58 Q 30 60 47 70" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <path d="M 49 66 Q 72 58 88 50 Q 70 54 50 60" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <path d="M 49 52 Q 32 40 34 26 Q 42 36 50 44" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <path d="M 50 42 Q 68 32 66 18 Q 58 28 50 36" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <path d="M 50 66 Q 64 54 62 40" stroke="var(--chalk-mint)" stroke-width="1.5" fill="none" />
-          <path d="M 62 40 C 58 35 60 28 64 26 C 66 30 66 36 62 40 Z" fill="none" stroke="var(--chalk-amber)" stroke-width="1.4" />
-        </g>
-      </svg>
-    `;
-  },
+  // --------------------------------------------------------------------------
+  // MEADOW PANORAMA ARTWORK (Anchored at soil line 0, 215)
+  // --------------------------------------------------------------------------
+  renderMeadowPlant(speciesKey, stage, ctx = {}) {
+    const { isToday = false, isFuture = false, day = 1, specimenName = '' } = ctx;
 
-  // STAGE 3: Swelling Teardrop Floral Bud (Reference Image 4 Apex)
-  renderSwellingBud(size = 40, animClass = '') {
-    return `
-      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
-        <path class="plant-soil-mound" d="M 25 92 Q 50 90 75 92" stroke="var(--border-chalk)" stroke-width="1.5" fill="none" />
-        <path class="plant-stem" d="M 50 90 Q 48 60 50 34" stroke="var(--chalk-mint)" stroke-width="2.4" stroke-linecap="round" fill="none" />
-        <g class="plant-leaves">
-          <path d="M 49 72 Q 28 62 20 50 Q 36 54 49 64" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          <path d="M 50 60 Q 72 50 80 38 Q 64 44 50 54" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-        </g>
-        <g class="plant-bud" transform="translate(50, 34)">
-          <path d="M -5 0 Q 0 -6 5 0 Z" fill="var(--chalk-mint)" stroke="var(--chalk-mint)" stroke-width="1" />
-          <path d="M -5 0 C -10 -12 -6 -24 0 -28 C 4 -20 2 -8 0 0 Z" fill="var(--bg-surface-elevated)" stroke="#E8A4C8" stroke-width="1.8" />
-          <path d="M 5 0 C 10 -12 6 -24 0 -28 C -4 -20 -2 -8 0 0 Z" fill="var(--bg-surface-elevated)" stroke="#E8A4C8" stroke-width="1.8" />
-          <path d="M 0 0 Q 0 -18 0 -27" stroke="#FAF0CA" stroke-width="1.2" fill="none" />
-        </g>
-      </svg>
-    `;
-  },
+    // STAGE 0: RESTING SEED
+    if (stage === 0) {
+      const whisperText = isFuture ? 'Seed' : 'Resting';
+      const whisperColor = isToday ? 'var(--chalk-amber)' : 'var(--text-muted)';
+      const whisperOpacity = isToday ? '0.9' : (isFuture ? '0.5' : '0.75');
+      const moundStroke = isFuture ? 'stroke-dasharray="3,2" opacity="0.65"' : '';
+      const seedOpacity = isFuture ? '0.45' : '0.7';
 
-  // STAGE 4: Full Multi-Species Botanical Wildflower Blooms
-  // (Directly modeled on uploaded meadow art: Terracotta Cosmos, Purple Aster, White Coneflower, Golden Daisy)
-  renderFullBloom(size = 48, day = 1, animClass = '') {
-    const variety = day % 4;
-    
-    if (variety === 0) {
-      // Variety A: Terracotta / Coral Sunburst Cosmos (Centerpiece in Image 1)
+      let seedDetail = `<ellipse class="plant-seed" cx="0" cy="217" rx="4" ry="2.5" fill="#FAF0CA" opacity="${seedOpacity}" stroke="var(--chalk-amber)" stroke-width="1" />`;
+      if (speciesKey === 'sunflower') {
+        seedDetail = `<ellipse class="plant-seed" cx="0" cy="217" rx="5" ry="3" fill="#2E1D0E" stroke="#FAF0CA" stroke-width="1.2" opacity="${seedOpacity}" />`;
+      } else if (speciesKey === 'tulip') {
+        seedDetail = `
+          <path class="plant-seed" d="M -4 219 C -5 214 0 211 0 211 C 0 211 5 214 4 219 Z" fill="#D4A373" stroke="#FAF0CA" stroke-width="1" opacity="${seedOpacity}" />
+          <path d="M 0 219 Q 0 224 -2 227" stroke="var(--chalk-amber)" stroke-width="1" fill="none" opacity="0.6" />
+        `;
+      }
+
       return `
-        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
-          <path class="plant-stem" d="M 50 96 Q 51 68 50 48" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" />
+        <path class="plant-soil-mound" d="M -22 215 Q 0 206 22 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" ${moundStroke} />
+        ${seedDetail}
+        <circle cx="-7" cy="218" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
+        <circle cx="8" cy="216" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
+        <text class="plant-stage-label" x="0" y="196" font-family="'Kalam', cursive" font-size="10" fill="${whisperColor}" text-anchor="middle" opacity="${whisperOpacity}">${whisperText}</text>
+      `;
+    }
+
+    // STAGE 1: THE SPROUT
+    if (stage === 1) {
+      let leafMorph = `
+        <g class="plant-leaves">
+          <path d="M 0 178 C -14 173 -22 179 -19 187 C -14 191 -6 186 0 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+          <path d="M 0 179 Q -9 182 -16 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
+          <path d="M 0 178 C 14 173 22 179 19 187 C 14 191 6 186 0 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+          <path d="M 0 179 Q 9 182 16 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
+        </g>
+      `;
+      let stemStroke = `stroke-width="2.6"`;
+      if (speciesKey === 'sunflower') {
+        stemStroke = `stroke-width="3.4"`;
+      } else if (speciesKey === 'lavender') {
+        leafMorph = `
           <g class="plant-leaves">
-            <path d="M 49 75 Q 32 70 24 58 Q 38 60 48 70" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M 51 65 Q 68 58 78 48 Q 62 54 51 60" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <line x1="0" y1="182" x2="-14" y2="175" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="0" y1="182" x2="14" y2="175" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
           </g>
-          <g class="plant-petals" transform="translate(50, 30)">
-            <!-- 8 Broad Terracotta Petals with Linear Hatching -->
-            <path d="M 0 0 C -12 -4 -20 -18 -8 -24 C 0 -18 2 -6 0 0 Z" fill="#E07A5F" opacity="0.95" stroke="#FAF0CA" stroke-width="0.7" />
-            <path d="M 0 0 C 12 -4 20 -18 8 -24 C 0 -18 -2 -6 0 0 Z" fill="#E07A5F" opacity="0.95" stroke="#FAF0CA" stroke-width="0.7" />
-            <path d="M 0 0 C -18 6 -28 -4 -20 -14 C -10 -10 -4 -2 0 0 Z" fill="#E29578" opacity="0.95" stroke="#FAF0CA" stroke-width="0.7" />
-            <path d="M 0 0 C 18 6 28 -4 20 -14 C 10 -10 4 -2 0 0 Z" fill="#E29578" opacity="0.95" stroke="#FAF0CA" stroke-width="0.7" />
-            <path d="M 0 0 C -14 16 -4 24 4 18 C 4 10 2 2 0 0 Z" fill="#D08C5D" opacity="0.9" stroke="#FAF0CA" stroke-width="0.7" />
-            <path d="M 0 0 C 14 16 4 24 -4 18 C -4 10 -2 2 0 0 Z" fill="#D08C5D" opacity="0.9" stroke="#FAF0CA" stroke-width="0.7" />
-            <path d="M 0 0 C -6 -18 0 -28 8 -26 C 8 -16 4 -4 0 0 Z" fill="#E07A5F" opacity="0.95" stroke="#FAF0CA" stroke-width="0.7" />
+        `;
+      } else if (speciesKey === 'iris') {
+        leafMorph = `
+          <g class="plant-leaves">
+            <path d="M -3 215 L -6 175 L 0 170 L 6 175 L 3 215 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
           </g>
-          <g class="plant-bloom-core" transform="translate(50, 30)">
-            <!-- Stippled Brown Core -->
-            <circle cx="0" cy="0" r="7" fill="#4A2E1B" stroke="#FAF0CA" stroke-width="1" stroke-dasharray="3,1.5" />
-            <circle cx="0" cy="0" r="3.5" fill="var(--chalk-amber)" />
+        `;
+      }
+
+      return `
+        <path class="plant-soil-mound" d="M -20 215 Q 0 207 20 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
+        <path class="plant-stem" d="M 0 215 Q 1 195 0 178" stroke="var(--chalk-mint)" ${stemStroke} stroke-linecap="round" fill="none" />
+        ${leafMorph}
+        <text class="plant-stage-label" x="0" y="166" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-mint)" text-anchor="middle">Sprout</text>
+      `;
+    }
+
+    // STAGE 2: BRANCHING STEM
+    if (stage === 2) {
+      let stemPath = `M 0 215 Q -2 180 0 145`;
+      let stemWidth = `2.6`;
+      let leaves = `
+        <g class="plant-leaves">
+          <path d="M -1 195 C -19 190 -28 197 -24 205 C -16 208 -7 202 -1 196 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          <path d="M 0 188 C 19 183 28 189 25 197 C 18 201 7 195 0 190 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          <path d="M -1 170 C -17 163 -25 169 -21 177 C -14 180 -6 175 -1 171 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          <path d="M 0 163 C 16 156 23 162 21 170 C 15 173 6 168 0 164 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        </g>
+      `;
+
+      if (speciesKey === 'sunflower') {
+        stemPath = `M 0 215 Q -2 170 0 135`;
+        stemWidth = `3.6`;
+        leaves = `
+          <g class="plant-leaves">
+            <path d="M -1 185 C -28 172 -34 192 -20 202 C -8 204 -3 194 -1 187 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+            <path d="M 1 165 C 28 152 34 172 20 182 C 8 184 3 174 1 167 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+          </g>
+        `;
+      } else if (speciesKey === 'lavender') {
+        stemPath = `M 0 215 L 0 138`;
+        leaves = `
+          <g class="plant-leaves">
+            <line x1="0" y1="195" x2="-18" y2="188" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="0" y1="195" x2="18" y2="188" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="0" y1="175" x2="-20" y2="167" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="0" y1="175" x2="20" y2="167" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="0" y1="155" x2="-16" y2="148" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" />
+            <line x1="0" y1="155" x2="16" y2="148" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" />
+          </g>
+        `;
+      } else if (speciesKey === 'tulip') {
+        stemPath = `M 0 215 Q -1 180 0 148`;
+        leaves = `
+          <g class="plant-leaves">
+            <path d="M -2 215 C -26 195 -22 155 -12 142 C -15 165 -10 190 -2 210 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="2" />
+            <path d="M 2 215 C 26 195 22 155 12 142 C 15 165 10 190 2 210 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="2" />
+          </g>
+        `;
+      } else if (speciesKey === 'iris') {
+        stemPath = `M 0 215 L 0 135`;
+        leaves = `
+          <g class="plant-leaves">
+            <path d="M -4 215 L -14 130 L -8 150 L -2 215 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 4 215 L 14 125 L 8 145 L 2 215 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+        `;
+      } else if (speciesKey === 'bluebell') {
+        stemPath = `M 0 215 Q -3 175 0 145 Q 3 130 -6 128`;
+        leaves = `
+          <g class="plant-leaves">
+            <path d="M -4 215 C -24 200 -18 175 -8 165 C -12 185 -6 200 -2 215" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
+            <path d="M 4 215 C 24 200 18 175 8 165 C 12 185 6 200 2 215" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
+          </g>
+        `;
+      } else if (speciesKey === 'cosmos') {
+        leaves = `
+          <g class="plant-leaves">
+            <path d="M 0 185 Q -12 180 -22 172 M -12 180 L -18 168 M -16 176 L -20 184" stroke="var(--chalk-mint)" stroke-width="1.4" fill="none" />
+            <path d="M 0 168 Q 12 163 22 155 M 12 163 L 18 151 M 16 159 L 20 167" stroke="var(--chalk-mint)" stroke-width="1.4" fill="none" />
+          </g>
+        `;
+      }
+
+      return `
+        <path class="plant-soil-mound" d="M -18 215 Q 0 209 18 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
+        <path class="plant-stem" d="${stemPath}" stroke="var(--chalk-mint)" stroke-width="${stemWidth}" stroke-linecap="round" fill="none" />
+        ${leaves}
+        <text class="plant-stage-label" x="0" y="122" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-mint)" text-anchor="middle">Branching</text>
+      `;
+    }
+
+    // STAGE 3: SWELLING BUD
+    if (stage === 3) {
+      let budPath = '';
+      let stemD = `M 0 215 Q -2 165 0 118`;
+      let stemWidth = `2.6`;
+      let leaves = `
+        <g class="plant-leaves">
+          <path d="M -1 185 C -19 178 -27 188 -19 195 C -11 196 -5 190 -1 186 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          <path d="M 0 172 C 19 165 25 174 19 182 C 11 183 5 177 0 173 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        </g>
+      `;
+
+      if (speciesKey === 'lavender') {
+        stemD = `M 0 215 L 0 95`;
+        budPath = `
+          <g class="plant-bud">
+            <ellipse cx="0" cy="90" rx="3.5" ry="4.5" fill="rgba(179, 136, 255, 0.5)" stroke="#B388FF" stroke-width="1.6" />
+            <ellipse cx="0" cy="80" rx="3.2" ry="4.5" fill="rgba(179, 136, 255, 0.5)" stroke="#B388FF" stroke-width="1.6" />
+            <ellipse cx="0" cy="71" rx="2.8" ry="4" fill="rgba(179, 136, 255, 0.5)" stroke="#B388FF" stroke-width="1.6" />
+            <path d="M 0 65 L 0 58" stroke="#B388FF" stroke-width="2" stroke-linecap="round" />
+          </g>
+        `;
+      } else if (speciesKey === 'sunflower') {
+        stemD = `M 0 215 Q -2 150 0 88`;
+        stemWidth = `3.6`;
+        leaves = `
+          <g class="plant-leaves">
+            <path d="M -2 170 C -32 155 -40 176 -26 190 C -12 192 -5 180 -2 172 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
+            <path d="M 1 140 C 32 125 40 146 26 160 C 12 162 5 150 1 142 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
+          </g>
+        `;
+        budPath = `
+          <g class="plant-bud">
+            <circle cx="0" cy="84" r="10" fill="rgba(255, 209, 102, 0.3)" stroke="#FFD166" stroke-width="2" />
+            <path d="M -10 84 Q -16 76 -8 72 M 10 84 Q 16 76 8 72 M -6 94 Q -10 102 0 98 M 6 94 Q 10 102 0 98" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
+            <circle cx="0" cy="84" r="5" fill="#3D1E06" stroke="#FFD166" stroke-width="1" />
+          </g>
+        `;
+      } else if (speciesKey === 'tulip') {
+        stemD = `M 0 215 Q -1 165 0 112`;
+        leaves = `
+          <g class="plant-leaves">
+            <path d="M -2 215 C -28 190 -24 148 -14 135 C -16 160 -10 185 -2 210 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="2" />
+            <path d="M 2 215 C 28 190 24 148 14 135 C 16 160 10 185 2 210 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="2" />
+          </g>
+        `;
+        budPath = `
+          <g class="plant-bud">
+            <path d="M -6 112 C -12 98 -4 84 0 80 C 4 84 12 98 6 112 Z" fill="rgba(255, 92, 138, 0.4)" stroke="#FF5C8A" stroke-width="2.2" />
+            <path d="M 0 112 Q 0 96 0 80" stroke="#FAF0CA" stroke-width="1.2" fill="none" />
+          </g>
+        `;
+      } else if (speciesKey === 'bluebell') {
+        stemD = `M 0 215 Q -4 160 0 125 Q 4 100 -12 95`;
+        budPath = `
+          <g class="plant-bud">
+            <ellipse cx="-10" cy="102" rx="4" ry="6" transform="rotate(25 -10 102)" fill="rgba(67, 97, 238, 0.4)" stroke="#4361EE" stroke-width="2" />
+            <ellipse cx="-3" cy="112" rx="3.5" ry="5.5" transform="rotate(20 -3 112)" fill="rgba(67, 97, 238, 0.4)" stroke="#4361EE" stroke-width="2" />
+          </g>
+        `;
+      } else if (speciesKey === 'iris') {
+        stemD = `M 0 215 L 0 108`;
+        leaves = `
+          <g class="plant-leaves">
+            <path d="M -5 215 L -16 115 L -9 140 L -2 215 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 5 215 L 16 110 L 9 135 L 2 215 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+        `;
+        budPath = `
+          <g class="plant-bud">
+            <path d="M -5 108 C -8 92 0 76 0 72 C 0 76 8 92 5 108 Z" fill="rgba(114, 9, 183, 0.4)" stroke="#7209B7" stroke-width="2" />
+            <path d="M -4 108 Q -8 116 0 114 Q 8 116 4 108" stroke="var(--chalk-mint)" stroke-width="1.8" fill="none" />
+          </g>
+        `;
+      } else if (speciesKey === 'poppy') {
+        stemD = `M 0 215 Q 4 160 0 118 Q -4 105 -12 106`;
+        budPath = `
+          <g class="plant-bud">
+            <ellipse cx="-12" cy="112" rx="6" ry="7.5" fill="rgba(230, 57, 70, 0.35)" stroke="#E63946" stroke-width="2.2" />
+            <path d="M -12 105 Q -14 112 -12 119" stroke="#FAF0CA" stroke-width="1.2" fill="none" />
+            <path d="M -16 108 Q -10 106 -8 108" stroke="var(--chalk-mint)" stroke-width="1.8" fill="none" />
+          </g>
+        `;
+      } else {
+        budPath = `
+          <g class="plant-bud">
+            <path d="M -3 122 C -10 116 -9 107 -1 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
+            <path d="M 3 122 C 10 116 9 107 1 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
+            <path d="M 0 116 C -9 104 -5 92 0 86 C 5 92 9 104 0 116 Z" fill="rgba(239, 71, 111, 0.35)" stroke="#EF476F" stroke-width="2.2" />
+            <path d="M 0 108 Q 0 92 0 88" stroke="#FAF0CA" stroke-width="1" fill="none" opacity="0.8" />
+          </g>
+        `;
+      }
+
+      return `
+        <path class="plant-soil-mound" d="M -18 215 Q 0 209 18 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
+        <path class="plant-stem" d="${stemD}" stroke="var(--chalk-mint)" stroke-width="${stemWidth}" stroke-linecap="round" fill="none" />
+        ${leaves}
+        ${budPath}
+        <text class="plant-stage-label" x="0" y="78" font-family="'Kalam', cursive" font-size="10" fill="#EF476F" text-anchor="middle">Budding</text>
+      `;
+    }
+
+    // STAGE 4: FULL BLOOM
+    return this.renderMeadowFullBloom(speciesKey);
+  },
+
+  renderMeadowFullBloom(speciesKey) {
+    switch (speciesKey) {
+      // 1. DAISY: Round bright yellow centre surrounded by 16 long narrow white petals
+      case 'daisy': {
+        const petals = [];
+        for (let i = 0; i < 16; i++) {
+          const angle = i * 22.5;
+          petals.push(`<ellipse cx="0" cy="-18" rx="3.6" ry="10" transform="rotate(${angle} 0 0)" fill="#FFFFFF" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />`);
+        }
+        return `
+          <path class="plant-stem" d="M 0 215 Q -2 155 0 102" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M -1 175 C -18 168 -24 178 -16 185 C -9 186 -5 180 -1 176 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 0 155 C 18 148 24 158 16 165 C 9 166 5 160 0 156 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+          <g transform="translate(0, 96)">
+            <g class="plant-petals">
+              ${petals.join('\n')}
+            </g>
+            <g class="plant-bloom-core">
+              <circle cx="0" cy="0" r="9" fill="#FFD166" stroke="#FAF0CA" stroke-width="2" />
+              <circle cx="0" cy="0" r="5.5" fill="none" stroke="#B78103" stroke-width="1.2" stroke-dasharray="2,1.5" />
+            </g>
+          </g>
+          <g class="plant-sparkles">
+            <text x="-24" y="82" font-family="'Kalam', cursive" font-size="12" fill="#FAF0CA">✦</text>
+            <text x="22" y="86" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
+          </g>
+          <text class="plant-stage-label" x="0" y="62" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)" text-anchor="middle">Bloomed</text>
+        `;
+      }
+
+      // 2. LAVENDER: Tall narrow flower spike made of tiered small purple blossoms
+      case 'lavender': {
+        const tiers = [
+          { y: 52, rx: 5, ry: 4, c: '#B388FF' },
+          { y: 62, rx: 7.5, ry: 5, c: '#9D4EDD' },
+          { y: 73, rx: 9, ry: 5.5, c: '#7B2CBF' },
+          { y: 85, rx: 9.5, ry: 6, c: '#9D4EDD' },
+          { y: 98, rx: 9, ry: 6, c: '#7B2CBF' },
+          { y: 112, rx: 8, ry: 5.5, c: '#5A189A' }
+        ];
+        const spikeWhorls = tiers.map(t => `
+          <g transform="translate(0, ${t.y})">
+            <ellipse cx="-5" cy="0" rx="${t.rx * 0.5}" ry="${t.ry * 0.7}" fill="${t.c}" stroke="#FAF0CA" stroke-width="0.8" opacity="0.95" />
+            <ellipse cx="5" cy="0" rx="${t.rx * 0.5}" ry="${t.ry * 0.7}" fill="${t.c}" stroke="#FAF0CA" stroke-width="0.8" opacity="0.95" />
+            <ellipse cx="0" cy="-2" rx="${t.rx * 0.6}" ry="${t.ry * 0.7}" fill="${t.c}" stroke="#FAF0CA" stroke-width="0.9" opacity="0.95" />
+            <circle cx="0" cy="-1" r="1.5" fill="#FAF0CA" opacity="0.8" />
+          </g>
+        `).join('\n');
+
+        return `
+          <path class="plant-stem" d="M 0 215 L 0 52" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <line x1="0" y1="185" x2="-18" y2="175" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="0" y1="185" x2="18" y2="175" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="0" y1="165" x2="-22" y2="154" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="0" y1="165" x2="22" y2="154" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="0" y1="145" x2="-18" y2="136" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" />
+            <line x1="0" y1="145" x2="18" y2="136" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" />
+            <line x1="0" y1="128" x2="-14" y2="120" stroke="var(--chalk-mint)" stroke-width="1.6" stroke-linecap="round" />
+            <line x1="0" y1="128" x2="14" y2="120" stroke="var(--chalk-mint)" stroke-width="1.6" stroke-linecap="round" />
+          </g>
+          <g class="plant-petals">
+            ${spikeWhorls}
+          </g>
+          <g class="plant-bloom-core">
+            <path d="M 0 48 L 0 42" stroke="#FAF0CA" stroke-width="1.8" stroke-linecap="round" />
+            <circle cx="0" cy="42" r="2.2" fill="#FAF0CA" />
+          </g>
+          <g class="plant-sparkles">
+            <text x="-18" y="44" font-family="'Kalam', cursive" font-size="12" fill="#B388FF">✦</text>
+            <text x="16" y="58" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
+          </g>
+          <text class="plant-stage-label" x="0" y="28" font-family="'Kalam', cursive" font-size="10" fill="#B388FF" text-anchor="middle">Bloomed</text>
+        `;
+      }
+
+      // 3. POPPY: Four broad, delicate papery petals with a dark centre on nodding graceful stem
+      case 'poppy': {
+        return `
+          <path class="plant-stem" d="M 0 215 Q 5 155 0 92" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 0 175 Q -14 165 -22 170 Q -18 160 -26 155 Q -14 156 0 165" stroke="var(--chalk-mint)" stroke-width="1.8" fill="rgba(6, 214, 160, 0.2)" />
+            <path d="M 0 150 Q 14 140 22 145 Q 18 135 26 130 Q 14 132 0 142" stroke="var(--chalk-mint)" stroke-width="1.8" fill="rgba(6, 214, 160, 0.2)" />
+          </g>
+          <g transform="translate(0, 88)">
+            <g class="plant-petals">
+              <path d="M 0 0 C -22 -6 -28 -28 0 -26 C 28 -28 22 -6 0 0 Z" fill="#E63946" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M 0 0 C -32 -10 -34 16 -12 20 C -2 14 0 6 0 0 Z" fill="#D90429" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M 0 0 C 32 -10 34 16 12 20 C 2 14 0 6 0 0 Z" fill="#D90429" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M 0 0 C -18 18 -10 26 0 26 C 10 26 18 18 0 0 Z" fill="#FF4D6D" opacity="0.92" stroke="#FAF0CA" stroke-width="1.2" />
+            </g>
+            <g class="plant-bloom-core">
+              <circle cx="0" cy="0" r="8" fill="#1D1E2C" stroke="#FAF0CA" stroke-width="1.4" />
+              <circle cx="0" cy="0" r="12" fill="none" stroke="#FAF0CA" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.85" />
+              <path d="M -4 -4 L 4 4 M -4 4 L 4 -4 M 0 -5 L 0 5 M -5 0 L 5 0" stroke="#FAF0CA" stroke-width="1" />
+            </g>
+          </g>
+          <g class="plant-sparkles">
+            <text x="-26" y="68" font-family="'Kalam', cursive" font-size="12" fill="#FF4D6D">✦</text>
+            <text x="24" y="74" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
+          </g>
+          <text class="plant-stage-label" x="0" y="48" font-family="'Kalam', cursive" font-size="10" fill="#E63946" text-anchor="middle">Bloomed</text>
+        `;
+      }
+
+      // 4. TULIP: Cup-shaped flower with upright petals and broad smooth clasping leaves
+      case 'tulip': {
+        return `
+          <path class="plant-stem" d="M 0 215 Q -1 160 0 96" stroke="var(--chalk-mint)" stroke-width="3" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M -2 215 C -34 185 -26 130 -14 112 C -18 145 -10 180 -2 210 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2.2" />
+            <path d="M 2 215 C 34 185 26 130 14 112 C 18 145 10 180 2 210 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2.2" />
+          </g>
+          <g transform="translate(0, 92)">
+            <g class="plant-petals">
+              <path d="M -16 6 C -22 -14 -12 -34 0 -36 C 12 -34 22 -14 16 6 Z" fill="#F72585" opacity="0.9" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M -16 6 C -20 -10 -16 -28 -6 -32 C -2 -14 -4 0 0 6 Z" fill="#FF5C8A" opacity="0.95" stroke="#FAF0CA" stroke-width="1.4" />
+              <path d="M 16 6 C 20 -10 16 -28 6 -32 C 2 -14 4 0 0 6 Z" fill="#FF5C8A" opacity="0.95" stroke="#FAF0CA" stroke-width="1.4" />
+              <path d="M -9 6 C -10 -12 -5 -30 0 -34 C 5 -30 10 -12 9 6 Z" fill="#FF85A1" opacity="0.95" stroke="#FAF0CA" stroke-width="1.4" />
+            </g>
+            <g class="plant-bloom-core">
+              <path d="M 0 0 L 0 -16" stroke="#FAF0CA" stroke-width="1.6" stroke-linecap="round" />
+              <circle cx="0" cy="-16" r="2" fill="var(--chalk-amber)" />
+            </g>
+          </g>
+          <g class="plant-sparkles">
+            <text x="-22" y="60" font-family="'Kalam', cursive" font-size="12" fill="#FF85A1">✦</text>
+            <text x="20" y="64" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
+          </g>
+          <text class="plant-stage-label" x="0" y="44" font-family="'Kalam', cursive" font-size="10" fill="#FF5C8A" text-anchor="middle">Bloomed</text>
+        `;
+      }
+
+      // 5. COSMOS: Wide, slightly separated petals with 3-notched tips & feathery dill leaves
+      case 'cosmos': {
+        const petals = [];
+        for (let i = 0; i < 8; i++) {
+          const angle = i * 45;
+          petals.push(`
+            <g transform="rotate(${angle} 0 0)">
+              <path d="M -5 -6 C -8 -16 -6 -24 0 -26 C 6 -24 8 -16 5 -6 Z" fill="#E07A5F" opacity="0.95" stroke="#FAF0CA" stroke-width="1" />
+              <path d="M -3 -25 L -2 -28 L 0 -26 L 2 -28 L 3 -25" stroke="#FAF0CA" stroke-width="1" fill="none" />
+            </g>
+          `);
+        }
+        return `
+          <path class="plant-stem" d="M 0 215 Q -2 155 0 98" stroke="var(--chalk-mint)" stroke-width="2.4" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 0 180 Q -14 175 -24 165 M -12 175 L -18 160 M -18 170 L -22 180" stroke="var(--chalk-mint)" stroke-width="1.5" fill="none" />
+            <path d="M 0 160 Q 14 155 24 145 M 12 155 L 18 140 M 18 150 L 22 160" stroke="var(--chalk-mint)" stroke-width="1.5" fill="none" />
+          </g>
+          <g transform="translate(0, 94)">
+            <g class="plant-petals">
+              ${petals.join('\n')}
+            </g>
+            <g class="plant-bloom-core">
+              <circle cx="0" cy="0" r="7.5" fill="#4A2E1B" stroke="#FAF0CA" stroke-width="1.4" />
+              <circle cx="0" cy="0" r="4" fill="var(--chalk-amber)" stroke="#FAF0CA" stroke-width="0.8" />
+            </g>
+          </g>
+          <g class="plant-sparkles">
+            <text x="-24" y="74" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
+            <text x="22" y="78" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
+          </g>
+          <text class="plant-stage-label" x="0" y="54" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)" text-anchor="middle">Bloomed</text>
+        `;
+      }
+
+      // 6. SUNFLOWER: Massive dark centre surrounded by 24 golden ray petals, thick stem, heart leaves
+      case 'sunflower': {
+        const petals = [];
+        for (let i = 0; i < 24; i++) {
+          const angle = i * 15;
+          petals.push(`<ellipse cx="0" cy="-24" rx="4.8" ry="11" transform="rotate(${angle} 0 0)" fill="#FFD166" opacity="0.95" stroke="#FFB703" stroke-width="1.2" />`);
+        }
+        return `
+          <path class="plant-stem" d="M 0 215 Q -3 130 0 56" stroke="var(--chalk-mint)" stroke-width="4.2" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M -3 172 C -38 155 -48 180 -30 196 C -14 198 -6 184 -3 174 Z" fill="rgba(6, 214, 160, 0.26)" stroke="var(--chalk-mint)" stroke-width="2.4" />
+            <path d="M -3 174 Q -22 178 -30 194" stroke="var(--chalk-mint)" stroke-width="1.2" fill="none" />
+            <path d="M 2 136 C 38 118 48 142 30 158 C 14 160 6 146 2 138 Z" fill="rgba(6, 214, 160, 0.26)" stroke="var(--chalk-mint)" stroke-width="2.4" />
+            <path d="M 2 138 Q 22 142 30 156" stroke="var(--chalk-mint)" stroke-width="1.2" fill="none" />
+          </g>
+          <g transform="translate(0, 52)">
+            <g class="plant-petals">
+              ${petals.join('\n')}
+            </g>
+            <g class="plant-bloom-core">
+              <circle cx="0" cy="0" r="14.5" fill="#2E1D0E" stroke="#FFD166" stroke-width="2.4" />
+              <circle cx="0" cy="0" r="10.5" fill="none" stroke="#FAF0CA" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.8" />
+              <circle cx="0" cy="0" r="6.5" fill="none" stroke="#FFD166" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.8" />
+              <circle cx="0" cy="0" r="2.8" fill="#FAF0CA" />
+            </g>
+          </g>
+          <g class="plant-sparkles">
+            <text x="-38" y="44" font-family="'Kalam', cursive" font-size="14" fill="var(--chalk-amber)">✦</text>
+            <text x="36" y="48" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
+            <text x="20" y="24" font-family="'Kalam', cursive" font-size="14" fill="#FAF0CA">✦</text>
+          </g>
+          <text class="plant-stage-label" x="0" y="18" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)" text-anchor="middle">Bloomed</text>
+        `;
+      }
+
+      // 7. BLUEBELL: Several downward-facing bell-shaped flowers along a curved nodding stem
+      case 'bluebell': {
+        return `
+          <path class="plant-stem" d="M 0 215 Q -4 160 0 125 Q 4 92 -16 88" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M -4 215 C -26 195 -20 165 -10 150 C -14 175 -8 198 -2 215" stroke="var(--chalk-mint)" stroke-width="2.2" fill="none" />
+            <path d="M 4 215 C 26 195 20 165 10 150 C 14 175 8 198 2 215" stroke="var(--chalk-mint)" stroke-width="2.2" fill="none" />
+          </g>
+          <g class="plant-petals">
+            <g transform="translate(-16, 88) rotate(30)">
+              <path d="M 0 0 C -6 6 -8 16 -10 20 C -4 18 0 18 2 20 C 0 16 -2 6 0 0 Z" fill="#4361EE" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M -10 20 Q -6 17 -4 21 Q -2 18 2 20" stroke="#FAF0CA" stroke-width="1.2" fill="none" />
+            </g>
+            <g transform="translate(-8, 98) rotate(22)">
+              <path d="M 0 0 C -7 8 -10 18 -12 24 C -5 22 0 22 3 24 C 0 18 -3 8 0 0 Z" fill="#3A0CA3" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M -12 24 Q -7 20 -4 25 Q -1 21 3 24" stroke="#FAF0CA" stroke-width="1.2" fill="none" />
+            </g>
+            <g transform="translate(0, 114) rotate(15)">
+              <path d="M 0 0 C -8 8 -11 20 -13 26 C -6 24 0 24 3 26 C 0 20 -4 8 0 0 Z" fill="#4361EE" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M -13 26 Q -8 22 -4 27 Q 0 23 3 26" stroke="#FAF0CA" stroke-width="1.2" fill="none" />
+            </g>
+            <g transform="translate(2, 132) rotate(10)">
+              <path d="M 0 0 C -7 7 -10 18 -11 23 C -5 21 0 21 3 23 C 0 18 -3 7 0 0 Z" fill="#4CC9F0" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M -11 23 Q -6 20 -3 24 Q 0 20 3 23" stroke="#FAF0CA" stroke-width="1.2" fill="none" />
+            </g>
+          </g>
+          <g class="plant-bloom-core">
+            <circle cx="-16" cy="88" r="2.5" fill="#FAF0CA" />
+          </g>
+          <g class="plant-sparkles">
+            <text x="-26" y="74" font-family="'Kalam', cursive" font-size="12" fill="#4CC9F0">✦</text>
+            <text x="18" y="94" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
+          </g>
+          <text class="plant-stage-label" x="0" y="66" font-family="'Kalam', cursive" font-size="10" fill="#4361EE" text-anchor="middle">Bloomed</text>
+        `;
+      }
+
+      // 8. IRIS: Large layered petals with distinct upright standards & drooping falls with golden beard
+      case 'iris': {
+        return `
+          <path class="plant-stem" d="M 0 215 L 0 85" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M -6 215 L -20 100 L -12 125 L -2 215 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="2" />
+            <path d="M 6 215 L 20 95 L 12 120 L 2 215 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="2" />
+          </g>
+          <g transform="translate(0, 80)">
+            <g class="plant-petals">
+              <path d="M 0 -4 C -8 -16 -12 -34 0 -40 C 12 -34 8 -16 0 -4 Z" fill="#9D4EDD" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M -3 -4 C -18 -14 -24 -28 -12 -34 C -4 -24 0 -12 -3 -4 Z" fill="#7209B7" opacity="0.9" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M 3 -4 C 18 -14 24 -28 12 -34 C 4 -24 0 -12 3 -4 Z" fill="#7209B7" opacity="0.9" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M 0 0 C -14 6 -24 24 -16 32 C -8 26 -2 14 0 0 Z" fill="#560BAD" opacity="0.95" stroke="#FAF0CA" stroke-width="1.4" />
+              <path d="M 0 0 C 14 6 24 24 16 32 C 8 26 2 14 0 0 Z" fill="#560BAD" opacity="0.95" stroke="#FAF0CA" stroke-width="1.4" />
+              <path d="M 0 0 C -6 12 -8 30 0 36 C 8 30 6 12 0 0 Z" fill="#3F37C9" opacity="0.95" stroke="#FAF0CA" stroke-width="1.4" />
+            </g>
+            <g class="plant-bloom-core">
+              <path d="M 0 4 L 0 20" stroke="#FFD166" stroke-width="2.6" stroke-linecap="round" />
+              <path d="M -6 6 L -10 18" stroke="#FFD166" stroke-width="2" stroke-linecap="round" />
+              <path d="M 6 6 L 10 18" stroke="#FFD166" stroke-width="2" stroke-linecap="round" />
+              <circle cx="0" cy="0" r="4" fill="#FAF0CA" />
+            </g>
+          </g>
+          <g class="plant-sparkles">
+            <text x="-26" y="44" font-family="'Kalam', cursive" font-size="13" fill="#B388FF">✦</text>
+            <text x="24" y="50" font-family="'Kalam', cursive" font-size="11" fill="var(--chalk-amber)">✦</text>
+          </g>
+          <text class="plant-stage-label" x="0" y="28" font-family="'Kalam', cursive" font-size="10" fill="#9D4EDD" text-anchor="middle">Bloomed</text>
+        `;
+      }
+
+      // 9. FORGET-ME-NOT: Multi-floret spray of tiny 5-petalled sky-blue flowers with yellow eyes
+      case 'forget-me-not': {
+        const florets = [
+          { x: 0, y: 82, r: 8.5 },
+          { x: -16, y: 96, r: 7.5 },
+          { x: 16, y: 92, r: 7.5 },
+          { x: -12, y: 114, r: 6.8 },
+          { x: 14, y: 110, r: 6.8 },
+          { x: 0, y: 126, r: 6.5 }
+        ];
+
+        const floretSVG = florets.map(f => {
+          const petals = [];
+          for (let i = 0; i < 5; i++) {
+            const angle = i * 72;
+            petals.push(`<ellipse cx="0" cy="-${f.r * 0.7}" rx="${f.r * 0.42}" ry="${f.r * 0.48}" transform="rotate(${angle} 0 0)" fill="#48CAE4" stroke="#FAF0CA" stroke-width="0.8" opacity="0.95" />`);
+          }
+          return `
+            <g transform="translate(${f.x}, ${f.y})">
+              ${petals.join('\n')}
+              <circle cx="0" cy="0" r="${f.r * 0.28}" fill="#FFD166" stroke="#FAF0CA" stroke-width="0.8" />
+              <circle cx="0" cy="0" r="${f.r * 0.12}" fill="#FFFFFF" />
+            </g>
+          `;
+        }).join('\n');
+
+        return `
+          <path class="plant-stem" d="M 0 215 Q -1 165 0 82 M 0 135 Q -10 115 -16 96 M 0 130 Q 10 110 16 92 M -8 145 Q -12 125 -12 114 M 6 140 Q 12 122 14 110" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 0 185 Q -14 180 -20 174 M 0 170 Q 14 165 20 160" stroke="var(--chalk-mint)" stroke-width="1.8" fill="none" />
+          </g>
+          <g class="plant-petals">
+            ${floretSVG}
+          </g>
+          <g class="plant-bloom-core">
+            <circle cx="0" cy="82" r="1.5" fill="#FAF0CA" />
+          </g>
+          <g class="plant-sparkles">
+            <text x="-26" y="74" font-family="'Kalam', cursive" font-size="12" fill="#48CAE4">✦</text>
+            <text x="24" y="80" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
+          </g>
+          <text class="plant-stage-label" x="0" y="60" font-family="'Kalam', cursive" font-size="10" fill="#48CAE4" text-anchor="middle">Bloomed</text>
+        `;
+      }
+
+      // 10. CALENDULA: Multiple dense layers of narrow orange petals
+      case 'calendula': {
+        const outerPetals = [];
+        for (let i = 0; i < 18; i++) {
+          const angle = i * 20;
+          outerPetals.push(`<ellipse cx="0" cy="-18" rx="3.4" ry="9" transform="rotate(${angle} 0 0)" fill="#F77F00" opacity="0.95" stroke="#FAF0CA" stroke-width="0.8" />`);
+        }
+        const innerPetals = [];
+        for (let i = 0; i < 14; i++) {
+          const angle = i * 25.7 + 10;
+          innerPetals.push(`<ellipse cx="0" cy="-12" rx="2.8" ry="6.5" transform="rotate(${angle} 0 0)" fill="#FCBF49" opacity="0.98" stroke="#FAF0CA" stroke-width="0.6" />`);
+        }
+        return `
+          <path class="plant-stem" d="M 0 215 Q -2 155 0 96" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 0 175 C -18 168 -25 178 -18 186 C -10 188 -4 182 0 176 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 0 152 C 18 145 25 155 18 163 C 10 165 4 159 0 153 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+          <g transform="translate(0, 92)">
+            <g class="plant-petals">
+              ${outerPetals.join('\n')}
+              ${innerPetals.join('\n')}
+            </g>
+            <g class="plant-bloom-core">
+              <circle cx="0" cy="0" r="6.5" fill="#7F260F" stroke="#FAF0CA" stroke-width="1.2" />
+              <circle cx="0" cy="0" r="3" fill="#D62828" />
+            </g>
+          </g>
+          <g class="plant-sparkles">
+            <text x="-24" y="74" font-family="'Kalam', cursive" font-size="12" fill="#FCBF49">✦</text>
+            <text x="22" y="78" font-family="'Kalam', cursive" font-size="10" fill="#F77F00">✦</text>
+          </g>
+          <text class="plant-stage-label" x="0" y="56" font-family="'Kalam', cursive" font-size="10" fill="#F77F00" text-anchor="middle">Bloomed</text>
+        `;
+      }
+
+      // 11. CORNFLOWER: Pointed fringed blue petals & scaly pinecone cup (involucre)
+      case 'cornflower': {
+        const florets = [];
+        for (let i = 0; i < 12; i++) {
+          const angle = i * 30;
+          florets.push(`
+            <g transform="rotate(${angle} 0 0)">
+              <path d="M 0 0 L -4 -18 L -2 -24 L 0 -21 L 2 -24 L 4 -18 Z" fill="#0077B6" opacity="0.95" stroke="#FAF0CA" stroke-width="0.8" />
+            </g>
+          `);
+        }
+        return `
+          <path class="plant-stem" d="M 0 215 Q -2 150 0 86" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <line x1="0" y1="180" x2="-22" y2="168" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" />
+            <line x1="0" y1="155" x2="22" y2="144" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" />
+          </g>
+          <g transform="translate(0, 80)">
+            <path d="M -8 10 C -10 2 0 -2 0 -2 C 0 -2 10 2 8 10 C 6 16 -6 16 -8 10 Z" fill="#2B4C3F" stroke="#FAF0CA" stroke-width="1.2" />
+            <path d="M -6 4 L 6 4 M -5 8 L 5 8 M -3 12 L 3 12" stroke="#FAF0CA" stroke-width="0.8" opacity="0.75" />
+            <g class="plant-petals">
+              ${florets.join('\n')}
+            </g>
+            <g class="plant-bloom-core">
+              <circle cx="0" cy="0" r="6" fill="#1D3557" stroke="#FAF0CA" stroke-width="1.2" />
+              <circle cx="0" cy="0" r="3" fill="#48CAE4" />
+            </g>
+          </g>
+          <g class="plant-sparkles">
+            <text x="-24" y="60" font-family="'Kalam', cursive" font-size="12" fill="#48CAE4">✦</text>
+            <text x="22" y="66" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
+          </g>
+          <text class="plant-stage-label" x="0" y="44" font-family="'Kalam', cursive" font-size="10" fill="#0077B6" text-anchor="middle">Bloomed</text>
+        `;
+      }
+
+      // 12. ANEMONE: Broad petals surrounding contrasting dark centre with leafy collar
+      case 'anemone': {
+        const petals = [];
+        for (let i = 0; i < 6; i++) {
+          const angle = i * 60;
+          petals.push(`<ellipse cx="0" cy="-16" rx="10" ry="13" transform="rotate(${angle} 0 0)" fill="#F8F9FA" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />`);
+        }
+        return `
+          <path class="plant-stem" d="M 0 215 Q -2 155 0 94" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M -1 180 C -18 174 -24 182 -18 190 C -11 191 -5 186 -1 181 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 0 160 C 18 154 24 162 18 170 C 11 171 5 166 0 161 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+          <g transform="translate(0, 102)">
+            <path d="M 0 0 L -12 6 L -6 2 L -14 -2 L -6 -4 L 0 0" stroke="var(--chalk-mint)" stroke-width="1.6" fill="rgba(6, 214, 160, 0.25)" />
+            <path d="M 0 0 L 12 6 L 6 2 L 14 -2 L 6 -4 L 0 0" stroke="var(--chalk-mint)" stroke-width="1.6" fill="rgba(6, 214, 160, 0.25)" />
+          </g>
+          <g transform="translate(0, 90)">
+            <g class="plant-petals">
+              ${petals.join('\n')}
+            </g>
+            <g class="plant-bloom-core">
+              <circle cx="0" cy="0" r="12" fill="none" stroke="#FAF0CA" stroke-width="1" stroke-dasharray="2,1.5" />
+              <circle cx="0" cy="0" r="8.5" fill="#14171A" stroke="#FAF0CA" stroke-width="1.5" />
+              <circle cx="0" cy="0" r="3" fill="#3A0CA3" />
+            </g>
+          </g>
+          <g class="plant-sparkles">
+            <text x="-24" y="68" font-family="'Kalam', cursive" font-size="12" fill="#FAF0CA">✦</text>
+            <text x="22" y="72" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
+          </g>
+          <text class="plant-stage-label" x="0" y="52" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA" text-anchor="middle">Bloomed</text>
+        `;
+      }
+    }
+  },
+
+  // --------------------------------------------------------------------------
+  // STANDALONE ICON SVG (viewBox 0 0 100 100)
+  // For Nature Journal grid, Day Modal, and Dashboard Today's Flower Preview
+  // --------------------------------------------------------------------------
+  renderIconSVG(speciesKey, stage, size = 36, animClass = '', day = 1) {
+    let innerArtwork = '';
+
+    // STAGE 0: Resting Seed
+    if (stage === 0) {
+      innerArtwork = `
+        <path class="plant-soil-mound" d="M 15 78 Q 50 74 85 78" stroke="var(--border-chalk)" stroke-width="2" stroke-dasharray="4,3" fill="none" />
+        <path class="plant-soil-mound" d="M 25 82 Q 50 79 75 82" stroke="var(--border-chalk)" stroke-width="1.2" stroke-dasharray="2,4" fill="none" opacity="0.6" />
+        <circle cx="50" cy="56" r="14" class="plant-seed" fill="var(--bg-surface-elevated)" stroke="#FAF0CA" stroke-width="2.2" stroke-dasharray="20,1.5" />
+        <circle cx="50" cy="56" r="9" fill="none" stroke="var(--chalk-amber)" stroke-width="1" stroke-dasharray="3,2" opacity="0.7" />
+        <path d="M 50 70 Q 50 80 48 90" stroke="var(--chalk-amber)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+        <path d="M 50 74 Q 40 78 35 84" stroke="var(--chalk-amber)" stroke-width="1.8" stroke-linecap="round" fill="none" />
+        <path d="M 50 76 Q 60 80 65 85" stroke="var(--chalk-amber)" stroke-width="1.8" stroke-linecap="round" fill="none" />
+        <path d="M 56 46 Q 68 36 64 30 Q 52 34 52 44 Z" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+      `;
+    } else if (stage === 1) {
+      // STAGE 1: The Sprout
+      innerArtwork = `
+        <path class="plant-soil-mound" d="M 15 88 Q 50 86 85 88" stroke="var(--border-chalk)" stroke-width="1.5" stroke-dasharray="4,3" fill="none" />
+        <path class="plant-stem" d="M 50 88 Q 51 68 50 50" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+        <g class="plant-leaves">
+          <path d="M 50 50 C 34 46 26 52 30 60 C 36 64 44 58 50 52 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+          <path d="M 50 50 C 66 46 74 52 70 60 C 64 64 56 58 50 52 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+        </g>
+      `;
+    } else if (stage === 2) {
+      // STAGE 2: Branching Stem
+      let stemPath = `M 50 92 Q 48 66 50 36`;
+      let leaves = `
+        <g class="plant-leaves">
+          <path d="M 49 76 C 30 70 20 78 26 86 C 34 88 42 82 49 76 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          <path d="M 50 64 C 68 58 78 66 72 74 C 64 76 56 70 50 64 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          <path d="M 49 52 C 32 46 28 54 34 60 C 40 62 46 56 49 52 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        </g>
+      `;
+      if (speciesKey === 'lavender') {
+        leaves = `
+          <g class="plant-leaves">
+            <line x1="50" y1="78" x2="32" y2="72" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="50" y1="78" x2="68" y2="72" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="50" y1="62" x2="30" y2="56" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="50" y1="62" x2="70" y2="56" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+          </g>
+        `;
+      } else if (speciesKey === 'tulip') {
+        leaves = `
+          <g class="plant-leaves">
+            <path d="M 48 92 C 22 76 26 48 36 38 C 34 58 40 76 48 90 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+            <path d="M 52 92 C 78 76 74 48 64 38 C 66 58 60 76 52 90 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+          </g>
+        `;
+      } else if (speciesKey === 'iris') {
+        leaves = `
+          <g class="plant-leaves">
+            <path d="M 46 92 L 32 38 L 40 54 L 48 92 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 54 92 L 68 34 L 60 50 L 52 92 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+        `;
+      }
+      innerArtwork = `
+        <path class="plant-soil-mound" d="M 20 92 Q 50 90 80 92" stroke="var(--border-chalk)" stroke-width="1.5" fill="none" />
+        <path class="plant-stem" d="${stemPath}" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+        ${leaves}
+      `;
+    } else if (stage === 3) {
+      // STAGE 3: Swelling Bud
+      let budGroup = `
+        <g class="plant-bud" transform="translate(50, 32)">
+          <path d="M -5 0 Q 0 -6 5 0 Z" fill="var(--chalk-mint)" stroke="var(--chalk-mint)" stroke-width="1" />
+          <path d="M -5 0 C -10 -12 -6 -24 0 -28 C 4 -20 2 -8 0 0 Z" fill="var(--bg-surface-elevated)" stroke="#EF476F" stroke-width="1.8" />
+          <path d="M 5 0 C 10 -12 6 -24 0 -28 C -4 -20 -2 -8 0 0 Z" fill="var(--bg-surface-elevated)" stroke="#EF476F" stroke-width="1.8" />
+        </g>
+      `;
+      if (speciesKey === 'lavender') {
+        budGroup = `
+          <g class="plant-bud" transform="translate(50, 24)">
+            <ellipse cx="0" cy="18" rx="3.5" ry="4.5" fill="rgba(179, 136, 255, 0.6)" stroke="#B388FF" stroke-width="1.6" />
+            <ellipse cx="0" cy="9" rx="3.2" ry="4.5" fill="rgba(179, 136, 255, 0.6)" stroke="#B388FF" stroke-width="1.6" />
+            <ellipse cx="0" cy="0" rx="2.8" ry="4" fill="rgba(179, 136, 255, 0.6)" stroke="#B388FF" stroke-width="1.6" />
+          </g>
+        `;
+      } else if (speciesKey === 'tulip') {
+        budGroup = `
+          <g class="plant-bud" transform="translate(50, 26)">
+            <path d="M -8 16 C -14 4 -6 -12 0 -16 C 6 -12 14 4 8 16 Z" fill="rgba(255, 92, 138, 0.45)" stroke="#FF5C8A" stroke-width="2" />
+          </g>
+        `;
+      } else if (speciesKey === 'sunflower') {
+        budGroup = `
+          <g class="plant-bud" transform="translate(50, 26)">
+            <circle cx="0" cy="0" r="11" fill="rgba(255, 209, 102, 0.3)" stroke="#FFD166" stroke-width="2" />
+            <path d="M -11 0 Q -18 -8 -9 -12 M 11 0 Q 18 -8 9 -12 M -6 11 Q -11 20 0 16 M 6 11 Q 11 20 0 16" stroke="var(--chalk-mint)" stroke-width="1.8" fill="none" />
+            <circle cx="0" cy="0" r="5" fill="#3D1E06" stroke="#FFD166" stroke-width="1" />
+          </g>
+        `;
+      } else if (speciesKey === 'poppy') {
+        budGroup = `
+          <g class="plant-bud" transform="translate(42, 28)">
+            <ellipse cx="0" cy="0" rx="7" ry="8.5" fill="rgba(230, 57, 70, 0.4)" stroke="#E63946" stroke-width="2" />
+            <path d="M 0 -8 Q -3 0 0 8" stroke="#FAF0CA" stroke-width="1" fill="none" />
+          </g>
+        `;
+      }
+      innerArtwork = `
+        <path class="plant-soil-mound" d="M 22 92 Q 50 90 78 92" stroke="var(--border-chalk)" stroke-width="1.5" fill="none" />
+        <path class="plant-stem" d="M 50 92 Q 49 64 50 34" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+        <g class="plant-leaves">
+          <path d="M 49 70 C 28 62 20 50 36 54 C 44 56 48 64 49 70 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          <path d="M 50 58 C 72 48 80 38 64 44 C 56 46 52 52 50 58 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+        </g>
+        ${budGroup}
+      `;
+    } else {
+      // STAGE 4: Full Bloom
+      innerArtwork = this.renderIconFullBloom(speciesKey);
+    }
+
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
+        ${innerArtwork}
+      </svg>
+    `;
+  },
+
+  renderIconFullBloom(speciesKey) {
+    switch (speciesKey) {
+      // 1. DAISY
+      case 'daisy': {
+        const petals = [];
+        for (let i = 0; i < 16; i++) {
+          const angle = i * 22.5;
+          petals.push(`<ellipse cx="50" cy="22" rx="2.8" ry="8.5" transform="rotate(${angle} 50 36)" fill="#FFFFFF" opacity="0.95" stroke="#FAF0CA" stroke-width="1" />`);
+        }
+        return `
+          <path class="plant-stem" d="M 50 94 L 50 42" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 50 72 C 34 66 30 76 38 82 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 50 58 C 66 52 70 62 62 68 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+          <g class="plant-petals">
+            ${petals.join('\n')}
+          </g>
+          <g class="plant-bloom-core">
+            <circle cx="50" cy="36" r="7.5" fill="#FFD166" stroke="#FAF0CA" stroke-width="1.8" />
+            <circle cx="50" cy="36" r="4.5" fill="none" stroke="#B78103" stroke-width="1" stroke-dasharray="2,1" />
+          </g>
+          <g class="plant-sparkles">
+            <text x="24" y="24" font-family="'Kalam', cursive" font-size="12" fill="#FAF0CA">✦</text>
+            <text x="74" y="26" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
+          </g>
+        `;
+      }
+
+      // 2. LAVENDER
+      case 'lavender': {
+        const tiers = [
+          { y: 18, rx: 4, ry: 3.5, c: '#B388FF' },
+          { y: 25, rx: 6, ry: 4, c: '#9D4EDD' },
+          { y: 33, rx: 7.5, ry: 4.5, c: '#7B2CBF' },
+          { y: 42, rx: 8, ry: 4.8, c: '#9D4EDD' },
+          { y: 52, rx: 7.5, ry: 4.5, c: '#7B2CBF' }
+        ];
+        const spikeWhorls = tiers.map(t => `
+          <g transform="translate(50, ${t.y})">
+            <ellipse cx="-4" cy="0" rx="${t.rx * 0.5}" ry="${t.ry * 0.7}" fill="${t.c}" stroke="#FAF0CA" stroke-width="0.7" opacity="0.95" />
+            <ellipse cx="4" cy="0" rx="${t.rx * 0.5}" ry="${t.ry * 0.7}" fill="${t.c}" stroke="#FAF0CA" stroke-width="0.7" opacity="0.95" />
+            <ellipse cx="0" cy="-1.5" rx="${t.rx * 0.6}" ry="${t.ry * 0.7}" fill="${t.c}" stroke="#FAF0CA" stroke-width="0.8" opacity="0.95" />
+          </g>
+        `).join('\n');
+        return `
+          <path class="plant-stem" d="M 50 94 L 50 18" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <line x1="50" y1="80" x2="34" y2="74" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="50" y1="80" x2="66" y2="74" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="50" y1="66" x2="32" y2="60" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+            <line x1="50" y1="66" x2="68" y2="60" stroke="var(--chalk-mint)" stroke-width="2" stroke-linecap="round" />
+          </g>
+          <g class="plant-petals">
+            ${spikeWhorls}
+          </g>
+          <g class="plant-bloom-core">
+            <circle cx="50" cy="14" r="1.8" fill="#FAF0CA" />
+          </g>
+          <g class="plant-sparkles">
+            <text x="24" y="24" font-family="'Kalam', cursive" font-size="12" fill="#B388FF">✦</text>
+            <text x="74" y="28" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
+          </g>
+        `;
+      }
+
+      // 3. POPPY
+      case 'poppy': {
+        return `
+          <path class="plant-stem" d="M 50 94 Q 53 66 50 38" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 50 72 Q 36 64 30 70 Q 32 60 26 56 Q 36 58 50 66" stroke="var(--chalk-mint)" stroke-width="1.8" fill="rgba(6, 214, 160, 0.2)" />
+            <path d="M 50 56 Q 64 48 70 54 Q 68 44 74 40 Q 64 42 50 50" stroke="var(--chalk-mint)" stroke-width="1.8" fill="rgba(6, 214, 160, 0.2)" />
+          </g>
+          <g transform="translate(50, 34)">
+            <g class="plant-petals">
+              <path d="M 0 0 C -18 -5 -24 -22 0 -21 C 24 -22 18 -5 0 0 Z" fill="#E63946" opacity="0.95" stroke="#FAF0CA" stroke-width="1" />
+              <path d="M 0 0 C -26 -8 -28 13 -10 16 C -2 11 0 5 0 0 Z" fill="#D90429" opacity="0.95" stroke="#FAF0CA" stroke-width="1" />
+              <path d="M 0 0 C 26 -8 28 13 10 16 C 2 11 0 5 0 0 Z" fill="#D90429" opacity="0.95" stroke="#FAF0CA" stroke-width="1" />
+              <path d="M 0 0 C -14 14 -8 21 0 21 C 8 21 14 14 0 0 Z" fill="#FF4D6D" opacity="0.92" stroke="#FAF0CA" stroke-width="1" />
+            </g>
+            <g class="plant-bloom-core">
+              <circle cx="0" cy="0" r="6.5" fill="#1D1E2C" stroke="#FAF0CA" stroke-width="1.2" />
+              <circle cx="0" cy="0" r="10" fill="none" stroke="#FAF0CA" stroke-width="1" stroke-dasharray="2,2" opacity="0.8" />
+              <path d="M -3 -3 L 3 3 M -3 3 L 3 -3" stroke="#FAF0CA" stroke-width="0.9" />
+            </g>
+          </g>
+          <g class="plant-sparkles">
+            <text x="22" y="22" font-family="'Kalam', cursive" font-size="12" fill="#FF4D6D">✦</text>
+            <text x="76" y="24" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
+          </g>
+        `;
+      }
+
+      // 4. TULIP
+      case 'tulip': {
+        return `
+          <path class="plant-stem" d="M 50 94 Q 48 66 50 42" stroke="var(--chalk-mint)" stroke-width="3" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 48 94 C 20 74 24 38 34 26 C 30 52 38 78 48 90 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+            <path d="M 52 94 C 80 74 76 38 66 26 C 70 52 62 78 52 90 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
+          </g>
+          <g transform="translate(50, 38)">
+            <g class="plant-petals">
+              <path d="M -14 5 C -19 -11 -10 -28 0 -30 C 10 -28 19 -11 14 5 Z" fill="#F72585" opacity="0.9" stroke="#FAF0CA" stroke-width="1" />
+              <path d="M -14 5 C -17 -8 -13 -23 -5 -27 C -2 -11 -3 0 0 5 Z" fill="#FF5C8A" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M 14 5 C 17 -8 13 -23 5 -27 C 2 -11 3 0 0 5 Z" fill="#FF5C8A" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M -8 5 C -9 -10 -4 -25 0 -28 C 4 -25 9 -10 8 5 Z" fill="#FF85A1" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+            </g>
+            <g class="plant-bloom-core">
+              <path d="M 0 0 L 0 -13" stroke="#FAF0CA" stroke-width="1.4" stroke-linecap="round" />
+              <circle cx="0" cy="-13" r="1.6" fill="var(--chalk-amber)" />
+            </g>
+          </g>
+          <g class="plant-sparkles">
+            <text x="22" y="20" font-family="'Kalam', cursive" font-size="12" fill="#FF85A1">✦</text>
+            <text x="76" y="24" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
+          </g>
+        `;
+      }
+
+      // 5. COSMOS
+      case 'cosmos': {
+        const petals = [];
+        for (let i = 0; i < 8; i++) {
+          const angle = i * 45;
+          petals.push(`
+            <g transform="rotate(${angle} 50 34)">
+              <path d="M 46 29 C 43 21 45 15 50 13 C 55 15 57 21 54 29 Z" fill="#E07A5F" opacity="0.95" stroke="#FAF0CA" stroke-width="0.8" />
+              <path d="M 48 14 L 49 11 L 50 13 L 51 11 L 52 14" stroke="#FAF0CA" stroke-width="0.8" fill="none" />
+            </g>
+          `);
+        }
+        return `
+          <path class="plant-stem" d="M 50 94 Q 49 68 50 40" stroke="var(--chalk-mint)" stroke-width="2.4" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 50 74 Q 38 70 30 62 M 40 70 L 35 58 M 35 66 L 31 74" stroke="var(--chalk-mint)" stroke-width="1.4" fill="none" />
+            <path d="M 50 60 Q 62 56 70 48 M 60 56 L 65 44 M 65 52 L 69 60" stroke="var(--chalk-mint)" stroke-width="1.4" fill="none" />
+          </g>
+          <g class="plant-petals">
+            ${petals.join('\n')}
+          </g>
+          <g class="plant-bloom-core">
+            <circle cx="50" cy="34" r="6" fill="#4A2E1B" stroke="#FAF0CA" stroke-width="1.2" />
+            <circle cx="50" cy="34" r="3.2" fill="var(--chalk-amber)" stroke="#FAF0CA" stroke-width="0.7" />
           </g>
           <g class="plant-sparkles">
             <text x="24" y="24" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
             <text x="74" y="26" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
           </g>
-        </svg>
-      `;
-    } else if (variety === 1) {
-      // Variety B: Purple Wild Aster / Coneflower (Top flower in Image 1 & 2)
-      return `
-        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
-          <path class="plant-stem" d="M 50 96 Q 48 70 50 44" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+        `;
+      }
+
+      // 6. SUNFLOWER
+      case 'sunflower': {
+        const petals = [];
+        for (let i = 0; i < 20; i++) {
+          const angle = i * 18;
+          petals.push(`<ellipse cx="50" cy="11" rx="3.6" ry="9.5" transform="rotate(${angle} 50 28)" fill="#FFD166" opacity="0.95" stroke="#FFB703" stroke-width="1" />`);
+        }
+        return `
+          <path class="plant-stem" d="M 50 94 Q 48 60 50 34" stroke="var(--chalk-mint)" stroke-width="3.6" stroke-linecap="round" fill="none" />
           <g class="plant-leaves">
-            <path d="M 50 78 Q 28 68 20 54 Q 35 58 49 72" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M 50 62 Q 72 54 80 40 Q 64 48 50 56" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 48 74 C 22 62 16 80 28 90 C 38 92 45 82 48 76 Z" fill="rgba(6, 214, 160, 0.26)" stroke="var(--chalk-mint)" stroke-width="2" />
+            <path d="M 52 54 C 78 42 84 60 72 70 C 62 72 55 62 52 56 Z" fill="rgba(6, 214, 160, 0.26)" stroke="var(--chalk-mint)" stroke-width="2" />
           </g>
-          <g class="plant-petals" transform="translate(50, 26)">
-            <!-- Radiating Purple Chalk Petals -->
-            <path d="M 0 0 L -5 -22 L 0 -26 L 5 -22 Z" fill="#7E6B8F" stroke="#FAF0CA" stroke-width="0.6" />
-            <path d="M 0 0 L -18 -14 L -22 -8 L -14 -4 Z" fill="#6D597A" stroke="#FAF0CA" stroke-width="0.6" />
-            <path d="M 0 0 L 18 -14 L 22 -8 L 14 -4 Z" fill="#6D597A" stroke="#FAF0CA" stroke-width="0.6" />
-            <path d="M 0 0 L -22 6 L -20 14 L -10 10 Z" fill="#B5838D" stroke="#FAF0CA" stroke-width="0.6" />
-            <path d="M 0 0 L 22 6 L 20 14 L 10 10 Z" fill="#B5838D" stroke="#FAF0CA" stroke-width="0.6" />
-            <path d="M 0 0 L -8 20 L 0 24 L 8 20 Z" fill="#7E6B8F" stroke="#FAF0CA" stroke-width="0.6" />
+          <g class="plant-petals">
+            ${petals.join('\n')}
           </g>
-          <g class="plant-bloom-core" transform="translate(50, 26)">
-            <!-- Bright Yellow Stamen Core -->
-            <circle cx="0" cy="0" r="6" fill="var(--chalk-amber)" stroke="#FAF0CA" stroke-width="1" />
-            <circle cx="0" cy="0" r="2.5" fill="#5C381E" />
+          <g class="plant-bloom-core">
+            <circle cx="50" cy="28" r="10.5" fill="#2E1D0E" stroke="#FFD166" stroke-width="2" />
+            <circle cx="50" cy="28" r="7.5" fill="none" stroke="#FAF0CA" stroke-width="1" stroke-dasharray="2,2" opacity="0.8" />
+            <circle cx="50" cy="28" r="4.5" fill="none" stroke="#FFD166" stroke-width="1" stroke-dasharray="2,2" opacity="0.8" />
+            <circle cx="50" cy="28" r="2" fill="#FAF0CA" />
           </g>
           <g class="plant-sparkles">
-            <text x="22" y="22" font-family="'Kalam', cursive" font-size="12" fill="#B388FF">✦</text>
+            <text x="20" y="20" font-family="'Kalam', cursive" font-size="13" fill="var(--chalk-amber)">✦</text>
+            <text x="78" y="22" font-family="'Kalam', cursive" font-size="11" fill="var(--chalk-amber)">✦</text>
+          </g>
+        `;
+      }
+
+      // 7. BLUEBELL
+      case 'bluebell': {
+        return `
+          <path class="plant-stem" d="M 50 94 Q 48 64 50 40 Q 52 24 38 20" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 47 94 C 30 82 34 60 42 50" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
+            <path d="M 53 94 C 70 82 66 60 58 50" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
+          </g>
+          <g class="plant-petals">
+            <g transform="translate(38, 20) rotate(30)">
+              <path d="M 0 0 C -5 5 -6 12 -8 16 C -3 14 0 14 2 16 C 0 12 -2 5 0 0 Z" fill="#4361EE" opacity="0.95" stroke="#FAF0CA" stroke-width="1" />
+            </g>
+            <g transform="translate(44, 28) rotate(22)">
+              <path d="M 0 0 C -5 6 -7 14 -9 19 C -4 17 0 17 2 19 C 0 14 -2 6 0 0 Z" fill="#3A0CA3" opacity="0.95" stroke="#FAF0CA" stroke-width="1" />
+            </g>
+            <g transform="translate(50, 42) rotate(15)">
+              <path d="M 0 0 C -6 6 -8 15 -10 20 C -5 18 0 18 2 20 C 0 15 -3 6 0 0 Z" fill="#4361EE" opacity="0.95" stroke="#FAF0CA" stroke-width="1" />
+            </g>
+            <g transform="translate(52, 56) rotate(10)">
+              <path d="M 0 0 C -5 5 -7 13 -8 17 C -4 15 0 15 2 17 C 0 13 -2 5 0 0 Z" fill="#4CC9F0" opacity="0.95" stroke="#FAF0CA" stroke-width="1" />
+            </g>
+          </g>
+          <g class="plant-bloom-core">
+            <circle cx="38" cy="20" r="2" fill="#FAF0CA" />
+          </g>
+          <g class="plant-sparkles">
+            <text x="24" y="24" font-family="'Kalam', cursive" font-size="12" fill="#4CC9F0">✦</text>
+            <text x="74" y="26" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
+          </g>
+        `;
+      }
+
+      // 8. IRIS
+      case 'iris': {
+        return `
+          <path class="plant-stem" d="M 50 94 L 50 38" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 45 94 L 34 44 L 41 58 L 48 94 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 55 94 L 66 40 L 59 54 L 52 94 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+          <g transform="translate(50, 32)">
+            <g class="plant-petals">
+              <path d="M 0 -3 C -6 -12 -9 -26 0 -30 C 9 -26 6 -12 0 -3 Z" fill="#9D4EDD" opacity="0.95" stroke="#FAF0CA" stroke-width="1" />
+              <path d="M -2 -3 C -14 -10 -18 -20 -9 -24 C -3 -17 0 -9 -2 -3 Z" fill="#7209B7" opacity="0.9" stroke="#FAF0CA" stroke-width="1" />
+              <path d="M 2 -3 C 14 -10 18 -20 9 -24 C 3 -17 0 -9 2 -3 Z" fill="#7209B7" opacity="0.9" stroke="#FAF0CA" stroke-width="1" />
+              <path d="M 0 0 C -11 5 -18 18 -12 24 C -6 20 -2 11 0 0 Z" fill="#560BAD" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M 0 0 C 11 5 18 18 12 24 C 6 20 2 11 0 0 Z" fill="#560BAD" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+              <path d="M 0 0 C -5 9 -6 22 0 27 C 6 22 5 9 0 0 Z" fill="#3F37C9" opacity="0.95" stroke="#FAF0CA" stroke-width="1.2" />
+            </g>
+            <g class="plant-bloom-core">
+              <path d="M 0 3 L 0 15" stroke="#FFD166" stroke-width="2.2" stroke-linecap="round" />
+              <path d="M -5 5 L -8 14" stroke="#FFD166" stroke-width="1.6" stroke-linecap="round" />
+              <path d="M 5 5 L 8 14" stroke="#FFD166" stroke-width="1.6" stroke-linecap="round" />
+              <circle cx="0" cy="0" r="3" fill="#FAF0CA" />
+            </g>
+          </g>
+          <g class="plant-sparkles">
+            <text x="22" y="20" font-family="'Kalam', cursive" font-size="12" fill="#B388FF">✦</text>
             <text x="76" y="24" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
           </g>
-        </svg>
-      `;
-    } else if (variety === 2) {
-      // Variety C: Pure White Coneflower / Daisy (Bottom Right in Image 1)
-      return `
-        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
-          <path class="plant-stem" d="M 50 96 L 50 42" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-          <g class="plant-leaves">
-            <path d="M 50 75 Q 32 68 25 56 Q 38 58 49 68" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M 50 60 Q 68 52 75 40 Q 62 46 50 54" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          </g>
-          <g class="plant-petals" transform="translate(50, 26)">
-            <!-- Layered Pure White Chalk Petals -->
-            <path d="M 0 0 C -16 -6 -24 -20 -10 -24 C -2 -18 0 -8 0 0 Z" fill="#FFFFFF" opacity="0.95" stroke="#E8ECEF" stroke-width="0.8" />
-            <path d="M 0 0 C 16 -6 24 -20 10 -24 C 2 -18 0 -8 0 0 Z" fill="#FFFFFF" opacity="0.95" stroke="#E8ECEF" stroke-width="0.8" />
-            <path d="M 0 0 C -18 8 -24 0 -16 -10 C -8 -6 -2 -2 0 0 Z" fill="#FAF0CA" opacity="0.9" stroke="#E8ECEF" stroke-width="0.8" />
-            <path d="M 0 0 C 18 8 24 0 16 -10 C 8 -6 2 -2 0 0 Z" fill="#FAF0CA" opacity="0.9" stroke="#E8ECEF" stroke-width="0.8" />
-            <path d="M 0 0 C -10 18 0 22 8 16 C 6 8 2 2 0 0 Z" fill="#FFFFFF" opacity="0.95" />
-            <path d="M 0 0 C 10 18 0 22 -8 16 C -6 8 -2 2 0 0 Z" fill="#FFFFFF" opacity="0.95" />
-          </g>
-          <g class="plant-bloom-core" transform="translate(50, 26)">
-            <!-- Textured Chocolate Core -->
-            <circle cx="0" cy="0" r="6.5" fill="#4A2E1B" stroke="var(--chalk-amber)" stroke-width="1" stroke-dasharray="2,1" />
-          </g>
-          <g class="plant-sparkles">
-            <text x="24" y="20" font-family="'Kalam', cursive" font-size="12" fill="#FAF0CA">✦</text>
-            <text x="74" y="24" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
-          </g>
-        </svg>
-      `;
-    } else {
-      // Variety D: Drooping Golden Sunflower / Rudbeckia (Image 1 Left)
-      return `
-        <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="flower-chalk-svg ${animClass}">
-          <path class="plant-stem" d="M 50 96 Q 52 68 50 38" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-          <g class="plant-leaves">
-            <path d="M 50 72 Q 28 64 18 52 Q 35 54 49 65" fill="none" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          </g>
-          <g class="plant-petals" transform="translate(50, 24)">
-            <!-- Drooping Gold Petals Falling Downward -->
-            <path d="M 0 -4 C -8 10 -16 26 -6 28 C 0 20 2 8 0 -4 Z" fill="var(--chalk-amber)" stroke="#FAF0CA" stroke-width="0.6" />
-            <path d="M 0 -4 C 8 10 16 26 6 28 C 0 20 -2 8 0 -4 Z" fill="var(--chalk-amber)" stroke="#FAF0CA" stroke-width="0.6" />
-            <path d="M 0 -4 C -18 8 -26 22 -18 26 C -10 18 -4 6 0 -4 Z" fill="#F2CC8F" stroke="#FAF0CA" stroke-width="0.6" />
-            <path d="M 0 -4 C 18 8 26 22 18 26 C 10 18 4 6 0 -4 Z" fill="#F2CC8F" stroke="#FAF0CA" stroke-width="0.6" />
-            <path d="M 0 -4 C -2 14 0 28 2 28 C 4 20 2 8 0 -4 Z" fill="var(--chalk-amber)" stroke="#FAF0CA" stroke-width="0.6" />
-          </g>
-          <g class="plant-bloom-core" transform="translate(50, 24)">
-            <!-- High Dome Cone Core (Brown) -->
-            <path d="M -8 -4 C -8 -16 8 -16 8 -4 Z" fill="#5C381E" stroke="#FAF0CA" stroke-width="1" />
-          </g>
-          <g class="plant-sparkles">
-            <text x="22" y="18" font-family="'Kalam', cursive" font-size="13" fill="var(--chalk-amber)">✦</text>
-            <text x="76" y="20" font-family="'Kalam', cursive" font-size="11" fill="#FAF0CA">✦</text>
-          </g>
-        </svg>
-      `;
-    }
-  },
+        `;
+      }
 
-  // Dynamic selector for any growth stage (0 to 4)
-  getBotanicalSVG(stage, size = 36, day = 1, animClass = '') {
-    switch (stage) {
-      case 4: return this.renderFullBloom(size, day, animClass);
-      case 3: return this.renderSwellingBud(size, animClass);
-      case 2: return this.renderBranchingStem(size, animClass);
-      case 1: return this.renderFirstSprout(size, animClass);
-      case 0:
-      default: return this.renderRestingSeed(size, animClass);
+      // 9. FORGET-ME-NOT
+      case 'forget-me-not': {
+        const florets = [
+          { x: 50, y: 26, r: 6.5 },
+          { x: 38, y: 38, r: 5.8 },
+          { x: 62, y: 36, r: 5.8 },
+          { x: 42, y: 52, r: 5.2 },
+          { x: 58, y: 50, r: 5.2 }
+        ];
+        const floretSVG = florets.map(f => {
+          const petals = [];
+          for (let i = 0; i < 5; i++) {
+            const angle = i * 72;
+            petals.push(`<ellipse cx="0" cy="-${f.r * 0.7}" rx="${f.r * 0.42}" ry="${f.r * 0.48}" transform="rotate(${angle} 0 0)" fill="#48CAE4" stroke="#FAF0CA" stroke-width="0.7" opacity="0.95" />`);
+          }
+          return `
+            <g transform="translate(${f.x}, ${f.y})">
+              ${petals.join('\n')}
+              <circle cx="0" cy="0" r="${f.r * 0.28}" fill="#FFD166" stroke="#FAF0CA" stroke-width="0.7" />
+              <circle cx="0" cy="0" r="${f.r * 0.12}" fill="#FFFFFF" />
+            </g>
+          `;
+        }).join('\n');
+        return `
+          <path class="plant-stem" d="M 50 94 Q 49 60 50 26 M 50 68 Q 42 54 38 38 M 50 64 Q 58 52 62 36 M 46 72 Q 44 60 42 52 M 54 70 Q 56 60 58 50" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" fill="none" />
+          <g class="plant-petals">
+            ${floretSVG}
+          </g>
+          <g class="plant-sparkles">
+            <text x="24" y="24" font-family="'Kalam', cursive" font-size="12" fill="#48CAE4">✦</text>
+            <text x="74" y="26" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
+          </g>
+        `;
+      }
+
+      // 10. CALENDULA
+      case 'calendula': {
+        const outerPetals = [];
+        for (let i = 0; i < 18; i++) {
+          const angle = i * 20;
+          outerPetals.push(`<ellipse cx="50" cy="19" rx="2.8" ry="7.5" transform="rotate(${angle} 50 34)" fill="#F77F00" opacity="0.95" stroke="#FAF0CA" stroke-width="0.7" />`);
+        }
+        const innerPetals = [];
+        for (let i = 0; i < 14; i++) {
+          const angle = i * 25.7 + 10;
+          innerPetals.push(`<ellipse cx="50" cy="24" rx="2.2" ry="5.5" transform="rotate(${angle} 50 34)" fill="#FCBF49" opacity="0.98" stroke="#FAF0CA" stroke-width="0.5" />`);
+        }
+        return `
+          <path class="plant-stem" d="M 50 94 Q 49 66 50 38" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 50 72 C 34 66 30 76 38 82 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 50 56 C 66 50 70 60 62 66 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+          <g class="plant-petals">
+            ${outerPetals.join('\n')}
+            ${innerPetals.join('\n')}
+          </g>
+          <g class="plant-bloom-core">
+            <circle cx="50" cy="34" r="5.5" fill="#7F260F" stroke="#FAF0CA" stroke-width="1" />
+            <circle cx="50" cy="34" r="2.5" fill="#D62828" />
+          </g>
+          <g class="plant-sparkles">
+            <text x="24" y="24" font-family="'Kalam', cursive" font-size="12" fill="#FCBF49">✦</text>
+            <text x="74" y="26" font-family="'Kalam', cursive" font-size="10" fill="#F77F00">✦</text>
+          </g>
+        `;
+      }
+
+      // 11. CORNFLOWER
+      case 'cornflower': {
+        const florets = [];
+        for (let i = 0; i < 12; i++) {
+          const angle = i * 30;
+          florets.push(`
+            <g transform="rotate(${angle} 50 32)">
+              <path d="M 50 32 L 47 18 L 48 13 L 50 15 L 52 13 L 53 18 Z" fill="#0077B6" opacity="0.95" stroke="#FAF0CA" stroke-width="0.7" />
+            </g>
+          `);
+        }
+        return `
+          <path class="plant-stem" d="M 50 94 Q 49 66 50 36" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <line x1="50" y1="74" x2="32" y2="64" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" />
+            <line x1="50" y1="56" x2="68" y2="48" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" />
+          </g>
+          <g transform="translate(50, 32)">
+            <path d="M -6 8 C -8 2 0 -1 0 -1 C 0 -1 8 2 6 8 C 5 13 -5 13 -6 8 Z" fill="#2B4C3F" stroke="#FAF0CA" stroke-width="1" />
+            <path d="M -5 3 L 5 3 M -4 6 L 4 6" stroke="#FAF0CA" stroke-width="0.7" opacity="0.75" />
+          </g>
+          <g class="plant-petals">
+            ${florets.join('\n')}
+          </g>
+          <g class="plant-bloom-core">
+            <circle cx="50" cy="32" r="5" fill="#1D3557" stroke="#FAF0CA" stroke-width="1" />
+            <circle cx="50" cy="32" r="2.5" fill="#48CAE4" />
+          </g>
+          <g class="plant-sparkles">
+            <text x="24" y="24" font-family="'Kalam', cursive" font-size="12" fill="#48CAE4">✦</text>
+            <text x="74" y="26" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
+          </g>
+        `;
+      }
+
+      // 12. ANEMONE
+      case 'anemone': {
+        const petals = [];
+        for (let i = 0; i < 6; i++) {
+          const angle = i * 60;
+          petals.push(`<ellipse cx="50" cy="21" rx="8" ry="11" transform="rotate(${angle} 50 34)" fill="#F8F9FA" opacity="0.95" stroke="#FAF0CA" stroke-width="1" />`);
+        }
+        return `
+          <path class="plant-stem" d="M 50 94 Q 49 66 50 38" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
+          <g class="plant-leaves">
+            <path d="M 49 74 C 36 68 32 76 38 82 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+            <path d="M 50 60 C 64 54 68 62 62 68 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
+          </g>
+          <g transform="translate(50, 44)">
+            <path d="M 0 0 L -10 5 L -5 2 L -11 -2 L -5 -3 L 0 0" stroke="var(--chalk-mint)" stroke-width="1.4" fill="rgba(6, 214, 160, 0.25)" />
+            <path d="M 0 0 L 10 5 L 5 2 L 11 -2 L 5 -3 L 0 0" stroke="var(--chalk-mint)" stroke-width="1.4" fill="rgba(6, 214, 160, 0.25)" />
+          </g>
+          <g class="plant-petals">
+            ${petals.join('\n')}
+          </g>
+          <g class="plant-bloom-core">
+            <circle cx="50" cy="34" r="10" fill="none" stroke="#FAF0CA" stroke-width="0.9" stroke-dasharray="2,1.5" />
+            <circle cx="50" cy="34" r="6.8" fill="#14171A" stroke="#FAF0CA" stroke-width="1.3" />
+            <circle cx="50" cy="34" r="2.5" fill="#3A0CA3" />
+          </g>
+          <g class="plant-sparkles">
+            <text x="24" y="24" font-family="'Kalam', cursive" font-size="12" fill="#FAF0CA">✦</text>
+            <text x="74" y="26" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
+          </g>
+        `;
+      }
     }
   }
 };
+
+const ChalkBotanicals = {
+  renderRestingSeed(size = 36, animClass = '', day = 1, specimenName = '') {
+    const key = BotanicalSpeciesLibrary.resolveSpeciesKey(specimenName, day);
+    return BotanicalSpeciesLibrary.renderIconSVG(key, 0, size, animClass, day);
+  },
+
+  renderFirstSprout(size = 36, animClass = '', day = 1, specimenName = '') {
+    const key = BotanicalSpeciesLibrary.resolveSpeciesKey(specimenName, day);
+    return BotanicalSpeciesLibrary.renderIconSVG(key, 1, size, animClass, day);
+  },
+
+  renderBranchingStem(size = 38, animClass = '', day = 1, specimenName = '') {
+    const key = BotanicalSpeciesLibrary.resolveSpeciesKey(specimenName, day);
+    return BotanicalSpeciesLibrary.renderIconSVG(key, 2, size, animClass, day);
+  },
+
+  renderSwellingBud(size = 40, animClass = '', day = 1, specimenName = '') {
+    const key = BotanicalSpeciesLibrary.resolveSpeciesKey(specimenName, day);
+    return BotanicalSpeciesLibrary.renderIconSVG(key, 3, size, animClass, day);
+  },
+
+  renderFullBloom(size = 48, day = 1, animClass = '', specimenName = '') {
+    const key = BotanicalSpeciesLibrary.resolveSpeciesKey(specimenName, day);
+    return BotanicalSpeciesLibrary.renderIconSVG(key, 4, size, animClass, day);
+  },
+
+  getBotanicalSVG(stage, size = 36, day = 1, animClass = '', specimenName = '') {
+    const key = BotanicalSpeciesLibrary.resolveSpeciesKey(
+      specimenName || (typeof AppState !== 'undefined' && AppState?.gardenData?.[day]?.specimen) || (typeof BOTANICAL_SPECIMENS !== 'undefined' ? BOTANICAL_SPECIMENS[day - 1] : ''),
+      day
+    );
+    return BotanicalSpeciesLibrary.renderIconSVG(key, stage, size, animClass, day);
+  }
+};
+
 
 // ==========================================================================
 // 1.1 CHALK MASCOT & PANORAMIC BOTANICAL MEADOW ARTWORK (VECTOR CHALK CRAFT)
@@ -278,236 +1340,14 @@ const ChalkMascot = {
 const ChalkMeadowPanorama = {
   renderPlantStage(x, day, dayData, isToday, isFuture = false, animClass = '', animDelay = 0) {
     const stage = dayData ? (dayData.stage ?? 0) : 0;
-    const variety = day % 4;
-    let plantArtwork = '';
-
-    switch (stage) {
-      case 0: {
-        // STAGE 0: RESTING SEED / SOIL MOUND / SUBTLE SEED PLACEHOLDER
-        const whisperText = isFuture ? 'Seed' : 'Resting';
-        const whisperColor = isToday ? 'var(--chalk-amber)' : 'var(--text-muted)';
-        const whisperOpacity = isToday ? '0.9' : (isFuture ? '0.5' : '0.75');
-        const moundStroke = isFuture ? 'stroke-dasharray="3,2" opacity="0.65"' : '';
-        const seedOpacity = isFuture ? '0.45' : '0.65';
-        plantArtwork = `
-          <!-- Soil Mound (Dotted for Future Plots, Solid for Recorded Days) -->
-          <path class="plant-soil-mound" d="M -22 215 Q 0 206 22 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" ${moundStroke} />
-          <!-- Sleeping / Resting Chalk Seed in Soil (Settles organically on entrance) -->
-          <ellipse class="plant-seed" cx="0" cy="217" rx="4" ry="2.5" fill="#FAF0CA" opacity="${seedOpacity}" stroke="var(--chalk-amber)" stroke-width="1" />
-          <circle cx="-7" cy="218" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
-          <circle cx="8" cy="216" r="0.9" fill="var(--border-chalk)" opacity="0.5" />
-          <!-- Subtle resting chalk whisper -->
-          <text class="plant-stage-label" x="0" y="196" font-family="'Kalam', cursive" font-size="10" fill="${whisperColor}" text-anchor="middle" opacity="${whisperOpacity}">${whisperText}</text>
-        `;
-        break;
-      }
-
-      case 1: {
-        // STAGE 1: THE SPROUT (First green shoot emerging from soil)
-        plantArtwork = `
-          <!-- Soil Mound -->
-          <path class="plant-soil-mound" d="M -20 215 Q 0 207 20 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
-          <!-- Emerging Sprout Stem (Extends upward from soil line 0, 215) -->
-          <path class="plant-stem" d="M 0 215 Q 1 195 0 178" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-          <!-- Left & Right Cotyledon Leaves (Unfurl from shoot node) -->
-          <g class="plant-leaves">
-            <path d="M 0 178 C -14 173 -22 179 -19 187 C -14 191 -6 186 0 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
-            <path d="M 0 179 Q -9 182 -16 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
-            <path d="M 0 178 C 14 173 22 179 19 187 C 14 191 6 186 0 180 Z" fill="rgba(6, 214, 160, 0.25)" stroke="var(--chalk-mint)" stroke-width="2" />
-            <path d="M 0 179 Q 9 182 16 186" stroke="var(--chalk-mint)" stroke-width="1" fill="none" opacity="0.8" />
-          </g>
-          <text class="plant-stage-label" x="0" y="166" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-mint)" text-anchor="middle">Sprout</text>
-        `;
-        break;
-      }
-
-      case 2: {
-        // STAGE 2: BRANCHING STEM (Growing taller, multiple leaves unfolding)
-        plantArtwork = `
-          <!-- Soil Mound -->
-          <path class="plant-soil-mound" d="M -18 215 Q 0 209 18 215 Z" fill="var(--bg-surface-elevated)" stroke="var(--text-primary)" stroke-width="1.8" />
-          <!-- Main Stem growing to 145 -->
-          <path class="plant-stem" d="M 0 215 Q -2 180 0 145" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-          <!-- Branching Foliage Leaves (Unfurl outward) -->
-          <g class="plant-leaves">
-            <path d="M -1 195 C -19 190 -28 197 -24 205 C -16 208 -7 202 -1 196 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M 0 188 C 19 183 28 189 25 197 C 18 201 7 195 0 190 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M -1 170 C -17 163 -25 169 -21 177 C -14 180 -6 175 -1 171 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M 0 163 C 16 156 23 162 21 170 C 15 173 6 168 0 164 Z" fill="rgba(6, 214, 160, 0.22)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M 0 145 C -6 135 0 130 0 130 C 0 130 6 135 0 145 Z" fill="rgba(6, 214, 160, 0.28)" stroke="var(--chalk-mint)" stroke-width="1.6" />
-          </g>
-          <text class="plant-stage-label" x="0" y="122" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-mint)" text-anchor="middle">Branching</text>
-        `;
-        break;
-      }
-
-      case 3: {
-        // STAGE 3: SWELLING BUD (High stem, rich foliage, swelling floral teardrop bud)
-        plantArtwork = `
-          <!-- Main Stem growing to 118 -->
-          <path class="plant-stem" d="M 0 215 Q -2 165 0 118" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-          <!-- Foliage leaves -->
-          <g class="plant-leaves">
-            <path d="M -1 185 C -19 178 -27 188 -19 195 C -11 196 -5 190 -1 186 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M 0 172 C 19 165 25 174 19 182 C 11 183 5 177 0 173 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            <path d="M -1 150 C -17 142 -21 150 -15 156 C -8 157 -4 153 -1 151 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-          </g>
-          <!-- Green Sepals & Floral Bud with glowing chalk tip (Swells at apex) -->
-          <g class="plant-bud">
-            <path d="M -3 122 C -10 116 -9 107 -1 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
-            <path d="M 3 122 C 10 116 9 107 1 112" stroke="var(--chalk-mint)" stroke-width="2" fill="none" />
-            <path d="M 0 116 C -9 104 -5 92 0 86 C 5 92 9 104 0 116 Z" fill="rgba(239, 71, 111, 0.35)" stroke="#EF476F" stroke-width="2.2" />
-            <path d="M 0 108 Q 0 92 0 88" stroke="#FAF0CA" stroke-width="1" fill="none" opacity="0.8" />
-          </g>
-          <text class="plant-stage-label" x="0" y="78" font-family="'Kalam', cursive" font-size="10" fill="#EF476F" text-anchor="middle">Budding</text>
-        `;
-        break;
-      }
-
-      case 4:
-      default: {
-        // STAGE 4: FULL BLOOM (Magnificent chalk flower artwork tailored to variety)
-        if (variety === 0) {
-          // Coral Daisy / Cosmos (Center at 0, 100)
-          plantArtwork = `
-            <path class="plant-stem" d="M 0 215 Q -3 155 0 108" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-            <g class="plant-leaves">
-              <path d="M -1 175 C -19 168 -25 178 -17 184 C -10 184 -5 180 -1 176 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-              <path d="M 0 155 C 17 148 23 156 17 163 C 10 164 5 159 0 156 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            </g>
-            <g transform="translate(0, 100)">
-              <g class="plant-petals">
-                <ellipse cx="0" cy="-18" rx="4.5" ry="9" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-                <ellipse cx="11" cy="-14" rx="4.5" ry="9" transform="rotate(36 11 -14)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-                <ellipse cx="17" cy="-5" rx="4.5" ry="9" transform="rotate(72 17 -5)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-                <ellipse cx="15" cy="11" rx="4.5" ry="9" transform="rotate(108 15 11)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-                <ellipse cx="6" cy="17" rx="4.5" ry="9" transform="rotate(144 6 17)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-                <ellipse cx="-6" cy="17" rx="4.5" ry="9" transform="rotate(216 -6 17)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-                <ellipse cx="-15" cy="11" rx="4.5" ry="9" transform="rotate(252 -15 11)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-                <ellipse cx="-17" cy="-5" rx="4.5" ry="9" transform="rotate(288 -17 -5)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-                <ellipse cx="-11" cy="-14" rx="4.5" ry="9" transform="rotate(324 -11 -14)" fill="rgba(239, 71, 111, 0.38)" stroke="#EF476F" stroke-width="1.8" />
-              </g>
-              <g class="plant-bloom-core">
-                <circle cx="0" cy="0" r="8.5" fill="#FFD166" stroke="#FAF0CA" stroke-width="2.2" />
-                <circle cx="0" cy="0" r="5" fill="none" stroke="#181A1D" stroke-width="1" stroke-dasharray="2,2" opacity="0.6" />
-              </g>
-            </g>
-            <g class="plant-sparkles">
-              <text x="-22" y="88" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
-              <text x="20" y="92" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA">✦</text>
-            </g>
-            <text class="plant-stage-label" x="0" y="65" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)" text-anchor="middle">Bloomed</text>
-          `;
-        } else if (variety === 1) {
-          // Purple Wild Aster (Center at 0, 85)
-          plantArtwork = `
-            <path class="plant-stem" d="M 0 215 Q -2 150 0 95" stroke="var(--chalk-mint)" stroke-width="2.6" stroke-linecap="round" fill="none" />
-            <g class="plant-leaves">
-              <path d="M -1 180 Q -20 175 -28 168 M 0 172 Q -18 168 -22 158" stroke="var(--chalk-mint)" stroke-width="1.6" fill="none" />
-              <path d="M 1 165 Q 18 160 26 154 M 1 155 Q 17 150 22 142" stroke="var(--chalk-mint)" stroke-width="1.6" fill="none" />
-            </g>
-            <g transform="translate(0, 85)">
-              <g class="plant-petals">
-                <line x1="0" y1="0" x2="0" y2="-22" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="8" y2="-20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="16" y2="-15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="21" y2="-8" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="22" y2="0" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="21" y2="8" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="16" y2="15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="8" y2="20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="0" y2="22" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="-8" y2="20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="-16" y2="15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="-21" y2="8" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="-22" y2="0" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="-21" y2="-8" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="-16" y2="-15" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <line x1="0" y1="0" x2="-8" y2="-20" stroke="#B388FF" stroke-width="2.4" stroke-linecap="round" />
-                <circle cx="0" cy="0" r="12" fill="none" stroke="#D8B4FE" stroke-width="1.8" stroke-dasharray="3,2" />
-              </g>
-              <g class="plant-bloom-core">
-                <circle cx="0" cy="0" r="7.5" fill="#FFD166" stroke="#FAF0CA" stroke-width="2" />
-              </g>
-            </g>
-            <g class="plant-sparkles">
-              <text x="-22" y="74" font-family="'Kalam', cursive" font-size="12" fill="#B388FF">✦</text>
-              <text x="22" y="78" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
-            </g>
-            <text class="plant-stage-label" x="0" y="50" font-family="'Kalam', cursive" font-size="10" fill="#B388FF" text-anchor="middle">Bloomed</text>
-          `;
-        } else if (variety === 2) {
-          // White Coneflower (Center at 0, 80)
-          plantArtwork = `
-            <path class="plant-stem" d="M 0 215 Q -3 145 0 85" stroke="var(--chalk-mint)" stroke-width="2.8" stroke-linecap="round" fill="none" />
-            <g class="plant-leaves">
-              <path d="M -1 175 C -23 165 -31 178 -21 187 C -11 188 -5 181 -1 176 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-              <path d="M 0 150 C 21 140 29 152 21 161 C 12 162 6 155 0 151 Z" fill="rgba(6, 214, 160, 0.2)" stroke="var(--chalk-mint)" stroke-width="1.8" />
-            </g>
-            <g transform="translate(0, 80)">
-              <g class="plant-petals">
-                <path d="M -16 5 C -24 15 -22 36 -18 42 C -15 36 -12 20 -10 5 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
-                <path d="M -10 6 C -14 20 -12 40 -8 46 C -5 40 -4 22 -3 6 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
-                <path d="M -3 7 C -4 22 -3 42 0 48 C 3 42 4 22 3 7 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
-                <path d="M 3 6 C 4 22 5 40 8 46 C 12 40 14 20 10 6 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
-                <path d="M 10 5 C 12 20 15 36 18 42 C 22 36 24 15 16 5 Z" fill="rgba(250, 240, 202, 0.35)" stroke="#FAF0CA" stroke-width="1.8" />
-              </g>
-              <g class="plant-bloom-core">
-                <path d="M -14 5 C -14 -12 14 -12 14 5 Z" fill="#FFD166" stroke="#FAF0CA" stroke-width="2.2" />
-                <path d="M -10 0 L 10 0 M -8 -4 L 8 -4 M -5 -8 L 5 -8" stroke="#181A1D" stroke-width="1.2" opacity="0.65" />
-              </g>
-            </g>
-            <g class="plant-sparkles">
-              <text x="-20" y="66" font-family="'Kalam', cursive" font-size="12" fill="#FAF0CA">✦</text>
-              <text x="20" y="70" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)">✦</text>
-            </g>
-            <text class="plant-stage-label" x="0" y="52" font-family="'Kalam', cursive" font-size="10" fill="#FAF0CA" text-anchor="middle">Bloomed</text>
-          `;
-        } else {
-          // Golden Sunflower / Rudbeckia / Dahlia (Center at 0, 52)
-          plantArtwork = `
-            <path class="plant-stem" d="M 0 215 Q -3 125 0 58" stroke="var(--chalk-mint)" stroke-width="3.4" stroke-linecap="round" fill="none" />
-            <g class="plant-leaves">
-              <path d="M -2 170 C -35 155 -45 176 -29 190 C -13 192 -6 180 -2 172 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
-              <path d="M 1 138 C 35 122 47 144 30 158 C 13 160 5 148 1 140 Z" fill="rgba(6, 214, 160, 0.24)" stroke="var(--chalk-mint)" stroke-width="2.2" />
-            </g>
-            <g transform="translate(0, 52)">
-              <g class="plant-petals">
-                <ellipse cx="0" cy="-24" rx="5.5" ry="12" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="9" cy="-22" rx="5.5" ry="12" transform="rotate(22.5 9 -22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="17" cy="-17" rx="5.5" ry="12" transform="rotate(45 17 -17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="22" cy="-9" rx="5.5" ry="12" transform="rotate(67.5 22 -9)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="24" cy="0" rx="5.5" ry="12" transform="rotate(90 24 0)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="22" cy="9" rx="5.5" ry="12" transform="rotate(112.5 22 9)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="17" cy="17" rx="5.5" ry="12" transform="rotate(135 17 17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="9" cy="22" rx="5.5" ry="12" transform="rotate(157.5 9 22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="0" cy="24" rx="5.5" ry="12" transform="rotate(180 0 24)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="-9" cy="22" rx="5.5" ry="12" transform="rotate(202.5 -9 22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="-17" cy="17" rx="5.5" ry="12" transform="rotate(225 -17 17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="-22" cy="9" rx="5.5" ry="12" transform="rotate(247.5 -22 9)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="-24" cy="0" rx="5.5" ry="12" transform="rotate(270 -24 0)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="-22" cy="-9" rx="5.5" ry="12" transform="rotate(292.5 -22 -9)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="-17" cy="-17" rx="5.5" ry="12" transform="rotate(315 -17 -17)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-                <ellipse cx="-9" cy="-22" rx="5.5" ry="12" transform="rotate(337.5 -9 -22)" fill="rgba(255, 209, 102, 0.4)" stroke="#FFD166" stroke-width="2.2" />
-              </g>
-              <g class="plant-bloom-core">
-                <circle cx="0" cy="0" r="14" fill="#2E1D0E" stroke="#FFD166" stroke-width="2.4" />
-                <circle cx="0" cy="0" r="10" fill="none" stroke="#FAF0CA" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.8" />
-                <circle cx="0" cy="0" r="6" fill="none" stroke="#FFD166" stroke-width="1.2" stroke-dasharray="2,2" opacity="0.8" />
-                <circle cx="0" cy="0" r="2.5" fill="#FAF0CA" />
-              </g>
-            </g>
-            <g class="plant-sparkles">
-              <text x="-39" y="44" font-family="'Kalam', cursive" font-size="14" fill="var(--chalk-amber)">✦</text>
-              <text x="39" y="48" font-family="'Kalam', cursive" font-size="12" fill="var(--chalk-amber)">✦</text>
-              <text x="21" y="24" font-family="'Kalam', cursive" font-size="15" fill="#FAF0CA">✦</text>
-            </g>
-            <text class="plant-stage-label" x="0" y="20" font-family="'Kalam', cursive" font-size="10" fill="var(--chalk-amber)" text-anchor="middle">Bloomed</text>
-          `;
-        }
-        break;
-      }
-    }
+    const rawSpecimen = dayData?.specimen || (typeof BOTANICAL_SPECIMENS !== 'undefined' ? BOTANICAL_SPECIMENS[day - 1] : '');
+    const speciesKey = BotanicalSpeciesLibrary.resolveSpeciesKey(rawSpecimen, day);
+    const plantArtwork = BotanicalSpeciesLibrary.renderMeadowPlant(speciesKey, stage, {
+      isToday,
+      isFuture,
+      day,
+      specimenName: rawSpecimen
+    });
 
     const labelColor = isToday ? 'style="fill: var(--chalk-amber); font-weight:700;"' : (isFuture ? 'style="opacity: 0.55;"' : '');
     const underlineColor = isToday ? 'stroke="var(--chalk-amber)" stroke-width="2.2"' : (isFuture ? 'stroke="var(--border-chalk)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.45"' : 'stroke="var(--text-primary)" stroke-width="2" opacity="0.8"');
@@ -853,12 +1693,12 @@ function formatShortDate(dateStr) {
 const GROWTH_STAGE_NAMES = ['Resting Seed', 'The Sprout', 'Branching Stem', 'Swelling Bud', 'Full Bloom'];
 
 const BOTANICAL_SPECIMENS = [
-  'Sunburst Cosmos', 'Purple Wild Aster', 'Dormant Soil', 'White Coneflower', 'Golden Rudbeckia',
-  'Heather Blossom', 'Autumn Terracotta', 'Meadow Daisy', 'Winter Jasmine', 'Forget-Me-Not',
-  'Wild Poppy', 'Lavender Sprig', 'Chamomile', 'Coneflower', 'Sunburst Dahlia',
-  'Sweet William', 'Cosmos Petal', 'Pansy', 'Primrose', 'Anemone',
-  'Buttercup', 'Cornflower', 'Heather Blossom', 'Morning Glory', 'Foxglove Sprig',
-  'Zinnia', 'Lupine', 'Carnation Sprig', 'Hydrangea Florets', 'Hibiscus', 'Evening Primrose'
+  'Sunburst Cosmos', 'Blue Cornflower', 'Velvet Iris', 'English Daisy', 'Golden Sunflower',
+  'Wild Lavender', 'Sunset Calendula', 'Scarlet Poppy', 'Woodland Bluebell', 'Sky Forget-Me-Not',
+  'Crimson Tulip', 'French Anemone', 'Chamomile Daisy', 'Royal Iris', 'Giant Sunflower',
+  'Highland Lavender', 'Coral Cosmos', 'Fringed Cornflower', 'Golden Calendula', 'Flanders Poppy',
+  'Spring Bluebell', 'Alpine Forget-Me-Not', 'Dutch Tulip', 'White Anemone', 'Meadow Daisy',
+  'Purple Iris', 'Autumn Sunflower', 'Fragrant Lavender', 'Amber Cosmos', 'Cornflower Blue', 'Garden Tulip'
 ];
 const BOTANICAL_SPECIMENS_OCTOBER = BOTANICAL_SPECIMENS;
 
@@ -1901,7 +2741,7 @@ function renderDashboard() {
 
   const animClass = (activeStageEvolutionDay === TODAY_DAY_NUM && activeStageEvolutionClass) ? activeStageEvolutionClass : '';
   if (stagePill) stagePill.innerText = stageNames[currentStage];
-  if (flowerVisual) flowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 96, TODAY_DAY_NUM, animClass);
+  if (flowerVisual) flowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 96, TODAY_DAY_NUM, animClass, specimenName);
   if (specimenTitle) specimenTitle.innerText = `🌸 ${specimenName}`;
   if (quoteEl) quoteEl.innerText = stageQuotes[currentStage];
 
@@ -1977,7 +2817,7 @@ function renderDashboard() {
       card.title = `Click to inspect or rename ${plant.name}`;
       card.innerHTML = `
         <div class="dash-plant-svg-wrap">
-          ${ChalkBotanicals.getBotanicalSVG(4, 56, plant.day)}
+          ${ChalkBotanicals.getBotanicalSVG(4, 56, plant.day, '', plant.name)}
         </div>
         <div class="dash-plant-name chalk-font">${plant.name}</div>
         <div class="dash-plant-meta">${plant.tasks} tasks • ${plant.focus}m focus</div>
@@ -2809,7 +3649,14 @@ function initProgressGarden() {
       saveState();
       AudioEngine.playChalkScratch();
       if (saveBtn) emitDustParticles(saveBtn.getBoundingClientRect());
-      if (speciesTitle) speciesTitle.innerText = `🌸 ${newName}`;
+      if (speciesTitle) speciesTitle.innerText = '\uD83C\uDF38 ' + newName;
+      const modalFlowerVisual = document.getElementById('modal-flower-visual');
+      if (modalFlowerVisual) {
+        const curStage = GardenView.isCurrentMonth
+          ? (AppState.gardenData[day]?.stage ?? 0)
+          : (AppState.monthlyGardens?.[GardenView.monthKey]?.[day]?.stage ?? 0);
+        modalFlowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(curStage, 74, day, '', newName);
+      }
       if (renameBox) renameBox.style.display = 'none';
       showToast(`🌸 Renamed Day ${day}'s flower to "${newName}"!`);
       renderProgressGarden();
@@ -3077,7 +3924,7 @@ function renderProgressGarden() {
           <span class="day-num">${day < 10 ? '0' + day : day}</span>
           <span class="stage-tag stage-${currentStage} ${isToday ? 'today-tag' : ''} ${isFuture ? 'future-tag' : ''}">${stageTagText}</span>
         </div>
-        <div class="tile-artwork-svg">${ChalkBotanicals.getBotanicalSVG(currentStage, 34, day)}</div>
+        <div class="tile-artwork-svg">${ChalkBotanicals.getBotanicalSVG(currentStage, 34, day, '', dayData.specimen)}</div>
         <div class="tile-bottom chalk-font" title="${dayData.specimen}">${dayData.specimen}</div>
       `;
 
@@ -3134,7 +3981,7 @@ function openGardenDayModal(day, dayData, stageName = null) {
 
   if (speciesNameEl) speciesNameEl.innerText = `🌸 ${specimenName}`;
   if (dateTitleEl) dateTitleEl.innerText = `${GardenView.monthName} ${day}, ${GardenView.year}`;
-  if (flowerVisualEl) flowerVisualEl.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 74, day);
+  if (flowerVisualEl) flowerVisualEl.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 74, day, '', specimenName);
   if (growthStageEl) growthStageEl.innerText = currentStageName;
   if (tasksRatioEl) tasksRatioEl.innerText = tasksRatio;
   if (habitsRatioEl) habitsRatioEl.innerText = habitsRatio;
@@ -4589,7 +5436,7 @@ function updateGlobalGrowthMetrics() {
   const topStage = document.getElementById('top-growth-stage');
   const topMeta = document.getElementById('top-growth-meta');
   const finalStage = AppState.gardenData[TODAY_DAY_NUM].stage;
-  if (topIcon) topIcon.innerHTML = ChalkBotanicals.getBotanicalSVG(finalStage, 28, TODAY_DAY_NUM);
+  if (topIcon) topIcon.innerHTML = ChalkBotanicals.getBotanicalSVG(finalStage, 28, TODAY_DAY_NUM, '', AppState.gardenData[TODAY_DAY_NUM]?.specimen);
   if (topStage) topStage.innerText = stageNames[finalStage];
   if (topMeta) topMeta.innerText = `${completedCount} tasks • ${focusMins}m focus`;
 
