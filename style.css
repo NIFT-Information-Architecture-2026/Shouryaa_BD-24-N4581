@@ -2510,6 +2510,30 @@ body.theme-white-board .habit-graph-viewport-wrap {
   color: var(--text-muted);
 }
 
+.habit-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-reset-habits-today {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  padding: 5px 12px;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+}
+
+.btn-reset-habits-today:hover {
+  color: var(--chalk-amber);
+  border-color: var(--chalk-amber);
+  transform: translateY(-1px);
+}
+
 .habit-items-container {
   display: flex;
   flex-direction: column;

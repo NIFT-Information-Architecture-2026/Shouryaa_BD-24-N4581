@@ -1926,11 +1926,12 @@ const DEFAULT_STATE = {
       isExpanded: false
     }
   ],
+  lastHabitDate: TODAY_DATE,
   habits: [
-    { id: 'h-1', name: 'Drink 4 Liters Water', icon: '💧', type: 'COUNTER', current: 2, target: 4, unit: 'L', completions: Math.min(13, TODAY_DAY_NUM) },
-    { id: 'h-2', name: '30 Mins Design Reading', icon: '📖', type: 'COUNTER', current: 15, target: 30, unit: 'm', completions: Math.min(12, TODAY_DAY_NUM) },
-    { id: 'h-3', name: 'Morning Sketchbook Drill', icon: '🎨', type: 'CHECK', current: 1, target: 1, unit: '', completions: Math.min(11, TODAY_DAY_NUM) },
-    { id: 'h-4', name: 'Evening Walk / Rest', icon: '🌿', type: 'CHECK', current: 1, target: 1, unit: '', completions: Math.min(12, TODAY_DAY_NUM) }
+    { id: 'h-1', name: 'Drink 4 Liters Water', icon: '💧', type: 'COUNTER', current: 0, target: 4, unit: 'L', completions: Math.min(13, TODAY_DAY_NUM) },
+    { id: 'h-2', name: '30 Mins Design Reading', icon: '📖', type: 'COUNTER', current: 0, target: 30, unit: 'm', completions: Math.min(12, TODAY_DAY_NUM) },
+    { id: 'h-3', name: 'Morning Sketchbook Drill', icon: '🎨', type: 'CHECK', current: 0, target: 1, unit: '', completions: Math.min(11, TODAY_DAY_NUM) },
+    { id: 'h-4', name: 'Evening Walk / Rest', icon: '🌿', type: 'CHECK', current: 0, target: 1, unit: '', completions: Math.min(12, TODAY_DAY_NUM) }
   ],
   focusTimeLoggedToday: 0,
   focusSessions: [],
@@ -2000,6 +2001,7 @@ function loadState() {
       if (!parsed.gardenData) parsed.gardenData = {};
       if (!parsed.monthlyGardens) parsed.monthlyGardens = {};
       if (!parsed.habitHistory) parsed.habitHistory = {};
+      checkAndPerformDailyHabitReset(parsed);
       ensureHabitHistoryInitialized(parsed);
       
       // Ensure historical October 2026 garden is available for previous month navigation
@@ -2084,6 +2086,7 @@ function loadState() {
           migrated.gardenData[d].focus = 0;
         }
       }
+      checkAndPerformDailyHabitReset(migrated);
       ensureHabitHistoryInitialized(migrated);
       sanitizeFocusAndGrowthData(migrated);
       return migrated;
@@ -2293,6 +2296,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initProgressGarden();
   initHabitLedger();
   initDeepFocus();
+  initDailyRollover();
   updateGlobalGrowthMetrics();
   isSystemInitializing = false;
 });
@@ -2316,6 +2320,75 @@ function syncDateDisplays() {
   if (monthHeadingEl) {
     monthHeadingEl.innerText = `${CurrentDateInfo.monthName} ${CurrentDateInfo.year} — Botanical Wildflower Meadow`;
   }
+}
+
+function checkDailyRollover() {
+  const latestDateInfo = getLocalDateInfo();
+  if (latestDateInfo.dateStr === TODAY_DATE) {
+    return false;
+  }
+
+  // Day has changed!
+  CurrentDateInfo = latestDateInfo;
+  TODAY_DATE = latestDateInfo.dateStr;
+  TOMORROW_DATE = latestDateInfo.tomorrowStr;
+  THIS_WEEK_END_DATE = latestDateInfo.endOfWeekStr;
+  NEXT_WEEK_START_DATE = latestDateInfo.nextWeekStartStr;
+  NEXT_WEEK_END_DATE = latestDateInfo.endOfNextWeekStr;
+  TODAY_DAY_NUM = latestDateInfo.dayNum;
+
+  syncDateDisplays();
+
+  // 1. Process tasks carryovers for new date
+  if (AppState && AppState.tasks) {
+    AppState.tasks = processDateCarryOvers(AppState.tasks);
+  }
+
+  // 2. Perform daily habit reset for the new date
+  checkAndPerformDailyHabitReset(AppState);
+
+  // 3. Ensure today's botanical flower plot exists in gardenData
+  if (AppState && AppState.gardenData) {
+    if (!AppState.gardenData[TODAY_DAY_NUM]) {
+      AppState.gardenData[TODAY_DAY_NUM] = {
+        specimen: BOTANICAL_SPECIMENS[TODAY_DAY_NUM - 1] || 'Sunburst Dahlia',
+        tasks: 0,
+        planned: 0,
+        focus: 0,
+        stage: 0
+      };
+    }
+  }
+
+  // 4. Sanitize focus to reflect 0 completed minutes today
+  if (AppState) {
+    sanitizeFocusAndGrowthData(AppState);
+    saveState();
+  }
+
+  // 5. Refresh all visible surfaces
+  renderDashboard();
+  renderTodaySlate();
+  renderHabitLedger();
+  renderProgressGarden();
+  updateGlobalGrowthMetrics();
+
+  showToast('🌅 Good morning! Daily slate and habit trackers have refreshed.');
+  return true;
+}
+
+function initDailyRollover() {
+  setInterval(checkDailyRollover, 30000);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      checkDailyRollover();
+    }
+  });
+
+  window.addEventListener('focus', () => {
+    checkDailyRollover();
+  });
 }
 
 function updateUserGreeting() {
@@ -4007,7 +4080,105 @@ function openGardenDayModal(day, dayData, stageName = null) {
 // --------------------------------------------------------------------------
 let currentHabitGraphRange = 'weekly';
 
+function checkAndPerformDailyHabitReset(state, force = false) {
+  if (!state) return false;
+  if (!Array.isArray(state.habits)) state.habits = [];
+  if (!state.habitHistory) state.habitHistory = {};
+
+  const currentToday = (typeof getLocalDateInfo === 'function') ? getLocalDateInfo().dateStr : TODAY_DATE;
+
+  // Manual or forced reset: reset all active habits to 0 for today
+  if (force) {
+    state.lastHabitDate = currentToday;
+    if (!state.habitHistory[currentToday]) {
+      state.habitHistory[currentToday] = {};
+    }
+    state.habits.forEach(h => {
+      h.current = 0;
+      state.habitHistory[currentToday][h.id] = 0;
+    });
+    return true;
+  }
+
+  const lastRecordedDate = state.lastHabitDate;
+
+  // Case 1: First time running with lastHabitDate tracking (or state has no lastHabitDate yet)
+  if (!lastRecordedDate) {
+    state.lastHabitDate = currentToday;
+    if (!state.habitHistory[currentToday]) {
+      // First load today: initialize fresh with 0 progress for today
+      state.habitHistory[currentToday] = {};
+      state.habits.forEach(h => {
+        h.current = 0;
+        state.habitHistory[currentToday][h.id] = 0;
+      });
+      return true;
+    } else {
+      // Habit history exists for today; sync live habit values
+      state.habits.forEach(h => {
+        if (state.habitHistory[currentToday][h.id] !== undefined) {
+          h.current = state.habitHistory[currentToday][h.id];
+        } else {
+          h.current = 0;
+          state.habitHistory[currentToday][h.id] = 0;
+        }
+      });
+      return false;
+    }
+  }
+
+  // Case 2: New calendar day detected!
+  if (lastRecordedDate !== currentToday) {
+    // 1. Archive prior day's live values into history so past graphs & stats are preserved
+    if (!state.habitHistory[lastRecordedDate]) {
+      state.habitHistory[lastRecordedDate] = {};
+    }
+    state.habits.forEach(h => {
+      if (state.habitHistory[lastRecordedDate][h.id] === undefined) {
+        state.habitHistory[lastRecordedDate][h.id] = h.current !== undefined ? h.current : 0;
+      }
+    });
+
+    // 2. Roll over to new date and reset active habits to 0
+    state.lastHabitDate = currentToday;
+    if (!state.habitHistory[currentToday]) {
+      state.habitHistory[currentToday] = {};
+      state.habits.forEach(h => {
+        h.current = 0;
+        state.habitHistory[currentToday][h.id] = 0;
+      });
+    } else {
+      state.habits.forEach(h => {
+        if (state.habitHistory[currentToday][h.id] !== undefined) {
+          h.current = state.habitHistory[currentToday][h.id];
+        } else {
+          h.current = 0;
+          state.habitHistory[currentToday][h.id] = 0;
+        }
+      });
+    }
+    return true;
+  }
+
+  // Case 3: Same day - maintain synchronization
+  if (!state.habitHistory[currentToday]) {
+    state.habitHistory[currentToday] = {};
+  }
+  state.habits.forEach(h => {
+    if (state.habitHistory[currentToday][h.id] !== undefined) {
+      if (h.current === undefined) {
+        h.current = state.habitHistory[currentToday][h.id];
+      }
+    } else {
+      state.habitHistory[currentToday][h.id] = h.current !== undefined ? h.current : 0;
+    }
+  });
+
+  return false;
+}
+
 function ensureHabitHistoryInitialized(state) {
+  checkAndPerformDailyHabitReset(state);
   if (!state.habitHistory) state.habitHistory = {};
 
   // Guarantee Today is always recorded with live current values
@@ -4626,6 +4797,41 @@ function initHabitLedger() {
     });
   }
 
+  // Reset Habits Today Button
+  const resetHabitsTodayBtn = document.getElementById('btn-reset-habits-today');
+  if (resetHabitsTodayBtn) {
+    resetHabitsTodayBtn.addEventListener('click', () => {
+      AudioEngine.playChalkScratch();
+      checkAndPerformDailyHabitReset(AppState, true);
+      saveState();
+      renderHabitLedger();
+      renderDashboard();
+      showToast('↺ All habit routines for today have been reset to 0');
+    });
+  }
+
+  // Reset Single Habit Button in Edit Modal
+  const resetSingleHabitBtn = document.getElementById('btn-reset-single-habit');
+  if (resetSingleHabitBtn) {
+    resetSingleHabitBtn.addEventListener('click', () => {
+      const habitId = document.getElementById('edit-habit-id').value;
+      const h = (AppState.habits || []).find(item => item.id === habitId);
+      if (!h) return;
+
+      AudioEngine.playChalkScratch();
+      h.current = 0;
+      if (!AppState.habitHistory) AppState.habitHistory = {};
+      if (!AppState.habitHistory[TODAY_DATE]) AppState.habitHistory[TODAY_DATE] = {};
+      AppState.habitHistory[TODAY_DATE][h.id] = 0;
+
+      saveState();
+      renderHabitLedger();
+      renderDashboard();
+      if (editModal) editModal.style.display = 'none';
+      showToast(`↺ Reset today's progress for "${h.name}" to 0`);
+    });
+  }
+
   if (deleteHabitBtn) {
     deleteHabitBtn.addEventListener('click', () => {
       const habitId = document.getElementById('edit-habit-id').value;
@@ -4669,6 +4875,7 @@ function openEditHabitModal(habit) {
 }
 
 function renderHabitLedger() {
+  checkAndPerformDailyHabitReset(AppState);
   const container = document.getElementById('habit-items-list');
   const progressBar = document.getElementById('habit-progress-bar');
   const progressText = document.getElementById('habit-progress-text');
