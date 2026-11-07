@@ -4797,41 +4797,6 @@ function initHabitLedger() {
     });
   }
 
-  // Reset Habits Today Button
-  const resetHabitsTodayBtn = document.getElementById('btn-reset-habits-today');
-  if (resetHabitsTodayBtn) {
-    resetHabitsTodayBtn.addEventListener('click', () => {
-      AudioEngine.playChalkScratch();
-      checkAndPerformDailyHabitReset(AppState, true);
-      saveState();
-      renderHabitLedger();
-      renderDashboard();
-      showToast('↺ All habit routines for today have been reset to 0');
-    });
-  }
-
-  // Reset Single Habit Button in Edit Modal
-  const resetSingleHabitBtn = document.getElementById('btn-reset-single-habit');
-  if (resetSingleHabitBtn) {
-    resetSingleHabitBtn.addEventListener('click', () => {
-      const habitId = document.getElementById('edit-habit-id').value;
-      const h = (AppState.habits || []).find(item => item.id === habitId);
-      if (!h) return;
-
-      AudioEngine.playChalkScratch();
-      h.current = 0;
-      if (!AppState.habitHistory) AppState.habitHistory = {};
-      if (!AppState.habitHistory[TODAY_DATE]) AppState.habitHistory[TODAY_DATE] = {};
-      AppState.habitHistory[TODAY_DATE][h.id] = 0;
-
-      saveState();
-      renderHabitLedger();
-      renderDashboard();
-      if (editModal) editModal.style.display = 'none';
-      showToast(`↺ Reset today's progress for "${h.name}" to 0`);
-    });
-  }
-
   if (deleteHabitBtn) {
     deleteHabitBtn.addEventListener('click', () => {
       const habitId = document.getElementById('edit-habit-id').value;
