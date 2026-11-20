@@ -3055,14 +3055,14 @@ body.focus-maximized .deep-focus-fullscreen-container {
   height: 100vh !important;
   height: 100dvh !important;
   max-width: 100vw !important;
-  padding: 0 !important;
+  padding: clamp(32px, 4.5vh, 40px) clamp(24px, 3.5vw, 44px) !important;
   margin: 0 !important;
   border: none !important;
   background: transparent !important;
   box-shadow: none !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: space-between !important;
+  justify-content: flex-start !important;
   align-items: center !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
@@ -3117,9 +3117,11 @@ body.focus-maximized .focus-top-bar {
   justify-content: space-between;
   align-items: center;
   border-bottom: none !important;
-  padding: 14px 28px;
+  padding: 0;
+  margin-bottom: clamp(10px, 1.8vh, 18px);
   position: relative;
   z-index: 10;
+  flex-shrink: 0;
   box-sizing: border-box;
 }
 
@@ -3203,29 +3205,31 @@ body.focus-maximized .focus-body-layout {
   align-items: center;
   justify-content: center;
   min-height: 0;
+  width: 100%;
 }
 
 body.focus-maximized .focus-main-cluster {
   margin: auto;
   width: 100%;
-  max-width: 520px;
+  max-width: min(94vw, 780px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(8px, 1.6vh, 14px);
-  flex-shrink: 0;
+  gap: clamp(6px, 1.2vh, 12px);
+  flex-shrink: 1;
   z-index: 5;
 }
 
 /* Task Header & Task Selector Pill */
 body.focus-maximized .focus-task-headline-wrap {
   margin: 0;
-  max-width: 100%;
+  max-width: 440px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
+  flex-shrink: 0;
 }
 
 .focus-task-pill-selector {
@@ -3235,7 +3239,7 @@ body.focus-maximized .focus-task-headline-wrap {
   background: rgba(0, 0, 0, 0.35);
   border: 1px solid var(--border-chalk);
   border-radius: 24px;
-  padding: 5px 18px;
+  padding: 4px 16px;
   max-width: 90vw;
   box-sizing: border-box;
   transition: all 0.2s ease;
@@ -3335,10 +3339,10 @@ body.focus-maximized .focus-clock-centerpiece {
   transform: none !important;
 }
 
-/* Maximized Mode: dashed ring approximately 420–460px in diameter on desktop */
+/* Maximized Mode: responsive dashed ring scaled to browser height */
 body.focus-maximized .clock-display-wrapper {
-  width: clamp(320px, 46vh, 440px);
-  height: clamp(320px, 46vh, 440px);
+  width: clamp(230px, 34vh, 350px);
+  height: clamp(230px, 34vh, 350px);
   margin: 0 auto;
   position: relative;
   filter: none !important;
@@ -3347,13 +3351,6 @@ body.focus-maximized .clock-display-wrapper {
 body.focus-maximized .clock-ring-svg-container {
   width: 100%;
   height: 100%;
-}
-
-@media (min-width: 1024px) and (min-height: 650px) {
-  body.focus-maximized .clock-display-wrapper {
-    width: 440px;
-    height: 440px;
-  }
 }
 
 /* Segmented Rounded Dashes Styling */
@@ -3450,15 +3447,15 @@ body.theme-parchment-cream.mode-gentle-rest .timer-dash.active {
 }
 
 body.focus-maximized .time-readout {
-  font-size: clamp(68px, 11.5vh, 92px);
+  font-size: clamp(48px, 7.8vh, 68px);
 }
 
 .time-label-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  margin-top: 6px;
+  gap: 2px;
+  margin-top: 3px;
 }
 
 .time-label {
@@ -3471,7 +3468,7 @@ body.focus-maximized .time-readout {
 }
 
 body.focus-maximized .time-label {
-  font-size: clamp(18px, 2.8vh, 23px);
+  font-size: clamp(14px, 2.2vh, 18px);
 }
 
 body.theme-parchment-cream .time-label {
@@ -3542,8 +3539,8 @@ body.focus-maximized .play-btn {
   font-weight: 700;
   border: none;
   border-radius: 26px;
-  padding: 10px 28px;
-  font-size: 14px;
+  padding: clamp(7px, 1.1vh, 9px) clamp(18px, 2.2vw, 24px);
+  font-size: clamp(12.5px, 1.5vh, 13.5px);
   letter-spacing: 0.2px;
   box-shadow: 0 2px 14px rgba(82, 183, 149, 0.24);
   transition: all 0.25s ease;
@@ -3574,8 +3571,8 @@ body.focus-maximized.theme-parchment-cream .play-btn:hover {
 /* Secondary Button for End Session */
 body.focus-maximized .end-btn {
   border-radius: 26px;
-  padding: 10px 24px;
-  font-size: 13.5px;
+  padding: clamp(7px, 1.1vh, 9px) clamp(16px, 2vw, 22px);
+  font-size: clamp(12px, 1.5vh, 13px);
   background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--text-primary);
@@ -3599,8 +3596,8 @@ body.focus-maximized .reset-btn {
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--text-primary);
   border-radius: 26px;
-  padding: 10px 20px;
-  font-size: 13.5px;
+  padding: clamp(7px, 1.1vh, 9px) clamp(14px, 1.8vw, 18px);
+  font-size: clamp(12px, 1.5vh, 13px);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -3608,16 +3605,6 @@ body.focus-maximized .reset-btn {
 body.focus-maximized .reset-btn:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.35);
-}
-  padding: 7px 14px;
-  border-radius: 20px;
-  opacity: 0.65;
-  transition: all 0.2s ease;
-}
-
-body.focus-maximized .reset-btn:hover {
-  opacity: 1;
-  border-color: var(--text-primary);
   color: var(--text-primary);
 }
 
@@ -3643,10 +3630,11 @@ body.focus-maximized .focus-soundscapes-bottom-bar {
   padding-top: 0;
   margin: 0;
   width: 100%;
-  max-width: 600px;
+  max-width: min(94vw, 760px);
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: clamp(4px, 0.8vh, 8px);
 }
 
 body.focus-maximized .sound-bar-header {
@@ -3658,8 +3646,8 @@ body.focus-maximized .sound-bar-header {
   background: rgba(0, 0, 0, 0.32);
   border: 1px solid var(--border-chalk);
   border-radius: 24px;
-  padding: 5px 14px;
-  margin-bottom: 8px;
+  padding: clamp(3px, 0.6vh, 5px) clamp(10px, 1.4vw, 16px);
+  margin-bottom: 0;
   box-sizing: border-box;
 }
 
@@ -3669,14 +3657,14 @@ body.theme-parchment-cream.focus-maximized .sound-bar-header {
 
 body.focus-maximized .sound-drawer-title {
   color: var(--text-muted);
-  font-size: 11.5px;
+  font-size: clamp(11px, 1.35vh, 12px);
 }
 
 body.focus-maximized .active-sound-pill {
   color: #52B795;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
-  font-size: 12px;
+  font-size: clamp(11.5px, 1.4vh, 12.5px);
 }
 
 body.focus-maximized.theme-parchment-cream .active-sound-pill {
@@ -3688,26 +3676,29 @@ body.focus-maximized .soundscapes-horizontal-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
+  gap: clamp(4px, 0.8vw, 8px);
   margin-top: 2px;
-  padding: 4px 6px;
+  padding: 2px 0;
   background: transparent;
   border: none;
   width: 100%;
+  max-width: 760px;
   box-sizing: border-box;
 }
 
 body.focus-maximized .soundscapes-horizontal-row .sound-pill {
-  font-size: 11.5px;
-  padding: 5px 12px;
+  font-size: clamp(10.5px, 1.35vh, 11.5px);
+  padding: clamp(4px, 0.7vh, 6px) clamp(8px, 1.1vw, 12px);
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--border-chalk);
   border-radius: 20px;
   color: var(--text-primary);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.2s ease;
 }
 
@@ -3732,6 +3723,33 @@ body.theme-parchment-cream.focus-maximized .soundscapes-horizontal-row .sound-pi
   background: rgba(46, 139, 102, 0.15);
   border-color: #2E8B66;
   color: #2E8B66;
+}
+
+/* Height-based responsive adaptations for compact viewports */
+@media (max-height: 720px) {
+  body.focus-maximized .deep-focus-fullscreen-container {
+    padding: 24px 20px !important;
+  }
+  body.focus-maximized .clock-display-wrapper {
+    width: clamp(200px, 30vh, 240px);
+    height: clamp(200px, 30vh, 240px);
+  }
+  body.focus-maximized .focus-main-cluster {
+    gap: 5px;
+  }
+}
+
+@media (max-height: 620px) {
+  body.focus-maximized .deep-focus-fullscreen-container {
+    padding: 16px 16px !important;
+  }
+  body.focus-maximized .clock-display-wrapper {
+    width: clamp(180px, 28vh, 210px);
+    height: clamp(180px, 28vh, 210px);
+  }
+  body.focus-maximized .focus-calming-whisper {
+    display: none;
+  }
 }
 
 /* ==========================================================================
