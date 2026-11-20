@@ -2498,15 +2498,22 @@ function initUserProfile() {
 // --------------------------------------------------------------------------
 // A. THEME SYSTEM
 // --------------------------------------------------------------------------
+function applyTheme(themeName) {
+  ['theme-dark-slate', 'theme-vintage-green', 'theme-parchment-cream'].forEach(t => {
+    document.body.classList.remove(t);
+  });
+  document.body.classList.add(themeName);
+}
+
 function initTheme() {
-  document.body.className = AppState.theme;
+  applyTheme(AppState.theme);
 
   const themeBtns = document.querySelectorAll('.theme-btn');
   themeBtns.forEach(btn => {
     btn.classList.toggle('active', btn.dataset.theme === AppState.theme);
     btn.addEventListener('click', () => {
       AppState.theme = btn.dataset.theme;
-      document.body.className = AppState.theme;
+      applyTheme(AppState.theme);
       themeBtns.forEach(b => b.classList.toggle('active', b.dataset.theme === AppState.theme));
       saveState();
       showToast(`Switched board to ${btn.querySelector('.theme-name').innerText}`);
@@ -2543,6 +2550,9 @@ function navigateToSurface(surfaceId, linkedTaskId = null) {
 
   if (surfaceId === 'deep-focus') {
     populateFocusTaskDropdown();
+    if (typeof renderSidebarSummary === 'function') {
+      renderSidebarSummary();
+    }
     if (linkedTaskId) {
       openFocusSession(linkedTaskId);
     } else {
@@ -2565,14 +2575,20 @@ function navigateToSurface(surfaceId, linkedTaskId = null) {
 
 function initBrandMascot() {
   const wrap = document.getElementById('brand-avatar-wrap');
-  if (!wrap) return;
-  wrap.innerHTML = ChalkMascot.renderPandaSVG(46);
-  wrap.title = "Chalkflow Panda Mascot • Click for chalk dust";
-  wrap.addEventListener('click', () => {
-    AudioEngine.playChalkScratch();
-    emitDustParticles(wrap.getBoundingClientRect());
-    showToast("🐼 Chalkflow: Mindful productivity one stroke at a time!");
-  });
+  if (wrap) {
+    wrap.innerHTML = ChalkMascot.renderPandaSVG(46);
+    wrap.title = "Chalkflow Panda Mascot • Click for chalk dust";
+    wrap.addEventListener('click', () => {
+      AudioEngine.playChalkScratch();
+      emitDustParticles(wrap.getBoundingClientRect());
+      showToast("🐼 Chalkflow: Mindful productivity one stroke at a time!");
+    });
+  }
+
+  const focusBrandAvatar = document.getElementById('focus-brand-avatar');
+  if (focusBrandAvatar) {
+    focusBrandAvatar.innerHTML = ChalkMascot.renderPandaSVG(30);
+  }
 }
 
 function initNavigation() {
@@ -5464,6 +5480,9 @@ function creditFocusMinutes(mins, taskId, taskTitle) {
 
   saveState();
   updateGlobalGrowthMetrics();
+  if (typeof renderSidebarSummary === 'function') {
+    renderSidebarSummary();
+  }
 }
 
 const CALMING_FOCUS_MESSAGES = [
@@ -5521,10 +5540,22 @@ function openFocusSession(taskId = null) {
     const ring = document.getElementById('clock-ring-progress');
     const statusLabel = document.getElementById('timer-status-label');
     if (display) display.innerText = `${mins < 10 ? '0' + mins : mins}:00`;
-    if (ring) ring.style.strokeDashoffset = '666';
-    if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to begin';
+    if (ring) {
+      ring.style.strokeDasharray = '716.3';
+      ring.style.strokeDashoffset = '716.3';
+    }
+    const headMarker = document.getElementById('clock-progress-head');
+    if (headMarker) {
+      headMarker.setAttribute('cx', '130');
+      headMarker.setAttribute('cy', '16');
+      headMarker.style.opacity = '0.45';
+    }
+    if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to focus';
   }
 
+  if (typeof renderSidebarSummary === 'function') {
+    renderSidebarSummary();
+  }
   navigateToSurface('deep-focus');
 }
 
@@ -5584,8 +5615,20 @@ function endFocusSession() {
   const statusLabel = document.getElementById('timer-status-label');
   const mins = Math.floor(FocusTimer.durationSeconds / 60);
   if (display) display.innerText = `${mins < 10 ? '0' + mins : mins}:00`;
-  if (ring) ring.style.strokeDashoffset = '666';
-  if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to begin';
+  if (ring) {
+    ring.style.strokeDasharray = '716.3';
+    ring.style.strokeDashoffset = '716.3';
+  }
+  const headMarker = document.getElementById('clock-progress-head');
+  if (headMarker) {
+    headMarker.setAttribute('cx', '130');
+    headMarker.setAttribute('cy', '16');
+    headMarker.style.opacity = '0.45';
+  }
+  if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to focus';
+  if (typeof renderSidebarSummary === 'function') {
+    renderSidebarSummary();
+  }
 
   const targetSurface = FocusTimer.returnSurface || 'today-slate';
   navigateToSurface(targetSurface);
@@ -5599,6 +5642,218 @@ function endFocusSession() {
         setTimeout(() => taskCard.classList.remove('task-card-highlighted'), 2000);
       }
     }, 150);
+  }
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function generateClockDialTicks() {
+  const ticksGroup = document.getElementById('clock-ticks-group');
+  if (!ticksGroup || ticksGroup.children.length > 0) return;
+
+  const cx = 130;
+  const cy = 130;
+  const totalTicks = 60;
+  let ticksHtml = '';
+
+  for (let i = 0; i < totalTicks; i++) {
+    const isMajor = (i % 5 === 0);
+    const angleDeg = (i * 6) - 90;
+    const angleRad = angleDeg * (Math.PI / 180);
+
+    const rOuter = 121;
+    const rInner = isMajor ? 107 : 113;
+
+    const x1 = (cx + rInner * Math.cos(angleRad)).toFixed(2);
+    const y1 = (cy + rInner * Math.sin(angleRad)).toFixed(2);
+    const x2 = (cx + rOuter * Math.cos(angleRad)).toFixed(2);
+    const y2 = (cy + rOuter * Math.sin(angleRad)).toFixed(2);
+
+    ticksHtml += `<line class="dial-tick ${isMajor ? 'major' : ''}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"></line>`;
+  }
+
+  ticksGroup.innerHTML = ticksHtml;
+}
+
+function renderSidebarSummary() {
+  // 1. Focus Time Today
+  const focusTimeEl = document.getElementById('sidebar-focus-minutes-display');
+  if (focusTimeEl) {
+    focusTimeEl.innerText = AppState.focusTimeLoggedToday || 0;
+  }
+
+  // 2. Today's Tasks
+  const taskListEl = document.getElementById('sidebar-tasks-list');
+  if (taskListEl) {
+    const todayTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE);
+    if (todayTasks.length === 0) {
+      taskListEl.innerHTML = '<div class="sidebar-empty-tasks">No tasks planned for today</div>';
+    } else {
+      taskListEl.innerHTML = todayTasks.map(t => {
+        const isDone = t.status === 'COMPLETED';
+        const isAnchored = (FocusTimer.currentTaskId === t.id);
+        const safeTitle = escapeHtml(t.title);
+        return `
+          <div class="sidebar-task-item ${isDone ? 'completed' : ''} ${isAnchored ? 'active-anchor' : ''}" data-task-id="${t.id}">
+            <button class="sidebar-task-check" title="${isDone ? 'Mark active' : 'Complete task'}" type="button">
+              <i class="fa-${isDone ? 'solid fa-circle-check' : 'regular fa-circle'}"></i>
+            </button>
+            <button class="sidebar-task-play" title="Anchor focus to this task" type="button">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <span class="sidebar-task-name" title="${safeTitle}">${safeTitle}</span>
+          </div>
+        `;
+      }).join('');
+
+      // Attach event listeners to sidebar tasks
+      taskListEl.querySelectorAll('.sidebar-task-item').forEach(item => {
+        const taskId = item.dataset.taskId;
+        const checkBtn = item.querySelector('.sidebar-task-check');
+        const playBtn = item.querySelector('.sidebar-task-play');
+        const nameSpan = item.querySelector('.sidebar-task-name');
+
+        if (checkBtn) {
+          checkBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const targetTask = AppState.tasks.find(t => t.id === taskId);
+            if (!targetTask) return;
+            targetTask.status = targetTask.status === 'COMPLETED' ? 'PENDING' : 'COMPLETED';
+            if (targetTask.status === 'COMPLETED') {
+              AudioEngine.playChalkScratch();
+            }
+            saveState();
+            updateGlobalGrowthMetrics();
+            renderSidebarSummary();
+            populateFocusTaskDropdown();
+            if (typeof renderTodaySlate === 'function') renderTodaySlate();
+            if (typeof renderDashboard === 'function') renderDashboard();
+          });
+        }
+
+        const anchorToTask = () => {
+          const targetTask = AppState.tasks.find(t => t.id === taskId);
+          if (!targetTask) return;
+          FocusTimer.currentTaskId = targetTask.id;
+          FocusTimer.currentTaskTitle = targetTask.title;
+          FocusTimer.returnTaskId = targetTask.id;
+          const select = document.getElementById('focus-linked-task-select');
+          if (select) select.value = targetTask.id;
+          const titleDisplay = document.getElementById('focus-task-title-display');
+          if (titleDisplay) titleDisplay.innerText = targetTask.title;
+          renderSidebarSummary();
+          showToast(`Anchored focus to "${targetTask.title}"`);
+        };
+
+        if (playBtn) {
+          playBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            anchorToTask();
+          });
+        }
+
+        if (nameSpan) {
+          nameSpan.addEventListener('click', () => {
+            anchorToTask();
+          });
+        }
+      });
+    }
+  }
+
+  // 3. Today's Focus Records (Mini Bar Chart)
+  const chartContainer = document.getElementById('sidebar-chart-container');
+  if (chartContainer) {
+    const sessions = (AppState.focusSessions || []).filter(s => s.date === TODAY_DATE && (s.mode === 'FOCUS' || !s.mode));
+    
+    let mins9am = 0;
+    let mins12pm = 0;
+    let mins3pm = 0;
+    let mins6pm = 0;
+
+    sessions.forEach(s => {
+      const duration = Number(s.durationMins) || 0;
+      if (s.timestamp) {
+        const d = new Date(s.timestamp);
+        const hour = d.getHours();
+        if (hour < 11) {
+          mins9am += duration;
+        } else if (hour < 14) {
+          mins12pm += duration;
+        } else if (hour < 17) {
+          mins3pm += duration;
+        } else {
+          mins6pm += duration;
+        }
+      } else {
+        const nowHour = new Date().getHours();
+        if (nowHour < 11) mins9am += duration;
+        else if (nowHour < 14) mins12pm += duration;
+        else if (nowHour < 17) mins3pm += duration;
+        else mins6pm += duration;
+      }
+    });
+
+    const maxVal = Math.max(60, mins9am, mins12pm, mins3pm, mins6pm);
+    const h9 = Math.min(100, Math.round((mins9am / maxVal) * 100));
+    const h12 = Math.min(100, Math.round((mins12pm / maxVal) * 100));
+    const h3 = Math.min(100, Math.round((mins3pm / maxVal) * 100));
+    const h6 = Math.min(100, Math.round((mins6pm / maxVal) * 100));
+
+    chartContainer.innerHTML = `
+      <div class="sidebar-barchart">
+        <div class="chart-y-axis">
+          <span>60m</span>
+          <span>45m</span>
+          <span>30m</span>
+          <span>15m</span>
+          <span>0m</span>
+        </div>
+        <div class="chart-bars-wrap">
+          <div class="chart-gridlines">
+            <div class="gridline"></div>
+            <div class="gridline"></div>
+            <div class="gridline"></div>
+            <div class="gridline"></div>
+            <div class="gridline baseline"></div>
+          </div>
+          <div class="chart-bars-columns">
+            <div class="chart-col">
+              <div class="chart-bar-track" title="9 AM: ${mins9am}m focus">
+                <div class="chart-bar-fill" style="height: ${h9 > 0 ? h9 + '%' : '2px'}; opacity: ${h9 > 0 ? '1' : '0.3'};"></div>
+              </div>
+              <span class="chart-x-label">9 AM</span>
+            </div>
+            <div class="chart-col">
+              <div class="chart-bar-track" title="12 PM: ${mins12pm}m focus">
+                <div class="chart-bar-fill" style="height: ${h12 > 0 ? h12 + '%' : '2px'}; opacity: ${h12 > 0 ? '1' : '0.3'};"></div>
+              </div>
+              <span class="chart-x-label">12 PM</span>
+            </div>
+            <div class="chart-col">
+              <div class="chart-bar-track" title="3 PM: ${mins3pm}m focus">
+                <div class="chart-bar-fill" style="height: ${h3 > 0 ? h3 + '%' : '2px'}; opacity: ${h3 > 0 ? '1' : '0.3'};"></div>
+              </div>
+              <span class="chart-x-label">3 PM</span>
+            </div>
+            <div class="chart-col">
+              <div class="chart-bar-track" title="6 PM: ${mins6pm}m focus">
+                <div class="chart-bar-fill" style="height: ${h6 > 0 ? h6 + '%' : '2px'}; opacity: ${h6 > 0 ? '1' : '0.3'};"></div>
+              </div>
+              <span class="chart-x-label">6 PM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
   }
 }
 
@@ -5619,6 +5874,9 @@ function initDeepFocus() {
   const maximizeBtn = document.getElementById('btn-focus-maximize');
   const maximizeIcon = document.getElementById('maximize-icon');
   const maximizeLabel = document.getElementById('maximize-label');
+
+  // Generate 60 precision clock dial ticks inside the centerpiece dial
+  generateClockDialTicks();
 
   // Maximize Fullscreen Focus Handler
   if (maximizeBtn) {
@@ -5678,6 +5936,7 @@ function initDeepFocus() {
         if (titleDisplay) titleDisplay.innerText = 'Free Mindful Focus';
         showToast('Switched to Free Mindful Focus');
       }
+      renderSidebarSummary();
     });
   }
 
@@ -5712,7 +5971,7 @@ function initDeepFocus() {
       document.body.classList.remove('mode-gentle-rest');
       modeBtnFocus.classList.add('active');
       modeBtnRest.classList.remove('active');
-      if (statusLabel) statusLabel.innerText = 'Ready for deep immersion';
+      if (statusLabel) statusLabel.innerText = 'Ready to focus';
       setTimerDuration(25);
       showToast('Switched to Deep Focus Mode 🎯');
     }
@@ -5758,11 +6017,58 @@ function initDeepFocus() {
     const secs = FocusTimer.remainingSeconds % 60;
     if (display) display.innerText = `${mins < 10 ? '0' + mins : mins}:${secs < 10 ? '0' + secs : secs}`;
 
+    const radius = 114;
+    const circumference = 716.3;
+    const progress = FocusTimer.durationSeconds > 0 ? (FocusTimer.durationSeconds - FocusTimer.remainingSeconds) / FocusTimer.durationSeconds : 0;
+
     if (ring) {
-      const totalOffset = 666;
-      const progress = FocusTimer.durationSeconds > 0 ? (FocusTimer.durationSeconds - FocusTimer.remainingSeconds) / FocusTimer.durationSeconds : 0;
-      ring.style.strokeDashoffset = totalOffset - (progress * totalOffset);
+      ring.style.strokeDasharray = `${circumference}`;
+      ring.style.strokeDashoffset = (circumference - (progress * circumference)).toFixed(1);
     }
+
+    const headMarker = document.getElementById('clock-progress-head');
+    if (headMarker) {
+      const angleRad = (progress * 360 - 90) * (Math.PI / 180);
+      const hx = (130 + radius * Math.cos(angleRad)).toFixed(2);
+      const hy = (130 + radius * Math.sin(angleRad)).toFixed(2);
+      headMarker.setAttribute('cx', hx);
+      headMarker.setAttribute('cy', hy);
+      headMarker.style.opacity = progress > 0 ? '1' : '0.45';
+    }
+  }
+
+  // Collapsible Right Sidebar Controls
+  const sidebar = document.getElementById('focus-right-sidebar');
+  const sidebarTabBtn = document.getElementById('btn-toggle-focus-sidebar');
+  const headerSidebarBtn = document.getElementById('btn-header-toggle-sidebar');
+  const sidebarChevron = document.getElementById('sidebar-tab-chevron');
+
+  function setSidebarCollapsed(collapsed) {
+    if (!sidebar) return;
+    sidebar.classList.toggle('collapsed', collapsed);
+    if (sidebarChevron) {
+      sidebarChevron.className = collapsed ? 'fa-solid fa-chevron-left' : 'fa-solid fa-chevron-right';
+    }
+    if (headerSidebarBtn) {
+      headerSidebarBtn.classList.toggle('active', !collapsed);
+    }
+    if (!collapsed) {
+      renderSidebarSummary();
+    }
+  }
+
+  if (sidebarTabBtn) {
+    sidebarTabBtn.addEventListener('click', () => {
+      const isCollapsed = sidebar.classList.contains('collapsed');
+      setSidebarCollapsed(!isCollapsed);
+    });
+  }
+
+  if (headerSidebarBtn) {
+    headerSidebarBtn.addEventListener('click', () => {
+      const isCollapsed = sidebar.classList.contains('collapsed');
+      setSidebarCollapsed(!isCollapsed);
+    });
   }
 
   if (toggleBtn) {
@@ -5786,7 +6092,10 @@ function initDeepFocus() {
         actionText.innerText = 'Pause';
         iconState.className = 'fa-solid fa-pause';
         if (liveDot) liveDot.style.display = 'inline-block';
-        if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Resting & recharging...' : 'Deep immersion in progress...';
+        if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Resting & recharging...' : 'Focus in progress';
+        
+        // Hide sidebar by default when focus session is running to keep timer centered
+        setSidebarCollapsed(true);
         updateSessionActiveState();
 
         FocusTimer.intervalId = setInterval(() => {
@@ -5845,7 +6154,7 @@ function initDeepFocus() {
       if (actionText) actionText.innerText = 'Begin Session';
       if (iconState) iconState.className = 'fa-solid fa-play';
       if (liveDot) liveDot.style.display = 'none';
-      if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to begin';
+      if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to focus';
       document.body.classList.remove('focus-session-active');
       syncCalmingFocusMessage(true);
       updateDisplay();
@@ -5929,22 +6238,59 @@ function initDeepFocus() {
     });
   }
 
+  // Utility Navigation Buttons
+  const utilFullscreenBtn = document.getElementById('btn-util-fullscreen');
+  if (utilFullscreenBtn) {
+    utilFullscreenBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+        document.body.classList.add('focus-maximized');
+        if (maximizeIcon) maximizeIcon.className = 'fa-solid fa-compress';
+        if (maximizeLabel) maximizeLabel.innerText = 'Exit Focus';
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+  }
+
+  const utilTimerModeBtn = document.getElementById('btn-util-timer-mode');
+  const timerAdjusterRow = document.getElementById('timer-adjuster-row');
+  if (utilTimerModeBtn && timerAdjusterRow) {
+    utilTimerModeBtn.addEventListener('click', () => {
+      const isForced = timerAdjusterRow.classList.toggle('drawer-force-visible');
+      utilTimerModeBtn.classList.toggle('active', isForced);
+      if (isForced) {
+        showToast('Adjust duration or select preset');
+      }
+    });
+  }
+
+  const utilWhitenoiseBtn = document.getElementById('btn-util-whitenoise');
+  if (utilWhitenoiseBtn && soundBar) {
+    utilWhitenoiseBtn.addEventListener('click', () => {
+      const isOpen = soundBar.classList.toggle('drawer-open');
+      utilWhitenoiseBtn.classList.toggle('active', isOpen);
+      if (soundDrawerBtn) soundDrawerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  }
+
   syncCalmingFocusMessage(false);
   updateDisplay();
+  renderSidebarSummary();
 }
 
 function populateFocusTaskDropdown() {
   const select = document.getElementById('focus-linked-task-select');
   if (!select) return;
 
-  const currentVal = select.value || FocusTimer.currentTaskId || '';
-  select.innerHTML = '<option value="">-- Free Focus (No specific task) --</option>';
+  const currentVal = FocusTimer.currentTaskId || select.value || '';
+  select.innerHTML = '<option value="">Free Mindful Focus</option>';
 
-  const activeTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE && t.status !== 'COMPLETED');
-  activeTasks.forEach(t => {
+  const todayTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE);
+  todayTasks.forEach(t => {
     const opt = document.createElement('option');
     opt.value = t.id;
-    opt.innerText = t.title;
+    opt.innerText = t.title + (t.status === 'COMPLETED' ? ' (Done)' : '');
     if (opt.value === currentVal) opt.selected = true;
     select.appendChild(opt);
   });
