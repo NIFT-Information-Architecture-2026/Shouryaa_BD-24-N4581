@@ -146,7 +146,7 @@
           <div class="dashboard-greeting-banner">
             <div class="greeting-header-row">
               <div class="greeting-text-block">
-                <div class="dash-date-heading" id="dash-live-date-heading">Friday, November 20, 2026</div>
+                
                 <h2 class="greeting-title chalk-font">
                   Your day, at your pace. <span class="greeting-leaf">🌿</span>
                   <span class="user-greeting-pill" title="Click to personalize name">
@@ -363,12 +363,7 @@
         <!-- =============================================================== -->
         <section class="surface-view" id="view-today-slate">
           
-          <div class="slate-header-banner">
-            <div class="slate-header-text">
-              <h2 class="slate-main-title chalk-font">Today's Slate</h2>
-              <p class="slate-date-subtext" id="slate-header-date">Friday, November 20, 2026</p>
-            </div>
-          </div>
+
 
           <!-- PROMINENT NEXT-TASK SUGGESTION CARD (VISUAL REFERENCE) -->
           <div class="slate-next-suggestion-card chalk-card" id="slate-next-suggestion-card">
@@ -391,24 +386,7 @@
                 </button>
               </div>
             </div>
-            <div class="suggestion-card-right" aria-hidden="true">
-              <div class="suggestion-book-illustration">
-                <svg width="105" height="80" viewBox="0 0 105 80" fill="none">
-                  <path d="M12 58 C28 50 48 54 52 66 C56 54 76 50 92 58 L92 30 C76 22 56 26 52 38 C48 26 28 22 12 30 Z" fill="rgba(247, 245, 235, 0.08)" stroke="var(--border-chalk)" stroke-width="1.5" />
-                  <path d="M52 38 L52 66" stroke="var(--border-chalk)" stroke-width="1.5" />
-                  <path d="M22 36 C30 32 40 34 44 40" stroke="rgba(247, 245, 235, 0.25)" stroke-width="1.2" stroke-linecap="round" />
-                  <path d="M22 43 C30 39 40 41 44 47" stroke="rgba(247, 245, 235, 0.25)" stroke-width="1.2" stroke-linecap="round" />
-                  <path d="M60 40 C64 34 74 32 82 36" stroke="rgba(247, 245, 235, 0.25)" stroke-width="1.2" stroke-linecap="round" />
-                  <path d="M60 47 C64 41 74 39 82 43" stroke="rgba(247, 245, 235, 0.25)" stroke-width="1.2" stroke-linecap="round" />
-                  <path d="M52 38 Q52 18 59 12" stroke="var(--chalk-mint)" stroke-width="1.8" fill="none" stroke-linecap="round" />
-                  <circle cx="59" cy="11" r="3.5" fill="var(--chalk-coral)" stroke="var(--chalk-amber)" stroke-width="1" />
-                  <path d="M53 25 Q47 23 48 19 Q54 21 53 25 Z" fill="var(--chalk-mint)" />
-                  <path d="M55 21 Q61 19 60 15 Q54 17 55 21 Z" fill="var(--chalk-mint)" />
-                  <circle cx="40" cy="16" r="1.5" fill="var(--chalk-amber)" />
-                  <circle cx="72" cy="12" r="1.5" fill="var(--chalk-amber)" />
-                </svg>
-              </div>
-            </div>
+
           </div>
 
           <div class="slate-tasks-section-header">
@@ -503,10 +481,7 @@
         <!-- =============================================================== -->
         <section class="surface-view" id="view-upcoming-tasks">
           
-          <div class="upcoming-header-banner">
-            <h2 class="surface-heading chalk-font">Upcoming Tasks</h2>
-            <p class="surface-subtext">Plan ahead and keep your week organized.</p>
-          </div>
+
 
           <!-- Upcoming Quick Add -->
           <div class="chalk-card quick-add-card">
@@ -553,6 +528,15 @@
             </form>
           </div>
 
+          <!-- Single Unified Compact Empty State (when 0 upcoming tasks exist) -->
+          <div class="upcoming-unified-empty-state chalk-card" id="upcoming-unified-empty-state" style="display: none;">
+            <div class="empty-state-icon"><i class="fa-regular fa-calendar-check"></i></div>
+            <div class="empty-state-text">
+              <h4 class="chalk-font">All clear ahead</h4>
+              <p>No upcoming tasks scheduled. When you have future tasks, schedule them above to keep your days calm and organized.</p>
+            </div>
+          </div>
+
           <!-- Upcoming Date Columns (4 Buckets: Tomorrow, Later This Week, Next Week, Later) -->
           <div class="upcoming-buckets-grid">
             
@@ -568,11 +552,7 @@
               <div class="bucket-task-list" id="list-tomorrow">
                 <!-- Dynamically Populated -->
               </div>
-              <div class="bucket-empty-watermark" aria-hidden="true">
-                <svg width="55" height="55" viewBox="0 0 55 55" fill="none">
-                  <path d="M8 48 Q26 36 34 10 Q38 28 46 42 Q30 40 8 48 Z" fill="var(--chalk-mint)" opacity="0.14" />
-                </svg>
-              </div>
+
             </div>
 
             <!-- Bucket 2: Later This Week -->
@@ -697,57 +677,34 @@
         <!-- =============================================================== -->
         <section class="surface-view" id="view-habit-ledger">
           
-          <div class="habit-page-header">
-            <h2 class="surface-heading chalk-font">Habit Ledger</h2>
-            <p class="surface-subtext">Build small, mindful routines that support your goals.</p>
-          </div>
+
           
           <div class="habit-ledger-layout">
             
-            <!-- TOP: Monthly Habit Consistency Overview Card (Visual Reference) -->
+            <!-- TOP: Monthly Habit Consistency Overview Card (Clean Horizontal Bar) -->
             <div class="habit-overview-card chalk-card">
               <div class="habit-rhythm-layout">
-                <div class="habit-rhythm-ring-wrap">
-                  <div class="ring-progress-wrapper rhythm-ring">
-                    <svg class="progress-ring-svg" width="84" height="84" viewBox="0 0 84 84">
-                      <circle class="ring-bg" cx="42" cy="42" r="34" />
-                      <circle class="ring-bar ring-habits-bar" id="ring-rhythm-circle" cx="42" cy="42" r="34" />
-                    </svg>
-                    <div class="ring-center-text">
-                      <span class="ring-percentage chalk-font" id="rhythm-percentage">0%</span>
+                <div class="habit-rhythm-info-col">
+                  <div class="habit-rhythm-header-line">
+                    <h3 class="chalk-font rhythm-title"><i class="fa-solid fa-chart-simple"></i> Monthly Rhythm</h3>
+                    <div class="rhythm-stat-pill">
+                      <span class="rhythm-pct-highlight chalk-font" id="rhythm-pct-text">0%</span>
+                      <span class="rhythm-sub-label">average consistency</span>
                     </div>
                   </div>
-                  <div class="habit-rhythm-info">
-                    <h3 class="chalk-font rhythm-title">Your Monthly Rhythm</h3>
-                    <div class="rhythm-stat-line"><span class="rhythm-pct-highlight chalk-font" id="rhythm-pct-text">0%</span> <span class="rhythm-sub-label">average consistency</span></div>
-                    <p class="rhythm-subtext" id="habit-progress-text">You've met 0 of 0 daily habit goals so far.</p>
+                  <!-- Clean Horizontal Progress Bar replacing duplicate ring -->
+                  <div class="rhythm-bar-container" title="Monthly habit consistency progress">
+                    <div class="rhythm-bar-track">
+                      <div class="rhythm-bar-fill" id="habit-progress-bar" style="width: 0%;"></div>
+                    </div>
                   </div>
+                  <p class="rhythm-subtext" id="habit-progress-text">You've met 0 of 0 daily habit goals so far.</p>
                 </div>
 
-                <div class="rhythm-bouquet-illustration" aria-hidden="true">
-                  <svg width="86" height="70" viewBox="0 0 86 70" fill="none">
-                    <path d="M43 65 C43 42 33 28 23 16" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round"/>
-                    <path d="M43 65 C43 38 43 25 43 12" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round"/>
-                    <path d="M43 65 C43 42 53 28 63 16" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round"/>
-                    <circle cx="23" cy="16" r="6.5" fill="#FFB7B2" stroke="#FF9AA2" stroke-width="1"/>
-                    <circle cx="23" cy="16" r="2.5" fill="var(--chalk-amber)"/>
-                    <circle cx="43" cy="12" r="7.5" fill="#FFF" stroke="var(--chalk-amber)" stroke-width="1.2"/>
-                    <circle cx="43" cy="12" r="3" fill="var(--chalk-amber)"/>
-                    <circle cx="63" cy="16" r="6.5" fill="#E2F0CB" stroke="var(--chalk-mint)" stroke-width="1"/>
-                    <circle cx="63" cy="16" r="2.5" fill="var(--chalk-amber)"/>
-                    <path d="M37 48 Q43 52 49 48 Q46 54 43 60 Q40 54 37 48 Z" fill="var(--chalk-amber)" opacity="0.9"/>
-                  </svg>
-                </div>
-
-                <button class="chalk-btn secondary-btn chalk-font btn-header-new-habit" id="btn-add-habit-modal">
-                  <i class="fa-solid fa-plus"></i> New Habit
-                </button>
-              </div>
-
-              <!-- Habit Progress Meter (legacy sync compatibility) -->
-              <div class="habit-summary-box" style="display:none;">
-                <div class="summary-bar-wrapper">
-                  <div class="summary-fill" id="habit-progress-bar" style="width: 35%;"></div>
+                <div class="habit-rhythm-actions">
+                  <button class="chalk-btn secondary-btn chalk-font btn-header-new-habit" id="btn-add-habit-modal">
+                    <i class="fa-solid fa-plus"></i> New Habit
+                  </button>
                 </div>
               </div>
             </div>
@@ -846,36 +803,16 @@
             <!-- Center: Minimalist Round Chalk Clock with Botanical Laurel Branches -->
             <div class="focus-clock-centerpiece">
               <div class="clock-display-wrapper">
-                <div class="clock-laurel-wrap">
-                  <svg class="laurel-branch laurel-left" width="46" height="130" viewBox="0 0 46 130" fill="none" aria-hidden="true">
-                    <path d="M38 120 C30 90 22 58 36 10" stroke="var(--chalk-mint)" stroke-width="1.6" stroke-linecap="round" opacity="0.75" />
-                    <path d="M34 105 Q18 100 20 92 Q34 95 34 105 Z" fill="var(--chalk-mint)" opacity="0.8" />
-                    <path d="M30 82 Q14 77 16 69 Q30 72 30 82 Z" fill="var(--chalk-mint)" opacity="0.8" />
-                    <path d="M26 60 Q10 55 12 47 Q26 50 26 60 Z" fill="var(--chalk-mint)" opacity="0.8" />
-                    <path d="M28 38 Q14 33 16 25 Q28 28 28 38 Z" fill="var(--chalk-mint)" opacity="0.8" />
-                    <path d="M34 18 Q24 12 26 5 Q35 9 34 18 Z" fill="var(--chalk-mint)" opacity="0.8" />
+                <div class="clock-ring-svg-container">
+                  <svg class="clock-progress-ring" viewBox="0 0 240 240">
+                    <circle class="ring-bg" cx="120" cy="120" r="106"></circle>
+                    <circle class="ring-progress" id="clock-ring-progress" cx="120" cy="120" r="106"></circle>
                   </svg>
-
-                  <div class="clock-ring-svg-container">
-                    <svg class="clock-progress-ring" viewBox="0 0 240 240">
-                      <circle class="ring-bg" cx="120" cy="120" r="106"></circle>
-                      <circle class="ring-progress" id="clock-ring-progress" cx="120" cy="120" r="106"></circle>
-                    </svg>
-                    
-                    <div class="clock-time-content">
-                      <div class="time-readout" id="timer-display">25:00</div>
-                      <div class="time-label chalk-font" id="timer-status-label">Ready to focus</div>
-                    </div>
+                  
+                  <div class="clock-time-content">
+                    <div class="time-readout" id="timer-display">25:00</div>
+                    <div class="time-label chalk-font" id="timer-status-label">Ready to focus</div>
                   </div>
-
-                  <svg class="laurel-branch laurel-right" width="46" height="130" viewBox="0 0 46 130" fill="none" aria-hidden="true">
-                    <path d="M8 120 C16 90 24 58 10 10" stroke="var(--chalk-mint)" stroke-width="1.6" stroke-linecap="round" opacity="0.75" />
-                    <path d="M12 105 Q28 100 26 92 Q12 95 12 105 Z" fill="var(--chalk-mint)" opacity="0.8" />
-                    <path d="M16 82 Q32 77 30 69 Q16 72 16 82 Z" fill="var(--chalk-mint)" opacity="0.8" />
-                    <path d="M20 60 Q36 55 34 47 Q20 50 20 60 Z" fill="var(--chalk-mint)" opacity="0.8" />
-                    <path d="M18 38 Q32 33 30 25 Q18 28 18 38 Z" fill="var(--chalk-mint)" opacity="0.8" />
-                    <path d="M12 18 Q22 12 20 5 Q11 9 12 18 Z" fill="var(--chalk-mint)" opacity="0.8" />
-                  </svg>
                 </div>
               </div>
 

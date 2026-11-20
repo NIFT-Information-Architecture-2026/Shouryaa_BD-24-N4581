@@ -3972,14 +3972,45 @@ body.theme-vintage-green .ring-bg {
   transform: translateX(1px);
 }
 
-/* Big Box 1: Tasks Stream */
+/* Big Box 1: Tasks Stream with Subtle Custom Chalk Scrollbar */
 .dash-tasks-stream {
   display: flex;
   flex-direction: column;
   gap: 7px;
   overflow-y: auto;
   max-height: 240px;
-  padding-right: 3px;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(247, 245, 235, 0.22) transparent;
+}
+
+.dash-tasks-stream::-webkit-scrollbar {
+  width: 5px;
+}
+
+.dash-tasks-stream::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dash-tasks-stream::-webkit-scrollbar-thumb {
+  background: rgba(247, 245, 235, 0.22);
+  border-radius: 4px;
+}
+
+.dash-tasks-stream::-webkit-scrollbar-thumb:hover {
+  background: rgba(247, 245, 235, 0.4);
+}
+
+body.theme-vintage-green .dash-tasks-stream {
+  scrollbar-color: rgba(247, 245, 235, 0.22) transparent;
+}
+
+body.theme-parchment-cream .dash-tasks-stream {
+  scrollbar-color: rgba(46, 52, 64, 0.22) transparent;
+}
+
+body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
+  background: rgba(46, 52, 64, 0.22);
 }
 
 /* Clean task card: No colored borders or colored outlines, neutral card background */
@@ -4738,25 +4769,27 @@ body.theme-parchment-cream .dash-breather-pill-btn:hover {
   margin: 0;
 }
 
+/* ==========================================================================
+   FINAL POLISHED UI/UX REFINEMENT ENHANCEMENTS (ALL 6 SCREENS)
+   ========================================================================== */
+
+/* --- 1. Today's Slate: Compact, Minimalist Next-Task Suggestion Card --- */
 .slate-next-suggestion-card {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 16px 20px;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 18px;
   margin-bottom: 14px;
   background: var(--bg-surface);
   border: 1.5px solid var(--border-chalk);
-  border-radius: 12px;
-  position: relative;
+  border-radius: 11px;
 }
 
 .suggestion-card-left {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  flex-grow: 1;
-  min-width: 0;
+  gap: 4px;
+  width: 100%;
 }
 
 .suggestion-sparkle-tag {
@@ -4770,10 +4803,10 @@ body.theme-parchment-cream .dash-breather-pill-btn:hover {
 }
 
 .suggestion-task-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 2px 0 4px 0;
+  margin: 1px 0 3px 0;
   line-height: 1.3;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -4803,29 +4836,21 @@ body.theme-parchment-cream .dash-breather-pill-btn:hover {
 .suggestion-actions-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 6px;
+  gap: 9px;
+  margin-top: 4px;
 }
 
 .btn-suggestion-focus {
-  padding: 6px 16px;
+  padding: 5px 15px;
   font-size: 12px;
   border-radius: 8px;
   font-weight: 600;
 }
 
 .btn-suggestion-cycle {
-  padding: 5px 13px;
+  padding: 4px 12px;
   font-size: 11.5px;
   border-radius: 8px;
-}
-
-.suggestion-card-right {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  opacity: 0.95;
 }
 
 .slate-tasks-section-header {
@@ -4849,100 +4874,156 @@ body.theme-parchment-cream .dash-breather-pill-btn:hover {
   border-radius: 8px;
 }
 
-/* --- 3. Upcoming Tasks Enhancements --- */
-.upcoming-header-banner {
-  margin-bottom: 14px;
+/* Discreet, minimal carried-over indicator (avoids repeated loud badges) */
+.carried-mini-indicator {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: rgba(247, 245, 235, 0.05);
+  border: 1px solid rgba(247, 245, 235, 0.15);
+  padding: 1px 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  opacity: 0.8;
+  vertical-align: middle;
 }
 
-.surface-heading {
-  font-size: 22px;
+body.theme-parchment-cream .carried-mini-indicator {
+  background: rgba(46, 52, 64, 0.05);
+  border-color: rgba(46, 52, 64, 0.15);
+  color: #5a657b;
+}
+
+/* --- 2. Upcoming Tasks: Single Compact Helpful Empty State --- */
+.upcoming-unified-empty-state {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 26px;
+  border: 1.5px dashed var(--border-chalk);
+  border-radius: 12px;
+  background: var(--bg-surface);
+  margin: 12px 0 20px 0;
+}
+
+.upcoming-unified-empty-state .empty-state-icon {
+  font-size: 26px;
+  color: var(--chalk-mint);
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.upcoming-unified-empty-state .empty-state-text h4 {
+  font-size: 15px;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 2px 0;
+  margin: 0 0 3px 0;
 }
 
-.surface-subtext {
-  font-size: 12px;
+.upcoming-unified-empty-state .empty-state-text p {
+  font-size: 12.5px;
   color: var(--text-muted);
   margin: 0;
+  line-height: 1.5;
 }
 
 .bucket-column {
   position: relative;
   overflow: hidden;
-  min-height: 220px;
+  min-height: 180px;
 }
 
-.bucket-empty-watermark {
-  position: absolute;
-  bottom: 6px;
-  right: 6px;
-  pointer-events: none;
-  opacity: 0.15;
-  z-index: 0;
-}
-
-/* --- 4. Habit Ledger Enhancements --- */
-.habit-page-header {
-  margin-bottom: 14px;
+/* --- 3. Habit Ledger: Clean Horizontal Rhythm Bar (No duplicate ring or flowers) --- */
+.habit-overview-card {
+  padding: 14px 18px;
 }
 
 .habit-rhythm-layout {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 18px;
+}
+
+.habit-rhythm-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex-grow: 1;
+}
+
+.habit-rhythm-header-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
-.habit-rhythm-ring-wrap {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.rhythm-ring {
-  width: 84px;
-  height: 84px;
-  flex-shrink: 0;
-}
-
 .rhythm-title {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 3px 0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
 }
 
-.rhythm-stat-line {
-  display: flex;
+.rhythm-title i {
+  color: var(--chalk-mint);
+  font-size: 13px;
+}
+
+.rhythm-stat-pill {
+  display: inline-flex;
   align-items: baseline;
-  gap: 6px;
-  margin-bottom: 2px;
+  gap: 5px;
 }
 
 .rhythm-pct-highlight {
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--chalk-mint);
 }
 
 .rhythm-sub-label {
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--text-muted);
+}
+
+.rhythm-bar-container {
+  width: 100%;
+  max-width: 500px;
+  height: 8px;
+  border-radius: 6px;
+  background: rgba(247, 245, 235, 0.08);
+  border: 1px solid var(--border-chalk);
+  overflow: hidden;
+}
+
+.rhythm-bar-track {
+  width: 100%;
+  height: 100%;
+}
+
+.rhythm-bar-fill {
+  height: 100%;
+  background: var(--chalk-mint);
+  border-radius: 6px;
+  transition: width 0.4s ease;
+}
+
+body.theme-parchment-cream .rhythm-bar-container {
+  background: rgba(46, 52, 64, 0.08);
 }
 
 .rhythm-subtext {
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--text-muted);
   margin: 0;
-}
-
-.rhythm-bouquet-illustration {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
 }
 
 .btn-header-new-habit {
@@ -4952,32 +5033,183 @@ body.theme-parchment-cream .dash-breather-pill-btn:hover {
   white-space: nowrap;
 }
 
-/* --- 5. Deep Focus Botanical Laurel Branches --- */
-.clock-laurel-wrap {
+/* --- 4. Deep Focus: Distraction-Free Focal Centerpiece --- */
+.focus-clock-centerpiece {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0 18px 0;
+}
+
+.clock-display-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  width: 100%;
-}
-
-.laurel-branch {
-  width: 46px;
-  height: 130px;
-  flex-shrink: 0;
-  pointer-events: none;
+  position: relative;
 }
 
 .clock-ring-svg-container {
   position: relative;
-  width: 240px;
-  height: 240px;
+  width: 220px;
+  height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* --- 6. Theme Overrides for New Visual Elements --- */
+.clock-time-content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-readout {
+  font-family: 'Kalam', cursive;
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: 2px;
+}
+
+.time-label {
+  font-size: 13px;
+  color: var(--chalk-mint);
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* --- 5. Dashboard: Calm & Compact Hierarchy --- */
+.dash-breather-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 8px 16px;
+  margin-bottom: 12px;
+  background: rgba(247, 245, 235, 0.03);
+  border: 1px solid var(--border-chalk);
+  border-radius: 10px;
+}
+
+.breather-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.breather-wind-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(6, 214, 160, 0.12);
+  color: var(--chalk-mint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.breather-banner-text h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.breather-banner-text p {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.dash-breather-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  background: rgba(6, 214, 160, 0.15);
+  color: var(--chalk-mint);
+  border: 1px solid var(--chalk-mint);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.dash-breather-pill-btn:hover {
+  background: var(--chalk-mint);
+  color: var(--bg-board);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(6, 214, 160, 0.25);
+}
+
+/* Metric Cards Refinement */
+.metric-card {
+  padding: 12px 14px;
+}
+
+.metric-focus-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.metric-bloom-badge {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: rgba(255, 209, 102, 0.15);
+  color: var(--chalk-amber);
+  border: 1px solid rgba(255, 209, 102, 0.3);
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.metric-bloom-badge.met {
+  background: rgba(6, 214, 160, 0.15);
+  color: var(--chalk-mint);
+  border: 1px solid rgba(6, 214, 160, 0.35);
+}
+
+/* --- 6. Progress Garden: Completed Flower Visibility & Journal Readability --- */
+.calendar-day-tile.is-bloom {
+  border-color: rgba(255, 209, 102, 0.5) !important;
+  background: rgba(255, 209, 102, 0.05);
+  box-shadow: 0 0 10px rgba(255, 209, 102, 0.12);
+}
+
+.calendar-day-tile.is-bloom .tile-bottom {
+  color: var(--chalk-amber);
+  font-weight: 700;
+}
+
+.calendar-day-tile.is-bloom .stage-tag.stage-4 {
+  background: rgba(255, 209, 102, 0.2);
+  color: var(--chalk-amber);
+  border: 1px solid rgba(255, 209, 102, 0.4);
+}
+
+.calendar-day-tile .day-num {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.calendar-day-tile .tile-bottom {
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+/* --- 7. Theme Specific Adjustments for Cohesion --- */
 body.theme-dark-slate .dash-breather-banner,
 body.theme-dark-slate .slate-next-suggestion-card,
 body.theme-vintage-green .dash-breather-banner,
@@ -4988,15 +5220,21 @@ body.theme-vintage-green .slate-next-suggestion-card {
 
 body.theme-parchment-cream .dash-breather-banner,
 body.theme-parchment-cream .slate-next-suggestion-card {
+  background: #fdfaf3;
+  border: 1.5px solid #2e3440 !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* --- 7. Mobile Responsive Adjustments --- */
+body.theme-parchment-cream .dash-breather-banner {
+  background: rgba(46, 52, 64, 0.03);
+}
+
+/* --- 8. Responsive Adjustments --- */
 @media (max-width: 768px) {
   .dash-breather-banner {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    gap: 10px;
   }
   .dash-breather-pill-btn {
     width: 100%;
@@ -5005,17 +5243,17 @@ body.theme-parchment-cream .slate-next-suggestion-card {
   .dash-header-floral-art {
     display: none;
   }
-  .slate-next-suggestion-card {
+  .habit-rhythm-layout {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
   }
-  .suggestion-card-right {
-    display: none;
+  .rhythm-bar-container {
+    max-width: 100%;
   }
-  .rhythm-bouquet-illustration {
-    display: none;
-  }
-  .laurel-branch {
-    display: none;
+  .upcoming-unified-empty-state {
+    flex-direction: column;
+    text-align: center;
+    padding: 18px 16px;
   }
 }

@@ -1351,16 +1351,21 @@ const ChalkMeadowPanorama = {
 
     const labelColor = isToday ? 'style="fill: var(--chalk-amber); font-weight:700;"' : (isFuture ? 'style="opacity: 0.55;"' : '');
     const underlineColor = isToday ? 'stroke="var(--chalk-amber)" stroke-width="2.2"' : (isFuture ? 'stroke="var(--border-chalk)" stroke-width="1.2" stroke-dasharray="3,2" opacity="0.45"' : 'stroke="var(--text-primary)" stroke-width="2" opacity="0.8"');
-    const todayBadge = isToday ? `<text x="0" y="253" font-family="'Kalam', cursive" font-size="12" font-weight="700" fill="var(--chalk-amber)" text-anchor="middle">★ Today</text>` : '';
+    const isBloom = stage === 4;
+    const todayBadge = isToday ? `<text x="0" y="253" font-family="'Kalam', cursive" font-size="12" font-weight="700" fill="var(--chalk-amber)" text-anchor="middle">★ Today</text>` : (isBloom ? `<text x="0" y="253" font-family="'Kalam', cursive" font-size="11" font-weight="700" fill="var(--chalk-coral)" text-anchor="middle">🌸 Bloom</text>` : '');
     const todayPedestal = isToday ? `
       <!-- Soft Amber Soil Pedestal Aura for Today's Specimen -->
       <ellipse cx="0" cy="222" rx="42" ry="11" fill="rgba(255, 209, 102, 0.12)" stroke="var(--chalk-amber)" stroke-width="1.2" stroke-dasharray="3,2" />
-    ` : '';
+    ` : (isBloom ? `
+      <!-- Soft Coral Bloom Pedestal for Completed Specimen -->
+      <ellipse cx="0" cy="222" rx="36" ry="9" fill="rgba(255, 183, 178, 0.1)" stroke="var(--chalk-coral)" stroke-width="1" stroke-dasharray="2,2" opacity="0.8" />
+    ` : '');
 
     const hotspotClasses = [
       'meadow-plant-hotspot',
       isToday ? 'is-today-plant' : '',
       isFuture ? 'is-future-plant' : '',
+      isBloom ? 'is-bloom-plant' : '',
       animClass || ''
     ].filter(Boolean).join(' ');
 
@@ -3379,7 +3384,7 @@ function createTaskCardElement(task) {
   card.id = `card-${task.id}`;
 
   const priorityDot = task.priority === 'HIGH' ? '🔴' : (task.priority === 'MEDIUM' ? '🟡' : '🟢');
-  const carriedBadge = task.isCarriedOver ? `<span class="carried-over-badge chalk-font">↪ Carried over</span>` : '';
+  const carriedBadge = task.isCarriedOver ? `<span class="carried-mini-indicator chalk-font" title="Carried over from yesterday">↪ Carried</span>` : '';
   const estPill = task.estTime ? `<span class="meta-pill"><i class="fa-regular fa-clock"></i> ${task.estTime}m</span>` : '';
   const catPill = `<span class="meta-pill"><i class="fa-solid fa-tag"></i> ${task.category.toLowerCase()}</span>`;
   
@@ -3894,6 +3899,16 @@ function renderUpcomingTasks() {
   const upcomingTasks = AppState.tasks.filter(t => t.targetDate > TODAY_DATE);
   if (badge) badge.innerText = upcomingTasks.length;
 
+  const unifiedEmpty = document.getElementById('upcoming-unified-empty-state');
+  const bucketsGrid = document.querySelector('.upcoming-buckets-grid');
+  if (upcomingTasks.length === 0) {
+    if (unifiedEmpty) unifiedEmpty.style.display = 'flex';
+    if (bucketsGrid) bucketsGrid.style.display = 'none';
+  } else {
+    if (unifiedEmpty) unifiedEmpty.style.display = 'none';
+    if (bucketsGrid) bucketsGrid.style.display = 'grid';
+  }
+
   // Priority sorting weights: HIGH -> MEDIUM -> LOW
   const priorityWeight = { 'HIGH': 1, 'MEDIUM': 2, 'LOW': 3 };
   const sortedUpcoming = [...upcomingTasks].sort((a, b) => {
@@ -4277,10 +4292,11 @@ function renderProgressGarden() {
 
       const stageNamesShort = ['Seed', 'Sprout', 'Stem', 'Bud', 'Bloom'];
       const currentStage = dayData ? (dayData.stage ?? 0) : 0;
-      const stageTagText = isToday ? '★ Today' : (isFuture ? 'Seed' : (stageNamesShort[currentStage] || 'Seed'));
+      const isBloom = currentStage === 4;
+      const stageTagText = isBloom ? '🌸 Bloom' : (isToday ? '★ Today' : (isFuture ? 'Seed' : (stageNamesShort[currentStage] || 'Seed')));
 
       const tile = document.createElement('div');
-      tile.className = `calendar-day-tile ${isToday ? 'is-today' : ''} ${isFuture ? 'is-future-tile' : ''}`;
+      tile.className = `calendar-day-tile ${isToday ? 'is-today' : ''} ${isFuture ? 'is-future-tile' : ''} ${isBloom ? 'is-bloom' : ''}`;
       tile.dataset.day = day;
       tile.title = `Day ${day}: ${dayData.specimen} (${isFuture ? 'Upcoming Plot - Resting Seed' : (GROWTH_STAGE_NAMES[currentStage] || 'Resting Seed')})`;
       tile.innerHTML = `
