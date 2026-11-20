@@ -6231,42 +6231,6 @@ function initDeepFocus() {
     });
   }
 
-  // Utility Navigation Buttons
-  const utilFullscreenBtn = document.getElementById('btn-util-fullscreen');
-  if (utilFullscreenBtn) {
-    utilFullscreenBtn.addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-        document.body.classList.add('focus-maximized');
-        if (maximizeIcon) maximizeIcon.className = 'fa-solid fa-compress';
-        if (maximizeLabel) maximizeLabel.innerText = 'Exit Focus';
-      } else {
-        document.exitFullscreen().catch(() => {});
-      }
-    });
-  }
-
-  const utilTimerModeBtn = document.getElementById('btn-util-timer-mode');
-  const timerAdjusterRow = document.getElementById('timer-adjuster-row');
-  if (utilTimerModeBtn && timerAdjusterRow) {
-    utilTimerModeBtn.addEventListener('click', () => {
-      const isForced = timerAdjusterRow.classList.toggle('drawer-force-visible');
-      utilTimerModeBtn.classList.toggle('active', isForced);
-      if (isForced) {
-        showToast('Adjust duration or select preset');
-      }
-    });
-  }
-
-  const utilWhitenoiseBtn = document.getElementById('btn-util-whitenoise');
-  if (utilWhitenoiseBtn && soundBar) {
-    utilWhitenoiseBtn.addEventListener('click', () => {
-      const isOpen = soundBar.classList.toggle('drawer-open');
-      utilWhitenoiseBtn.classList.toggle('active', isOpen);
-      if (soundDrawerBtn) soundDrawerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    });
-  }
-
   syncCalmingFocusMessage(false);
   updateDisplay();
   renderSidebarSummary();
