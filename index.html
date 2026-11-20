@@ -790,89 +790,100 @@
               </button>
             </div>
 
-            <!-- Focused Task Banner -->
-            <div class="focus-task-headline-wrap" id="focus-task-headline-wrap">
-              <span class="focus-task-badge chalk-font" id="focus-task-badge"><i class="fa-solid fa-bullseye"></i> Focusing on</span>
-              <h2 class="focus-task-title-text chalk-font" id="focus-task-title-display">Complete CAT Quantitative Mock #4</h2>
-              <div class="linked-task-pill">
-                <span class="chalk-font"><i class="fa-solid fa-link"></i> Task Anchor:</span>
-                <select id="focus-linked-task-select" class="chalk-select linked-select">
-                  <option value="">-- Free Focus (No specific task) --</option>
-                </select>
+            <!-- Cohesive Main Focus Cluster -->
+            <div class="focus-main-cluster" id="focus-main-cluster">
+              <!-- Focused Task Banner -->
+              <div class="focus-task-headline-wrap" id="focus-task-headline-wrap">
+                <span class="focus-task-badge chalk-font" id="focus-task-badge"><i class="fa-solid fa-bullseye"></i> Focusing on</span>
+                <h2 class="focus-task-title-text chalk-font" id="focus-task-title-display">Complete CAT Quantitative Mock #4</h2>
+                <p class="focus-calming-whisper chalk-font" id="focus-calming-whisper">Just this moment.</p>
+                <div class="linked-task-pill" id="focus-linked-task-container">
+                  <span class="chalk-font"><i class="fa-solid fa-link"></i> Task Anchor:</span>
+                  <select id="focus-linked-task-select" class="chalk-select linked-select">
+                    <option value="">-- Free Focus (No specific task) --</option>
+                  </select>
+                </div>
               </div>
-            </div>
 
-            <!-- Center: Minimalist Round Chalk Clock with Botanical Laurel Branches -->
-            <div class="focus-clock-centerpiece">
-              <div class="clock-display-wrapper">
-                <div class="clock-ring-svg-container">
-                  <svg class="clock-progress-ring" viewBox="0 0 240 240">
-                    <circle class="ring-bg" cx="120" cy="120" r="106"></circle>
-                    <circle class="ring-progress" id="clock-ring-progress" cx="120" cy="120" r="106"></circle>
-                  </svg>
-                  
-                  <div class="clock-time-content">
-                    <div class="time-readout" id="timer-display">25:00</div>
-                    <div class="time-label chalk-font" id="timer-status-label">Ready to focus</div>
+              <!-- Center: Minimalist Round Chalk Clock -->
+              <div class="focus-clock-centerpiece">
+                <div class="clock-display-wrapper">
+                  <div class="clock-ring-svg-container">
+                    <svg class="clock-progress-ring" viewBox="0 0 240 240">
+                      <circle class="ring-bg" cx="120" cy="120" r="106"></circle>
+                      <circle class="ring-progress" id="clock-ring-progress" cx="120" cy="120" r="106"></circle>
+                    </svg>
+                    
+                    <div class="clock-time-content">
+                      <div class="time-readout" id="timer-display">25:00</div>
+                      <div class="time-label chalk-font" id="timer-status-label">Ready to focus</div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Time Adjustment Controls Row (+ / -) -->
-              <div class="timer-adjuster-row">
-                <button class="adjust-btn chalk-font" id="btn-time-minus-5" title="Minus 5 minutes">-5m</button>
-                <button class="adjust-btn chalk-font" id="btn-time-minus-1" title="Minus 1 minute">-1m</button>
-                <button class="time-preset-btn active chalk-font" data-minutes="25">25m</button>
-                <button class="time-preset-btn chalk-font" data-minutes="45">45m</button>
-                <button class="time-preset-btn chalk-font" data-minutes="60">60m</button>
-                <button class="adjust-btn chalk-font" id="btn-time-plus-1" title="Plus 1 minute">+1m</button>
-                <button class="adjust-btn chalk-font" id="btn-time-plus-5" title="Plus 5 minutes">+5m</button>
-              </div>
+                <!-- Time Adjustment Controls Row (+ / -) -->
+                <div class="timer-adjuster-row" id="timer-adjuster-row">
+                  <button class="adjust-btn chalk-font" id="btn-time-minus-5" title="Minus 5 minutes">-5m</button>
+                  <button class="adjust-btn chalk-font" id="btn-time-minus-1" title="Minus 1 minute">-1m</button>
+                  <button class="time-preset-btn active chalk-font" data-minutes="25">25m</button>
+                  <button class="time-preset-btn chalk-font" data-minutes="45">45m</button>
+                  <button class="time-preset-btn chalk-font" data-minutes="60">60m</button>
+                  <button class="adjust-btn chalk-font" id="btn-time-plus-1" title="Plus 1 minute">+1m</button>
+                  <button class="adjust-btn chalk-font" id="btn-time-plus-5" title="Plus 5 minutes">+5m</button>
+                </div>
 
-              <!-- Primary Action Buttons: Start/Pause/Resume, End Session, Reset -->
-              <div class="timer-action-row">
-                <button class="chalk-btn timer-btn play-btn chalk-font" id="btn-timer-toggle">
-                  <i class="fa-solid fa-play" id="timer-icon-state"></i> <span id="timer-action-text">Begin Session</span>
-                </button>
-                <button class="chalk-btn timer-btn end-btn chalk-font" id="btn-timer-end" title="End session and record completed focus minutes">
-                  <i class="fa-solid fa-flag-checkered"></i> End Session
-                </button>
-                <button class="chalk-btn timer-btn reset-btn chalk-font" id="btn-timer-reset" title="Reset Session">
-                  <i class="fa-solid fa-rotate-left"></i> Reset
-                </button>
-              </div>
-            </div>
-
-            <!-- Bottom: Soundscape Selector Bar with Volume Control -->
-            <div class="focus-soundscapes-bottom-bar">
-              <div class="sound-bar-header">
-                <span class="chalk-font"><i class="fa-solid fa-headphones"></i> Ambient Focus Audio</span>
-                <div class="volume-control-wrap">
-                  <i class="fa-solid fa-volume-low"></i>
-                  <input type="range" id="sound-volume" min="0" max="1" step="0.05" value="0.5" class="chalk-slider">
-                  <i class="fa-solid fa-volume-high"></i>
+                <!-- Primary Action Buttons: Start/Pause/Resume, End Session, Reset -->
+                <div class="timer-action-row" id="timer-action-row">
+                  <button class="chalk-btn timer-btn play-btn chalk-font" id="btn-timer-toggle">
+                    <i class="fa-solid fa-play" id="timer-icon-state"></i> <span id="timer-action-text">Begin Session</span>
+                  </button>
+                  <button class="chalk-btn timer-btn end-btn chalk-font" id="btn-timer-end" title="End session and record completed focus minutes">
+                    <i class="fa-solid fa-flag-checkered"></i> End Session
+                  </button>
+                  <button class="chalk-btn timer-btn reset-btn chalk-font" id="btn-timer-reset" title="Reset Session">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                  </button>
                 </div>
               </div>
 
-              <div class="soundscapes-horizontal-row">
-                <button class="sound-pill active" data-sound="rain">
-                  <span class="s-icon">🌧️</span> <span class="s-name chalk-font">Steady Rain</span>
-                </button>
-                <button class="sound-pill" data-sound="campfire">
-                  <span class="s-icon">🔥</span> <span class="s-name chalk-font">Campfire</span>
-                </button>
-                <button class="sound-pill" data-sound="forest">
-                  <span class="s-icon">🌲</span> <span class="s-name chalk-font">Forest Wind</span>
-                </button>
-                <button class="sound-pill" data-sound="library">
-                  <span class="s-icon">📚</span> <span class="s-name chalk-font">Quiet Library</span>
-                </button>
-                <button class="sound-pill" data-sound="brown-noise">
-                  <span class="s-icon">🌊</span> <span class="s-name chalk-font">Brown Noise</span>
-                </button>
-                <button class="sound-pill" data-sound="none">
-                  <span class="s-icon">🔇</span> <span class="s-name chalk-font">Mute</span>
-                </button>
+              <!-- Ambient Soundscape Selector Bar with Drawer Toggle & Volume -->
+              <div class="focus-soundscapes-bottom-bar" id="focus-soundscapes-bar">
+                <div class="sound-bar-header">
+                  <button class="sound-drawer-toggle-btn chalk-font" id="btn-toggle-sound-drawer" type="button" aria-expanded="false" title="Click to view sound options">
+                    <i class="fa-solid fa-headphones"></i>
+                    <span class="sound-drawer-title">Sound:</span>
+                    <span class="active-sound-pill chalk-font" id="current-sound-name">Steady Rain</span>
+                    <i class="fa-solid fa-chevron-down sound-drawer-chevron" id="sound-drawer-chevron"></i>
+                  </button>
+                  <div class="volume-control-wrap">
+                    <button class="sound-quick-mute-btn" id="btn-sound-quick-mute" type="button" title="Mute/Unmute sound">
+                      <i class="fa-solid fa-volume-low" id="sound-volume-icon"></i>
+                    </button>
+                    <input type="range" id="sound-volume" min="0" max="1" step="0.05" value="0.5" class="chalk-slider" aria-label="Ambient volume">
+                    <i class="fa-solid fa-volume-high"></i>
+                  </div>
+                </div>
+
+                <div class="soundscapes-horizontal-row" id="soundscapes-row">
+                  <button class="sound-pill active" data-sound="rain">
+                    <span class="s-icon">🌧️</span> <span class="s-name chalk-font">Steady Rain</span>
+                  </button>
+                  <button class="sound-pill" data-sound="campfire">
+                    <span class="s-icon">🔥</span> <span class="s-name chalk-font">Campfire</span>
+                  </button>
+                  <button class="sound-pill" data-sound="forest">
+                    <span class="s-icon">🌲</span> <span class="s-name chalk-font">Forest Wind</span>
+                  </button>
+                  <button class="sound-pill" data-sound="library">
+                    <span class="s-icon">📚</span> <span class="s-name chalk-font">Quiet Library</span>
+                  </button>
+                  <button class="sound-pill" data-sound="brown-noise">
+                    <span class="s-icon">🌊</span> <span class="s-name chalk-font">Brown Noise</span>
+                  </button>
+                  <button class="sound-pill" data-sound="none">
+                    <span class="s-icon">🔇</span> <span class="s-name chalk-font">Mute</span>
+                  </button>
+                </div>
               </div>
             </div>
 

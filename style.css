@@ -2787,7 +2787,155 @@ body.theme-white-board .habit-card-bar-track {
   transition: all 0.3s ease;
 }
 
-/* Maximize / True Focus Fullscreen Mode */
+/* Base styling for cohesive focus cluster in standard view */
+.focus-main-cluster {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.focus-calming-whisper {
+  display: none;
+}
+
+/* Sound drawer toggle and header controls */
+.sound-drawer-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: 12px;
+  transition: color 0.2s ease;
+}
+
+.sound-drawer-toggle-btn:hover {
+  color: var(--text-primary);
+}
+
+.sound-drawer-title {
+  color: var(--text-muted);
+}
+
+.active-sound-pill {
+  color: var(--chalk-mint);
+  font-weight: 600;
+}
+
+.sound-drawer-chevron {
+  font-size: 10px;
+  transition: transform 0.25s ease;
+}
+
+.focus-soundscapes-bottom-bar.drawer-open .sound-drawer-chevron {
+  transform: rotate(180deg);
+}
+
+.sound-quick-mute-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 5px;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.sound-quick-mute-btn:hover {
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   MAXIMIZED DEEP FOCUS: SEAMLESS VIEWPORT & CALM DISTRACTION-FREE EXPERIENCE
+   ========================================================================== */
+
+/* 1. Fullscreen Viewport & Margin Elimination */
+body.focus-maximized {
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+}
+
+body.focus-maximized .blackboard-frame-wrapper {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  max-width: 100vw !important;
+  overflow: hidden !important;
+}
+
+body.focus-maximized .app-layout {
+  background-image: none !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* 2. Subdued Theme Backgrounds (No harsh pure white, quiet calm tones) */
+body.focus-maximized.theme-dark-slate,
+body.focus-maximized.theme-dark-slate .blackboard-frame-wrapper,
+body.focus-maximized.theme-dark-slate .app-layout {
+  background-color: #13161A !important;
+  background-image: none !important;
+}
+
+body.focus-maximized.theme-vintage-green,
+body.focus-maximized.theme-vintage-green .blackboard-frame-wrapper,
+body.focus-maximized.theme-vintage-green .app-layout {
+  background-color: #1A2B20 !important;
+  background-image: none !important;
+}
+
+body.focus-maximized.theme-parchment-cream,
+body.focus-maximized.theme-parchment-cream .blackboard-frame-wrapper,
+body.focus-maximized.theme-parchment-cream .app-layout {
+  background-color: #FAF7F0 !important;
+  background-image: none !important;
+}
+
+body.focus-maximized.theme-parchment-cream .focus-top-bar,
+body.focus-maximized.theme-parchment-cream .deep-focus-fullscreen-container {
+  color: #2D3748 !important;
+}
+
+body.focus-maximized.theme-parchment-cream .focus-task-title-text,
+body.focus-maximized.theme-parchment-cream .time-readout {
+  color: #2D3748 !important;
+}
+
+body.focus-maximized.theme-parchment-cream .ring-bg {
+  stroke: rgba(45, 55, 72, 0.09) !important;
+}
+
+body.focus-maximized.theme-parchment-cream .ring-progress {
+  stroke: #2E7D5B !important;
+}
+
+body.focus-maximized.theme-parchment-cream .sound-bar-header {
+  background: rgba(45, 55, 72, 0.04) !important;
+  border-color: rgba(45, 55, 72, 0.15) !important;
+}
+
+/* 3. Chrome Elimination */
 body.focus-maximized #main-side-nav,
 body.focus-maximized #main-workspace-header,
 body.focus-maximized .wooden-chalk-ledge {
@@ -2795,82 +2943,310 @@ body.focus-maximized .wooden-chalk-ledge {
 }
 
 body.focus-maximized .main-content {
-  padding: 0;
-  max-width: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100vw !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  overflow: hidden !important;
+}
+
+body.focus-maximized #view-deep-focus {
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 body.focus-maximized .deep-focus-fullscreen-container {
-  min-height: 88vh;
-  padding: 30px 48px;
-  justify-content: space-around;
-  border: none;
-  background: transparent;
-  box-shadow: none;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  max-width: 100vw !important;
+  padding: clamp(14px, 2.5vh, 28px) clamp(20px, 4vw, 40px) !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
-/* Enlarge Timer Clock & Readout when Focus Mode is Maximized */
+/* 4. Refined Upper Header */
+body.focus-maximized .focus-top-bar {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: none !important;
+  padding: 0;
+  position: relative;
+  z-index: 10;
+}
+
+body.focus-maximized #btn-focus-return {
+  display: none !important;
+}
+
+body.focus-maximized .focus-mode-toggle {
+  margin: 0 auto;
+  transform: scale(0.92);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-chalk);
+}
+
+body.focus-maximized .maximize-focus-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 1px solid var(--border-chalk);
+  color: var(--text-muted);
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+body.focus-maximized .maximize-focus-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+  background: var(--bg-hover);
+}
+
+/* 5. Centered Cohesive Experience Cluster */
+body.focus-maximized .focus-main-cluster {
+  margin: auto 0;
+  width: 100%;
+  max-width: 580px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vh, 18px);
+  flex-shrink: 0;
+}
+
+/* Task Header */
+body.focus-maximized .focus-task-headline-wrap {
+  margin: 0;
+  max-width: 100%;
+}
+
+body.focus-maximized .focus-task-badge {
+  font-size: 10.5px;
+  padding: 2px 9px;
+  margin-bottom: 4px;
+  border-radius: 12px;
+}
+
+body.focus-maximized .focus-task-title-text {
+  font-size: clamp(20px, 3vh, 26px);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+  margin: 0;
+  text-align: center;
+}
+
+body.focus-maximized .focus-calming-whisper {
+  display: block;
+  font-size: clamp(13px, 1.8vh, 15px);
+  color: var(--text-muted);
+  opacity: 0.8;
+  margin: 4px 0 0 0;
+  font-style: italic;
+}
+
+body.focus-maximized .linked-task-pill {
+  margin-top: 6px;
+  font-size: 11.5px;
+}
+
+body.focus-maximized .linked-select {
+  font-size: 11px;
+  padding: 2px 6px;
+}
+
+/* Prominent Responsive Timer (Clean, Subtle Stroke, Zero Harsh Glows) */
+body.focus-maximized .focus-clock-centerpiece {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.6vh, 14px);
+}
+
 body.focus-maximized .clock-display-wrapper {
-  width: 380px;
-  height: 380px;
-  margin: 16px auto 26px auto;
-  filter: drop-shadow(0 0 25px rgba(255, 209, 102, 0.18));
+  width: clamp(220px, 31vh, 300px);
+  height: clamp(220px, 31vh, 300px);
+  margin: 0 auto;
+  filter: none !important;
 }
 
 body.focus-maximized .time-readout {
-  font-size: 80px;
+  font-size: clamp(50px, 7.8vh, 72px);
   font-weight: 700;
-  letter-spacing: -2px;
-  text-shadow: 0 0 24px rgba(255, 209, 102, 0.35);
+  letter-spacing: -1px;
+  color: var(--text-primary);
+  text-shadow: none !important;
+  line-height: 1;
 }
 
 body.focus-maximized .time-label {
-  font-size: 18px;
-  margin-top: 8px;
+  font-size: clamp(12px, 1.6vh, 14px);
+  color: var(--text-muted);
+  margin-top: 4px;
   letter-spacing: 0.5px;
 }
 
 body.focus-maximized .ring-bg {
-  stroke-width: 9;
+  stroke-width: 5.5;
 }
 
 body.focus-maximized .ring-progress {
-  stroke-width: 9;
-  filter: drop-shadow(0 0 8px var(--chalk-amber));
+  stroke-width: 5.5;
+  stroke: var(--chalk-amber);
+  filter: none !important;
 }
 
+body.mode-gentle-rest.focus-maximized .ring-progress {
+  stroke: var(--chalk-mint) !important;
+}
+
+/* Time Controls & Action Buttons */
 body.focus-maximized .timer-adjuster-row {
-  margin-bottom: 22px;
-  gap: 8px;
+  margin: 0;
+  gap: 6px;
 }
 
 body.focus-maximized .adjust-btn,
 body.focus-maximized .time-preset-btn {
-  font-size: 13px;
-  padding: 6px 14px;
+  font-size: 12px;
+  padding: 4px 10px;
 }
 
-body.focus-maximized .main-focus-cta {
-  font-size: 18px;
-  padding: 12px 36px;
-  border-radius: 30px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+body.focus-maximized .timer-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 2px;
 }
 
-body.focus-maximized .reset-focus-btn {
-  font-size: 15px;
-  padding: 12px 20px;
+body.focus-maximized .timer-btn {
+  padding: 9px 22px;
+  font-size: 13.5px;
+  border-radius: 24px;
 }
 
-body.focus-maximized .focus-ambient-soundscape {
-  margin-top: 20px;
-  padding: 14px 20px;
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: var(--radius-md);
+body.focus-maximized .play-btn {
+  background: var(--chalk-mint);
+  color: #181A1B;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-body.focus-maximized .soundscape-pills .sound-pill {
-  font-size: 13px;
-  padding: 6px 14px;
+body.focus-maximized .play-btn.running {
+  background: var(--chalk-amber);
+}
+
+body.focus-maximized .end-btn {
+  border-radius: 24px;
+}
+
+body.focus-maximized .reset-btn {
+  background: transparent;
+  border: 1px dashed var(--border-chalk);
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+body.focus-maximized .reset-btn:hover {
+  opacity: 1;
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+/* 6. Active Session State (Hide adjusters, emphasize Pause/End Session, subtle Reset) */
+body.focus-session-active #timer-adjuster-row {
+  display: none !important;
+}
+
+body.focus-session-active .linked-task-pill {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+body.focus-maximized.focus-session-active .reset-btn {
+  opacity: 0.55;
+  font-size: 11px;
+  padding: 6px 12px;
+}
+
+/* 7. Compact Ambient Sound Control & Drawer */
+body.focus-maximized .focus-soundscapes-bottom-bar {
+  border-top: none !important;
+  padding-top: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body.focus-maximized .sound-bar-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-chalk);
+  border-radius: 24px;
+  padding: 5px 14px;
+  margin-bottom: 0;
+  box-sizing: border-box;
+}
+
+body.focus-maximized .soundscapes-horizontal-row {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk);
+  border-radius: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body.focus-maximized .focus-soundscapes-bottom-bar.drawer-open .soundscapes-horizontal-row {
+  display: flex;
+  animation: fadeInDown 0.2s ease-out;
+}
+
+body.focus-maximized .soundscapes-horizontal-row .sound-pill {
+  font-size: 11.5px;
+  padding: 5px 11px;
 }
 
 .maximize-focus-btn {
@@ -2927,15 +3303,6 @@ body.focus-maximized .soundscape-pills .sound-pill {
   margin: 0;
   text-align: center;
   line-height: 1.3;
-}
-
-body.focus-maximized .focus-task-headline-wrap {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-body.focus-maximized .focus-task-title-text {
-  font-size: 24px;
 }
 
 .focus-task-headline-wrap .linked-task-pill {

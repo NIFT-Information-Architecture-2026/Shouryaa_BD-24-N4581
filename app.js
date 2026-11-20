@@ -5549,6 +5549,7 @@ function endFocusSession() {
     if (maximizeIcon) maximizeIcon.className = 'fa-solid fa-expand';
     if (maximizeLabel) maximizeLabel.innerText = 'Maximize';
   }
+  document.body.classList.remove('focus-session-active');
 
   // Stop ambient sound
   AudioEngine.stopAll();
@@ -5607,7 +5608,7 @@ function initDeepFocus() {
       const isMax = document.body.classList.toggle('focus-maximized');
       if (isMax) {
         if (maximizeIcon) maximizeIcon.className = 'fa-solid fa-compress';
-        if (maximizeLabel) maximizeLabel.innerText = 'Exit';
+        if (maximizeLabel) maximizeLabel.innerText = 'Exit Focus';
         showToast('Entering Distraction-Free Fullscreen Focus 🌿');
       } else {
         if (maximizeIcon) maximizeIcon.className = 'fa-solid fa-expand';
@@ -5629,6 +5630,11 @@ function initDeepFocus() {
     endBtn.addEventListener('click', () => {
       endFocusSession();
     });
+  }
+
+  function updateSessionActiveState() {
+    const isActive = FocusTimer.isRunning || FocusTimer.elapsedSeconds > 0;
+    document.body.classList.toggle('focus-session-active', isActive);
   }
 
   // Linked Task selector change handler
@@ -5675,6 +5681,7 @@ function initDeepFocus() {
     FocusTimer.mode = newMode;
     FocusTimer.elapsedSeconds = 0;
     FocusTimer.creditedMinutes = 0;
+    document.body.classList.remove('focus-session-active');
 
     if (newMode === 'REST') {
       document.body.classList.add('mode-gentle-rest');
@@ -5724,6 +5731,7 @@ function initDeepFocus() {
     FocusTimer.remainingSeconds = FocusTimer.durationSeconds;
     FocusTimer.elapsedSeconds = 0;
     FocusTimer.creditedMinutes = 0;
+    updateSessionActiveState();
     updateDisplay();
   }
 
@@ -5750,6 +5758,7 @@ function initDeepFocus() {
         iconState.className = 'fa-solid fa-play';
         if (liveDot) liveDot.style.display = 'none';
         if (statusLabel) statusLabel.innerText = 'Session paused';
+        updateSessionActiveState();
       } else {
         // Start or resume timer
         AudioEngine.initContext();
@@ -5760,6 +5769,7 @@ function initDeepFocus() {
         iconState.className = 'fa-solid fa-pause';
         if (liveDot) liveDot.style.display = 'inline-block';
         if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Resting & recharging...' : 'Deep immersion in progress...';
+        updateSessionActiveState();
 
         FocusTimer.intervalId = setInterval(() => {
           const now = Date.now();
@@ -5791,6 +5801,7 @@ function initDeepFocus() {
               iconState.className = 'fa-solid fa-play';
               if (liveDot) liveDot.style.display = 'none';
               if (statusLabel) statusLabel.innerText = 'Session complete!';
+              document.body.classList.remove('focus-session-active');
 
               if (FocusTimer.mode === 'FOCUS') {
                 showToast(`🌸 Focus complete! ${FocusTimer.creditedMinutes}m credited to today's garden flower.`);
@@ -5816,26 +5827,85 @@ function initDeepFocus() {
       if (iconState) iconState.className = 'fa-solid fa-play';
       if (liveDot) liveDot.style.display = 'none';
       if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to begin';
+      document.body.classList.remove('focus-session-active');
       updateDisplay();
     });
   }
 
+  // Ambient Audio Controls & Expandable Drawer
+  const soundDrawerBtn = document.getElementById('btn-toggle-sound-drawer');
+  const soundBar = document.getElementById('focus-soundscapes-bar');
+  const currentSoundName = document.getElementById('current-sound-name');
+  const quickMuteBtn = document.getElementById('btn-sound-quick-mute');
+  const volumeIcon = document.getElementById('sound-volume-icon');
   const soundPills = document.querySelectorAll('.sound-pill');
   const volumeSlider = document.getElementById('sound-volume');
+
+  if (soundDrawerBtn && soundBar) {
+    soundDrawerBtn.addEventListener('click', () => {
+      const isOpen = soundBar.classList.toggle('drawer-open');
+      soundDrawerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  }
+
+  let prevSoundType = 'rain';
+  let prevSoundName = 'Steady Rain';
 
   soundPills.forEach(pill => {
     pill.addEventListener('click', () => {
       soundPills.forEach(p => p.classList.remove('active'));
       pill.classList.add('active');
       const soundType = pill.dataset.sound;
+      const sNameEl = pill.querySelector('.s-name');
+      const soundName = sNameEl ? sNameEl.innerText : soundType;
+
+      if (currentSoundName) currentSoundName.innerText = soundName;
+      if (soundType !== 'none') {
+        prevSoundType = soundType;
+        prevSoundName = soundName;
+        if (volumeIcon) volumeIcon.className = 'fa-solid fa-volume-low';
+      } else {
+        if (volumeIcon) volumeIcon.className = 'fa-solid fa-volume-xmark';
+      }
+
       AudioEngine.playSoundscape(soundType);
-      showToast(`Acoustic environment: ${pill.querySelector('.s-name').innerText}`);
+      showToast(`Acoustic environment: ${soundName}`);
     });
   });
 
+  if (quickMuteBtn) {
+    quickMuteBtn.addEventListener('click', () => {
+      if (AudioEngine.currentSound !== 'none') {
+        // Mute
+        AudioEngine.playSoundscape('none');
+        soundPills.forEach(p => p.classList.toggle('active', p.dataset.sound === 'none'));
+        if (currentSoundName) currentSoundName.innerText = 'Mute';
+        if (volumeIcon) volumeIcon.className = 'fa-solid fa-volume-xmark';
+        showToast('Ambient sound muted');
+      } else {
+        // Unmute: restore previous sound
+        AudioEngine.playSoundscape(prevSoundType);
+        soundPills.forEach(p => p.classList.toggle('active', p.dataset.sound === prevSoundType));
+        if (currentSoundName) currentSoundName.innerText = prevSoundName;
+        if (volumeIcon) volumeIcon.className = 'fa-solid fa-volume-low';
+        showToast(`Restored sound: ${prevSoundName}`);
+      }
+    });
+  }
+
   if (volumeSlider) {
     volumeSlider.addEventListener('input', (e) => {
-      AudioEngine.setVolume(e.target.value);
+      const val = parseFloat(e.target.value);
+      AudioEngine.setVolume(val);
+      if (volumeIcon) {
+        if (val === 0) {
+          volumeIcon.className = 'fa-solid fa-volume-xmark';
+        } else if (val < 0.5) {
+          volumeIcon.className = 'fa-solid fa-volume-low';
+        } else {
+          volumeIcon.className = 'fa-solid fa-volume-high';
+        }
+      }
     });
   }
 
