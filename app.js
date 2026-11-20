@@ -5536,21 +5536,9 @@ function openFocusSession(taskId = null) {
     const mins = Math.floor(FocusTimer.durationSeconds / 60) || 25;
     FocusTimer.durationSeconds = mins * 60;
     FocusTimer.remainingSeconds = FocusTimer.durationSeconds;
-    const display = document.getElementById('timer-display');
-    const ring = document.getElementById('clock-ring-progress');
     const statusLabel = document.getElementById('timer-status-label');
-    if (display) display.innerText = `${mins < 10 ? '0' + mins : mins}:00`;
-    if (ring) {
-      ring.style.strokeDasharray = '716.3';
-      ring.style.strokeDashoffset = '716.3';
-    }
-    const headMarker = document.getElementById('clock-progress-head');
-    if (headMarker) {
-      headMarker.setAttribute('cx', '130');
-      headMarker.setAttribute('cy', '16');
-      headMarker.style.opacity = '0.45';
-    }
     if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to focus';
+    if (typeof updateDisplay === 'function') updateDisplay();
   }
 
   if (typeof renderSidebarSummary === 'function') {
@@ -5610,22 +5598,9 @@ function endFocusSession() {
   FocusTimer.elapsedSeconds = 0;
   FocusTimer.creditedMinutes = 0;
   FocusTimer.remainingSeconds = FocusTimer.durationSeconds;
-  const display = document.getElementById('timer-display');
-  const ring = document.getElementById('clock-ring-progress');
   const statusLabel = document.getElementById('timer-status-label');
-  const mins = Math.floor(FocusTimer.durationSeconds / 60);
-  if (display) display.innerText = `${mins < 10 ? '0' + mins : mins}:00`;
-  if (ring) {
-    ring.style.strokeDasharray = '716.3';
-    ring.style.strokeDashoffset = '716.3';
-  }
-  const headMarker = document.getElementById('clock-progress-head');
-  if (headMarker) {
-    headMarker.setAttribute('cx', '130');
-    headMarker.setAttribute('cy', '16');
-    headMarker.style.opacity = '0.45';
-  }
   if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to focus';
+  if (typeof updateDisplay === 'function') updateDisplay();
   if (typeof renderSidebarSummary === 'function') {
     renderSidebarSummary();
   }
@@ -5655,32 +5630,42 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
-function generateClockDialTicks() {
-  const ticksGroup = document.getElementById('clock-ticks-group');
-  if (!ticksGroup || ticksGroup.children.length > 0) return;
+function generateClockDashes() {
+  const dashesGroup = document.getElementById('clock-dashes-group') || document.getElementById('clock-ticks-group');
+  if (!dashesGroup) return;
 
-  const cx = 130;
-  const cy = 130;
-  const totalTicks = 60;
-  let ticksHtml = '';
+  dashesGroup.innerHTML = '';
+  const totalDashes = 60;
+  const cx = 230;
+  const cy = 230;
+  const rOuter = 216;
+  const rInner = 200;
+  const rInner12 = 194; // slightly longer 12 o'clock mark
 
-  for (let i = 0; i < totalTicks; i++) {
-    const isMajor = (i % 5 === 0);
+  for (let i = 0; i < totalDashes; i++) {
     const angleDeg = (i * 6) - 90;
     const angleRad = angleDeg * (Math.PI / 180);
+    const rIn = (i === 0) ? rInner12 : rInner;
 
-    const rOuter = 121;
-    const rInner = isMajor ? 107 : 113;
-
-    const x1 = (cx + rInner * Math.cos(angleRad)).toFixed(2);
-    const y1 = (cy + rInner * Math.sin(angleRad)).toFixed(2);
+    const x1 = (cx + rIn * Math.cos(angleRad)).toFixed(2);
+    const y1 = (cy + rIn * Math.sin(angleRad)).toFixed(2);
     const x2 = (cx + rOuter * Math.cos(angleRad)).toFixed(2);
     const y2 = (cy + rOuter * Math.sin(angleRad)).toFixed(2);
 
-    ticksHtml += `<line class="dial-tick ${isMajor ? 'major' : ''}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"></line>`;
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('class', `timer-dash inactive ${i === 0 ? 'dash-12' : ''}`);
+    line.setAttribute('id', `timer-dash-${i}`);
+    line.setAttribute('data-index', i);
+    line.setAttribute('x1', x1);
+    line.setAttribute('y1', y1);
+    line.setAttribute('x2', x2);
+    line.setAttribute('y2', y2);
+    dashesGroup.appendChild(line);
   }
+}
 
-  ticksGroup.innerHTML = ticksHtml;
+function generateClockDialTicks() {
+  generateClockDashes();
 }
 
 function renderSidebarSummary() {
@@ -5863,7 +5848,6 @@ function initDeepFocus() {
   const endBtn = document.getElementById('btn-timer-end');
   const returnBtn = document.getElementById('btn-focus-return');
   const resetBtn = document.getElementById('btn-timer-reset');
-  const ring = document.getElementById('clock-ring-progress');
   const actionText = document.getElementById('timer-action-text');
   const iconState = document.getElementById('timer-icon-state');
   const liveDot = document.getElementById('focus-live-indicator');
@@ -6017,23 +6001,32 @@ function initDeepFocus() {
     const secs = FocusTimer.remainingSeconds % 60;
     if (display) display.innerText = `${mins < 10 ? '0' + mins : mins}:${secs < 10 ? '0' + secs : secs}`;
 
-    const radius = 114;
-    const circumference = 716.3;
-    const progress = FocusTimer.durationSeconds > 0 ? (FocusTimer.durationSeconds - FocusTimer.remainingSeconds) / FocusTimer.durationSeconds : 0;
+    const progress = FocusTimer.durationSeconds > 0 
+      ? (FocusTimer.durationSeconds - FocusTimer.remainingSeconds) / FocusTimer.durationSeconds 
+      : 0;
 
-    if (ring) {
-      ring.style.strokeDasharray = `${circumference}`;
-      ring.style.strokeDashoffset = (circumference - (progress * circumference)).toFixed(1);
-    }
+    // Segmented Rounded Dashes: 60 dashes around circle starting at 12 o'clock
+    const activeFloat = progress * 60;
+    const fullActive = Math.floor(activeFloat);
+    const fracLeading = activeFloat - fullActive;
 
-    const headMarker = document.getElementById('clock-progress-head');
-    if (headMarker) {
-      const angleRad = (progress * 360 - 90) * (Math.PI / 180);
-      const hx = (130 + radius * Math.cos(angleRad)).toFixed(2);
-      const hy = (130 + radius * Math.sin(angleRad)).toFixed(2);
-      headMarker.setAttribute('cx', hx);
-      headMarker.setAttribute('cy', hy);
-      headMarker.style.opacity = progress > 0 ? '1' : '0.45';
+    for (let i = 0; i < 60; i++) {
+      const dash = document.getElementById(`timer-dash-${i}`);
+      if (!dash) continue;
+
+      if (progress > 0 && i < fullActive) {
+        // Fully completed progress dash: soft mint
+        dash.setAttribute('class', `timer-dash active ${i === 0 ? 'dash-12' : ''}`);
+        dash.style.opacity = '1';
+      } else if (progress > 0 && i === fullActive) {
+        // Leading edge dash smoothly illuminated based on actual elapsed focus time
+        dash.setAttribute('class', `timer-dash active leading ${i === 0 ? 'dash-12' : ''}`);
+        dash.style.opacity = (0.35 + 0.65 * fracLeading).toFixed(2);
+      } else {
+        // Inactive dash: muted grey-green
+        dash.setAttribute('class', `timer-dash inactive ${i === 0 ? 'dash-12' : ''}`);
+        dash.style.opacity = (i === 0 && progress === 0) ? '1' : '';
+      }
     }
   }
 

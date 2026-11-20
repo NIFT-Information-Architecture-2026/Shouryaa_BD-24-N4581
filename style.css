@@ -3273,127 +3273,212 @@ body.focus-maximized .focus-clock-centerpiece {
   gap: clamp(8px, 1.5vh, 14px);
 }
 
-body.focus-maximized .clock-display-wrapper {
-  width: clamp(260px, 38vh, 345px);
-  height: clamp(260px, 38vh, 345px);
-  margin: 0 auto;
-  filter: none !important;
+/* 6. Clock Display Wrapper & Segmented Dashed Ring Dial */
+.clock-display-wrapper {
   position: relative;
+  width: 270px;
+  height: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
 }
 
-.dial-tick {
-  stroke: rgba(255, 255, 255, 0.18);
-  stroke-width: 1.5;
+.clock-ring-svg-container {
+  position: relative;
+  width: 270px;
+  height: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clock-progress-ring {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transform: none !important;
+}
+
+/* Maximized Mode: dashed ring approximately 420–460px in diameter on desktop */
+body.focus-maximized .clock-display-wrapper {
+  width: clamp(320px, 46vh, 440px);
+  height: clamp(320px, 46vh, 440px);
+  margin: 0 auto;
+  position: relative;
+  filter: none !important;
+}
+
+body.focus-maximized .clock-ring-svg-container {
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 1024px) and (min-height: 650px) {
+  body.focus-maximized .clock-display-wrapper {
+    width: 440px;
+    height: 440px;
+  }
+}
+
+/* Segmented Rounded Dashes Styling */
+.timer-dash {
   stroke-linecap: round;
+  stroke-width: 4.5;
+  transition: stroke 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
 }
 
-.dial-tick.major {
-  stroke: rgba(255, 255, 255, 0.36);
-  stroke-width: 2.2;
+/* Inactive Dashes: Muted Grey-Green */
+.timer-dash.inactive {
+  stroke: rgba(255, 255, 255, 0.17);
+  opacity: 0.82;
+  filter: none !important;
 }
 
-body.theme-parchment-cream .dial-tick {
-  stroke: rgba(45, 55, 72, 0.16);
+body.theme-vintage-green .timer-dash.inactive {
+  stroke: rgba(140, 185, 160, 0.22);
 }
 
-body.theme-parchment-cream .dial-tick.major {
-  stroke: rgba(45, 55, 72, 0.32);
+body.theme-parchment-cream .timer-dash.inactive {
+  stroke: rgba(45, 55, 72, 0.17);
+  opacity: 0.8;
 }
 
-body.focus-maximized .time-readout {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  font-feature-settings: 'tnum';
-  font-variant-numeric: tabular-nums;
-  font-size: clamp(62px, 9.6vh, 88px);
+/* 12 o'clock anchor dash hint */
+.timer-dash.dash-12.inactive {
+  opacity: 1;
+  stroke: rgba(255, 255, 255, 0.28);
+}
+
+body.theme-parchment-cream .timer-dash.dash-12.inactive {
+  stroke: rgba(45, 55, 72, 0.28);
+}
+
+/* Active / Completed Progress Dashes: Soft Mint */
+.timer-dash.active {
+  stroke: #52B795;
+  opacity: 1;
+  filter: drop-shadow(0 0 5px rgba(82, 183, 149, 0.75));
+}
+
+.timer-dash.active.leading {
+  filter: drop-shadow(0 0 7px rgba(82, 183, 149, 0.95));
+}
+
+body.mode-gentle-rest .timer-dash.active {
+  stroke: #60C8A7 !important;
+  filter: drop-shadow(0 0 5px rgba(96, 200, 167, 0.8)) !important;
+}
+
+body.theme-parchment-cream .timer-dash.active {
+  stroke: #2E8B66;
+  filter: drop-shadow(0 0 4px rgba(46, 139, 102, 0.5));
+}
+
+body.theme-parchment-cream.mode-gentle-rest .timer-dash.active {
+  stroke: #3D9E77;
+  filter: drop-shadow(0 0 4px rgba(61, 158, 119, 0.55));
+}
+
+/* Perfectly Centered Countdown Display */
+.clock-time-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  width: 100%;
+}
+
+.time-readout {
+  font-family: 'Caveat', cursive, var(--font-chalk) !important;
+  font-size: 56px;
   font-weight: 700;
-  letter-spacing: -2px;
+  letter-spacing: 0px;
   line-height: 1;
   color: var(--text-primary);
   text-shadow: none !important;
+}
+
+body.focus-maximized .time-readout {
+  font-size: clamp(68px, 11.5vh, 92px);
 }
 
 .time-label-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  margin-top: 4px;
+  gap: 3px;
+  margin-top: 6px;
+}
+
+.time-label {
+  font-family: 'Caveat', cursive, var(--font-chalk) !important;
+  font-size: 19px;
+  font-weight: 600;
+  color: #52B795;
+  margin: 0;
+  letter-spacing: 0.4px;
 }
 
 body.focus-maximized .time-label {
-  font-size: clamp(13px, 1.8vh, 15px);
-  color: #52B795;
-  margin: 0;
-  letter-spacing: 0.3px;
-  opacity: 0.9;
+  font-size: clamp(18px, 2.8vh, 23px);
 }
 
 body.theme-parchment-cream .time-label {
-  color: #3D8C6E;
+  color: #2E8B66;
 }
 
 .time-status-underline {
-  width: 58px;
-  height: 7px;
+  width: 68px;
+  height: 8px;
   color: #52B795;
+  margin-top: 1px;
 }
 
 body.theme-parchment-cream .time-status-underline {
-  color: #3D8C6E;
-}
-
-body.focus-maximized .ring-bg {
-  stroke-width: 3.5;
-  stroke: rgba(255, 255, 255, 0.08);
-}
-
-body.focus-maximized .ring-progress {
-  stroke-width: 3.5;
-  stroke: #52B795;
-  stroke-linecap: round;
-  stroke-dasharray: 716.3;
-  stroke-dashoffset: 716.3;
-  filter: none !important;
-  transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-body.mode-gentle-rest.focus-maximized .ring-progress {
-  stroke: #60C8A7 !important;
-}
-
-.ring-progress-head {
-  fill: #52B795;
-  filter: drop-shadow(0 0 6px rgba(82, 183, 149, 0.85));
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-body.theme-parchment-cream .ring-progress-head {
-  fill: #3D8C6E;
-  filter: drop-shadow(0 0 4px rgba(61, 140, 110, 0.6));
+  color: #2E8B66;
 }
 
 /* 7. Simplified Session Controls */
 body.focus-maximized .timer-adjuster-row {
   margin: 0;
-  gap: 6px;
+  gap: 8px;
 }
 
 body.focus-maximized .adjust-btn,
 body.focus-maximized .time-preset-btn {
-  font-size: 12px;
-  padding: 4px 11px;
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-chalk);
-  border-radius: var(--radius-sm);
+  font-size: 13px;
+  padding: 5px 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s;
 }
 
 body.focus-maximized .time-preset-btn.active {
-  border-color: #52B795;
-  color: #52B795;
-  background: rgba(82, 183, 149, 0.12);
+  border-color: #52B795 !important;
+  color: #0b1410 !important;
+  background: #52B795 !important;
+  font-weight: 700;
+}
+
+body.focus-maximized.theme-parchment-cream .adjust-btn,
+body.focus-maximized.theme-parchment-cream .time-preset-btn {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(45, 55, 72, 0.18);
+}
+
+body.focus-maximized.theme-parchment-cream .time-preset-btn.active {
+  border-color: #2E8B66 !important;
+  color: #ffffff !important;
+  background: #2E8B66 !important;
 }
 
 body.focus-maximized .timer-action-row {
@@ -3407,9 +3492,9 @@ body.focus-maximized .timer-action-row {
 /* Soft Mint Primary Button for Begin, Pause, Resume */
 body.focus-maximized .play-btn {
   background: #52B795 !important;
-  color: #121815 !important;
+  color: #0b1410 !important;
   font-family: 'Inter', sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   border: none;
   border-radius: 26px;
   padding: 10px 28px;
@@ -3432,13 +3517,13 @@ body.focus-maximized .play-btn.running {
 }
 
 body.focus-maximized.theme-parchment-cream .play-btn {
-  background: #3D8C6E !important;
+  background: #2E8B66 !important;
   color: #FFFFFF !important;
-  box-shadow: 0 2px 10px rgba(61, 140, 110, 0.2);
+  box-shadow: 0 2px 10px rgba(46, 139, 102, 0.2);
 }
 
 body.focus-maximized.theme-parchment-cream .play-btn:hover {
-  background: #357B60 !important;
+  background: #277958 !important;
 }
 
 /* Secondary Button for End Session */
@@ -3446,14 +3531,15 @@ body.focus-maximized .end-btn {
   border-radius: 26px;
   padding: 10px 24px;
   font-size: 13.5px;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--text-primary);
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 body.focus-maximized .end-btn:hover {
-  background: rgba(239, 71, 111, 0.12);
+  background: rgba(239, 71, 111, 0.15);
   border-color: var(--chalk-coral);
   color: var(--chalk-coral);
 }
@@ -3464,10 +3550,20 @@ body.theme-parchment-cream #btn-timer-end {
 
 /* Tertiary Button for Reset */
 body.focus-maximized .reset-btn {
-  background: transparent;
-  border: 1px dashed var(--border-chalk);
-  color: var(--text-muted);
-  font-size: 11.5px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
+  border-radius: 26px;
+  padding: 10px 20px;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+body.focus-maximized .reset-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.35);
+}
   padding: 7px 14px;
   border-radius: 20px;
   opacity: 0.65;
@@ -4086,31 +4182,15 @@ body.mode-gentle-rest .ring-progress {
 
 .clock-display-wrapper {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 270px;
+  height: 270px;
   margin-bottom: 16px;
 }
 
 .clock-progress-ring {
   width: 100%;
   height: 100%;
-  transform: rotate(-90deg);
-}
-
-.ring-bg {
-  fill: none;
-  stroke: var(--bg-surface-elevated);
-  stroke-width: 7;
-}
-
-.ring-progress {
-  fill: none;
-  stroke: var(--chalk-amber);
-  stroke-width: 7;
-  stroke-linecap: round;
-  stroke-dasharray: 666;
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 0.4s ease;
+  display: block;
 }
 
 .clock-time-content {
@@ -6161,8 +6241,8 @@ body.theme-parchment-cream .rhythm-ring-percentage {
 
 .clock-ring-svg-container {
   position: relative;
-  width: 220px;
-  height: 220px;
+  width: 270px;
+  height: 270px;
   display: flex;
   align-items: center;
   justify-content: center;
