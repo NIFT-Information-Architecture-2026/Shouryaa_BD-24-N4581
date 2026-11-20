@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -13,7 +13,7 @@
   <!-- FontAwesome for UI Glyphs -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <link rel="icon" type="image/jpeg" href="assets/chalk_panda.jpg">
+  <link rel="icon" type="image/svg+xml" href="assets/chalkflow_sprout_icon.svg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="theme-parchment-cream">
@@ -31,14 +31,11 @@
       <!-- SIDE NAVIGATION BAR                                               -->
       <!-- ================================================================= -->
       <aside class="side-nav" id="main-side-nav">
-        <div class="brand-container">
-          <div class="brand-avatar-wrap" id="brand-avatar-wrap">
-            <!-- Handcrafted Vector Chalk Mascot Panda rendered by JS -->
+        <div class="brand-container" id="main-brand-container">
+          <div class="brand-primary-logo-link" id="brand-avatar-wrap" role="button" tabindex="0" title="Chalkflow • Mindful Productivity (Click for chalk dust)">
+            <!-- Handcrafted Chalkflow Primary Sprout & Wordmark SVG rendered by JS -->
           </div>
-          <div class="brand-text">
-            <h1 class="brand-title chalk-font">Chalkflow</h1>
-            <p class="brand-subtitle">Mindful Productivity</p>
-          </div>
+          <p class="brand-subtitle">Mindful Productivity</p>
         </div>
 
         <nav class="nav-menu">
@@ -76,8 +73,20 @@
           </button>
         </nav>
 
-        <!-- Bottom Sidebar Controls: User Profile & Theme Switcher -->
+        <!-- Bottom Sidebar Controls: Mascot Companion, User Profile & Theme Switcher -->
         <div class="side-nav-footer">
+          <!-- Interactive Panda Companion Badge -->
+          <div class="mascot-companion-strip" id="mascot-companion-strip" role="button" tabindex="0" title="Chalky the Study Panda • Click for mindful encouragement & chalk dust!">
+            <div class="mascot-avatar-wrap" id="mascot-avatar-wrap">
+              <!-- Handcrafted Vector Chalk Mascot Panda rendered by JS -->
+            </div>
+            <div class="mascot-info">
+              <span class="mascot-name chalk-font">Chalky Panda</span>
+              <span class="mascot-role">Study Companion</span>
+            </div>
+            <span class="mascot-interactive-sparkle" aria-hidden="true">✨</span>
+          </div>
+
           <!-- User Profile Strip (Click to change name) -->
           <div class="user-profile-strip" id="user-profile-strip" title="Click to customize your name">
             <div class="user-avatar-circle chalk-font" id="user-avatar-initial">S</div>

@@ -38,6 +38,12 @@
   --chalk-purple: #6D597A;
   --chalk-white: #FAF0CA;
   
+  /* Brand Logo Theming: Black Board (Chalk-white lettering & muted mint leaves) */
+  --logo-leaf-fill: #52B795;
+  --logo-chalk-stroke: #FAF8F5;
+  --logo-text-color: #FAF8F5;
+  --logo-sub-color: #94A3B8;
+
   --nav-width: 240px;
   --radius-sm: 8px;
   --radius-md: 14px;
@@ -75,6 +81,12 @@ body.theme-vintage-green {
   --chalk-violet: #C3AED6;
   --chalk-purple: #7E6B8F;
   --chalk-white: #FAF0CA;
+
+  /* Brand Logo Theming: Green Board (Warm antique white & vintage sage leaves) */
+  --logo-leaf-fill: #5EB88A;
+  --logo-chalk-stroke: #FAF5E8;
+  --logo-text-color: #FAF5E8;
+  --logo-sub-color: #A8C2A3;
 }
 
 /* Theme 3: Studio White Board (#FAF9F5 / Soft Neutral Greys) */
@@ -105,6 +117,12 @@ body.theme-parchment-cream {
   --chalk-violet: #9D81BA;
   --chalk-purple: #6D597A;
   --chalk-white: #FFFFFF;
+
+  /* Brand Logo Theming: White Board (Dark charcoal lettering & natural sage leaves) */
+  --logo-leaf-fill: #2E8B66;
+  --logo-chalk-stroke: #2B2D42;
+  --logo-text-color: #2B2D42;
+  --logo-sub-color: #5E6573;
 }
 
 /* --------------------------------------------------------------------------
@@ -259,11 +277,39 @@ body {
 
 .brand-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding-bottom: 16px;
+  gap: 4px;
+  padding-bottom: 14px;
   margin-bottom: 14px;
   border-bottom: 1px dashed var(--border-chalk);
+  text-align: center;
+}
+
+.brand-primary-logo-link {
+  width: 100%;
+  max-width: 212px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s ease;
+  user-select: none;
+}
+
+.brand-primary-logo-link:hover {
+  transform: scale(1.03) translateY(-1px);
+}
+
+.brand-primary-logo-link:active {
+  transform: scale(0.98);
+}
+
+.chalkflow-primary-logo {
+  width: 100%;
+  height: auto;
+  max-height: 48px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
 }
 
 .brand-avatar-wrap {
@@ -294,15 +340,146 @@ body {
 .brand-title {
   font-size: 20px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--logo-text-color, var(--text-primary));
   line-height: 1.1;
 }
 
 .brand-subtitle {
-  font-size: 10px;
-  letter-spacing: 1.2px;
+  font-size: 9px;
+  letter-spacing: 1.6px;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--logo-sub-color, var(--text-muted));
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  margin-top: -2px;
+}
+
+/* Chalkflow Sprout Brand SVG Color Classes */
+.chalk-leaf-fill {
+  fill: var(--logo-leaf-fill, #52B795);
+  opacity: 0.92;
+  transition: fill 0.3s ease;
+}
+
+.chalk-leaf-stroke {
+  stroke: var(--logo-chalk-stroke, #FAF8F5);
+  transition: stroke 0.3s ease;
+}
+
+.chalk-vein-stroke {
+  stroke: var(--logo-chalk-stroke, #FAF8F5);
+  opacity: 0.95;
+  transition: stroke 0.3s ease;
+}
+
+.chalk-bud-fill {
+  stroke: var(--logo-leaf-fill, #52B795);
+  transition: stroke 0.3s ease;
+}
+
+.chalk-bud-highlight {
+  stroke: var(--logo-chalk-stroke, #FAF8F5);
+  opacity: 0.85;
+  transition: stroke 0.3s ease;
+}
+
+.chalk-stem-fill {
+  stroke: var(--logo-leaf-fill, #52B795);
+  transition: stroke 0.3s ease;
+}
+
+.chalk-stem-highlight {
+  stroke: var(--logo-chalk-stroke, #FAF8F5);
+  opacity: 0.75;
+  transition: stroke 0.3s ease;
+}
+
+.chalk-baseline-stroke {
+  stroke: var(--logo-chalk-stroke, #FAF8F5);
+  opacity: 0.88;
+  transition: stroke 0.3s ease;
+}
+
+.chalk-brand-wordmark {
+  fill: var(--logo-text-color, #FAF8F5);
+  font-family: 'Kalam', cursive;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  transition: fill 0.3s ease;
+}
+
+.sprout-tile-bg {
+  fill: #121514;
+  stroke: rgba(250, 248, 245, 0.12);
+  stroke-width: 1.2px;
+}
+
+/* Mascot Companion Badge in Sidebar Footer */
+.mascot-companion-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  background: var(--bg-surface-elevated);
+  border: 1px dashed var(--border-chalk);
+  border-radius: var(--radius-md);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  user-select: none;
+}
+
+.mascot-companion-strip:hover {
+  border-color: var(--chalk-mint);
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mascot-avatar-wrap {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.mascot-companion-strip:hover .mascot-avatar-wrap {
+  transform: scale(1.15) rotate(5deg);
+}
+
+.mascot-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.mascot-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.mascot-role {
+  font-size: 9.5px;
+  color: var(--chalk-mint);
+  letter-spacing: 0.3px;
+}
+
+.mascot-interactive-sparkle {
+  font-size: 11px;
+  opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.mascot-companion-strip:hover .mascot-interactive-sparkle {
+  opacity: 1;
+  transform: scale(1.2) rotate(12deg);
 }
 
 .nav-menu {

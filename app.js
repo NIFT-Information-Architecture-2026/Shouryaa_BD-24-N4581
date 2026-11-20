@@ -1280,6 +1280,124 @@ const ChalkBotanicals = {
 
 
 // ==========================================================================
+// 1.0 CHALKFLOW BRAND IDENTITY (HANDCRAFTED SPROUT & FLOWING CHALK WORDMARK)
+// ==========================================================================
+const ChalkflowBrand = {
+  renderSproutIconSVG(size = 46, isDarkTile = false) {
+    return `
+      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="chalkflow-sprout-icon" aria-label="Chalkflow Sprout Emblem" style="overflow:visible;">
+        <defs>
+          <radialGradient id="sproutHaloGrad" cx="50%" cy="48%" r="48%">
+            <stop offset="0%" stop-color="var(--logo-leaf-fill, #52B795)" stop-opacity="0.18" />
+            <stop offset="45%" stop-color="var(--logo-chalk-stroke, #FAF8F5)" stop-opacity="0.04" />
+            <stop offset="100%" stop-color="transparent" stop-opacity="0" />
+          </radialGradient>
+          <filter id="sproutChalkGrain" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.7" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </defs>
+        ${isDarkTile ? `
+          <rect x="2" y="2" width="96" height="96" rx="22" ry="22" class="sprout-tile-bg" />
+          <rect x="2" y="2" width="96" height="96" rx="22" ry="22" fill="url(#sproutHaloGrad)" />
+        ` : ''}
+        <g filter="url(#sproutChalkGrain)">
+          <!-- Left Leaf -->
+          <path d="M 49 48.5 C 44 41, 37 34, 21.5 37.5 C 19 44.5, 27 52, 47.5 52 Z" 
+                class="chalk-leaf-fill" />
+          <path d="M 48.5 48.5 C 44 41, 37 34, 21.5 37.5 C 19 44.5, 27 52, 47.5 52" 
+                fill="none" class="chalk-leaf-stroke" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M 46.5 50 C 38.5 46, 30.5 41.5, 23 38" 
+                fill="none" class="chalk-vein-stroke" stroke-width="1.3" stroke-linecap="round" />
+
+          <!-- Right Leaf (Slightly larger, sweeping upward) -->
+          <path d="M 50.5 47.5 C 58.5 36.5, 66 28.5, 79 24.5 C 81 33.5, 72 45.5, 51.5 51.5 Z" 
+                class="chalk-leaf-fill" />
+          <path d="M 50.5 47.5 C 58.5 36.5, 66 28.5, 79 24.5 C 81 33.5, 72 45.5, 51.5 51.5" 
+                fill="none" class="chalk-leaf-stroke" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M 51.5 50 C 61 40.5, 70.5 32.5, 77.5 25.5" 
+                fill="none" class="chalk-vein-stroke" stroke-width="1.3" stroke-linecap="round" />
+
+          <!-- Slender Upright Bud Shoot -->
+          <path d="M 50 48.5 L 50 36.5" 
+                class="chalk-bud-fill" stroke-width="3.2" stroke-linecap="round" />
+          <path d="M 49.6 48 L 49.6 37.5" 
+                class="chalk-bud-highlight" stroke-width="1.1" stroke-linecap="round" />
+
+          <!-- Curving Stem -->
+          <path d="M 50 48.5 C 49.5 57, 48.5 65.5, 47.2 72.5" 
+                fill="none" class="chalk-stem-fill" stroke-width="3.6" stroke-linecap="round" />
+          <path d="M 49.8 48.5 C 49.3 57, 48.3 65.5, 47 72.5" 
+                fill="none" class="chalk-stem-highlight" stroke-width="1.2" stroke-linecap="round" opacity="0.75" />
+
+          <!-- Organic Flowing Ground Line with Signature Loop Swirl -->
+          <path d="M 16 70.5 C 27 61.5, 37.5 66.5, 47.2 72.5 C 52 75.5, 60.5 76, 67.5 73 C 73.5 70, 78 64, 76 59 C 74 54, 68 54.5, 66.5 60.5 C 65.5 66.5, 70.5 72.5, 76.5 73.5 C 81 74, 85.5 72.5, 89.5 66.5" 
+                fill="none" class="chalk-baseline-stroke" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+      </svg>
+    `;
+  },
+
+  renderPrimaryLogoSVG(width = 208, height = 48) {
+    return `
+      <svg width="${width}" height="${height}" viewBox="0 0 216 52" class="chalkflow-primary-logo" aria-label="Chalkflow Brand Logo" style="overflow:visible;">
+        <defs>
+          <filter id="primaryLogoChalkGrain" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.6" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+        </defs>
+        
+        <!-- Left Sprout (x: 2 to 44, y: 4 to 46) -->
+        <g transform="translate(2, 2) scale(0.64)" filter="url(#primaryLogoChalkGrain)">
+          <!-- Left Leaf -->
+          <path d="M 49 48.5 C 44 41, 37 34, 21.5 37.5 C 19 44.5, 27 52, 47.5 52 Z" 
+                class="chalk-leaf-fill" />
+          <path d="M 48.5 48.5 C 44 41, 37 34, 21.5 37.5 C 19 44.5, 27 52, 47.5 52" 
+                fill="none" class="chalk-leaf-stroke" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M 46.5 50 C 38.5 46, 30.5 41.5, 23 38" 
+                fill="none" class="chalk-vein-stroke" stroke-width="1.3" stroke-linecap="round" />
+
+          <!-- Right Leaf -->
+          <path d="M 50.5 47.5 C 58.5 36.5, 66 28.5, 79 24.5 C 81 33.5, 72 45.5, 51.5 51.5 Z" 
+                class="chalk-leaf-fill" />
+          <path d="M 50.5 47.5 C 58.5 36.5, 66 28.5, 79 24.5 C 81 33.5, 72 45.5, 51.5 51.5" 
+                fill="none" class="chalk-leaf-stroke" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M 51.5 50 C 61 40.5, 70.5 32.5, 77.5 25.5" 
+                fill="none" class="chalk-vein-stroke" stroke-width="1.3" stroke-linecap="round" />
+
+          <!-- Bud Shoot -->
+          <path d="M 50 48.5 L 50 36.5" 
+                class="chalk-bud-fill" stroke-width="3" stroke-linecap="round" />
+          <path d="M 49.6 48 L 49.6 37.5" 
+                class="chalk-bud-highlight" stroke-width="1.1" stroke-linecap="round" />
+
+          <!-- Stem -->
+          <path d="M 50 48.5 C 49.5 57, 48.5 65.5, 47.2 72.5" 
+                fill="none" class="chalk-stem-fill" stroke-width="3.6" stroke-linecap="round" />
+          <path d="M 49.8 48.5 C 49.3 57, 48.3 65.5, 47 72.5" 
+                fill="none" class="chalk-stem-highlight" stroke-width="1.2" stroke-linecap="round" opacity="0.75" />
+
+          <!-- Left Wave of Flowing Baseline -->
+          <path d="M 16 70.5 C 27 61.5, 37.5 66.5, 47.2 72.5" 
+                fill="none" class="chalk-baseline-stroke" stroke-width="2.4" stroke-linecap="round" />
+        </g>
+
+        <!-- Chalkflow Handwritten Wordmark -->
+        <text x="56" y="32" 
+              class="chalk-brand-wordmark chalk-font">Chalkflow</text>
+
+        <!-- Continuous Flowing Ground Line Connecting from Sprout Base under Chalkflow with Signature Loop -->
+        <g filter="url(#primaryLogoChalkGrain)">
+          <path d="M 32.2 48.4 C 40 50.5, 48 51, 62 49 C 74 47.5, 84 47, 94 48 C 100 46, 106 43, 104 39.5 C 102 36, 97 37, 96 40 C 95 44, 98.5 48, 105 48.5 C 117 49, 132 47.5, 148 46 C 160 45, 172 46, 182 44.5" 
+                fill="none" class="chalk-baseline-stroke" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+      </svg>
+    `;
+  }
+};
+
+// ==========================================================================
 // 1.1 CHALK MASCOT & PANORAMIC BOTANICAL MEADOW ARTWORK (VECTOR CHALK CRAFT)
 // ==========================================================================
 const ChalkMascot = {
@@ -2576,18 +2694,38 @@ function navigateToSurface(surfaceId, linkedTaskId = null) {
 function initBrandMascot() {
   const wrap = document.getElementById('brand-avatar-wrap');
   if (wrap) {
-    wrap.innerHTML = ChalkMascot.renderPandaSVG(46);
-    wrap.title = "Chalkflow Panda Mascot • Click for chalk dust";
+    wrap.innerHTML = ChalkflowBrand.renderPrimaryLogoSVG(208, 48);
+    wrap.title = "Chalkflow • Mindful Productivity (Click for chalk dust)";
     wrap.addEventListener('click', () => {
       AudioEngine.playChalkScratch();
       emitDustParticles(wrap.getBoundingClientRect());
-      showToast("🐼 Chalkflow: Mindful productivity one stroke at a time!");
+      showToast("🌱 Chalkflow: Mindful productivity, one stroke at a time!");
     });
   }
 
   const focusBrandAvatar = document.getElementById('focus-brand-avatar');
   if (focusBrandAvatar) {
-    focusBrandAvatar.innerHTML = ChalkMascot.renderPandaSVG(30);
+    focusBrandAvatar.innerHTML = ChalkflowBrand.renderSproutIconSVG(30);
+  }
+
+  const mascotAvatar = document.getElementById('mascot-avatar-wrap');
+  const mascotStrip = document.getElementById('mascot-companion-strip');
+  if (mascotAvatar) {
+    mascotAvatar.innerHTML = ChalkMascot.renderPandaSVG(34);
+  }
+  if (mascotStrip) {
+    mascotStrip.addEventListener('click', () => {
+      AudioEngine.playChalkScratch();
+      emitDustParticles(mascotStrip.getBoundingClientRect());
+      const companionNotes = [
+        "🐼 Chalky: 'Small consistent steps grow the biggest gardens!'",
+        "🐼 Chalky: 'Take a deep breath. Focus is a quiet, steady rhythm.'",
+        "🐼 Chalky: 'Every completed stroke brings you closer to your goal.'",
+        "🐼 Chalky: 'Mindful focus isn\'t about perfection, it\'s about showing up.'"
+      ];
+      const msg = companionNotes[Math.floor(Math.random() * companionNotes.length)];
+      showToast(msg);
+    });
   }
 }
 
