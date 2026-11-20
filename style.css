@@ -2781,19 +2781,27 @@ body.theme-white-board .habit-card-bar-track {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 24px 28px;
-  min-height: 520px;
-  justify-content: space-between;
+  padding: 22px 28px 48px 28px;
+  min-height: auto;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
   transition: all 0.3s ease;
 }
 
 /* Base styling for cohesive focus cluster in standard view */
 .focus-main-cluster {
   width: 100%;
+  max-width: 620px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  box-sizing: border-box;
+  z-index: 5;
 }
 
 .focus-calming-whisper {
@@ -2948,28 +2956,35 @@ body.focus-maximized.theme-parchment-cream .sound-bar-header {
 
 /* Botanical Fern Silhouettes (Corner Accents) */
 .focus-fern-corner {
-  display: none;
+  display: block;
   position: absolute;
   pointer-events: none;
   z-index: 1;
-}
-
-body.focus-maximized .focus-fern-corner {
-  display: block;
+  transition: opacity 0.3s ease, color 0.3s ease;
 }
 
 .focus-fern-top-left {
   top: 0;
   left: 0;
-  width: clamp(200px, 24vw, 340px);
-  height: clamp(180px, 22vw, 300px);
+  width: clamp(190px, 22vw, 320px);
+  height: clamp(170px, 20vw, 290px);
 }
 
 .focus-fern-bottom-right {
   bottom: 0;
   right: 0;
-  width: clamp(220px, 26vw, 360px);
-  height: clamp(200px, 24vw, 320px);
+  width: clamp(210px, 24vw, 340px);
+  height: clamp(190px, 22vw, 310px);
+}
+
+body.focus-maximized .focus-fern-top-left {
+  width: clamp(230px, 25vw, 380px);
+  height: clamp(200px, 23vw, 340px);
+}
+
+body.focus-maximized .focus-fern-bottom-right {
+  width: clamp(250px, 27vw, 420px);
+  height: clamp(220px, 25vw, 370px);
 }
 
 .botanical-fern-svg {
@@ -2979,19 +2994,32 @@ body.focus-maximized .focus-fern-corner {
 }
 
 /* Corner Fern Palettes Across Themes */
-body.focus-maximized.theme-vintage-green .focus-fern-corner {
-  color: #1e3a29;
-  opacity: 0.85;
+body.theme-vintage-green .focus-fern-corner {
+  color: #1e3e2b;
+  opacity: 0.88;
 }
 
-body.focus-maximized.theme-dark-slate .focus-fern-corner {
-  color: #1a2721;
-  opacity: 0.7;
+body.theme-dark-slate .focus-fern-corner {
+  color: #16241c;
+  opacity: 0.78;
 }
 
-body.focus-maximized.theme-parchment-cream .focus-fern-corner {
+body.theme-parchment-cream .focus-fern-corner {
   color: #3b5649;
-  opacity: 0.14;
+  opacity: 0.18;
+}
+
+/* Frond layer depths for organic silhouette effect */
+.fern-frond.frond-bg {
+  opacity: 0.55;
+}
+
+.fern-frond.frond-secondary {
+  opacity: 0.78;
+}
+
+.fern-frond.frond-primary {
+  opacity: 0.95;
 }
 
 /* 3. Chrome Elimination */
@@ -3161,13 +3189,20 @@ body.focus-maximized .maximize-focus-btn:hover {
 /* 5. Centered Cohesive Experience Cluster & Layout */
 .focus-body-layout {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  box-sizing: border-box;
+}
+
+body.focus-maximized .focus-body-layout {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   min-height: 0;
-  box-sizing: border-box;
 }
 
 body.focus-maximized .focus-main-cluster {
@@ -3178,7 +3213,7 @@ body.focus-maximized .focus-main-cluster {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(10px, 1.8vh, 16px);
+  gap: clamp(8px, 1.6vh, 14px);
   flex-shrink: 0;
   z-index: 5;
 }
@@ -3276,8 +3311,8 @@ body.focus-maximized .focus-clock-centerpiece {
 /* 6. Clock Display Wrapper & Segmented Dashed Ring Dial */
 .clock-display-wrapper {
   position: relative;
-  width: 270px;
-  height: 270px;
+  width: 255px;
+  height: 255px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3286,8 +3321,8 @@ body.focus-maximized .focus-clock-centerpiece {
 
 .clock-ring-svg-container {
   position: relative;
-  width: 270px;
-  height: 270px;
+  width: 255px;
+  height: 255px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3324,34 +3359,44 @@ body.focus-maximized .clock-ring-svg-container {
 /* Segmented Rounded Dashes Styling */
 .timer-dash {
   stroke-linecap: round;
-  stroke-width: 4.5;
+  stroke-width: 4.8;
   transition: stroke 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
 }
 
-/* Inactive Dashes: Muted Grey-Green */
+/* Inactive Dashes: Muted Grey-Green, distinctly visible */
 .timer-dash.inactive {
-  stroke: rgba(255, 255, 255, 0.17);
-  opacity: 0.82;
+  stroke: rgba(255, 255, 255, 0.32);
+  opacity: 0.95;
   filter: none !important;
 }
 
 body.theme-vintage-green .timer-dash.inactive {
-  stroke: rgba(140, 185, 160, 0.22);
+  stroke: rgba(165, 220, 190, 0.38);
+  opacity: 0.95;
+}
+
+body.theme-dark-slate .timer-dash.inactive {
+  stroke: rgba(255, 255, 255, 0.32);
+  opacity: 0.95;
 }
 
 body.theme-parchment-cream .timer-dash.inactive {
-  stroke: rgba(45, 55, 72, 0.17);
-  opacity: 0.8;
+  stroke: rgba(45, 55, 72, 0.30);
+  opacity: 0.95;
 }
 
 /* 12 o'clock anchor dash hint */
 .timer-dash.dash-12.inactive {
   opacity: 1;
-  stroke: rgba(255, 255, 255, 0.28);
+  stroke: rgba(255, 255, 255, 0.55);
+}
+
+body.theme-vintage-green .timer-dash.dash-12.inactive {
+  stroke: rgba(165, 220, 190, 0.65);
 }
 
 body.theme-parchment-cream .timer-dash.dash-12.inactive {
-  stroke: rgba(45, 55, 72, 0.28);
+  stroke: rgba(45, 55, 72, 0.55);
 }
 
 /* Active / Completed Progress Dashes: Soft Mint */
@@ -4177,14 +4222,14 @@ body.mode-gentle-rest .ring-progress {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 18px 0;
+  margin: 6px 0 10px 0;
 }
 
 .clock-display-wrapper {
   position: relative;
-  width: 270px;
-  height: 270px;
-  margin-bottom: 16px;
+  width: 255px;
+  height: 255px;
+  margin-bottom: 8px;
 }
 
 .clock-progress-ring {
@@ -4217,7 +4262,7 @@ body.mode-gentle-rest .ring-progress {
 .timer-adjuster-row {
   display: flex;
   gap: 5px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .adjust-btn, .time-preset-btn {
@@ -4303,17 +4348,22 @@ body.mode-gentle-rest .ring-progress {
 
 .focus-soundscapes-bottom-bar {
   width: 100%;
+  max-width: 620px;
   border-top: 1px dashed var(--border-chalk);
   padding-top: 14px;
+  margin-top: 10px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
 }
 
 .sound-bar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   font-size: 12px;
   color: var(--text-muted);
+  padding: 0 4px;
 }
 
 .soundscapes-horizontal-row {
@@ -4321,6 +4371,8 @@ body.mode-gentle-rest .ring-progress {
   justify-content: center;
   gap: 8px;
   flex-wrap: wrap;
+  padding: 4px 6px 14px 6px;
+  margin-bottom: 6px;
 }
 
 .sound-pill {
