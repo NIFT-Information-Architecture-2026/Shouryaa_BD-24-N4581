@@ -3341,11 +3341,38 @@ body.focus-maximized .focus-clock-centerpiece {
 
 /* Maximized Mode: responsive dashed ring scaled to browser height */
 body.focus-maximized .clock-display-wrapper {
-  width: clamp(230px, 34vh, 350px);
-  height: clamp(230px, 34vh, 350px);
+  width: clamp(265px, 38vh, 380px);
+  height: clamp(265px, 38vh, 380px);
   margin: 0 auto;
   position: relative;
   filter: none !important;
+}
+
+/* Subtle atmospheric radial glow centered directly behind the timer */
+body.focus-maximized .clock-display-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130%;
+  height: 130%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(82, 183, 149, 0.08) 0%, rgba(30, 56, 44, 0.04) 48%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.focus-maximized.theme-dark-slate .clock-display-wrapper::before {
+  background: radial-gradient(circle, rgba(82, 183, 149, 0.065) 0%, rgba(24, 38, 30, 0.03) 50%, transparent 70%);
+}
+
+body.focus-maximized.theme-vintage-green .clock-display-wrapper::before {
+  background: radial-gradient(circle, rgba(82, 183, 149, 0.09) 0%, rgba(35, 65, 48, 0.045) 50%, transparent 70%);
+}
+
+body.focus-maximized.theme-parchment-cream .clock-display-wrapper::before {
+  background: radial-gradient(circle, rgba(46, 139, 102, 0.06) 0%, rgba(46, 139, 102, 0.02) 50%, transparent 70%);
 }
 
 body.focus-maximized .clock-ring-svg-container {
@@ -3360,61 +3387,61 @@ body.focus-maximized .clock-ring-svg-container {
   transition: stroke 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
 }
 
-/* Inactive Dashes: Muted Grey-Green, distinctly visible */
+/* Inactive Dashes: Soft Muted Grey */
 .timer-dash.inactive {
-  stroke: rgba(255, 255, 255, 0.32);
+  stroke: rgba(185, 195, 190, 0.30);
   opacity: 0.95;
   filter: none !important;
 }
 
 body.theme-vintage-green .timer-dash.inactive {
-  stroke: rgba(165, 220, 190, 0.38);
+  stroke: rgba(165, 195, 180, 0.32);
   opacity: 0.95;
 }
 
 body.theme-dark-slate .timer-dash.inactive {
-  stroke: rgba(255, 255, 255, 0.32);
+  stroke: rgba(185, 195, 190, 0.30);
   opacity: 0.95;
 }
 
 body.theme-parchment-cream .timer-dash.inactive {
-  stroke: rgba(45, 55, 72, 0.30);
+  stroke: rgba(65, 80, 72, 0.26);
   opacity: 0.95;
 }
 
 /* 12 o'clock anchor dash hint */
 .timer-dash.dash-12.inactive {
   opacity: 1;
-  stroke: rgba(255, 255, 255, 0.55);
+  stroke: rgba(255, 255, 255, 0.52);
 }
 
 body.theme-vintage-green .timer-dash.dash-12.inactive {
-  stroke: rgba(165, 220, 190, 0.65);
+  stroke: rgba(165, 220, 190, 0.60);
 }
 
 body.theme-parchment-cream .timer-dash.dash-12.inactive {
-  stroke: rgba(45, 55, 72, 0.55);
+  stroke: rgba(45, 55, 72, 0.50);
 }
 
-/* Active / Completed Progress Dashes: Soft Mint */
+/* Active / Completed Progress Dashes: Soft Mint with Subtle Glow */
 .timer-dash.active {
   stroke: #52B795;
   opacity: 1;
-  filter: drop-shadow(0 0 5px rgba(82, 183, 149, 0.75));
+  filter: drop-shadow(0 0 4px rgba(82, 183, 149, 0.65));
 }
 
 .timer-dash.active.leading {
-  filter: drop-shadow(0 0 7px rgba(82, 183, 149, 0.95));
+  filter: drop-shadow(0 0 6px rgba(82, 183, 149, 0.85));
 }
 
 body.mode-gentle-rest .timer-dash.active {
   stroke: #60C8A7 !important;
-  filter: drop-shadow(0 0 5px rgba(96, 200, 167, 0.8)) !important;
+  filter: drop-shadow(0 0 4px rgba(96, 200, 167, 0.7)) !important;
 }
 
 body.theme-parchment-cream .timer-dash.active {
   stroke: #2E8B66;
-  filter: drop-shadow(0 0 4px rgba(46, 139, 102, 0.5));
+  filter: drop-shadow(0 0 3px rgba(46, 139, 102, 0.45));
 }
 
 body.theme-parchment-cream.mode-gentle-rest .timer-dash.active {
@@ -3447,7 +3474,7 @@ body.theme-parchment-cream.mode-gentle-rest .timer-dash.active {
 }
 
 body.focus-maximized .time-readout {
-  font-size: clamp(48px, 7.8vh, 68px);
+  font-size: clamp(54px, 8.5vh, 76px);
 }
 
 .time-label-wrap {
