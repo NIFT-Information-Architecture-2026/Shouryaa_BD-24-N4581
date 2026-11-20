@@ -5200,7 +5200,16 @@ function renderHabitLedger() {
       });
     }
     if (progressBar) progressBar.style.width = '0%';
-    if (progressText) progressText.innerText = '0% average consistency • No habits active';
+    const rhythmCircle = document.getElementById('ring-rhythm-circle');
+    const rhythmPctBadge = document.getElementById('rhythm-percentage');
+    if (rhythmCircle) {
+      const r = (rhythmCircle.r && rhythmCircle.r.baseVal) ? rhythmCircle.r.baseVal.value : 28;
+      const circum = 2 * Math.PI * r;
+      rhythmCircle.style.strokeDasharray = `${circum}`;
+      rhythmCircle.style.strokeDashoffset = `${circum}`;
+    }
+    if (rhythmPctBadge) rhythmPctBadge.innerText = '0%';
+    if (progressText) progressText.innerText = 'No habits active yet';
     return;
   }
 
@@ -5390,14 +5399,14 @@ function renderHabitLedger() {
   }
 
   const rhythmCircle = document.getElementById('ring-rhythm-circle');
-  const rhythmPctText = document.getElementById('rhythm-pct-text');
   const rhythmPctBadge = document.getElementById('rhythm-percentage');
 
   if (rhythmCircle) {
-    const circum = 213.63;
-    rhythmCircle.style.strokeDashoffset = circum * (1 - avgMonthConsistency / 100);
+    const r = (rhythmCircle.r && rhythmCircle.r.baseVal) ? rhythmCircle.r.baseVal.value : 28;
+    const circum = 2 * Math.PI * r;
+    rhythmCircle.style.strokeDasharray = `${circum}`;
+    rhythmCircle.style.strokeDashoffset = `${circum * (1 - avgMonthConsistency / 100)}`;
   }
-  if (rhythmPctText) rhythmPctText.innerText = `${avgMonthConsistency}%`;
   if (rhythmPctBadge) rhythmPctBadge.innerText = `${avgMonthConsistency}%`;
 }
 

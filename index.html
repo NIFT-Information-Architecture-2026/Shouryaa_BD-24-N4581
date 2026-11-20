@@ -681,26 +681,28 @@
           
           <div class="habit-ledger-layout">
             
-            <!-- TOP: Monthly Habit Consistency Overview Card (Clean Horizontal Bar) -->
+            <!-- TOP: Monthly Habit Consistency Overview Card (Clean Minimal Circular Progress Ring) -->
             <div class="habit-overview-card chalk-card">
               <div class="habit-rhythm-layout">
-                <div class="habit-rhythm-info-col">
-                  <div class="habit-rhythm-header-line">
-                    <h3 class="chalk-font rhythm-title"><i class="fa-solid fa-chart-simple"></i> Monthly Rhythm</h3>
-                    <div class="rhythm-stat-pill">
-                      <span class="rhythm-pct-highlight chalk-font" id="rhythm-pct-text">0%</span>
-                      <span class="rhythm-sub-label">average consistency</span>
+                <!-- Left: Minimal Circular Progress Ring + Habit Stats Beside It -->
+                <div class="habit-rhythm-left">
+                  <div class="rhythm-ring-wrapper">
+                    <svg class="rhythm-ring-svg" width="68" height="68" viewBox="0 0 68 68">
+                      <circle class="rhythm-ring-bg" cx="34" cy="34" r="28" />
+                      <circle class="rhythm-ring-bar" id="ring-rhythm-circle" cx="34" cy="34" r="28" />
+                    </svg>
+                    <div class="rhythm-ring-center">
+                      <span class="rhythm-ring-percentage chalk-font" id="rhythm-percentage">0%</span>
                     </div>
                   </div>
-                  <!-- Clean Horizontal Progress Bar replacing duplicate ring -->
-                  <div class="rhythm-bar-container" title="Monthly habit consistency progress">
-                    <div class="rhythm-bar-track">
-                      <div class="rhythm-bar-fill" id="habit-progress-bar" style="width: 0%;"></div>
-                    </div>
+
+                  <div class="habit-rhythm-info">
+                    <h3 class="chalk-font rhythm-title">Your Monthly Rhythm</h3>
+                    <p class="rhythm-subtext">Average consistency • <span id="habit-progress-text">You've met 0 of 0 daily habit goals so far.</span></p>
                   </div>
-                  <p class="rhythm-subtext" id="habit-progress-text">You've met 0 of 0 daily habit goals so far.</p>
                 </div>
 
+                <!-- Right: + New Habit Button -->
                 <div class="habit-rhythm-actions">
                   <button class="chalk-btn secondary-btn chalk-font btn-header-new-habit" id="btn-add-habit-modal">
                     <i class="fa-solid fa-plus"></i> New Habit

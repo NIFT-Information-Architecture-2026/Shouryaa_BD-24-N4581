@@ -4935,100 +4935,123 @@ body.theme-parchment-cream .carried-mini-indicator {
   min-height: 180px;
 }
 
-/* --- 3. Habit Ledger: Clean Horizontal Rhythm Bar (No duplicate ring or flowers) --- */
+/* --- 3. Habit Ledger: Clean Minimal Circular Progress Ring Summary Card --- */
 .habit-overview-card {
-  padding: 14px 18px;
+  padding: 14px 20px;
 }
 
 .habit-rhythm-layout {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 20px;
 }
 
-.habit-rhythm-info-col {
+.habit-rhythm-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.rhythm-ring-wrapper {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rhythm-ring-svg {
+  transform: rotate(-90deg);
+  width: 68px;
+  height: 68px;
+}
+
+.rhythm-ring-bg {
+  fill: none;
+  stroke: rgba(247, 245, 235, 0.08);
+  stroke-width: 3.5;
+}
+
+body.theme-parchment-cream .rhythm-ring-bg {
+  stroke: rgba(46, 52, 64, 0.08);
+}
+
+body.theme-dark-slate .rhythm-ring-bg {
+  stroke: rgba(241, 245, 249, 0.08);
+}
+
+body.theme-vintage-green .rhythm-ring-bg {
+  stroke: rgba(247, 245, 235, 0.08);
+}
+
+.rhythm-ring-bar {
+  fill: none;
+  stroke: var(--chalk-mint);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 175.93;
+  stroke-dashoffset: 175.93;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rhythm-ring-center {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.rhythm-ring-percentage {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--chalk-mint);
+  letter-spacing: -0.3px;
+  line-height: 1;
+}
+
+body.theme-parchment-cream .rhythm-ring-percentage {
+  color: #1b8a6b;
+}
+
+.habit-rhythm-info {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  flex-grow: 1;
-}
-
-.habit-rhythm-header-line {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
 }
 
 .rhythm-title {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.rhythm-title i {
-  color: var(--chalk-mint);
-  font-size: 13px;
-}
-
-.rhythm-stat-pill {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 5px;
-}
-
-.rhythm-pct-highlight {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--chalk-mint);
-}
-
-.rhythm-sub-label {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.rhythm-bar-container {
-  width: 100%;
-  max-width: 500px;
-  height: 8px;
-  border-radius: 6px;
-  background: rgba(247, 245, 235, 0.08);
-  border: 1px solid var(--border-chalk);
-  overflow: hidden;
-}
-
-.rhythm-bar-track {
-  width: 100%;
-  height: 100%;
-}
-
-.rhythm-bar-fill {
-  height: 100%;
-  background: var(--chalk-mint);
-  border-radius: 6px;
-  transition: width 0.4s ease;
-}
-
-body.theme-parchment-cream .rhythm-bar-container {
-  background: rgba(46, 52, 64, 0.08);
+  line-height: 1.25;
 }
 
 .rhythm-subtext {
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--text-muted);
   margin: 0;
+  line-height: 1.4;
+}
+
+.habit-rhythm-actions {
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .btn-header-new-habit {
-  font-size: 11.5px;
-  padding: 5px 12px;
+  font-size: 12px;
+  padding: 6px 14px;
   border-radius: 8px;
   white-space: nowrap;
 }
@@ -5246,10 +5269,15 @@ body.theme-parchment-cream .dash-breather-banner {
   .habit-rhythm-layout {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    gap: 14px;
   }
-  .rhythm-bar-container {
-    max-width: 100%;
+  .habit-rhythm-actions {
+    margin-left: 0;
+    width: 100%;
+  }
+  .btn-header-new-habit {
+    width: 100%;
+    justify-content: center;
   }
   .upcoming-unified-empty-state {
     flex-direction: column;
