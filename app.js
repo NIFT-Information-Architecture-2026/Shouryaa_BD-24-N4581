@@ -4687,11 +4687,10 @@ function renderHabitConsistencyGraph() {
   if (habits.length === 0) {
     container.innerHTML = `
       <div class="habit-graph-empty-state">
-        <div class="habit-empty-icon">🌱</div>
-        <h4 class="chalk-font habit-empty-title">No Habits Planted Yet</h4>
-        <p class="habit-empty-subtext">Plant your first daily habit companion below to start charting your daily consistency rhythm.</p>
+        <h4 class="chalk-font habit-empty-title">Habit Consistency</h4>
+        <p class="habit-empty-subtext">Small routines begin with one step. Create a habit below to chart your consistency.</p>
         <button type="button" class="chalk-btn primary-btn chalk-font btn-plant-first-habit" id="btn-plant-first-habit-graph" style="margin-top: 6px; padding: 6px 14px; font-size: 13px;">
-          <i class="fa-solid fa-plus"></i> Plant First Habit
+          <i class="fa-solid fa-plus"></i> Create Habit
         </button>
       </div>
     `;
@@ -4760,11 +4759,11 @@ function renderHabitConsistencyGraph() {
   updateHabitGraphInspection(todayEntry);
 
   const svgWidth = 680;
-  const svgHeight = 155; // Compact height to bring habits checklist higher up
-  const padLeft = 42;
-  const padRight = 20;
-  const padTop = 16;
-  const padBottom = 26;
+  const svgHeight = 128; // Reduced height (~18%) to bring active habit routines higher up
+  const padLeft = 40;
+  const padRight = 18;
+  const padTop = 14;
+  const padBottom = 22;
   const graphW = svgWidth - padLeft - padRight;
   const graphH = svgHeight - padTop - padBottom;
 
@@ -4829,7 +4828,7 @@ function renderHabitConsistencyGraph() {
       const labelFill = d.isToday ? 'var(--chalk-amber)' : (d.isFuture ? 'var(--text-muted)' : 'var(--text-primary)');
       const labelWeight = d.isToday ? '700' : '500';
       xLabelsSVG += `
-        <text x="${d.x}" y="${svgHeight - 8}" font-family="'Inter', sans-serif" font-size="${isWeekly ? 10.5 : 9.5}" fill="${labelFill}" font-weight="${labelWeight}" text-anchor="middle" opacity="${d.isFuture ? 0.45 : 0.9}">${d.label}</text>
+        <text x="${d.x}" y="${svgHeight - 6}" font-family="'Inter', sans-serif" font-size="${isWeekly ? 10.5 : 9.5}" fill="${labelFill}" font-weight="${labelWeight}" text-anchor="middle" opacity="${d.isFuture ? 0.45 : 0.9}">${d.label}</text>
       `;
     } else {
       // Small subtle tick mark
@@ -4859,7 +4858,7 @@ function renderHabitConsistencyGraph() {
     ` : '';
 
     pointsSVG += `
-      <g class="graph-point-group ${isToday ? 'is-today' : ''}" data-idx="${ptIdx}" style="cursor: pointer;">
+      <g class="graph-point-group ${isToday ? 'is-today' : ''}" data-idx="${ptIdx}" style="cursor: pointer;" tabindex="0" role="button" aria-label="${d.fullDate}: ${d.stats.fullyMetCount || 0} of ${d.stats.totalScheduled || 0} daily goals met (${d.stats.percentage || 0}%)">
         <circle cx="${pt.x}" cy="${pt.y}" r="14" fill="transparent" class="graph-point-hitbox" />
         ${halo}
         <circle cx="${pt.x}" cy="${pt.y}" r="${isToday ? 5 : 3.8}"
@@ -4924,10 +4923,18 @@ function renderHabitConsistencyGraph() {
     };
 
     grp.addEventListener('mouseenter', handleInspect);
+    grp.addEventListener('focus', handleInspect);
     grp.addEventListener('click', () => {
       AudioEngine.playChalkScratch();
       emitDustParticles(grp.getBoundingClientRect());
       handleInspect();
+    });
+    grp.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        AudioEngine.playChalkScratch();
+        handleInspect();
+      }
     });
   });
 
@@ -5184,11 +5191,10 @@ function renderHabitLedger() {
   if (habits.length === 0) {
     container.innerHTML = `
       <div class="habit-list-empty-state">
-        <span class="habit-empty-sprout">🌿</span>
-        <p class="chalk-font habit-empty-msg">Your habit garden is quiet and ready for planting.</p>
-        <span class="habit-empty-hint">Track daily hydration, reading, mindfulness or exercise routines.</span>
+        <p class="chalk-font habit-empty-msg">Small routines begin with one step.</p>
+        <span class="habit-empty-hint">Track daily hydration, reading, mindfulness or wellness routines.</span>
         <button type="button" class="chalk-btn primary-btn chalk-font btn-plant-first-habit" id="btn-plant-first-habit-list" style="margin-top: 10px; padding: 6px 16px; font-size: 13px;">
-          <i class="fa-solid fa-plus"></i> Plant First Habit
+          <i class="fa-solid fa-plus"></i> Create Habit
         </button>
       </div>
     `;
