@@ -142,16 +142,28 @@
         <!-- =============================================================== -->
         <section class="surface-view active" id="view-dashboard">
           
-          <!-- Greeting Header Banner (Modeled on User Reference Mockup) -->
+          <!-- Greeting Header Banner (Supportive Reflection & Breather Action) -->
           <div class="dashboard-greeting-banner">
-            <div class="greeting-text-block">
-              <h2 class="greeting-title chalk-font">
-                Welcome Back, <span class="editable-user-name" id="display-user-name" title="Click to change your name">Shouryaa</span> !
-                <button type="button" class="btn-edit-user-name" id="btn-edit-user-name" title="Change your name" aria-label="Change user name">
-                  <i class="fa-solid fa-pen-to-square"></i>
+            <div class="greeting-header-row">
+              <div class="greeting-text-block">
+                <h2 class="greeting-title chalk-font">
+                  Welcome Back, <span class="editable-user-name" id="display-user-name" title="Click to change your name">Shouryaa</span> !
+                  <button type="button" class="btn-edit-user-name" id="btn-edit-user-name" title="Change your name" aria-label="Change user name">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                </h2>
+                <div class="greeting-supportive-row">
+                  <p class="greeting-supportive-msg" id="dash-supportive-quote">"One thing at a time. The rest can wait."</p>
+                  <button type="button" class="btn-cycle-quote" id="btn-cycle-quote" title="Read another gentle reflection" aria-label="Read another reflection">
+                    <i class="fa-solid fa-rotate"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="greeting-actions-block">
+                <button type="button" class="btn-take-breather chalk-font" id="btn-open-breather" title="Take a calming 60-second breathing pause">
+                  <i class="fa-solid fa-wind"></i> Take a Breather
                 </button>
-              </h2>
-              <p class="greeting-subtitle">Here is your day at a glance.</p>
+              </div>
             </div>
           </div>
 
@@ -211,11 +223,16 @@
                   </div>
                 </div>
                 <div class="metric-info">
-                  <span class="metric-micro-tag">DEEP FOCUS</span>
+                  <div class="metric-focus-header">
+                    <span class="metric-micro-tag">DEEP FOCUS</span>
+                    <span class="metric-bloom-badge" id="dash-focus-bloom-badge" title="45 minutes of Deep Focus required for flower Full Bloom">
+                      <i class="fa-solid fa-seedling"></i> Bloom: 45m req
+                    </span>
+                  </div>
                   <h4 class="metric-title chalk-font" id="dash-focus-ratio">0 / 60m</h4>
-                  <p class="metric-caption" id="dash-focus-sub">Daily focus target</p>
-                  <button type="button" class="dash-free-focus-btn chalk-font" id="btn-dash-free-focus" title="Start unanchored mindful focus session">
-                    <i class="fa-solid fa-play"></i> Start Free Focus
+                  <p class="metric-caption" id="dash-focus-sub">Daily target: 60m (45m for bloom)</p>
+                  <button type="button" class="dash-free-focus-btn chalk-font" id="btn-dash-free-focus" title="Start mindful focus session">
+                    <i class="fa-solid fa-play"></i> Start Focus
                   </button>
                 </div>
               </div>
@@ -291,17 +308,17 @@
 
           </div>
 
-          <!-- BOTTOM ROW: Big Box 3: Collected Botanicals & Species Showcase -->
+          <!-- BOTTOM ROW: Big Box 3: Collected Botanicals & Species Showcase (Horizontal Ribbon) -->
           <div class="dash-collection-box chalk-card" id="dash-collection-box">
             <div class="dash-box-header">
               <div class="dash-box-title-wrap">
                 <h3 class="dash-box-title chalk-font"><i class="fa-solid fa-book-bookmark"></i> Collected Botanicals & Species</h3>
                 <span class="dash-box-badge" id="dash-collected-count-badge">0 Species Harvested</span>
               </div>
-              <p class="dash-collection-desc">Botanical flowers and plants bloomed through your mindful consistency this month.</p>
+              <p class="dash-collection-desc">Full Bloom botanical specimens earned through mindful consistency this month.</p>
             </div>
 
-            <div class="dash-collected-plants-grid" id="dash-collected-plants-grid">
+            <div class="dash-collected-plants-scroll-row" id="dash-collected-plants-grid">
               <!-- Dynamically populated with collected plant cards (visual + name) -->
             </div>
           </div>
@@ -1057,6 +1074,40 @@
           <button type="submit" class="chalk-btn primary-btn chalk-font"><i class="fa-solid fa-check"></i> Save Changes</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal 5: Mindful Breather (60-second Calm Breathing) -->
+  <div class="chalk-modal-backdrop" id="breather-modal" style="display:none;">
+    <div class="chalk-modal-dialog chalk-card breather-modal-dialog">
+      <div class="modal-header">
+        <h3 class="chalk-font"><i class="fa-solid fa-wind" style="color:var(--chalk-mint); margin-right:6px;"></i> Take a Breather</h3>
+        <button type="button" class="modal-close-btn" id="btn-close-breather-modal">&times;</button>
+      </div>
+      <div class="modal-body breather-modal-body">
+        <p class="breather-subtext">A gentle 60-second pause to ground yourself. Breathe at whatever pace feels comfortable.</p>
+        
+        <div class="breather-circle-stage">
+          <div class="breather-circle-glow" id="breather-circle">
+            <div class="breather-circle-inner">
+              <span class="breather-prompt-text chalk-font" id="breather-prompt">Breathe in gently...</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="breather-timer-indicator">
+          <span class="breather-timer-digits chalk-font" id="breather-timer-display">60s</span>
+          <span class="breather-timer-sub">remaining</span>
+        </div>
+      </div>
+      <div class="modal-footer breather-modal-footer">
+        <button type="button" class="chalk-btn secondary-btn chalk-font" id="btn-breather-pause">
+          <i class="fa-solid fa-pause"></i> Pause
+        </button>
+        <button type="button" class="chalk-btn primary-btn chalk-font" id="btn-breather-done">
+          <i class="fa-solid fa-check"></i> Done
+        </button>
+      </div>
     </div>
   </div>
 

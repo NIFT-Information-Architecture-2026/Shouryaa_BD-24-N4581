@@ -1,4 +1,4 @@
-/**
+﻿/**
  * CHALKFLOW — Mindful Productivity & Botanical Focus Engine
  * Refined Interactive Architecture & Handcrafted Wildflower Meadow
  * Creative Director: Shouryaa (Fashion Communication, NIFT Hyderabad)
@@ -1926,6 +1926,7 @@ const DEFAULT_STATE = {
       isExpanded: false
     }
   ],
+  habitResetVersion: 2,
   lastHabitDate: TODAY_DATE,
   habits: [
     { id: 'h-1', name: 'Drink 4 Liters Water', icon: '💧', type: 'COUNTER', current: 0, target: 4, unit: 'L', completions: Math.min(13, TODAY_DAY_NUM) },
@@ -2570,7 +2571,167 @@ function initNavigation() {
 // --------------------------------------------------------------------------
 // C. DASHBOARD CONTROLLER (PROGRESS RINGS, BOXES & COLLECTED SPECIES)
 // --------------------------------------------------------------------------
+const CALM_SUPPORTIVE_MESSAGES = [
+  "One thing at a time. The rest can wait.",
+  "Quiet progress is still genuine progress.",
+  "Breathe easy. Growth doesn't need to be rushed.",
+  "Focus on what is right in front of you.",
+  "Small, steady steps carry the day.",
+  "Allow yourself space to pause today.",
+  "Root yourself in the present moment.",
+  "Patience nurtures what effort begins."
+];
+
+let currentSupportiveQuoteIndex = 0;
+
+function updateDashboardSupportiveQuote() {
+  const quoteEl = document.getElementById('dash-supportive-quote');
+  if (quoteEl) {
+    quoteEl.innerText = `"${CALM_SUPPORTIVE_MESSAGES[currentSupportiveQuoteIndex % CALM_SUPPORTIVE_MESSAGES.length]}"`;
+  }
+}
+
+function cycleDashboardSupportiveQuote() {
+  currentSupportiveQuoteIndex = (currentSupportiveQuoteIndex + 1) % CALM_SUPPORTIVE_MESSAGES.length;
+  updateDashboardSupportiveQuote();
+}
+
+const BreatherController = {
+  isOpen: false,
+  isPaused: false,
+  remainingSeconds: 60,
+  timerId: null,
+  cycleIntervalId: null,
+  phase: 'inhale',
+
+  init() {
+    const openBtn = document.getElementById('btn-open-breather');
+    const closeBtn = document.getElementById('btn-close-breather-modal');
+    const pauseBtn = document.getElementById('btn-breather-pause');
+    const doneBtn = document.getElementById('btn-breather-done');
+    const cycleQuoteBtn = document.getElementById('btn-cycle-quote');
+
+    if (openBtn) openBtn.addEventListener('click', () => this.open());
+    if (closeBtn) closeBtn.addEventListener('click', () => this.close());
+    if (pauseBtn) pauseBtn.addEventListener('click', () => this.togglePause());
+    if (doneBtn) doneBtn.addEventListener('click', () => this.close());
+    if (cycleQuoteBtn) cycleQuoteBtn.addEventListener('click', () => cycleDashboardSupportiveQuote());
+
+    const modal = document.getElementById('breather-modal');
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) this.close();
+      });
+    }
+  },
+
+  open() {
+    this.isOpen = true;
+    this.isPaused = false;
+    this.remainingSeconds = 60;
+    this.phase = 'inhale';
+
+    const modal = document.getElementById('breather-modal');
+    if (modal) modal.style.display = 'flex';
+
+    const circle = document.getElementById('breather-circle');
+    const prompt = document.getElementById('breather-prompt');
+    const timerDisplay = document.getElementById('breather-timer-display');
+    const pauseBtn = document.getElementById('btn-breather-pause');
+
+    if (circle) {
+      circle.className = 'breather-circle-glow inhale';
+    }
+    if (prompt) prompt.innerText = 'Breathe in gently...';
+    if (timerDisplay) timerDisplay.innerText = '60s';
+    if (pauseBtn) pauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
+
+    this.startTimers();
+  },
+
+  close() {
+    this.isOpen = false;
+    this.isPaused = false;
+    this.clearTimers();
+    const modal = document.getElementById('breather-modal');
+    if (modal) modal.style.display = 'none';
+  },
+
+  togglePause() {
+    if (!this.isOpen) return;
+    this.isPaused = !this.isPaused;
+    const pauseBtn = document.getElementById('btn-breather-pause');
+    const prompt = document.getElementById('breather-prompt');
+
+    if (this.isPaused) {
+      if (pauseBtn) pauseBtn.innerHTML = '<i class="fa-solid fa-play"></i> Resume';
+      if (prompt) prompt.innerText = 'Paused. Take your time...';
+    } else {
+      if (pauseBtn) pauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
+      if (prompt) prompt.innerText = this.phase === 'inhale' ? 'Breathe in gently...' : 'Breathe out gently...';
+    }
+  },
+
+  startTimers() {
+    this.clearTimers();
+
+    this.timerId = setInterval(() => {
+      if (!this.isOpen || this.isPaused) return;
+      this.remainingSeconds--;
+      const timerDisplay = document.getElementById('breather-timer-display');
+      if (timerDisplay) timerDisplay.innerText = `${this.remainingSeconds}s`;
+
+      if (this.remainingSeconds <= 0) {
+        this.onComplete();
+      }
+    }, 1000);
+
+    this.cycleIntervalId = setInterval(() => {
+      if (!this.isOpen || this.isPaused) return;
+      this.phase = this.phase === 'inhale' ? 'exhale' : 'inhale';
+      const circle = document.getElementById('breather-circle');
+      const prompt = document.getElementById('breather-prompt');
+
+      if (circle) {
+        circle.className = `breather-circle-glow ${this.phase}`;
+      }
+      if (prompt) {
+        prompt.innerText = this.phase === 'inhale' ? 'Breathe in gently...' : 'Breathe out gently...';
+      }
+    }, 4500);
+  },
+
+  clearTimers() {
+    if (this.timerId) {
+      clearInterval(this.timerId);
+      this.timerId = null;
+    }
+    if (this.cycleIntervalId) {
+      clearInterval(this.cycleIntervalId);
+      this.cycleIntervalId = null;
+    }
+  },
+
+  onComplete() {
+    this.clearTimers();
+    const prompt = document.getElementById('breather-prompt');
+    const timerDisplay = document.getElementById('breather-timer-display');
+    const circle = document.getElementById('breather-circle');
+
+    if (prompt) prompt.innerText = 'Peaceful pause complete ✨';
+    if (timerDisplay) timerDisplay.innerText = '0s';
+    if (circle) circle.className = 'breather-circle-glow';
+
+    showToast('Take this calm with you into your day. 🌿');
+    setTimeout(() => {
+      if (this.isOpen) this.close();
+    }, 2000);
+  }
+};
+
 function initDashboard() {
+  BreatherController.init();
+  updateDashboardSupportiveQuote();
   // Navigation links within dashboard boxes
   document.querySelectorAll('.dash-nav-link').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -2659,6 +2820,7 @@ function renderDashboard() {
   if (!dashView) return;
 
   updateUserGreeting();
+  updateDashboardSupportiveQuote();
 
   const circumference = 213.63; // 2 * Math.PI * 34 for r=34
 
@@ -2725,7 +2887,26 @@ function renderDashboard() {
   if (focusPercentText) focusPercentText.innerText = `${focusPercent}%`;
   if (dashFocusRatio) dashFocusRatio.innerText = `${currentFocus} / ${focusGoal}m`;
   if (dashFocusSub) {
-    dashFocusSub.innerText = currentFocus >= focusGoal ? 'Daily focus target reached!' : `${focusGoal - currentFocus}m left for daily target`;
+    if (currentFocus >= focusGoal) {
+      dashFocusSub.innerText = 'Daily 60m focus target reached! ✨';
+    } else {
+      dashFocusSub.innerText = `${focusGoal - currentFocus}m left to 60m target`;
+    }
+  }
+
+  // Clearly distinguish the 45-minute Full Bloom focus requirement from the 60-minute target
+  const bloomBadge = document.getElementById('dash-focus-bloom-badge');
+  const bloomFocusRequirement = 45;
+  if (bloomBadge) {
+    if (currentFocus >= bloomFocusRequirement) {
+      bloomBadge.className = 'metric-bloom-badge met';
+      bloomBadge.innerHTML = `<i class="fa-solid fa-check"></i> Bloom: 45m Met`;
+      bloomBadge.title = `Full Bloom 45-minute focus condition met (${currentFocus}m recorded)`;
+    } else {
+      bloomBadge.className = 'metric-bloom-badge';
+      bloomBadge.innerHTML = `<i class="fa-solid fa-seedling"></i> Bloom: 45m req (${currentFocus}/${bloomFocusRequirement}m)`;
+      bloomBadge.title = `${bloomFocusRequirement - currentFocus}m more focus needed today for Full Bloom`;
+    }
   }
 
   // 4. MIDDLE ROW: BIG BOX 1 - TODAY'S TASKS ALL TOGETHER
@@ -2883,25 +3064,37 @@ function renderDashboard() {
 
     if (countBadge) countBadge.innerText = `${collectedSpecies.length} Species Harvested`;
 
-    collectedSpecies.forEach(plant => {
-      const card = document.createElement('div');
-      card.className = 'dash-plant-card';
-      card.style.cursor = 'pointer';
-      card.title = `Click to inspect or rename ${plant.name}`;
-      card.innerHTML = `
-        <div class="dash-plant-svg-wrap">
-          ${ChalkBotanicals.getBotanicalSVG(4, 56, plant.day, '', plant.name)}
+    if (collectedSpecies.length === 0) {
+      collectionGrid.innerHTML = `
+        <div class="dash-plants-empty-banner">
+          <div class="empty-banner-icon"><i class="fa-solid fa-seedling"></i></div>
+          <div class="empty-banner-content">
+            <h5 class="empty-banner-title chalk-font">Your Herbarium Awaits</h5>
+            <p class="empty-banner-sub">Complete all daily slate tasks and at least 45 minutes of Deep Focus today to bloom and harvest your first botanical specimen.</p>
+          </div>
         </div>
-        <div class="dash-plant-name chalk-font">${plant.name}</div>
-        <div class="dash-plant-meta">${plant.tasks} tasks • ${plant.focus}m focus</div>
-        <span class="dash-plant-badge chalk-font"><i class="fa-solid fa-seedling"></i> Bloomed</span>
       `;
-      card.addEventListener('click', () => {
-        const g = AppState.gardenData[plant.day] || { stage: 4, specimen: plant.name, tasks: plant.tasks, focus: plant.focus };
-        openGardenDayModal(plant.day, g, 'Full Bloom');
+    } else {
+      collectedSpecies.forEach(plant => {
+        const card = document.createElement('div');
+        card.className = 'dash-plant-card';
+        card.style.cursor = 'pointer';
+        card.title = `Click to inspect or rename ${plant.name}`;
+        card.innerHTML = `
+          <div class="dash-plant-svg-wrap">
+            ${ChalkBotanicals.getBotanicalSVG(4, 56, plant.day, '', plant.name)}
+          </div>
+          <div class="dash-plant-name chalk-font">${plant.name}</div>
+          <div class="dash-plant-meta">${plant.tasks} tasks • ${plant.focus}m focus</div>
+          <span class="dash-plant-badge chalk-font"><i class="fa-solid fa-seedling"></i> Bloomed</span>
+        `;
+        card.addEventListener('click', () => {
+          const g = AppState.gardenData[plant.day] || { stage: 4, specimen: plant.name, tasks: plant.tasks, focus: plant.focus };
+          openGardenDayModal(plant.day, g, 'Full Bloom');
+        });
+        collectionGrid.appendChild(card);
       });
-      collectionGrid.appendChild(card);
-    });
+    }
   }
 }
 
@@ -4100,6 +4293,19 @@ function checkAndPerformDailyHabitReset(state, force = false) {
     return true;
   }
 
+  // Migration / upgrade to daily habit reset version 2:
+  // If user has old state that has not been initialized with daily zero reset, reset today to 0 once
+  if (!state.habitResetVersion || state.habitResetVersion < 2) {
+    state.habitResetVersion = 2;
+    state.lastHabitDate = currentToday;
+    state.habitHistory[currentToday] = {};
+    (state.habits || []).forEach(h => {
+      h.current = 0;
+      state.habitHistory[currentToday][h.id] = 0;
+    });
+    return true;
+  }
+
   const lastRecordedDate = state.lastHabitDate;
 
   // Case 1: First time running with lastHabitDate tracking (or state has no lastHabitDate yet)
@@ -4240,7 +4446,9 @@ function getHabitCompletionForDate(dateStr) {
   let sumPercentages = 0;
 
   activeHabits.forEach(h => {
-    const val = record[h.id] !== undefined ? record[h.id] : (isToday ? (h.current || 0) : 0);
+    const val = isToday
+      ? (h.current !== undefined ? h.current : (record[h.id] !== undefined ? record[h.id] : 0))
+      : (record[h.id] !== undefined ? record[h.id] : 0);
     const target = h.target || (h.type === 'COUNTER' ? 4 : 1);
 
     // Check if daily goal was fully met
@@ -4399,7 +4607,7 @@ function renderHabitConsistencyGraph() {
       const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       const dayOfWeek = d.toLocaleDateString('en-US', { weekday: 'short' });
       const dayNum = d.getDate();
-      const isToday = i === 0;
+      const isToday = i === 0 || dateStr === TODAY_DATE;
       const stats = getHabitCompletionForDate(dateStr);
       days.push({
         dateStr,
@@ -4417,7 +4625,7 @@ function renderHabitConsistencyGraph() {
     const daysInMonth = CurrentDateInfo ? CurrentDateInfo.daysInMonth : 30;
     for (let day = 1; day <= daysInMonth; day++) {
       const dateStr = `${CurrentDateInfo.year}-${String(CurrentDateInfo.monthNum).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      const isToday = day === TODAY_DAY_NUM;
+      const isToday = day === TODAY_DAY_NUM || dateStr === TODAY_DATE;
       const isFuture = day > TODAY_DAY_NUM;
       const stats = isFuture ? { percentage: 0, completedCount: 0, fullyMetCount: 0, totalScheduled: habits.length } : getHabitCompletionForDate(dateStr);
       const d = new Date(CurrentDateInfo.year, CurrentDateInfo.monthNum - 1, day);
@@ -4426,7 +4634,7 @@ function renderHabitConsistencyGraph() {
         dayNum: day,
         isToday,
         isFuture,
-        label: `D${day}`,
+        label: isToday ? '★ Today' : `D${day}`,
         fullDate: d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
         stats
       });

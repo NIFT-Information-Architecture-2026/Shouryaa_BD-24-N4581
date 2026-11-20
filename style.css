@@ -3603,6 +3603,84 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
+.greeting-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.greeting-text-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.greeting-supportive-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.greeting-supportive-msg {
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+  letter-spacing: 0.1px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.btn-cycle-quote {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-faint);
+  font-size: 11px;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-cycle-quote:hover {
+  color: var(--chalk-mint);
+  border-color: var(--border-chalk);
+  transform: rotate(45deg);
+}
+
+.btn-take-breather {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 20px;
+  background: rgba(6, 214, 160, 0.1);
+  color: var(--chalk-mint);
+  border: 1px solid rgba(6, 214, 160, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-take-breather:hover {
+  background: var(--chalk-mint);
+  color: #1a1a24;
+  border-color: var(--chalk-mint);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(6, 214, 160, 0.25);
+}
+
+body.theme-parchment-cream .btn-take-breather:hover {
+  color: #FFFFFF;
+}
+
 .greeting-subtitle {
   font-size: 12.5px;
   color: var(--text-muted);
@@ -3748,6 +3826,36 @@ body.theme-vintage-green .ring-bg {
   flex-direction: column;
   gap: 1px;
   min-width: 0;
+}
+
+.metric-focus-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.metric-bloom-badge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1.5px 6px;
+  border-radius: 6px;
+  background: rgba(255, 209, 102, 0.12);
+  color: var(--chalk-amber);
+  border: 1px dashed rgba(255, 209, 102, 0.45);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+  transition: all 0.2s ease;
+}
+
+.metric-bloom-badge.met {
+  background: rgba(6, 214, 160, 0.14);
+  color: var(--chalk-mint);
+  border: 1px solid rgba(6, 214, 160, 0.5);
 }
 
 .metric-micro-tag {
@@ -4137,13 +4245,39 @@ body.theme-vintage-green .ring-bg {
   margin-top: 2px;
 }
 
-.dash-collected-plants-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
-  gap: 10px;
+.dash-collected-plants-grid,
+.dash-collected-plants-scroll-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 2px 10px 2px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.dash-collected-plants-scroll-row::-webkit-scrollbar,
+.dash-collected-plants-grid::-webkit-scrollbar {
+  height: 6px;
+}
+
+.dash-collected-plants-scroll-row::-webkit-scrollbar-track,
+.dash-collected-plants-grid::-webkit-scrollbar-track {
+  background: var(--bg-surface-elevated);
+  border-radius: 4px;
+}
+
+.dash-collected-plants-scroll-row::-webkit-scrollbar-thumb,
+.dash-collected-plants-grid::-webkit-scrollbar-thumb {
+  background: var(--border-chalk);
+  border-radius: 4px;
 }
 
 .dash-plant-card {
+  flex: 0 0 148px;
+  min-width: 148px;
+  scroll-snap-align: start;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   border-radius: 10px;
@@ -4198,6 +4332,139 @@ body.theme-vintage-green .ring-bg {
   gap: 4px;
 }
 
+/* Empty Collection Banner */
+.dash-plants-empty-banner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--bg-surface-elevated);
+  border: 1px dashed var(--border-chalk-dashed);
+  border-radius: 10px;
+}
+
+.empty-banner-icon {
+  font-size: 24px;
+  color: var(--chalk-mint);
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.empty-banner-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.empty-banner-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.empty-banner-sub {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Mindful Breather Modal Specifics */
+.breather-modal-dialog {
+  max-width: 400px;
+  text-align: center;
+}
+
+.breather-modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 16px 16px;
+}
+
+.breather-subtext {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.breather-circle-stage {
+  width: 190px;
+  height: 190px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.breather-circle-glow {
+  width: 136px;
+  height: 136px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(6, 214, 160, 0.22) 0%, rgba(6, 214, 160, 0.04) 65%, transparent 100%);
+  border: 2px solid var(--chalk-mint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 4.5s ease-in-out, box-shadow 4.5s ease-in-out, border-color 4.5s ease-in-out;
+  box-shadow: 0 0 16px rgba(6, 214, 160, 0.2);
+}
+
+.breather-circle-glow.inhale {
+  transform: scale(1.32);
+  box-shadow: 0 0 28px rgba(6, 214, 160, 0.45);
+  border-color: var(--chalk-mint);
+}
+
+.breather-circle-glow.exhale {
+  transform: scale(0.9);
+  box-shadow: 0 0 8px rgba(6, 214, 160, 0.12);
+  border-color: rgba(6, 214, 160, 0.6);
+}
+
+.breather-circle-inner {
+  text-align: center;
+  padding: 0 12px;
+}
+
+.breather-prompt-text {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.2px;
+}
+
+.breather-timer-indicator {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+}
+
+.breather-timer-digits {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--chalk-mint);
+}
+
+.breather-timer-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.breather-modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-chalk);
+}
+
 /* Responsive Breakpoints for Dashboard & Upcoming Tasks */
 @media (max-width: 1180px) {
   .upcoming-buckets-grid {
@@ -4236,6 +4503,19 @@ body.theme-vintage-green .ring-bg {
     grid-template-columns: repeat(4, 1fr);
     gap: 6px;
   }
+  .greeting-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .greeting-actions-block {
+    width: 100%;
+  }
+  .btn-take-breather {
+    width: 100%;
+    justify-content: center;
+    padding: 8px 14px;
+  }
   .dashboard-metrics-row {
     grid-template-columns: 1fr;
   }
@@ -4249,8 +4529,9 @@ body.theme-vintage-green .ring-bg {
   .dash-stages-stepper {
     width: 100%;
   }
-  .dash-collected-plants-grid {
-    grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+  .dash-collected-plants-grid,
+  .dash-collected-plants-scroll-row {
+    padding-bottom: 6px;
   }
 
   /* Today's Slate Tablet / Mobile Responsive */
