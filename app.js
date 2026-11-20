@@ -2317,6 +2317,16 @@ function syncDateDisplays() {
     liveDateEl.innerText = CurrentDateInfo.friendlyStr;
   }
 
+  const dashDateHeading = document.getElementById('dash-live-date-heading');
+  if (dashDateHeading) {
+    dashDateHeading.innerText = CurrentDateInfo.friendlyStr;
+  }
+
+  const slateDateSubtext = document.getElementById('slate-header-date');
+  if (slateDateSubtext) {
+    slateDateSubtext.innerText = CurrentDateInfo.friendlyStr;
+  }
+
   const monthHeadingEl = document.getElementById('current-month-heading');
   if (monthHeadingEl) {
     monthHeadingEl.innerText = `${CurrentDateInfo.monthName} ${CurrentDateInfo.year} — Botanical Wildflower Meadow`;
@@ -3219,8 +3229,95 @@ function initTodaySlate() {
     });
   }
 
+  const toggleAddBtn = document.getElementById('btn-toggle-add-form');
+  const quickAddCard = document.getElementById('slate-quick-add-card');
+  const addFormToggleLabel = document.getElementById('add-form-toggle-label');
+
+  if (toggleAddBtn && quickAddCard) {
+    toggleAddBtn.addEventListener('click', () => {
+      const isHidden = quickAddCard.style.display === 'none';
+      quickAddCard.style.display = isHidden ? 'block' : 'none';
+      if (addFormToggleLabel) {
+        addFormToggleLabel.innerText = isHidden ? 'Hide Form' : 'Add Task';
+      }
+      if (isHidden) {
+        const input = document.getElementById('task-title-input');
+        if (input) input.focus();
+      }
+    });
+  }
+
   updateUndoButtonVisibility();
   renderTodaySlate();
+}
+
+let currentSlateSuggestionIndex = 0;
+
+function renderSlateNextSuggestion(todayTasks) {
+  const suggestionCard = document.getElementById('slate-next-suggestion-card');
+  const titleEl = document.getElementById('suggestion-task-title');
+  const metaTimeEl = document.getElementById('suggestion-meta-time');
+  const metaStepsEl = document.getElementById('suggestion-meta-steps');
+  const metaPriorityEl = document.getElementById('suggestion-meta-priority');
+  const focusBtn = document.getElementById('btn-suggestion-focus');
+  const cycleBtn = document.getElementById('btn-suggestion-cycle');
+  const totalCountSpan = document.getElementById('slate-total-count');
+
+  if (totalCountSpan) totalCountSpan.innerText = todayTasks.length;
+
+  if (!suggestionCard || !titleEl) return;
+
+  const uncompletedTasks = todayTasks.filter(t => t.status !== 'COMPLETED');
+
+  if (uncompletedTasks.length > 0) {
+    const priorityWeight = { 'HIGH': 1, 'MEDIUM': 2, 'LOW': 3 };
+    const sorted = [...uncompletedTasks].sort((a, b) => (priorityWeight[a.priority] || 2) - (priorityWeight[b.priority] || 2));
+    const task = sorted[currentSlateSuggestionIndex % sorted.length];
+
+    suggestionCard.style.display = 'flex';
+    titleEl.innerText = task.title;
+    titleEl.title = task.title;
+
+    if (metaTimeEl) metaTimeEl.innerHTML = `<i class="fa-regular fa-clock"></i> ${task.estTime || 30} min`;
+    const stepCount = task.subtasks && task.subtasks.length > 0 ? task.subtasks.length : 1;
+    if (metaStepsEl) metaStepsEl.innerText = `${stepCount} step${stepCount !== 1 ? 's' : ''}`;
+    if (metaPriorityEl) metaPriorityEl.innerText = `${task.priority.charAt(0) + task.priority.slice(1).toLowerCase()} priority`;
+
+    if (focusBtn) {
+      focusBtn.innerHTML = `<i class="fa-solid fa-play"></i> Start Focusing`;
+      focusBtn.onclick = () => openFocusSession(task.id);
+    }
+
+    if (cycleBtn) {
+      cycleBtn.style.display = sorted.length > 1 ? 'inline-flex' : 'none';
+      cycleBtn.onclick = () => {
+        currentSlateSuggestionIndex = (currentSlateSuggestionIndex + 1) % sorted.length;
+        renderSlateNextSuggestion(todayTasks);
+      };
+    }
+  } else if (todayTasks.length > 0) {
+    suggestionCard.style.display = 'flex';
+    titleEl.innerText = 'All planned tasks are complete today! 🌸';
+    if (metaTimeEl) metaTimeEl.innerHTML = `<i class="fa-solid fa-sparkles"></i> Full bloom rhythm`;
+    if (metaStepsEl) metaStepsEl.innerText = `${todayTasks.length} tasks finished`;
+    if (metaPriorityEl) metaPriorityEl.innerText = 'Peace of mind';
+    if (focusBtn) {
+      focusBtn.innerHTML = `<i class="fa-solid fa-play"></i> Free Focus Session`;
+      focusBtn.onclick = () => openFocusSession(null);
+    }
+    if (cycleBtn) cycleBtn.style.display = 'none';
+  } else {
+    suggestionCard.style.display = 'flex';
+    titleEl.innerText = 'Your slate is quiet and clear';
+    if (metaTimeEl) metaTimeEl.innerHTML = `<i class="fa-solid fa-seedling"></i> Ready for today`;
+    if (metaStepsEl) metaStepsEl.innerText = `0 tasks`;
+    if (metaPriorityEl) metaPriorityEl.innerText = `Gentle pace`;
+    if (focusBtn) {
+      focusBtn.innerHTML = `<i class="fa-solid fa-play"></i> Start Free Focus`;
+      focusBtn.onclick = () => openFocusSession(null);
+    }
+    if (cycleBtn) cycleBtn.style.display = 'none';
+  }
 }
 
 function renderTodaySlate() {
@@ -3245,6 +3342,7 @@ function renderTodaySlate() {
   const todayTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE);
   const pendingCount = todayTasks.filter(t => t.status !== 'COMPLETED').length;
   if (badge) badge.innerText = pendingCount;
+  renderSlateNextSuggestion(todayTasks);
 
   if (todayTasks.length === 0) {
     taskList.innerHTML = `
@@ -5272,8 +5370,19 @@ function renderHabitLedger() {
 
   if (progressBar) progressBar.style.width = `${avgMonthConsistency}%`;
   if (progressText) {
-    progressText.innerText = `${avgMonthConsistency}% average consistency this month • ${sumMonthMet} of ${sumMonthScheduled} daily goals met`;
+    progressText.innerText = `You've met ${sumMonthMet} of ${sumMonthScheduled} daily habit goals so far.`;
   }
+
+  const rhythmCircle = document.getElementById('ring-rhythm-circle');
+  const rhythmPctText = document.getElementById('rhythm-pct-text');
+  const rhythmPctBadge = document.getElementById('rhythm-percentage');
+
+  if (rhythmCircle) {
+    const circum = 213.63;
+    rhythmCircle.style.strokeDashoffset = circum * (1 - avgMonthConsistency / 100);
+  }
+  if (rhythmPctText) rhythmPctText.innerText = `${avgMonthConsistency}%`;
+  if (rhythmPctBadge) rhythmPctBadge.innerText = `${avgMonthConsistency}%`;
 }
 
 // --------------------------------------------------------------------------

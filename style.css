@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    CHALKFLOW — MINDFUL PRODUCTIVITY & BOTANICAL FOCUS DESIGN SYSTEM
    Authentic Wooden-Framed Blackboard & Handcrafted Chalk Botanical Stylesheet
    ========================================================================== */
@@ -4584,3 +4584,438 @@ body.theme-vintage-green .ring-bg {
   }
 }
 
+
+
+/* ==========================================================================
+   VISUAL REFINEMENTS & COHESIVE UI (BASED ON REFERENCE SPECIFICATION)
+   ========================================================================== */
+
+/* --- 1. Dashboard Enhancements --- */
+.dash-date-heading {
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.greeting-leaf {
+  font-size: 20px;
+  vertical-align: middle;
+}
+
+.user-greeting-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.dash-header-floral-art {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  opacity: 0.95;
+  flex-shrink: 0;
+}
+
+.dash-breather-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 18px;
+  margin: 8px 0 2px 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-chalk);
+  border-radius: 12px;
+}
+
+.breather-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.breather-wind-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(6, 214, 160, 0.12);
+  color: var(--chalk-mint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.breather-banner-text h4 {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 2px 0;
+}
+
+.breather-banner-text p {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.dash-breather-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 18px;
+  border-radius: 20px;
+  background: var(--chalk-mint);
+  color: #1a1a24;
+  font-size: 12.5px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(6, 214, 160, 0.25);
+  white-space: nowrap;
+}
+
+.dash-breather-pill-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(6, 214, 160, 0.4);
+}
+
+body.theme-parchment-cream .dash-breather-pill-btn:hover {
+  color: #FFFFFF;
+}
+
+.dash-box-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border-chalk);
+  margin-top: auto;
+}
+
+.dash-view-all-link {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+
+.dash-view-all-link:hover {
+  color: var(--chalk-mint);
+  transform: translateX(2px);
+}
+
+/* --- 2. Today's Slate Enhancements --- */
+.slate-header-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+.slate-main-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 2px 0;
+}
+
+.slate-date-subtext {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.slate-next-suggestion-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-chalk);
+  border-radius: 12px;
+  position: relative;
+}
+
+.suggestion-card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.suggestion-sparkle-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--chalk-amber);
+  letter-spacing: 0.3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.suggestion-task-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 2px 0 4px 0;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.suggestion-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.suggestion-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.suggestion-meta-dot {
+  opacity: 0.5;
+  font-size: 8px;
+}
+
+.suggestion-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.btn-suggestion-focus {
+  padding: 6px 16px;
+  font-size: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.btn-suggestion-cycle {
+  padding: 5px 13px;
+  font-size: 11.5px;
+  border-radius: 8px;
+}
+
+.suggestion-card-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0.95;
+}
+
+.slate-tasks-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 0 2px;
+}
+
+.slate-tasks-heading {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.btn-toggle-add-form {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+/* --- 3. Upcoming Tasks Enhancements --- */
+.upcoming-header-banner {
+  margin-bottom: 14px;
+}
+
+.surface-heading {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 2px 0;
+}
+
+.surface-subtext {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.bucket-column {
+  position: relative;
+  overflow: hidden;
+  min-height: 220px;
+}
+
+.bucket-empty-watermark {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  pointer-events: none;
+  opacity: 0.15;
+  z-index: 0;
+}
+
+/* --- 4. Habit Ledger Enhancements --- */
+.habit-page-header {
+  margin-bottom: 14px;
+}
+
+.habit-rhythm-layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.habit-rhythm-ring-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.rhythm-ring {
+  width: 84px;
+  height: 84px;
+  flex-shrink: 0;
+}
+
+.rhythm-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 3px 0;
+}
+
+.rhythm-stat-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.rhythm-pct-highlight {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--chalk-mint);
+}
+
+.rhythm-sub-label {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.rhythm-subtext {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.rhythm-bouquet-illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btn-header-new-habit {
+  font-size: 11.5px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+/* --- 5. Deep Focus Botanical Laurel Branches --- */
+.clock-laurel-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.laurel-branch {
+  width: 46px;
+  height: 130px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.clock-ring-svg-container {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- 6. Theme Overrides for New Visual Elements --- */
+body.theme-dark-slate .dash-breather-banner,
+body.theme-dark-slate .slate-next-suggestion-card,
+body.theme-vintage-green .dash-breather-banner,
+body.theme-vintage-green .slate-next-suggestion-card {
+  border: 1.5px solid #000000 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+body.theme-parchment-cream .dash-breather-banner,
+body.theme-parchment-cream .slate-next-suggestion-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* --- 7. Mobile Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .dash-breather-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .dash-breather-pill-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .dash-header-floral-art {
+    display: none;
+  }
+  .slate-next-suggestion-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .suggestion-card-right {
+    display: none;
+  }
+  .rhythm-bouquet-illustration {
+    display: none;
+  }
+  .laurel-branch {
+    display: none;
+  }
+}
