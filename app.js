@@ -5466,6 +5466,23 @@ function creditFocusMinutes(mins, taskId, taskTitle) {
   updateGlobalGrowthMetrics();
 }
 
+const CALMING_FOCUS_MESSAGES = [
+  "Just this moment.",
+  "One thing at a time.",
+  "A little space to focus."
+];
+let calmingMsgIndex = 0;
+
+function syncCalmingFocusMessage(forceNew = false) {
+  const whisperEl = document.getElementById('focus-calming-whisper');
+  if (!whisperEl) return;
+  if (FocusTimer.isRunning) return; // Do not rotate messages while a session is running
+  if (forceNew) {
+    calmingMsgIndex = (calmingMsgIndex + 1) % CALMING_FOCUS_MESSAGES.length;
+  }
+  whisperEl.innerText = CALMING_FOCUS_MESSAGES[calmingMsgIndex];
+}
+
 function openFocusSession(taskId = null) {
   FocusTimer.currentTaskId = taskId;
   FocusTimer.returnSurface = (AppState.activeSurface === 'deep-focus' || !AppState.activeSurface) ? 'today-slate' : AppState.activeSurface;
@@ -5494,6 +5511,7 @@ function openFocusSession(taskId = null) {
 
   // If timer is not currently running, reset elapsed and set ready
   if (!FocusTimer.isRunning) {
+    syncCalmingFocusMessage(false);
     FocusTimer.elapsedSeconds = 0;
     FocusTimer.creditedMinutes = 0;
     const mins = Math.floor(FocusTimer.durationSeconds / 60) || 25;
@@ -5802,6 +5820,7 @@ function initDeepFocus() {
               if (liveDot) liveDot.style.display = 'none';
               if (statusLabel) statusLabel.innerText = 'Session complete!';
               document.body.classList.remove('focus-session-active');
+              syncCalmingFocusMessage(true);
 
               if (FocusTimer.mode === 'FOCUS') {
                 showToast(`🌸 Focus complete! ${FocusTimer.creditedMinutes}m credited to today's garden flower.`);
@@ -5828,6 +5847,7 @@ function initDeepFocus() {
       if (liveDot) liveDot.style.display = 'none';
       if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to begin';
       document.body.classList.remove('focus-session-active');
+      syncCalmingFocusMessage(true);
       updateDisplay();
     });
   }
@@ -5909,6 +5929,7 @@ function initDeepFocus() {
     });
   }
 
+  syncCalmingFocusMessage(false);
   updateDisplay();
 }
 

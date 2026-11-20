@@ -2854,7 +2854,7 @@ body.theme-white-board .habit-card-bar-track {
 }
 
 /* ==========================================================================
-   MAXIMIZED DEEP FOCUS: SEAMLESS VIEWPORT & CALM DISTRACTION-FREE EXPERIENCE
+   MAXIMIZED DEEP FOCUS: RELAXING, SOFTER ATMOSPHERE & IMMERSIVE FOCUS
    ========================================================================== */
 
 /* 1. Fullscreen Viewport & Margin Elimination */
@@ -2881,7 +2881,6 @@ body.focus-maximized .blackboard-frame-wrapper {
 }
 
 body.focus-maximized .app-layout {
-  background-image: none !important;
   width: 100vw !important;
   height: 100vh !important;
   height: 100dvh !important;
@@ -2890,26 +2889,35 @@ body.focus-maximized .app-layout {
   overflow: hidden !important;
 }
 
-/* 2. Subdued Theme Backgrounds (No harsh pure white, quiet calm tones) */
+/* 2. Softer Atmosphere with Barely-Noticeable Radial Light Depth Centered Behind Timer */
+/* Theme 1: Black Board Mode (Warm Charcoal with Muted Sage/Mint Accents) */
 body.focus-maximized.theme-dark-slate,
 body.focus-maximized.theme-dark-slate .blackboard-frame-wrapper,
 body.focus-maximized.theme-dark-slate .app-layout {
-  background-color: #13161A !important;
-  background-image: none !important;
+  background-color: #131517 !important;
+  background-image: radial-gradient(ellipse 900px 700px at 50% 48%, rgba(38, 48, 45, 0.4) 0%, rgba(24, 30, 29, 0.2) 45%, rgba(19, 21, 23, 0) 80%) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
 }
 
+/* Theme 2: Green Board Mode (Deep, Desaturated Forest-Green Atmosphere) */
 body.focus-maximized.theme-vintage-green,
 body.focus-maximized.theme-vintage-green .blackboard-frame-wrapper,
 body.focus-maximized.theme-vintage-green .app-layout {
-  background-color: #1A2B20 !important;
-  background-image: none !important;
+  background-color: #152219 !important;
+  background-image: radial-gradient(ellipse 900px 700px at 50% 48%, rgba(32, 54, 40, 0.5) 0%, rgba(24, 40, 30, 0.25) 45%, rgba(21, 34, 25, 0) 80%) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
 }
 
+/* Theme 3: White Board Mode (Warm Off-White with Gentle Sage-Grey Accents) */
 body.focus-maximized.theme-parchment-cream,
 body.focus-maximized.theme-parchment-cream .blackboard-frame-wrapper,
 body.focus-maximized.theme-parchment-cream .app-layout {
   background-color: #FAF7F0 !important;
-  background-image: none !important;
+  background-image: radial-gradient(ellipse 900px 700px at 50% 48%, rgba(255, 255, 255, 0.85) 0%, rgba(251, 248, 242, 0.6) 45%, rgba(242, 237, 227, 0) 80%) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
 }
 
 body.focus-maximized.theme-parchment-cream .focus-top-bar,
@@ -2917,22 +2925,25 @@ body.focus-maximized.theme-parchment-cream .deep-focus-fullscreen-container {
   color: #2D3748 !important;
 }
 
-body.focus-maximized.theme-parchment-cream .focus-task-title-text,
+body.focus-maximized.theme-parchment-cream .focus-task-title-text {
+  color: #2D3748 !important;
+}
+
 body.focus-maximized.theme-parchment-cream .time-readout {
   color: #2D3748 !important;
 }
 
 body.focus-maximized.theme-parchment-cream .ring-bg {
-  stroke: rgba(45, 55, 72, 0.09) !important;
+  stroke: rgba(45, 55, 72, 0.08) !important;
 }
 
 body.focus-maximized.theme-parchment-cream .ring-progress {
-  stroke: #2E7D5B !important;
+  stroke: #3D8C6E !important;
 }
 
 body.focus-maximized.theme-parchment-cream .sound-bar-header {
-  background: rgba(45, 55, 72, 0.04) !important;
-  border-color: rgba(45, 55, 72, 0.15) !important;
+  background: rgba(45, 55, 72, 0.035) !important;
+  border-color: rgba(45, 55, 72, 0.12) !important;
 }
 
 /* 3. Chrome Elimination */
@@ -3000,9 +3011,10 @@ body.focus-maximized #btn-focus-return {
 
 body.focus-maximized .focus-mode-toggle {
   margin: 0 auto;
-  transform: scale(0.92);
-  background: rgba(255, 255, 255, 0.05);
+  transform: scale(0.9);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-chalk);
+  border-radius: 20px;
 }
 
 body.focus-maximized .maximize-focus-btn {
@@ -3030,49 +3042,56 @@ body.focus-maximized .maximize-focus-btn:hover {
 body.focus-maximized .focus-main-cluster {
   margin: auto 0;
   width: 100%;
-  max-width: 580px;
+  max-width: 540px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(10px, 2vh, 18px);
+  gap: clamp(12px, 2.2vh, 22px);
   flex-shrink: 0;
 }
 
-/* Task Header */
+/* Task Header & Calming Message */
 body.focus-maximized .focus-task-headline-wrap {
   margin: 0;
   max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* Remove unnecessary Mindful Session / Focusing on label in maximized mode */
 body.focus-maximized .focus-task-badge {
-  font-size: 10.5px;
-  padding: 2px 9px;
-  margin-bottom: 4px;
-  border-radius: 12px;
+  display: none !important;
 }
 
 body.focus-maximized .focus-task-title-text {
-  font-size: clamp(20px, 3vh, 26px);
-  font-weight: 700;
+  font-size: clamp(19px, 2.8vh, 24px);
+  font-weight: 600;
   color: var(--text-primary);
-  line-height: 1.25;
+  line-height: 1.3;
   margin: 0;
   text-align: center;
 }
 
 body.focus-maximized .focus-calming-whisper {
   display: block;
-  font-size: clamp(13px, 1.8vh, 15px);
+  font-family: 'Kalam', cursive !important;
+  font-size: clamp(14px, 2.1vh, 17px);
   color: var(--text-muted);
-  opacity: 0.8;
+  opacity: 0.85;
   margin: 4px 0 0 0;
-  font-style: italic;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: 0.2px;
 }
 
 body.focus-maximized .linked-task-pill {
   margin-top: 6px;
-  font-size: 11.5px;
+  font-size: 11px;
+  opacity: 0.65;
+  transition: opacity 0.2s;
 }
 
 body.focus-maximized .linked-select {
@@ -3080,53 +3099,61 @@ body.focus-maximized .linked-select {
   padding: 2px 6px;
 }
 
-/* Prominent Responsive Timer (Clean, Subtle Stroke, Zero Harsh Glows) */
+/* 6. Beautiful, Dominant Focal Timer (Increased ~10-15%, Thin & Elegant Progress Ring) */
 body.focus-maximized .focus-clock-centerpiece {
   margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(8px, 1.6vh, 14px);
+  gap: clamp(10px, 1.8vh, 16px);
 }
 
 body.focus-maximized .clock-display-wrapper {
-  width: clamp(220px, 31vh, 300px);
-  height: clamp(220px, 31vh, 300px);
+  width: clamp(250px, 36vh, 340px);
+  height: clamp(250px, 36vh, 340px);
   margin: 0 auto;
   filter: none !important;
+  position: relative;
 }
 
 body.focus-maximized .time-readout {
-  font-size: clamp(50px, 7.8vh, 72px);
-  font-weight: 700;
-  letter-spacing: -1px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(58px, 9vh, 84px);
+  font-weight: 500;
+  letter-spacing: -1.5px;
+  line-height: 1;
   color: var(--text-primary);
   text-shadow: none !important;
-  line-height: 1;
 }
 
 body.focus-maximized .time-label {
-  font-size: clamp(12px, 1.6vh, 14px);
+  font-size: clamp(12px, 1.6vh, 13px);
   color: var(--text-muted);
-  margin-top: 4px;
-  letter-spacing: 0.5px;
+  margin-top: 6px;
+  letter-spacing: 0.4px;
+  opacity: 0.75;
 }
 
 body.focus-maximized .ring-bg {
-  stroke-width: 5.5;
+  stroke-width: 3.5;
+  stroke: rgba(255, 255, 255, 0.08);
 }
 
 body.focus-maximized .ring-progress {
-  stroke-width: 5.5;
-  stroke: var(--chalk-amber);
+  stroke-width: 3.5;
+  stroke: #52B795;
+  stroke-linecap: round;
   filter: none !important;
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body.mode-gentle-rest.focus-maximized .ring-progress {
-  stroke: var(--chalk-mint) !important;
+  stroke: #60C8A7 !important;
 }
 
-/* Time Controls & Action Buttons */
+/* 7. Simplified Session Controls */
 body.focus-maximized .timer-adjuster-row {
   margin: 0;
   gap: 6px;
@@ -3135,7 +3162,19 @@ body.focus-maximized .timer-adjuster-row {
 body.focus-maximized .adjust-btn,
 body.focus-maximized .time-preset-btn {
   font-size: 12px;
-  padding: 4px 10px;
+  padding: 4px 11px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+body.focus-maximized .time-preset-btn.active {
+  border-color: #52B795;
+  color: #52B795;
+  background: rgba(82, 183, 149, 0.12);
 }
 
 body.focus-maximized .timer-action-row {
@@ -3146,35 +3185,69 @@ body.focus-maximized .timer-action-row {
   margin-top: 2px;
 }
 
-body.focus-maximized .timer-btn {
-  padding: 9px 22px;
-  font-size: 13.5px;
-  border-radius: 24px;
+/* Soft Mint Primary Button for Begin, Pause, Resume */
+body.focus-maximized .play-btn {
+  background: #52B795 !important;
+  color: #121815 !important;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  border: none;
+  border-radius: 26px;
+  padding: 10px 28px;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  box-shadow: 0 2px 12px rgba(82, 183, 149, 0.22);
+  transition: all 0.25s ease;
+  cursor: pointer;
 }
 
-body.focus-maximized .play-btn {
-  background: var(--chalk-mint);
-  color: #181A1B;
-  font-weight: 700;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+body.focus-maximized .play-btn:hover {
+  background: #5EC4A1 !important;
+  box-shadow: 0 4px 16px rgba(82, 183, 149, 0.32);
+  transform: translateY(-1px);
 }
 
 body.focus-maximized .play-btn.running {
-  background: var(--chalk-amber);
+  background: #4EA888 !important;
+  color: #0E1412 !important;
 }
 
+body.focus-maximized.theme-parchment-cream .play-btn {
+  background: #3D8C6E !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 10px rgba(61, 140, 110, 0.2);
+}
+
+body.focus-maximized.theme-parchment-cream .play-btn:hover {
+  background: #357B60 !important;
+}
+
+/* Secondary Button for End Session */
 body.focus-maximized .end-btn {
   border-radius: 24px;
+  padding: 9px 20px;
+  font-size: 13px;
+  background: transparent;
+  border: 1px solid rgba(239, 71, 111, 0.35);
+  color: var(--chalk-coral);
+  transition: all 0.2s ease;
 }
 
+body.focus-maximized .end-btn:hover {
+  background: rgba(239, 71, 111, 0.12);
+  border-color: var(--chalk-coral);
+  color: #FFF;
+}
+
+/* Tertiary Button for Reset */
 body.focus-maximized .reset-btn {
   background: transparent;
   border: 1px dashed var(--border-chalk);
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 11.5px;
   padding: 7px 14px;
   border-radius: 20px;
-  opacity: 0.7;
+  opacity: 0.65;
   transition: all 0.2s ease;
 }
 
@@ -3184,14 +3257,18 @@ body.focus-maximized .reset-btn:hover {
   color: var(--text-primary);
 }
 
-/* 6. Active Session State (Hide adjusters, emphasize Pause/End Session, subtle Reset) */
+/* Hide End Session before session starts */
+body.focus-maximized:not(.focus-session-active) .end-btn {
+  display: none;
+}
+
+/* Hide duration presets & adjusters during active OR paused session */
 body.focus-session-active #timer-adjuster-row {
   display: none !important;
 }
 
 body.focus-session-active .linked-task-pill {
-  opacity: 0.6;
-  pointer-events: none;
+  display: none !important;
 }
 
 body.focus-maximized.focus-session-active .reset-btn {
@@ -3200,13 +3277,13 @@ body.focus-maximized.focus-session-active .reset-btn {
   padding: 6px 12px;
 }
 
-/* 7. Compact Ambient Sound Control & Drawer */
+/* 8. Compact Ambient Sound Control & Drawer */
 body.focus-maximized .focus-soundscapes-bottom-bar {
   border-top: none !important;
   padding-top: 0;
   margin: 0;
   width: 100%;
-  max-width: 460px;
+  max-width: 440px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3217,12 +3294,28 @@ body.focus-maximized .sound-bar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.035);
   border: 1px solid var(--border-chalk);
   border-radius: 24px;
   padding: 5px 14px;
   margin-bottom: 0;
   box-sizing: border-box;
+}
+
+body.focus-maximized .sound-drawer-title {
+  color: var(--text-muted);
+  font-size: 11.5px;
+}
+
+body.focus-maximized .active-sound-pill {
+  color: #52B795;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+body.focus-maximized.theme-parchment-cream .active-sound-pill {
+  color: #3D8C6E;
 }
 
 body.focus-maximized .soundscapes-horizontal-row {
