@@ -388,13 +388,49 @@ body {
   transition: stroke 0.3s ease;
 }
 
-.chalk-brand-wordmark {
-  fill: var(--logo-text-color, #FAF8F5);
-  font-family: 'Kalam', cursive;
-  font-size: 28px;
+/* Authentic Handcrafted Chalk Lettering for Chalkflow Wordmark */
+.chalk-brand-wordmark,
+.chalk-wordmark-main {
+  font-family: 'Kalam', 'Caveat', cursive;
+  font-size: 29px;
   font-weight: 700;
-  letter-spacing: 0.6px;
-  transition: fill 0.3s ease;
+  fill: var(--logo-text-color, #FAF8F5);
+  fill-opacity: 0.88;
+  stroke: var(--logo-text-color, #FAF8F5);
+  stroke-width: 1.2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  letter-spacing: 0.8px;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.chalk-wordmark-dust {
+  font-family: 'Kalam', 'Caveat', cursive;
+  font-size: 29px;
+  font-weight: 700;
+  fill: none;
+  stroke: var(--logo-chalk-stroke, #FAF8F5);
+  stroke-width: 3.2px;
+  stroke-opacity: 0.22;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  letter-spacing: 0.8px;
+  pointer-events: none;
+}
+
+.chalk-wordmark-chalk {
+  font-family: 'Kalam', 'Caveat', cursive;
+  font-size: 29px;
+  font-weight: 700;
+  fill: none;
+  stroke: #FFFFFF;
+  stroke-width: 0.6px;
+  stroke-opacity: 0.72;
+  stroke-dasharray: 6 2 8 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  letter-spacing: 0.8px;
+  pointer-events: none;
 }
 
 .sprout-tile-bg {
@@ -6639,300 +6675,3 @@ body.theme-parchment-cream .dash-breather-banner {
   }
 }
 
-/* ==========================================================================
-   DEEP FOCUS TIMER STYLES: BOTANICAL DASH & MINIMAL FLIP CLOCK
-   ========================================================================== */
-
-/* Timer Style Selector (Botanical Dash vs Minimal Flip Clock) */
-.timer-style-control-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin: 0 auto 6px auto;
-  user-select: none;
-}
-
-.timer-style-label {
-  font-size: 11.5px;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.timer-style-pill-group {
-  display: flex;
-  align-items: center;
-  background: var(--bg-surface-elevated);
-  border: 1px solid var(--border-chalk);
-  border-radius: var(--radius-sm);
-  padding: 2.5px;
-  gap: 3px;
-}
-
-.timer-style-pill {
-  background: transparent;
-  border: none;
-  border-radius: 6px;
-  color: var(--text-muted);
-  font-size: 11px;
-  padding: 4px 10px;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.timer-style-pill:hover {
-  color: var(--text-primary);
-  background: var(--bg-hover);
-}
-
-.timer-style-pill.active {
-  background: var(--chalk-mint);
-  color: #111416;
-  font-weight: 700;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-/* Hide timer style switcher in maximized mode for serene distraction-free focus */
-body.focus-maximized .timer-style-control-wrap {
-  display: none !important;
-}
-
-/* Minimal Flip Clock Wrapper */
-.flip-clock-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin: 6px auto;
-  user-select: none;
-  position: relative;
-}
-
-/* Atmospheric soft radial light centered behind Flip Clock in Maximized Mode */
-body.focus-maximized .flip-clock-wrapper::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 140%;
-  height: 140%;
-  border-radius: 32px;
-  background: radial-gradient(circle, rgba(82, 183, 149, 0.08) 0%, rgba(30, 56, 44, 0.04) 48%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-body.focus-maximized.theme-dark-slate .flip-clock-wrapper::before {
-  background: radial-gradient(circle, rgba(82, 183, 149, 0.065) 0%, rgba(24, 38, 30, 0.03) 50%, transparent 70%);
-}
-
-body.focus-maximized.theme-vintage-green .flip-clock-wrapper::before {
-  background: radial-gradient(circle, rgba(82, 183, 149, 0.09) 0%, rgba(35, 65, 48, 0.045) 50%, transparent 70%);
-}
-
-body.focus-maximized.theme-parchment-cream .flip-clock-wrapper::before {
-  background: radial-gradient(circle, rgba(46, 139, 102, 0.06) 0%, rgba(46, 139, 102, 0.02) 50%, transparent 70%);
-}
-
-.flip-card-unit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  position: relative;
-  z-index: 1;
-}
-
-/* Normal Mode Dimensions */
-.flip-card-plate {
-  width: 155px;
-  height: 140px;
-  background: #1B1E22;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Maximized Mode Dimensions: Responsive to laptop viewport height */
-body.focus-maximized .flip-clock-wrapper {
-  gap: clamp(16px, 2.5vw, 28px);
-  margin: clamp(4px, 1.2vh, 16px) auto;
-}
-
-body.focus-maximized .flip-card-plate {
-  width: clamp(180px, 20vw, 260px);
-  height: clamp(160px, 19vh, 230px);
-  border-radius: clamp(16px, 1.8vw, 22px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.flip-plate-half {
-  width: 100%;
-  height: 50%;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-}
-
-.flip-plate-top {
-  align-items: flex-end;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.1) 100%), #1B1E22;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.85);
-}
-
-.flip-plate-bottom {
-  align-items: flex-start;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(255, 255, 255, 0.02) 100%), #1B1E22;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-/* Numerals (Large bold tabular characters, perfectly split across halves) */
-.flip-digit-text {
-  font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 82px;
-  font-weight: 800;
-  color: var(--logo-text-color, #FAF8F5);
-  line-height: 140px;
-  letter-spacing: -1.5px;
-  font-variant-numeric: tabular-nums;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  transition: color 0.3s ease;
-}
-
-.flip-plate-top .flip-digit-text {
-  transform: translateY(50%);
-}
-
-.flip-plate-bottom .flip-digit-text {
-  transform: translateY(-50%);
-}
-
-body.focus-maximized .flip-digit-text {
-  font-size: clamp(94px, 10.5vw, 140px);
-  line-height: clamp(160px, 19vh, 230px);
-}
-
-/* Horizontal Dividing Seam with Hinge Notches */
-.flip-divider-line {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #0E0F12;
-  z-index: 2;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-.flip-hinge-notch {
-  position: absolute;
-  top: -3px;
-  width: 5px;
-  height: 8px;
-  background: var(--bg-surface, #131416);
-  border-radius: 2px;
-}
-
-.flip-hinge-notch.left { left: -1px; }
-.flip-hinge-notch.right { right: -1px; }
-
-/* Subtitle under cards */
-.flip-unit-sublabel {
-  font-size: 10px;
-  letter-spacing: 1.8px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  font-weight: 600;
-  opacity: 0.8;
-}
-
-body.focus-maximized .flip-unit-sublabel {
-  font-size: 11px;
-  letter-spacing: 2px;
-}
-
-/* Separator Colon Dots */
-.flip-clock-separator {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 0 2px;
-  margin-top: -18px;
-  z-index: 1;
-}
-
-.flip-sep-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  opacity: 0.65;
-}
-
-body.focus-maximized .flip-sep-dot {
-  width: clamp(8px, 1vw, 11px);
-  height: clamp(8px, 1vw, 11px);
-  gap: 16px;
-}
-
-/* Optional subtle flip transition on tick */
-.flip-card-unit.flip-tick .flip-plate-top {
-  animation: flipDownTop 0.26s ease-in;
-}
-
-.flip-card-unit.flip-tick .flip-plate-bottom {
-  animation: flipDownBottom 0.26s ease-out;
-}
-
-@keyframes flipDownTop {
-  0% { transform: perspective(300px) rotateX(0deg); }
-  50% { transform: perspective(300px) rotateX(-18deg); filter: brightness(0.88); }
-  100% { transform: perspective(300px) rotateX(0deg); }
-}
-
-@keyframes flipDownBottom {
-  0% { transform: perspective(300px) rotateX(18deg); filter: brightness(1.08); }
-  100% { transform: perspective(300px) rotateX(0deg); filter: brightness(1); }
-}
-
-/* Theme Adaptations for Flip Clock */
-body.theme-vintage-green .flip-card-plate {
-  background: #16241C;
-  border-color: rgba(255, 255, 255, 0.08);
-}
-body.theme-vintage-green .flip-plate-top {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.1) 100%), #16241C;
-}
-body.theme-vintage-green .flip-plate-bottom {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(255, 255, 255, 0.02) 100%), #16241C;
-}
-body.theme-vintage-green .flip-divider-line {
-  background: #0B130E;
-}
-
-body.theme-parchment-cream .flip-card-plate {
-  background: #23272F;
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-body.theme-parchment-cream .flip-plate-top {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.1) 100%), #23272F;
-}
-body.theme-parchment-cream .flip-plate-bottom {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(255, 255, 255, 0.02) 100%), #23272F;
-}
-body.theme-parchment-cream .flip-digit-text {
-  color: #FAF8F5;
-}
