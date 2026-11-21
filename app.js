@@ -4122,11 +4122,6 @@ function renderUpcomingTasks() {
   if (countWeekEl) countWeekEl.innerText = countThisWeek;
   if (countNextWeekEl) countNextWeekEl.innerText = countNextWeek;
   if (countLaterEl) countLaterEl.innerText = countLater;
-  const countLaterEl = document.getElementById('count-later');
-
-  if (countTomEl) countTomEl.innerText = countTomorrow;
-  if (countWeekEl) countWeekEl.innerText = countThisWeek;
-  if (countLaterEl) countLaterEl.innerText = countLater;
 }
 
 // --------------------------------------------------------------------------
@@ -6020,13 +6015,29 @@ function initDeepFocus() {
   const donePrefBtn = document.getElementById('btn-done-preferences');
 
   const openPreferences = () => {
-    if (prefPanel) prefPanel.style.display = 'flex';
-    if (prefBackdrop) prefBackdrop.style.display = 'block';
+    if (prefPanel) {
+      prefPanel.classList.add('is-open');
+      prefPanel.style.display = 'flex';
+      prefPanel.style.pointerEvents = 'auto';
+    }
+    if (prefBackdrop) {
+      prefBackdrop.classList.add('is-open');
+      prefBackdrop.style.display = 'block';
+      prefBackdrop.style.pointerEvents = 'auto';
+    }
   };
 
   const closePreferences = () => {
-    if (prefPanel) prefPanel.style.display = 'none';
-    if (prefBackdrop) prefBackdrop.style.display = 'none';
+    if (prefPanel) {
+      prefPanel.classList.remove('is-open');
+      prefPanel.style.display = 'none';
+      prefPanel.style.pointerEvents = 'none';
+    }
+    if (prefBackdrop) {
+      prefBackdrop.classList.remove('is-open');
+      prefBackdrop.style.display = 'none';
+      prefBackdrop.style.pointerEvents = 'none';
+    }
   };
 
   if (prefBtn) prefBtn.addEventListener('click', openPreferences);

@@ -4602,6 +4602,8 @@ body.mode-gentle-rest .ring-progress {
    DEEP FOCUS: SESSION PREFERENCES POPUP / MODAL PANEL
    ========================================================================== */
 .focus-preferences-backdrop {
+  display: none;
+  pointer-events: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -4614,18 +4616,24 @@ body.mode-gentle-rest .ring-progress {
   animation: modal-fade-in 0.2s ease-out;
 }
 
+.focus-preferences-backdrop.is-open {
+  display: block;
+  pointer-events: auto;
+}
+
 body.theme-parchment-cream .focus-preferences-backdrop {
   background: rgba(38, 45, 42, 0.4);
 }
 
 .focus-preferences-panel {
+  display: none;
+  pointer-events: none;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: min(92vw, 480px);
   max-height: min(90vh, 640px);
-  display: flex;
   flex-direction: column;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
@@ -4635,6 +4643,11 @@ body.theme-parchment-cream .focus-preferences-backdrop {
   box-sizing: border-box;
   overflow: hidden;
   animation: modal-pop-in 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.focus-preferences-panel.is-open {
+  display: flex;
+  pointer-events: auto;
 }
 
 body.theme-parchment-cream .focus-preferences-panel {
