@@ -522,7 +522,7 @@
             </div>
           </div>
 
-          <!-- Upcoming Date Columns (3 Groups: Tomorrow, This Week, Later) -->
+          <!-- Upcoming Date Columns (4 Groups: Tomorrow, Later This Week, Next Week, Later) -->
           <div class="upcoming-buckets-grid">
             
             <!-- Bucket 1: Tomorrow -->
@@ -539,11 +539,11 @@
               </div>
             </div>
 
-            <!-- Bucket 2: This Week (Remaining days of current week, excluding tomorrow) -->
+            <!-- Bucket 2: Later This Week (Remaining days of current week, excluding tomorrow) -->
             <div class="bucket-column chalk-card" id="bucket-col-this-week">
               <div class="bucket-header">
                 <div class="bucket-title-wrap">
-                  <h4 class="chalk-font">This Week</h4>
+                  <h4 class="chalk-font">Later This Week</h4>
                   <span class="bucket-sub-date" id="date-label-this-week"></span>
                 </div>
                 <span class="bucket-count" id="count-this-week">0</span>
@@ -553,12 +553,26 @@
               </div>
             </div>
 
-            <!-- Bucket 3: Later (Next week and beyond) -->
+            <!-- Bucket 3: Next Week (Monday through Sunday of next week) -->
+            <div class="bucket-column chalk-card" id="bucket-col-next-week">
+              <div class="bucket-header">
+                <div class="bucket-title-wrap">
+                  <h4 class="chalk-font">Next Week</h4>
+                  <span class="bucket-sub-date" id="date-label-next-week"></span>
+                </div>
+                <span class="bucket-count" id="count-next-week">0</span>
+              </div>
+              <div class="bucket-task-list" id="list-next-week">
+                <!-- Dynamically Populated -->
+              </div>
+            </div>
+
+            <!-- Bucket 4: Later (Beyond next week) -->
             <div class="bucket-column chalk-card" id="bucket-col-later">
               <div class="bucket-header">
                 <div class="bucket-title-wrap">
                   <h4 class="chalk-font">Later</h4>
-                  <span class="bucket-sub-date" id="date-label-later">Next week & beyond</span>
+                  <span class="bucket-sub-date" id="date-label-later">Beyond next week</span>
                 </div>
                 <span class="bucket-count" id="count-later">0</span>
               </div>
@@ -810,18 +824,16 @@
                 <i class="fa-solid fa-arrow-left"></i> <span id="btn-focus-return-label">Return to Tasks</span>
               </button>
 
-              <!-- Center: Mode Toggle (Deep Focus / Gentle Rest) -->
-              <div class="focus-mode-toggle">
-                <button class="mode-pill active chalk-font" id="mode-btn-focus" data-mode="FOCUS" title="Deep Focus Session">
-                  <i class="fa-solid fa-brain"></i> Deep Focus
-                </button>
-                <button class="mode-pill chalk-font" id="mode-btn-rest" data-mode="REST" title="Gentle 5-Minute Recharge">
-                  <i class="fa-solid fa-mug-hot"></i> Gentle Rest (5m)
-                </button>
+              <!-- Center: Deep Focus Heading -->
+              <div class="focus-heading-wrap">
+                <h2 class="focus-screen-heading chalk-font">Deep Focus</h2>
               </div>
 
-              <!-- Right: Sidebar Toggle & Maximize/Exit Focus View Button -->
+              <!-- Right: Preferences Settings, Sidebar Toggle & Maximize/Exit Focus View Button -->
               <div class="focus-top-actions">
+                <button type="button" class="chalk-btn secondary-btn chalk-font focus-settings-btn" id="btn-focus-preferences" title="Session Preferences" aria-label="Session Preferences">
+                  <i class="fa-solid fa-sliders"></i> <span class="hide-mobile">Preferences</span>
+                </button>
                 <button class="chalk-btn secondary-btn chalk-font toggle-sidebar-header-btn" id="btn-header-toggle-sidebar" title="Toggle Today's Summary & Records">
                   <i class="fa-solid fa-chart-simple"></i> <span class="hide-mobile">Summary</span>
                 </button>
@@ -871,22 +883,6 @@
                     </div>
                   </div>
 
-                  <!-- Duration Controls: Segmented Preset Pills (25 min | 45 min | 60 min | Custom) -->
-                  <div class="timer-duration-wrap" id="timer-duration-wrap">
-                    <div class="duration-segmented-control" role="group" aria-label="Timer Duration Presets">
-                      <button type="button" class="duration-pill-btn active chalk-font" data-minutes="25">25 min</button>
-                      <button type="button" class="duration-pill-btn chalk-font" data-minutes="45">45 min</button>
-                      <button type="button" class="duration-pill-btn chalk-font" data-minutes="60">60 min</button>
-                      <button type="button" class="duration-pill-btn chalk-font" id="btn-duration-custom">Custom</button>
-                    </div>
-                    <div class="custom-duration-inline-input-wrap" id="custom-duration-input-wrap" style="display: none;">
-                      <input type="number" id="input-custom-duration" class="chalk-input custom-duration-input" min="1" max="180" value="30" placeholder="min" aria-label="Custom minutes (1-180)">
-                      <span class="custom-min-suffix chalk-font">min</span>
-                      <button type="button" class="chalk-btn primary-btn custom-duration-set-btn chalk-font" id="btn-set-custom-duration">Set</button>
-                      <button type="button" class="chalk-btn secondary-btn custom-duration-cancel-btn chalk-font" id="btn-cancel-custom-duration">Cancel</button>
-                    </div>
-                  </div>
-
                   <!-- Primary Action Buttons: Start/Pause/Resume, End Session, Reset -->
                   <div class="timer-action-row" id="timer-action-row">
                     <button class="chalk-btn timer-btn play-btn chalk-font" id="btn-timer-toggle">
@@ -901,48 +897,7 @@
                   </div>
                 </div>
 
-                <!-- Ambient Soundscape Selector Bar with Quick Mute & Slider -->
-                <div class="focus-soundscapes-bottom-bar" id="focus-soundscapes-bar">
-                  <div class="sound-bar-header">
-                    <button class="sound-drawer-toggle-btn chalk-font" id="btn-toggle-sound-drawer" type="button" aria-expanded="false" title="Click to view sound options">
-                      <i class="fa-solid fa-headphones"></i>
-                      <span class="sound-drawer-title">Sound:</span>
-                      <span class="active-sound-pill chalk-font" id="current-sound-name">Steady Rain</span>
-                      <i class="fa-solid fa-chevron-down sound-drawer-chevron" id="sound-drawer-chevron"></i>
-                    </button>
-                    <div class="volume-control-wrap">
-                      <button class="sound-quick-mute-btn" id="btn-sound-quick-mute" type="button" title="Mute/Unmute sound">
-                        <i class="fa-solid fa-volume-low" id="sound-volume-icon"></i>
-                      </button>
-                      <input type="range" id="sound-volume" min="0" max="1" step="0.05" value="0.5" class="chalk-slider" aria-label="Ambient volume">
-                      <i class="fa-solid fa-volume-high"></i>
-                    </div>
-                  </div>
-
-                  <!-- Expandable Sound List -->
-                  <div class="soundscapes-horizontal-row" id="soundscapes-row">
-                    <button class="sound-pill active" data-sound="rain">
-                      <span class="s-icon">🌧️</span> <span class="s-name chalk-font">Steady Rain</span>
-                    </button>
-                    <button class="sound-pill" data-sound="campfire">
-                      <span class="s-icon">🔥</span> <span class="s-name chalk-font">Campfire</span>
-                    </button>
-                    <button class="sound-pill" data-sound="forest">
-                      <span class="s-icon">🌲</span> <span class="s-name chalk-font">Forest Wind</span>
-                    </button>
-                    <button class="sound-pill" data-sound="library">
-                      <span class="s-icon">📚</span> <span class="s-name chalk-font">Quiet Library</span>
-                    </button>
-                    <button class="sound-pill" data-sound="brown-noise">
-                      <span class="s-icon">🌊</span> <span class="s-name chalk-font">Brown Noise</span>
-                    </button>
-                    <button class="sound-pill" data-sound="none">
-                      <span class="s-icon">🔇</span> <span class="s-name chalk-font">Mute</span>
-                    </button>
-                  </div>
-                </div>
-
-</div>
+              </div>
 
               <!-- Collapsible Right Sidebar: Today's Focus, Tasks & Records -->
               <aside class="focus-right-sidebar collapsed" id="focus-right-sidebar" aria-label="Today's Focus Summary">
@@ -988,6 +943,106 @@
                 </div>
               </aside>
 
+            </div>
+
+            <!-- Collapsible Session Preferences Panel & Backdrop -->
+            <div class="focus-preferences-backdrop" id="focus-preferences-backdrop" style="display: none;"></div>
+            <div class="focus-preferences-panel chalk-card" id="focus-preferences-panel" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="pref-modal-title">
+              <div class="pref-panel-header">
+                <div class="pref-title-wrap">
+                  <i class="fa-solid fa-sliders pref-header-icon"></i>
+                  <h3 class="chalk-font pref-title" id="pref-modal-title">Session Preferences</h3>
+                </div>
+                <button type="button" class="pref-close-btn chalk-icon-btn" id="btn-close-preferences" aria-label="Close preferences">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+
+              <div class="pref-panel-body">
+                <!-- Section 1: Session Mode -->
+                <div class="pref-section">
+                  <label class="pref-section-label chalk-font">Session Mode</label>
+                  <div class="focus-mode-toggle pref-mode-toggle">
+                    <button class="mode-pill active chalk-font" id="mode-btn-focus" data-mode="FOCUS" title="Deep Focus Session">
+                      <i class="fa-solid fa-brain"></i> Deep Focus
+                    </button>
+                    <button class="mode-pill chalk-font" id="mode-btn-rest" data-mode="REST" title="Gentle 5-Minute Recharge">
+                      <i class="fa-solid fa-mug-hot"></i> Gentle Rest (5m)
+                    </button>
+                  </div>
+                  <p class="pref-note-text">Gentle Rest gives a quick 5-minute break and does not count toward focus bloom goals.</p>
+                </div>
+
+                <!-- Section 2: Duration Presets & Custom Duration -->
+                <div class="pref-section">
+                  <label class="pref-section-label chalk-font">Timer Duration</label>
+                  <div class="timer-duration-wrap" id="timer-duration-wrap">
+                    <div class="duration-segmented-control" role="group" aria-label="Timer Duration Presets">
+                      <button type="button" class="duration-pill-btn active chalk-font" data-minutes="25">25 min</button>
+                      <button type="button" class="duration-pill-btn chalk-font" data-minutes="45">45 min</button>
+                      <button type="button" class="duration-pill-btn chalk-font" data-minutes="60">60 min</button>
+                      <button type="button" class="duration-pill-btn chalk-font" id="btn-duration-custom">Custom</button>
+                    </div>
+                    
+                    <div class="custom-duration-inline-input-wrap" id="custom-duration-input-wrap" style="display: none;">
+                      <div class="custom-duration-stepper-row">
+                        <button type="button" class="chalk-btn secondary-btn duration-step-btn" id="btn-time-minus-5" title="-5 minutes">-5m</button>
+                        <button type="button" class="chalk-btn secondary-btn duration-step-btn" id="btn-time-minus-1" title="-1 minute">-1m</button>
+                        <input type="number" id="input-custom-duration" class="chalk-input custom-duration-input" min="1" max="180" value="25" placeholder="min" aria-label="Custom minutes (1-180)">
+                        <button type="button" class="chalk-btn secondary-btn duration-step-btn" id="btn-time-plus-1" title="+1 minute">+1m</button>
+                        <button type="button" class="chalk-btn secondary-btn duration-step-btn" id="btn-time-plus-5" title="+5 minutes">+5m</button>
+                      </div>
+                      <div class="custom-duration-actions-row">
+                        <button type="button" class="chalk-btn primary-btn custom-duration-set-btn chalk-font" id="btn-set-custom-duration">Apply</button>
+                        <button type="button" class="chalk-btn secondary-btn custom-duration-cancel-btn chalk-font" id="btn-cancel-custom-duration">Cancel</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Section 3: Ambient Soundscape & Volume -->
+                <div class="pref-section">
+                  <div class="pref-section-header-row">
+                    <label class="pref-section-label chalk-font">Ambient Soundscape</label>
+                    <span class="active-sound-pill chalk-font" id="current-sound-name">Steady Rain</span>
+                  </div>
+                  
+                  <div class="soundscapes-horizontal-row" id="soundscapes-row">
+                    <button class="sound-pill active" data-sound="rain">
+                      <span class="s-icon">🌧️</span> <span class="s-name chalk-font">Steady Rain</span>
+                    </button>
+                    <button class="sound-pill" data-sound="campfire">
+                      <span class="s-icon">🔥</span> <span class="s-name chalk-font">Campfire</span>
+                    </button>
+                    <button class="sound-pill" data-sound="forest">
+                      <span class="s-icon">🌲</span> <span class="s-name chalk-font">Forest Wind</span>
+                    </button>
+                    <button class="sound-pill" data-sound="library">
+                      <span class="s-icon">📚</span> <span class="s-name chalk-font">Quiet Library</span>
+                    </button>
+                    <button class="sound-pill" data-sound="brown-noise">
+                      <span class="s-icon">🌊</span> <span class="s-name chalk-font">Brown Noise</span>
+                    </button>
+                    <button class="sound-pill" data-sound="none">
+                      <span class="s-icon">🔇</span> <span class="s-name chalk-font">Mute</span>
+                    </button>
+                  </div>
+
+                  <div class="pref-volume-row">
+                    <button class="sound-quick-mute-btn" id="btn-sound-quick-mute" type="button" title="Mute/Unmute sound">
+                      <i class="fa-solid fa-volume-low" id="sound-volume-icon"></i>
+                    </button>
+                    <input type="range" id="sound-volume" min="0" max="1" step="0.05" value="0.5" class="chalk-slider" aria-label="Ambient volume">
+                    <i class="fa-solid fa-volume-high" style="color:var(--text-muted); font-size:12px;"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pref-panel-footer">
+                <button type="button" class="chalk-btn primary-btn pref-done-btn chalk-font" id="btn-done-preferences">
+                  Ready to Focus
+                </button>
+              </div>
             </div>
 
           </div>

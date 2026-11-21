@@ -1347,9 +1347,6 @@ const ChalkflowBrand = {
             <feDisplacementMap in="SourceGraphic" in2="chalkNoise" scale="0.75" xChannelSelector="R" yChannelSelector="G" result="displacedChalk" />
           </filter>
         </defs>
-        
-        <!-- Subtle Erased Chalk Dust Vignette Behind Wordmark -->
-        <ellipse cx="118" cy="24" rx="66" ry="16" fill="var(--logo-chalk-stroke, #FAF8F5)" opacity="0.035" />
 
         <!-- Left Sprout (x: 2 to 50, y: 2 to 44) -->
         <g filter="url(#primaryLogoChalkFilter)">
@@ -1626,6 +1623,13 @@ function getLocalDateInfo() {
   const tomDay = String(tomorrow.getDate()).padStart(2, '0');
   const tomorrowStr = `${tomYear}-${tomMonth}-${tomDay}`;
 
+  const dayAfterTomorrow = new Date(now);
+  dayAfterTomorrow.setDate(now.getDate() + 2);
+  const datYear = dayAfterTomorrow.getFullYear();
+  const datMonth = String(dayAfterTomorrow.getMonth() + 1).padStart(2, '0');
+  const datDay = String(dayAfterTomorrow.getDate()).padStart(2, '0');
+  const dayAfterTomorrowStr = `${datYear}-${datMonth}-${datDay}`;
+
   const endOfWeek = new Date(now);
   const dayOfWeek = now.getDay();
   const daysUntilSunday = dayOfWeek === 0 ? 0 : (7 - dayOfWeek);
@@ -1667,6 +1671,7 @@ function getLocalDateInfo() {
     dayNum,
     daysInMonth,
     tomorrowStr,
+    dayAfterTomorrowStr,
     endOfWeekStr,
     nextWeekStartStr,
     endOfNextWeekStr,
@@ -1683,6 +1688,7 @@ function getLocalDateInfo() {
 let CurrentDateInfo = getLocalDateInfo();
 let TODAY_DATE = CurrentDateInfo.dateStr;
 let TOMORROW_DATE = CurrentDateInfo.tomorrowStr;
+let DAY_AFTER_TOMORROW_DATE = CurrentDateInfo.dayAfterTomorrowStr;
 let THIS_WEEK_END_DATE = CurrentDateInfo.endOfWeekStr;
 let NEXT_WEEK_START_DATE = CurrentDateInfo.nextWeekStartStr;
 let NEXT_WEEK_END_DATE = CurrentDateInfo.endOfNextWeekStr;
@@ -2384,7 +2390,10 @@ function syncDateDisplays() {
   CurrentDateInfo = getLocalDateInfo();
   TODAY_DATE = CurrentDateInfo.dateStr;
   TOMORROW_DATE = CurrentDateInfo.tomorrowStr;
+  DAY_AFTER_TOMORROW_DATE = CurrentDateInfo.dayAfterTomorrowStr;
   THIS_WEEK_END_DATE = CurrentDateInfo.endOfWeekStr;
+  NEXT_WEEK_START_DATE = CurrentDateInfo.nextWeekStartStr;
+  NEXT_WEEK_END_DATE = CurrentDateInfo.endOfNextWeekStr;
   TODAY_DAY_NUM = CurrentDateInfo.dayNum;
 
   const liveDateEl = document.getElementById('live-date-str');
@@ -2418,6 +2427,7 @@ function checkDailyRollover() {
   CurrentDateInfo = latestDateInfo;
   TODAY_DATE = latestDateInfo.dateStr;
   TOMORROW_DATE = latestDateInfo.tomorrowStr;
+  DAY_AFTER_TOMORROW_DATE = latestDateInfo.dayAfterTomorrowStr;
   THIS_WEEK_END_DATE = latestDateInfo.endOfWeekStr;
   NEXT_WEEK_START_DATE = latestDateInfo.nextWeekStartStr;
   NEXT_WEEK_END_DATE = latestDateInfo.endOfNextWeekStr;
@@ -3983,23 +3993,45 @@ function initUpcomingTasks() {
 function renderUpcomingTasks() {
   const listTomorrow = document.getElementById('list-tomorrow');
   const listThisWeek = document.getElementById('list-this-week');
+  const listNextWeek = document.getElementById('list-next-week');
   const listLater = document.getElementById('list-later');
   const badge = document.getElementById('upcoming-badge');
 
-  if (!listTomorrow || !listThisWeek || !listLater) return;
+  if (!listTomorrow || !listLater) return;
 
   // Dynamic Column Subtitle Labels
   const labelTomorrow = document.getElementById('date-label-tomorrow');
   const labelThisWeek = document.getElementById('date-label-this-week');
+  const labelNextWeek = document.getElementById('date-label-next-week');
   const labelLater = document.getElementById('date-label-later');
 
+  const hasRemainingThisWeekDays = DAY_AFTER_TOMORROW_DATE <= THIS_WEEK_END_DATE;
+
   if (labelTomorrow) labelTomorrow.innerText = formatShortDate(TOMORROW_DATE);
-  if (labelThisWeek) labelThisWeek.innerText = `Through ${formatShortDate(THIS_WEEK_END_DATE)}`;
-  if (labelLater) labelLater.innerText = `Next week & beyond`;
+  if (labelThisWeek) {
+    if (DAY_AFTER_TOMORROW_DATE === THIS_WEEK_END_DATE) {
+      labelThisWeek.innerText = formatShortDate(THIS_WEEK_END_DATE);
+    } else {
+      labelThisWeek.innerText = `${formatShortDate(DAY_AFTER_TOMORROW_DATE)} – ${formatShortDate(THIS_WEEK_END_DATE)}`;
+    }
+  }
+  if (labelNextWeek) labelNextWeek.innerText = `${formatShortDate(NEXT_WEEK_START_DATE)} – ${formatShortDate(NEXT_WEEK_END_DATE)}`;
+  if (labelLater) labelLater.innerText = `Beyond ${formatShortDate(NEXT_WEEK_END_DATE)}`;
 
   listTomorrow.innerHTML = '';
-  listThisWeek.innerHTML = '';
+  if (listThisWeek) listThisWeek.innerHTML = '';
+  if (listNextWeek) listNextWeek.innerHTML = '';
   listLater.innerHTML = '';
+
+  const colTomorrow = document.getElementById('bucket-col-tomorrow');
+  const colThisWeek = document.getElementById('bucket-col-this-week');
+  const colNextWeek = document.getElementById('bucket-col-next-week');
+  const colLater = document.getElementById('bucket-col-later');
+
+  // Automatically hide "Later This Week" when no days remain in the current week (e.g. Saturday or Sunday)
+  if (colThisWeek) {
+    colThisWeek.style.display = hasRemainingThisWeekDays ? '' : 'none';
+  }
 
   const seenIds = new Set();
   const upcomingTasks = (AppState.tasks || []).filter(t => {
@@ -4028,7 +4060,7 @@ function renderUpcomingTasks() {
     return (priorityWeight[a.priority] || 2) - (priorityWeight[b.priority] || 2);
   });
 
-  let countTomorrow = 0, countThisWeek = 0, countLater = 0;
+  let countTomorrow = 0, countThisWeek = 0, countNextWeek = 0, countLater = 0;
 
   sortedUpcoming.forEach(t => {
     const card = createUpcomingTaskCardElement(t);
@@ -4036,18 +4068,17 @@ function renderUpcomingTasks() {
     if (t.targetDate === TOMORROW_DATE) {
       listTomorrow.appendChild(card);
       countTomorrow++;
-    } else if (t.targetDate <= THIS_WEEK_END_DATE) {
-      listThisWeek.appendChild(card);
+    } else if (hasRemainingThisWeekDays && t.targetDate >= DAY_AFTER_TOMORROW_DATE && t.targetDate <= THIS_WEEK_END_DATE) {
+      if (listThisWeek) listThisWeek.appendChild(card);
       countThisWeek++;
+    } else if (t.targetDate >= NEXT_WEEK_START_DATE && t.targetDate <= NEXT_WEEK_END_DATE) {
+      if (listNextWeek) listNextWeek.appendChild(card);
+      countNextWeek++;
     } else {
       listLater.appendChild(card);
       countLater++;
     }
   });
-
-  const colTomorrow = document.getElementById('bucket-col-tomorrow');
-  const colThisWeek = document.getElementById('bucket-col-this-week');
-  const colLater = document.getElementById('bucket-col-later');
 
   // Peaceful chalkboard empty states and compact collapse
   if (countTomorrow === 0) {
@@ -4057,11 +4088,22 @@ function renderUpcomingTasks() {
     if (colTomorrow) colTomorrow.classList.remove('is-empty');
   }
 
-  if (countThisWeek === 0) {
-    if (colThisWeek) colThisWeek.classList.add('is-empty');
-    listThisWeek.innerHTML = '<div class="bucket-empty-state chalk-font">No tasks scheduled</div>';
-  } else {
-    if (colThisWeek) colThisWeek.classList.remove('is-empty');
+  if (hasRemainingThisWeekDays && colThisWeek) {
+    if (countThisWeek === 0) {
+      colThisWeek.classList.add('is-empty');
+      if (listThisWeek) listThisWeek.innerHTML = '<div class="bucket-empty-state chalk-font">No tasks scheduled</div>';
+    } else {
+      colThisWeek.classList.remove('is-empty');
+    }
+  }
+
+  if (colNextWeek) {
+    if (countNextWeek === 0) {
+      colNextWeek.classList.add('is-empty');
+      if (listNextWeek) listNextWeek.innerHTML = '<div class="bucket-empty-state chalk-font">No tasks scheduled</div>';
+    } else {
+      colNextWeek.classList.remove('is-empty');
+    }
   }
 
   if (countLater === 0) {
@@ -4073,6 +4115,13 @@ function renderUpcomingTasks() {
 
   const countTomEl = document.getElementById('count-tomorrow');
   const countWeekEl = document.getElementById('count-this-week');
+  const countNextWeekEl = document.getElementById('count-next-week');
+  const countLaterEl = document.getElementById('count-later');
+
+  if (countTomEl) countTomEl.innerText = countTomorrow;
+  if (countWeekEl) countWeekEl.innerText = countThisWeek;
+  if (countNextWeekEl) countNextWeekEl.innerText = countNextWeek;
+  if (countLaterEl) countLaterEl.innerText = countLater;
   const countLaterEl = document.getElementById('count-later');
 
   if (countTomEl) countTomEl.innerText = countTomorrow;
@@ -5963,6 +6012,34 @@ function initDeepFocus() {
   const maximizeIcon = document.getElementById('maximize-icon');
   const maximizeLabel = document.getElementById('maximize-label');
 
+  // Session Preferences Popout Panel Handlers
+  const prefBtn = document.getElementById('btn-focus-preferences');
+  const prefPanel = document.getElementById('focus-preferences-panel');
+  const prefBackdrop = document.getElementById('focus-preferences-backdrop');
+  const closePrefBtn = document.getElementById('btn-close-preferences');
+  const donePrefBtn = document.getElementById('btn-done-preferences');
+
+  const openPreferences = () => {
+    if (prefPanel) prefPanel.style.display = 'flex';
+    if (prefBackdrop) prefBackdrop.style.display = 'block';
+  };
+
+  const closePreferences = () => {
+    if (prefPanel) prefPanel.style.display = 'none';
+    if (prefBackdrop) prefBackdrop.style.display = 'none';
+  };
+
+  if (prefBtn) prefBtn.addEventListener('click', openPreferences);
+  if (closePrefBtn) closePrefBtn.addEventListener('click', closePreferences);
+  if (donePrefBtn) donePrefBtn.addEventListener('click', closePreferences);
+  if (prefBackdrop) prefBackdrop.addEventListener('click', closePreferences);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && prefPanel && prefPanel.style.display !== 'none') {
+      closePreferences();
+    }
+  });
+
   // Generate 60 precision clock dial ticks inside the centerpiece dial
   generateClockDialTicks();
 
@@ -6093,6 +6170,7 @@ function initDeepFocus() {
       if (customWrap) {
         customWrap.style.display = 'flex';
         if (customInput) {
+          customInput.value = Math.round(FocusTimer.durationSeconds / 60) || 25;
           customInput.focus();
           customInput.select();
         }
@@ -6118,6 +6196,32 @@ function initDeepFocus() {
   if (setCustomBtn) {
     setCustomBtn.addEventListener('click', applyCustomDuration);
   }
+
+  // Quick Stepper Adjusters (+/- & numeric input)
+  const btnMinus5 = document.getElementById('btn-time-minus-5');
+  const btnMinus1 = document.getElementById('btn-time-minus-1');
+  const btnPlus1 = document.getElementById('btn-time-plus-1');
+  const btnPlus5 = document.getElementById('btn-time-plus-5');
+
+  const adjustCustomMinutes = (delta) => {
+    if (!customInput) return;
+    let current = parseInt(customInput.value, 10) || 25;
+    current = Math.max(1, Math.min(180, current + delta));
+    customInput.value = current;
+    if (!FocusTimer.isRunning) {
+      setTimerDuration(current);
+      if (customBtn) {
+        document.querySelectorAll('.duration-pill-btn').forEach(b => b.classList.remove('active'));
+        customBtn.classList.add('active');
+        customBtn.innerText = `${current} min`;
+      }
+    }
+  };
+
+  if (btnMinus5) btnMinus5.addEventListener('click', () => adjustCustomMinutes(-5));
+  if (btnMinus1) btnMinus1.addEventListener('click', () => adjustCustomMinutes(-1));
+  if (btnPlus1) btnPlus1.addEventListener('click', () => adjustCustomMinutes(1));
+  if (btnPlus5) btnPlus5.addEventListener('click', () => adjustCustomMinutes(5));
 
   if (customInput) {
     customInput.addEventListener('keydown', (e) => {
