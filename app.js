@@ -1404,11 +1404,11 @@ const ChalkMeadowPanorama = {
     const isBloom = stage === 4;
     const todayBadge = isToday ? `<text x="0" y="253" font-family="'Kalam', cursive" font-size="12" font-weight="700" fill="var(--chalk-amber)" text-anchor="middle">★ Today</text>` : (isBloom ? `<text x="0" y="253" font-family="'Kalam', cursive" font-size="11" font-weight="700" fill="var(--chalk-coral)" text-anchor="middle">🌸 Bloom</text>` : '');
     const todayPedestal = isToday ? `
-      <!-- Soft Amber Soil Pedestal Aura for Today's Specimen -->
-      <ellipse cx="0" cy="222" rx="42" ry="11" fill="rgba(255, 209, 102, 0.12)" stroke="var(--chalk-amber)" stroke-width="1.2" stroke-dasharray="3,2" />
+      <!-- Soft Amber Ground Highlight for Today's Specimen (highlighted wash, no circle) -->
+      <ellipse cx="0" cy="220" rx="38" ry="8" fill="rgba(255, 209, 102, 0.16)" />
     ` : (isBloom ? `
       <!-- Soft Coral Bloom Pedestal for Completed Specimen -->
-      <ellipse cx="0" cy="222" rx="36" ry="9" fill="rgba(255, 183, 178, 0.1)" stroke="var(--chalk-coral)" stroke-width="1" stroke-dasharray="2,2" opacity="0.8" />
+      <ellipse cx="0" cy="220" rx="32" ry="8" fill="rgba(255, 183, 178, 0.12)" />
     ` : '');
 
     const hotspotClasses = [
@@ -1430,9 +1430,10 @@ const ChalkMeadowPanorama = {
         <g class="${hotspotClasses}" ${delayStyle} id="plant-hotspot-d${day}">
           ${plantArtwork}
         </g>
-        <!-- Ground Day Number, Underline & Today Badge (anchored, static) -->
+        <!-- Ground Day Number, Highlight & Today Badge (anchored, static) -->
+        ${isToday ? `<rect x="-19" y="222" width="38" height="15" rx="4" fill="rgba(255, 209, 102, 0.22)" />` : ''}
         <text x="0" y="${isToday ? 234 : 238}" class="meadow-chalk-label" ${labelColor} text-anchor="middle">D${day}</text>
-        <path d="M -17 ${isToday ? 240 : 244} Q 0 ${isToday ? 242 : 246} 17 ${isToday ? 240 : 244}" ${underlineColor} stroke-linecap="round" fill="none" />
+        <path d="M -16 ${isToday ? 241 : 244} Q 0 ${isToday ? 243 : 246} 16 ${isToday ? 241 : 244}" ${underlineColor} stroke-linecap="round" fill="none" />
         ${todayBadge}
       </g>
     `;

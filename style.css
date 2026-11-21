@@ -2218,8 +2218,14 @@ svg.anim-unfurl-bloom .plant-stage-label {
 }
 
 .calendar-day-tile.is-today {
-  border: 1.5px solid var(--chalk-amber);
-  box-shadow: 0 0 10px rgba(255, 209, 102, 0.16);
+  border: 1px solid var(--border-chalk);
+  background: rgba(255, 209, 102, 0.08) !important;
+  box-shadow: 0 0 10px rgba(255, 209, 102, 0.14);
+}
+
+body.theme-parchment-cream .calendar-day-tile.is-today {
+  background: rgba(220, 160, 40, 0.12) !important;
+  border-color: rgba(220, 160, 40, 0.35);
 }
 
 .tile-top {
@@ -2238,7 +2244,17 @@ svg.anim-unfurl-bloom .plant-stage-label {
 }
 
 .is-today .tile-top .day-num {
-  color: var(--chalk-amber);
+  color: #181A1D;
+  background: var(--chalk-amber);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+body.theme-parchment-cream .is-today .tile-top .day-num {
+  background: #E8A838;
+  color: #FFFFFF;
 }
 
 .tile-artwork-svg {
@@ -2898,6 +2914,14 @@ body.theme-white-board .habit-card-bar-track {
    11. SURFACE 5: DEEP FOCUS (SPACIOUS, TIMER-CENTRED EXPERIENCE)
    -------------------------------------------------------------------------- */
 #view-deep-focus {
+  display: none;
+}
+
+#view-deep-focus:not(.active) {
+  display: none !important;
+}
+
+#view-deep-focus.active {
   width: 100%;
   min-height: calc(100vh - 120px);
   display: flex;
@@ -2912,7 +2936,7 @@ body.theme-white-board .habit-card-bar-track {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 24px 28px 44px 28px;
+  padding: 40px 30px 46px 30px;
   min-height: calc(100vh - 160px);
   justify-content: flex-start;
   width: 100%;
@@ -2952,7 +2976,7 @@ body.theme-dark-slate .deep-focus-fullscreen-container {
   justify-content: space-between;
   align-items: center;
   padding: 0 6px;
-  margin-bottom: clamp(14px, 2.4vh, 24px);
+  margin-bottom: clamp(18px, 2.8vh, 28px);
   position: relative;
   z-index: 10;
   box-sizing: border-box;
@@ -3014,7 +3038,7 @@ body.theme-parchment-cream .maximize-focus-btn:hover {
 
 /* 3. Task Anchor Pill Neatly Positioned Above Timer */
 .focus-task-headline-wrap {
-  margin: 0 0 clamp(16px, 2.6vh, 24px) 0;
+  margin: 0 0 clamp(18px, 2.8vh, 26px) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3744,7 +3768,7 @@ body.focus-maximized .main-content {
   overflow: hidden !important;
 }
 
-body.focus-maximized #view-deep-focus {
+body.focus-maximized #view-deep-focus.active {
   width: 100vw !important;
   height: 100vh !important;
   height: 100dvh !important;
