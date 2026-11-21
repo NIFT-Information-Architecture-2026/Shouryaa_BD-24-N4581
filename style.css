@@ -2940,7 +2940,7 @@ body.theme-white-board .habit-card-bar-track {
   min-height: calc(100vh - 160px);
   justify-content: flex-start;
   width: 100%;
-  max-width: 820px;
+  max-width: 980px;
   margin: 0 auto 24px auto;
   position: relative;
   overflow: hidden;
@@ -3219,10 +3219,7 @@ body.theme-parchment-cream .time-label {
 }
 
 .time-status-underline {
-  width: 68px;
-  height: 8px;
-  color: #52B795;
-  margin-top: 1px;
+  display: none !important;
 }
 
 body.theme-parchment-cream .time-status-underline {
@@ -4244,10 +4241,7 @@ body.theme-parchment-cream .time-label {
 }
 
 .time-status-underline {
-  width: 68px;
-  height: 8px;
-  color: #52B795;
-  margin-top: 1px;
+  display: none !important;
 }
 
 body.theme-parchment-cream .time-status-underline {
