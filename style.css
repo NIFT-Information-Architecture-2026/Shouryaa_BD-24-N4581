@@ -388,48 +388,33 @@ body {
   transition: stroke 0.3s ease;
 }
 
-/* Authentic Handcrafted Chalk Lettering for Chalkflow Wordmark */
+/* Authentic Slender Handcrafted Chalk Lettering for Chalkflow Wordmark */
 .chalk-brand-wordmark,
 .chalk-wordmark-main {
   font-family: 'Kalam', 'Caveat', cursive;
-  font-size: 29px;
-  font-weight: 700;
+  font-size: 26px;
+  font-weight: 400;
   fill: var(--logo-text-color, #FAF8F5);
-  fill-opacity: 0.88;
+  fill-opacity: 0.95;
   stroke: var(--logo-text-color, #FAF8F5);
-  stroke-width: 1.2px;
+  stroke-width: 0.2px;
   stroke-linecap: round;
   stroke-linejoin: round;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.7px;
   transition: fill 0.3s ease, stroke 0.3s ease;
 }
 
 .chalk-wordmark-dust {
   font-family: 'Kalam', 'Caveat', cursive;
-  font-size: 29px;
-  font-weight: 700;
+  font-size: 26px;
+  font-weight: 400;
   fill: none;
   stroke: var(--logo-chalk-stroke, #FAF8F5);
-  stroke-width: 3.2px;
-  stroke-opacity: 0.22;
+  stroke-width: 1.1px;
+  stroke-opacity: 0.15;
   stroke-linecap: round;
   stroke-linejoin: round;
-  letter-spacing: 0.8px;
-  pointer-events: none;
-}
-
-.chalk-wordmark-chalk {
-  font-family: 'Kalam', 'Caveat', cursive;
-  font-size: 29px;
-  font-weight: 700;
-  fill: none;
-  stroke: #FFFFFF;
-  stroke-width: 0.6px;
-  stroke-opacity: 0.72;
-  stroke-dasharray: 6 2 8 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.7px;
   pointer-events: none;
 }
 

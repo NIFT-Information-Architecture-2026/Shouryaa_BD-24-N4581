@@ -1336,26 +1336,20 @@ const ChalkflowBrand = {
     `;
   },
 
-  // Primary horizontal logo: Refined sprout on the left + "Chalkflow" wordmark + continuous ground line with loops
-  // Primary horizontal logo: Refined sprout on the left + "Chalkflow" written in authentic chalk
+  // Primary horizontal logo: Refined sprout on the left + "Chalkflow" written in authentic slender chalk
   renderPrimaryLogoSVG(width = 208, height = 48) {
     return `
       <svg width="${width}" height="${height}" viewBox="0 0 200 48" class="chalkflow-primary-logo" aria-label="Chalkflow Brand Logo" style="overflow:visible;">
         <defs>
-          <!-- Authentic Chalk Texture & Powder Scattering Filter -->
-          <filter id="primaryLogoChalkFilter" x="-15%" y="-15%" width="130%" height="130%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" result="chalkNoise" />
-            <feDisplacementMap in="SourceGraphic" in2="chalkNoise" scale="1.5" xChannelSelector="R" yChannelSelector="G" result="displacedChalk" />
-            <feGaussianBlur in="displacedChalk" stdDeviation="0.4" result="chalkHaze" />
-            <feMerge>
-              <feMergeNode in="chalkHaze" />
-              <feMergeNode in="displacedChalk" />
-            </feMerge>
+          <!-- Authentic Slender Chalk Texture & Fine Powder Edge Filter -->
+          <filter id="primaryLogoChalkFilter" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="chalkNoise" />
+            <feDisplacementMap in="SourceGraphic" in2="chalkNoise" scale="0.75" xChannelSelector="R" yChannelSelector="G" result="displacedChalk" />
           </filter>
         </defs>
         
         <!-- Subtle Erased Chalk Dust Vignette Behind Wordmark -->
-        <ellipse cx="118" cy="24" rx="66" ry="16" fill="var(--logo-chalk-stroke, #FAF8F5)" opacity="0.04" />
+        <ellipse cx="118" cy="24" rx="66" ry="16" fill="var(--logo-chalk-stroke, #FAF8F5)" opacity="0.035" />
 
         <!-- Left Sprout (x: 2 to 50, y: 2 to 44) -->
         <g filter="url(#primaryLogoChalkFilter)">
@@ -1363,35 +1357,33 @@ const ChalkflowBrand = {
           <path d="M 28 24 C 22 17, 16 13, 6 16 C 5 22, 12 28, 27 26 Z" 
                 class="chalk-leaf-fill" />
           <path d="M 28 24 C 22 17, 16 13, 6 16 C 5 22, 12 28, 27 26" 
-                fill="none" class="chalk-leaf-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                fill="none" class="chalk-leaf-stroke" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
 
           <!-- Right Leaf -->
           <path d="M 30 23 C 36 13, 42 6, 54 3 C 56 10, 48 20, 31 25 Z" 
                 class="chalk-leaf-fill" />
           <path d="M 30 23 C 36 13, 42 6, 54 3 C 56 10, 48 20, 31 25" 
-                fill="none" class="chalk-leaf-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                fill="none" class="chalk-leaf-stroke" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
 
           <!-- Center Shoot -->
-          <path d="M 29.5 24 L 29.5 15" stroke="var(--logo-leaf-fill, #52B795)" stroke-width="2.6" stroke-linecap="round" />
-          <path d="M 29.5 24 L 29.5 15" stroke="var(--logo-chalk-stroke, #FAF8F5)" stroke-width="1.1" stroke-linecap="round" opacity="0.85" />
+          <path d="M 29.5 24 L 29.5 15" stroke="var(--logo-leaf-fill, #52B795)" stroke-width="2.4" stroke-linecap="round" />
+          <path d="M 29.5 24 L 29.5 15" stroke="var(--logo-chalk-stroke, #FAF8F5)" stroke-width="1" stroke-linecap="round" opacity="0.85" />
 
           <!-- Stem -->
-          <path d="M 29.5 24 L 29.5 37" stroke="var(--logo-leaf-fill, #52B795)" stroke-width="3" stroke-linecap="round" />
-          <path d="M 29.5 24 L 29.5 37" stroke="var(--logo-chalk-stroke, #FAF8F5)" stroke-width="1.1" stroke-linecap="round" opacity="0.8" />
+          <path d="M 29.5 24 L 29.5 37" stroke="var(--logo-leaf-fill, #52B795)" stroke-width="2.6" stroke-linecap="round" />
+          <path d="M 29.5 24 L 29.5 37" stroke="var(--logo-chalk-stroke, #FAF8F5)" stroke-width="1" stroke-linecap="round" opacity="0.8" />
 
           <!-- Gentle Wavy Ground Line & Root Loop (Localized strictly under sprout, stops at x=48) -->
           <path d="M 3 36 C 9 34, 17 35, 25 36 C 28 37, 30 39, 28 41 C 26 43, 23 41, 24 37 C 25 34, 29 35, 33 36.5 C 37 38, 41 37, 43 33.5 C 44.5 30, 41.5 28.5, 40 31.5 C 39 34.5, 42.5 38, 48 37" 
-                fill="none" class="chalk-baseline-stroke" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+                fill="none" class="chalk-baseline-stroke" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
         </g>
 
-        <!-- Chalkflow Thoughtfully Hand-Written in Authentic Chalk (3 Layered Chalk Passes) -->
+        <!-- Chalkflow Hand-Written in Slender Authentic Chalk -->
         <g filter="url(#primaryLogoChalkFilter)">
-          <!-- 1. Powdery Chalk Dust Halo -->
+          <!-- Powdery Chalk Dust Halo -->
           <text x="54" y="32" class="chalk-wordmark-dust chalk-font">Chalkflow</text>
-          <!-- 2. Main Chalk Stroke & Fill -->
+          <!-- Main Slender Chalk Text -->
           <text x="54" y="32" class="chalk-wordmark-main chalk-font">Chalkflow</text>
-          <!-- 3. Tactile Dry Chalk Stippling / Highlight -->
-          <text x="54" y="32" class="chalk-wordmark-chalk chalk-font">Chalkflow</text>
         </g>
       </svg>
     `;
