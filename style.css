@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    CHALKFLOW — MINDFUL PRODUCTIVITY & BOTANICAL FOCUS DESIGN SYSTEM
    Authentic Wooden-Framed Blackboard & Handcrafted Chalk Botanical Stylesheet
    ========================================================================== */
@@ -7,110 +7,111 @@
    1. CSS VARIABLES & MULTI-SURFACE THEME TOKENS
    -------------------------------------------------------------------------- */
 :root, body.theme-dark-slate {
-  /* Theme 1: Black Board (Deep Matte Slate with Dark Defined Borders) */
-  --bg-base: #131416;
-  --bg-surface: #1B1D20;
-  --bg-surface-elevated: #24272B;
-  --bg-hover: #2C3035;
+  /* Theme 1: Black Board (Soft, Deep Charcoal with Subtle Forest-Green Undertone #171D1B) */
+  --bg-outer: #101413;
+  --bg-base: #171D1B;
+  --bg-surface: #131816;
+  --bg-surface-elevated: #1E2522;
+  --bg-hover: #26312D;
   
-  --text-primary: #F1F5F9;
-  --text-muted: #94A3B8;
-  --text-faint: #64748B;
+  --text-primary: #F2F5F3;
+  --text-muted: #8E9E96;
+  --text-faint: #607068;
   
-  /* Darker Defined Board & Card Borders */
-  --border-chalk: rgba(0, 0, 0, 0.65);
-  --border-chalk-dashed: rgba(0, 0, 0, 0.75);
+  /* Delicate Borders & Minimal Shadows */
+  --border-chalk: rgba(255, 255, 255, 0.07);
+  --border-chalk-dashed: rgba(82, 183, 149, 0.18);
+  --shadow-chalk: 0 2px 10px rgba(0, 0, 0, 0.22);
   
-  /* Dark Rich Espresso/Ebony Wood Frame */
-  --wood-frame-outer: #1E1208;
-  --wood-frame-inner: #2E1D0F;
-  --wood-frame-highlight: #422B17;
-  --wood-frame-shadow: #140C06;
+  /* Refined Frame Border & Shadow */
+  --frame-border: rgba(82, 183, 149, 0.16);
+  --frame-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
   
   /* Handcrafted Mineral Chalk Colors */
   --chalk-red: #FF6B6B;
   --chalk-amber: #FFD166;
-  --chalk-mint: #06D6A0;
+  --chalk-mint: #52B795;
   --chalk-sky: #4CC9F0;
   --chalk-terracotta: #E07A5F;
   --chalk-pink: #E8A4C8;
   --chalk-violet: #B5838D;
   --chalk-purple: #6D597A;
-  --chalk-white: #FAF0CA;
+  --chalk-white: #FAF8F5;
   
   /* Brand Logo Theming: Black Board (Chalk-white lettering & muted mint leaves) */
   --logo-leaf-fill: #52B795;
   --logo-chalk-stroke: #FAF8F5;
   --logo-text-color: #FAF8F5;
-  --logo-sub-color: #94A3B8;
+  --logo-sub-color: #8E9E96;
 
   --nav-width: 240px;
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 18px;
-  --shadow-chalk: 0 4px 14px rgba(0, 0, 0, 0.45);
 }
 
-/* Theme 2: Vintage Classroom Green Blackboard (Dark Forest Green with Dark Borders) */
+/* Theme 2: Vintage Classroom Green Blackboard (Muted Sage & Forest-Green Tones) */
 body.theme-vintage-green {
-  --bg-base: #111E15;
-  --bg-surface: #182B1E;
-  --bg-surface-elevated: #223828;
-  --bg-hover: #2C4734;
+  --bg-outer: #121915;
+  --bg-base: #18241D;
+  --bg-surface: #141E18;
+  --bg-surface-elevated: #1F2F26;
+  --bg-hover: #283C31;
   
-  --text-primary: #F7F5EB;
-  --text-muted: #A8C2A3;
-  --text-faint: #728F6D;
+  --text-primary: #F4F6F2;
+  --text-muted: #98ADA0;
+  --text-faint: #6A7E72;
   
-  /* Darker Defined Board & Card Borders */
-  --border-chalk: rgba(0, 0, 0, 0.65);
-  --border-chalk-dashed: rgba(0, 0, 0, 0.75);
+  /* Delicate Borders & Minimal Shadows */
+  --border-chalk: rgba(255, 255, 255, 0.07);
+  --border-chalk-dashed: rgba(123, 185, 153, 0.2);
+  --shadow-chalk: 0 2px 10px rgba(0, 0, 0, 0.22);
   
-  /* Dark Antique Walnut Wood Frame */
-  --wood-frame-outer: #1A1108;
-  --wood-frame-inner: #28190C;
-  --wood-frame-highlight: #3A2512;
-  --wood-frame-shadow: #110A04;
+  /* Refined Frame Border & Shadow */
+  --frame-border: rgba(123, 185, 153, 0.18);
+  --frame-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
   
   --chalk-red: #E07A5F;
   --chalk-amber: #F2CC8F;
-  --chalk-mint: #81B29A;
+  --chalk-mint: #7BB999;
   --chalk-sky: #A8DADC;
   --chalk-terracotta: #E29578;
   --chalk-pink: #E9A8C6;
   --chalk-violet: #C3AED6;
   --chalk-purple: #7E6B8F;
-  --chalk-white: #FAF0CA;
+  --chalk-white: #FAF6ED;
 
   /* Brand Logo Theming: Green Board (Warm antique white & vintage sage leaves) */
-  --logo-leaf-fill: #5EB88A;
-  --logo-chalk-stroke: #FAF5E8;
-  --logo-text-color: #FAF5E8;
-  --logo-sub-color: #A8C2A3;
+  --logo-leaf-fill: #6EC49B;
+  --logo-chalk-stroke: #FAF6ED;
+  --logo-text-color: #FAF6ED;
+  --logo-sub-color: #98ADA0;
 }
 
-/* Theme 3: Studio White Board (#FAF9F5 / Soft Neutral Greys) */
+/* Theme 3: Studio White Board (Warm Soft Off-White #F6F4EE) */
 body.theme-parchment-cream {
-  --bg-base: #FAF9F5;
-  --bg-surface: #EFEFEF;
-  --bg-surface-elevated: #E5E5E5;
-  --bg-hover: #DCDCDC;
+  --bg-outer: #ECE8DF;
+  --bg-base: #F6F4EE;
+  --bg-surface: #EDEAE2;
+  --bg-surface-elevated: #FFFFFF;
+  --bg-hover: #F7F5F0;
   
-  --text-primary: #2B2D42;
-  --text-muted: #5E6573;
-  --text-faint: #8D99AE;
+  --text-primary: #262D2A;
+  --text-muted: #5C6661;
+  --text-faint: #8C9691;
   
-  --border-chalk: rgba(43, 45, 66, 0.08);
-  --border-chalk-dashed: rgba(43, 45, 66, 0.16);
+  /* Delicate Borders & Minimal Shadows */
+  --border-chalk: rgba(38, 45, 42, 0.08);
+  --border-chalk-dashed: rgba(38, 45, 42, 0.16);
+  --shadow-chalk: 0 2px 8px rgba(0, 0, 0, 0.04);
   
-  --wood-frame-outer: #8D99AE;
-  --wood-frame-inner: #D1D5DB;
-  --wood-frame-highlight: #F3F4F6;
-  --wood-frame-shadow: #9CA3AF;
+  /* Refined Frame Border & Shadow */
+  --frame-border: #DCD6C9;
+  --frame-shadow: 0 8px 32px rgba(43, 45, 66, 0.07);
   
   --chalk-red: #E63946;
   --chalk-amber: #F4A261;
-  --chalk-mint: #2A9D8F;
+  --chalk-mint: #2E8B66;
   --chalk-sky: #457B9D;
   --chalk-terracotta: #E76F51;
   --chalk-pink: #D8829D;
@@ -120,13 +121,13 @@ body.theme-parchment-cream {
 
   /* Brand Logo Theming: White Board (Dark charcoal lettering & natural sage leaves) */
   --logo-leaf-fill: #2E8B66;
-  --logo-chalk-stroke: #2B2D42;
-  --logo-text-color: #2B2D42;
-  --logo-sub-color: #5E6573;
+  --logo-chalk-stroke: #262D2A;
+  --logo-text-color: #262D2A;
+  --logo-sub-color: #5C6661;
 }
 
 /* --------------------------------------------------------------------------
-   2. RESET & WOODEN BLACKBOARD FRAME WRAPPER
+   2. RESET & REFINED DIGITAL BOARD WRAPPER
    -------------------------------------------------------------------------- */
 * {
   box-sizing: border-box;
@@ -137,7 +138,7 @@ body.theme-parchment-cream {
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: #0E1011;
+  background-color: var(--bg-outer);
   color: var(--text-primary);
   min-height: 100vh;
   font-size: 14px;
@@ -145,35 +146,32 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px;
+  padding: clamp(14px, 2vw, 24px);
   position: relative;
+  transition: background-color 0.3s ease;
 }
 
 .chalk-font {
   font-family: 'Kalam', cursive, sans-serif;
 }
 
-/* Outer Wooden Frame Container */
+/* Outer Refined Digital Board Wrapper with Thin Subtle Border */
 .blackboard-frame-wrapper {
   width: 100%;
   max-width: 1440px;
   min-height: 94vh;
   background-color: var(--bg-base);
-  border: 14px solid var(--wood-frame-inner);
-  border-image: linear-gradient(135deg, var(--wood-frame-highlight) 0%, var(--wood-frame-inner) 40%, var(--wood-frame-outer) 100%) 14;
-  border-radius: 4px;
-  box-shadow: 
-    0 12px 48px rgba(0, 0, 0, 0.75),
-    inset 0 0 60px rgba(0, 0, 0, 0.7),
-    inset 0 0 120px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--frame-border);
+  border-radius: 14px;
+  box-shadow: var(--frame-shadow);
   position: relative;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Chalk Smudge & Dust Texture */
+/* Subtle Matte Chalk Wash Texture */
 .chalk-smudge-texture {
   position: absolute;
   top: 0;
@@ -182,76 +180,15 @@ body {
   height: 100%;
   pointer-events: none;
   background-image: 
-    radial-gradient(ellipse at 40% 30%, rgba(255, 255, 255, 0.04) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 70%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
-    radial-gradient(ellipse at 15% 85%, rgba(255, 255, 255, 0.035) 0%, transparent 40%);
-  opacity: 0.9;
+    radial-gradient(ellipse at 40% 30%, rgba(255, 255, 255, 0.02) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(255, 255, 255, 0.015) 0%, transparent 50%),
+    radial-gradient(ellipse at 15% 85%, rgba(255, 255, 255, 0.02) 0%, transparent 40%);
+  opacity: 0.18;
   z-index: 1;
 }
 
 .chalk-dust-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 0);
-  background-size: 24px 24px;
-  z-index: 2;
-}
-
-/* --------------------------------------------------------------------------
-   3. WOODEN CHALK LEDGE & CHALK STICKS
-   -------------------------------------------------------------------------- */
-.wooden-chalk-ledge {
-  height: 28px;
-  background: linear-gradient(180deg, var(--wood-frame-highlight) 0%, var(--wood-frame-inner) 40%, var(--wood-frame-shadow) 100%);
-  border-top: 2px solid rgba(255, 255, 255, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0 32px;
-  gap: 16px;
-  position: relative;
-  z-index: 20;
-  box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.4);
-}
-
-.chalk-stick {
-  width: 44px;
-  height: 10px;
-  border-radius: 3px 5px 5px 3px;
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.chalk-stick:hover {
-  transform: translateY(-2px);
-}
-
-.ivory-chalk { background: linear-gradient(180deg, #FAF0CA 0%, #E6D8A7 100%); }
-.mint-chalk { background: linear-gradient(180deg, #81B29A 0%, #5E8F77 100%); }
-.coral-chalk { background: linear-gradient(180deg, #E07A5F 0%, #C45F45 100%); }
-
-.felt-eraser-wood-block {
-  width: 54px;
-  height: 14px;
-  background: #5C381E;
-  border-radius: 2px;
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-  position: relative;
-}
-
-.eraser-felt-pad {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: #2C2C2C;
-  border-radius: 2px 2px 0 0;
+  display: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -630,7 +567,7 @@ body {
    -------------------------------------------------------------------------- */
 .main-content {
   flex-grow: 1;
-  padding: 24px 32px;
+  padding: clamp(24px, 2.5vw, 36px) clamp(28px, 3.2vw, 44px);
   max-width: 1200px;
   overflow-y: auto;
   transition: all 0.3s ease;
@@ -710,7 +647,7 @@ body {
    6. CHALK CARDS & FORM ELEMENTS
    -------------------------------------------------------------------------- */
 .chalk-card {
-  background: var(--bg-surface);
+  background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   border-radius: var(--radius-md);
   padding: 18px 20px;
@@ -1311,15 +1248,21 @@ body {
 
 .upcoming-buckets-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 14px;
 }
 
 .bucket-column {
-  min-height: 340px;
+  min-height: 280px;
   display: flex;
   flex-direction: column;
   padding: 14px;
+  transition: min-height 0.2s ease, opacity 0.2s ease;
+}
+
+.bucket-column.is-empty {
+  min-height: auto;
+  opacity: 0.85;
 }
 
 .bucket-header {
@@ -1368,15 +1311,67 @@ body {
   flex-grow: 1;
 }
 
+.bucket-column.is-empty .bucket-task-list {
+  min-height: auto;
+  padding: 2px 0;
+}
+
 .bucket-empty-state {
   text-align: center;
-  padding: 26px 10px;
+  padding: 14px 10px;
   color: var(--text-muted);
   font-size: 12px;
   border: 1px dashed var(--border-chalk);
   border-radius: var(--radius-sm);
   background: var(--bg-hover);
-  margin: auto 0;
+  margin: 0;
+}
+
+/* Compact Upcoming Task Card with reduced vertical spacing */
+.upcoming-task-card {
+  padding: 8px 11px;
+  gap: 4px;
+}
+
+.upcoming-task-card .task-main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.upcoming-task-card .task-body-interactive {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.upcoming-task-card .task-title-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.upcoming-task-card .task-title {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.upcoming-task-card .task-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+
+.upcoming-task-card .meta-pill {
+  padding: 2px 6px;
+  font-size: 10.5px;
 }
 
 /* Quick Date Picker Pill on Upcoming Task Cards */
@@ -3019,32 +3014,32 @@ body.focus-maximized .app-layout {
 }
 
 /* 2. Softer Atmosphere with Barely-Noticeable Radial Light Depth Centered Behind Timer */
-/* Theme 1: Black Board Mode (Warm Charcoal with Muted Sage/Mint Accents) */
+/* Theme 1: Black Board Mode (Warm Charcoal with Muted Sage/Mint Accents #171D1B) */
 body.focus-maximized.theme-dark-slate,
 body.focus-maximized.theme-dark-slate .blackboard-frame-wrapper,
 body.focus-maximized.theme-dark-slate .app-layout {
-  background-color: #0e1112 !important;
-  background-image: radial-gradient(ellipse 950px 750px at 50% 48%, rgba(30, 38, 35, 0.55) 0%, rgba(20, 26, 24, 0.35) 50%, rgba(14, 17, 18, 0.95) 100%) !important;
+  background-color: #121715 !important;
+  background-image: radial-gradient(ellipse 950px 750px at 50% 48%, rgba(32, 44, 38, 0.6) 0%, rgba(23, 29, 27, 0.4) 50%, rgba(17, 22, 20, 0.96) 100%) !important;
   background-repeat: no-repeat !important;
   background-size: cover !important;
 }
 
-/* Theme 2: Green Board Mode (Deep, Desaturated Forest-Green Botanical Atmosphere) */
+/* Theme 2: Green Board Mode (Muted Forest-Green & Sage Atmosphere) */
 body.focus-maximized.theme-vintage-green,
 body.focus-maximized.theme-vintage-green .blackboard-frame-wrapper,
 body.focus-maximized.theme-vintage-green .app-layout {
-  background-color: #0b1410 !important;
-  background-image: radial-gradient(ellipse 950px 750px at 50% 48%, rgba(26, 48, 35, 0.6) 0%, rgba(16, 30, 22, 0.4) 50%, rgba(11, 20, 16, 0.95) 100%) !important;
+  background-color: #131E17 !important;
+  background-image: radial-gradient(ellipse 950px 750px at 50% 48%, rgba(28, 48, 36, 0.65) 0%, rgba(20, 33, 25, 0.45) 50%, rgba(15, 24, 19, 0.96) 100%) !important;
   background-repeat: no-repeat !important;
   background-size: cover !important;
 }
 
-/* Theme 3: White Board Mode (Warm Off-White with Gentle Sage-Grey Accents) */
+/* Theme 3: White Board Mode (Warm Soft Off-White with Gentle Sage Accents) */
 body.focus-maximized.theme-parchment-cream,
 body.focus-maximized.theme-parchment-cream .blackboard-frame-wrapper,
 body.focus-maximized.theme-parchment-cream .app-layout {
-  background-color: #F8F5EE !important;
-  background-image: radial-gradient(ellipse 950px 750px at 50% 48%, #FFFFFF 0%, rgba(248, 245, 238, 0.8) 50%, rgba(238, 232, 222, 0.95) 100%) !important;
+  background-color: #F6F4EE !important;
+  background-image: radial-gradient(ellipse 950px 750px at 50% 48%, #FFFFFF 0%, rgba(246, 244, 238, 0.8) 50%, rgba(236, 232, 222, 0.95) 100%) !important;
   background-repeat: no-repeat !important;
   background-size: cover !important;
 }
@@ -3145,8 +3140,7 @@ body.theme-parchment-cream .focus-fern-corner {
 
 /* 3. Chrome Elimination */
 body.focus-maximized #main-side-nav,
-body.focus-maximized #main-workspace-header,
-body.focus-maximized .wooden-chalk-ledge {
+body.focus-maximized #main-workspace-header {
   display: none !important;
 }
 
@@ -3634,41 +3628,55 @@ body.theme-parchment-cream .time-status-underline {
   color: #2E8B66;
 }
 
-/* 7. Simplified Session Controls */
-body.focus-maximized .timer-adjuster-row {
+/* 7. Simplified Session Duration Controls */
+body.focus-maximized .timer-duration-wrap {
   margin: 0;
   gap: 8px;
 }
 
-body.focus-maximized .adjust-btn,
-body.focus-maximized .time-preset-btn {
-  font-size: 13px;
-  padding: 5px 14px;
+body.focus-maximized .duration-segmented-control {
   background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 3px;
   border-radius: 20px;
-  color: var(--text-primary);
-  cursor: pointer;
-  transition: all 0.2s;
 }
 
-body.focus-maximized .time-preset-btn.active {
+body.focus-maximized .duration-pill-btn {
+  font-size: 13px;
+  padding: 5px 14px;
+  color: var(--text-muted);
+}
+
+body.focus-maximized .duration-pill-btn:hover {
+  color: #FFFFFF;
+}
+
+body.focus-maximized .duration-pill-btn.active {
   border-color: #52B795 !important;
   color: #0b1410 !important;
   background: #52B795 !important;
   font-weight: 700;
 }
 
-body.focus-maximized.theme-parchment-cream .adjust-btn,
-body.focus-maximized.theme-parchment-cream .time-preset-btn {
+body.focus-maximized.theme-parchment-cream .duration-segmented-control {
   background: rgba(255, 255, 255, 0.7);
   border-color: rgba(45, 55, 72, 0.18);
 }
 
-body.focus-maximized.theme-parchment-cream .time-preset-btn.active {
+body.focus-maximized.theme-parchment-cream .duration-pill-btn.active {
   border-color: #2E8B66 !important;
   color: #ffffff !important;
   background: #2E8B66 !important;
+}
+
+body.focus-maximized .custom-duration-inline-input-wrap {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+body.focus-maximized .custom-duration-input {
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
 }
 
 body.focus-maximized .timer-action-row {
@@ -3761,8 +3769,8 @@ body.focus-maximized:not(.focus-session-active) .end-btn {
   display: none;
 }
 
-/* Hide duration presets & adjusters during active OR paused session */
-body.focus-session-active #timer-adjuster-row:not(.drawer-force-visible) {
+/* Hide duration presets & custom input during active OR paused session */
+body.focus-session-active #timer-duration-wrap {
   display: none !important;
 }
 
@@ -4414,26 +4422,81 @@ body.mode-gentle-rest .ring-progress {
   color: var(--text-muted);
 }
 
-.timer-adjuster-row {
+.timer-duration-wrap {
   display: flex;
-  gap: 5px;
-  margin-bottom: 10px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
-.adjust-btn, .time-preset-btn {
+.duration-segmented-control {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
-  color: var(--text-primary);
-  padding: 3px 8px;
-  border-radius: var(--radius-sm);
-  font-size: 11px;
-  cursor: pointer;
+  border-radius: 20px;
+  gap: 2px;
 }
 
-.time-preset-btn.active {
+.duration-pill-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
+}
+
+.duration-pill-btn:hover {
+  color: var(--text-primary);
   background: var(--bg-hover);
-  border-color: var(--chalk-amber);
-  color: var(--chalk-amber);
+}
+
+.duration-pill-btn.active {
+  background: var(--chalk-mint);
+  color: #111416;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.custom-duration-inline-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk);
+  padding: 3px 8px;
+  border-radius: 16px;
+  animation: fadeIn 0.18s ease;
+}
+
+.custom-duration-input {
+  width: 52px;
+  padding: 3px 6px;
+  font-size: 13px;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid var(--border-chalk);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.custom-min-suffix {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.custom-duration-set-btn,
+.custom-duration-cancel-btn {
+  padding: 3px 8px;
+  font-size: 11px;
+  border-radius: 10px;
 }
 
 .timer-action-row {
@@ -4804,108 +4867,88 @@ body.mode-gentle-rest .ring-progress {
    10. BOARD THEMES SPECIFIC STYLES (DOT-GRID & PILL ACTIVE NAVIGATION)
    ========================================================================== */
 
-/* Theme 1: Black Board (Deep Matte Slate with Sleek Charcoal Pill) */
+/* Theme 1: Black Board (Soft Deep Charcoal #171D1B with Subtle Sage Undertone) */
 body.theme-dark-slate .app-layout {
   background-color: var(--bg-base);
-  background-image: radial-gradient(rgba(241, 245, 249, 0.08) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
+  background-image: radial-gradient(rgba(242, 245, 243, 0.022) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+body.theme-dark-slate .side-nav {
+  border-right: 1px solid var(--border-chalk);
 }
 
 body.theme-dark-slate .side-nav .nav-item.active {
-  background: #2E3338;
-  color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  background: rgba(82, 183, 149, 0.12);
+  color: var(--chalk-mint);
+  border: 1px solid rgba(82, 183, 149, 0.28);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 body.theme-dark-slate .side-nav .nav-item.active .nav-icon,
 body.theme-dark-slate .side-nav .nav-item.active .nav-label {
-  color: #FFFFFF;
+  color: var(--chalk-mint);
 }
 
 body.theme-dark-slate .side-nav .nav-item.active .nav-badge {
-  background: rgba(255, 255, 255, 0.22);
-  color: #FFFFFF;
+  background: rgba(82, 183, 149, 0.2);
+  color: var(--chalk-mint);
 }
 
-body.theme-dark-slate .chalk-card,
-body.theme-dark-slate .metric-card,
-body.theme-dark-slate .dash-big-box,
-body.theme-dark-slate .dash-collection-box,
-body.theme-dark-slate .task-card,
-body.theme-dark-slate .meadow-scenery-container,
-body.theme-dark-slate .habit-card,
-body.theme-dark-slate .dash-plant-card {
-  border: 1.5px solid #000000 !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
-}
-
-body.theme-dark-slate .side-nav {
-  border-right: 1.5px solid #000000;
-}
-
-/* Theme 2: Green Board (Vintage Classroom Green with Moss Forest Pill) */
+/* Theme 2: Green Board (Muted Sage & Desaturated Forest-Green Tones) */
 body.theme-vintage-green .app-layout {
   background-color: var(--bg-base);
-  background-image: radial-gradient(rgba(247, 245, 235, 0.09) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
+  background-image: radial-gradient(rgba(244, 246, 242, 0.022) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+body.theme-vintage-green .side-nav {
+  border-right: 1px solid var(--border-chalk);
 }
 
 body.theme-vintage-green .side-nav .nav-item.active {
-  background: #2D4C37;
-  color: #FFFFFF;
-  border: 1px solid rgba(247, 245, 235, 0.22);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  background: rgba(123, 185, 153, 0.14);
+  color: var(--chalk-mint);
+  border: 1px solid rgba(123, 185, 153, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 body.theme-vintage-green .side-nav .nav-item.active .nav-icon,
 body.theme-vintage-green .side-nav .nav-item.active .nav-label {
-  color: #FFFFFF;
+  color: var(--chalk-mint);
 }
 
 body.theme-vintage-green .side-nav .nav-item.active .nav-badge {
-  background: rgba(255, 255, 255, 0.22);
-  color: #FFFFFF;
+  background: rgba(123, 185, 153, 0.22);
+  color: var(--chalk-mint);
 }
 
-body.theme-vintage-green .chalk-card,
-body.theme-vintage-green .metric-card,
-body.theme-vintage-green .dash-big-box,
-body.theme-vintage-green .dash-collection-box,
-body.theme-vintage-green .task-card,
-body.theme-vintage-green .meadow-scenery-container,
-body.theme-vintage-green .habit-card,
-body.theme-vintage-green .dash-plant-card {
-  border: 1.5px solid #000000 !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
-}
-
-body.theme-vintage-green .side-nav {
-  border-right: 1.5px solid #000000;
-}
-
-/* Theme 3: White Board (Studio White Board with Charcoal Pill) */
+/* Theme 3: White Board (Warm Soft Off-White Parchment #F6F4EE) */
 body.theme-parchment-cream .app-layout {
   background-color: var(--bg-base);
-  background-image: radial-gradient(rgba(43, 45, 66, 0.09) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
+  background-image: radial-gradient(rgba(38, 45, 42, 0.025) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+body.theme-parchment-cream .side-nav {
+  border-right: 1px solid var(--border-chalk);
 }
 
 body.theme-parchment-cream .side-nav .nav-item.active {
-  background: #393C47;
-  color: #FFFFFF;
-  border: 1px solid #2B2D42;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: #FFFFFF;
+  color: #2E8B66;
+  border: 1px solid rgba(46, 139, 102, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 body.theme-parchment-cream .side-nav .nav-item.active .nav-icon,
 body.theme-parchment-cream .side-nav .nav-item.active .nav-label {
-  color: #FFFFFF;
+  color: #2E8B66;
 }
 
 body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
-  background: rgba(255, 255, 255, 0.25);
-  color: #FFFFFF;
+  background: rgba(46, 139, 102, 0.12);
+  color: #2E8B66;
 }
 
 /* ==========================================================================
@@ -6611,19 +6654,20 @@ body.theme-dark-slate .dash-breather-banner,
 body.theme-dark-slate .slate-next-suggestion-card,
 body.theme-vintage-green .dash-breather-banner,
 body.theme-vintage-green .slate-next-suggestion-card {
-  border: 1.5px solid #000000 !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk) !important;
+  box-shadow: var(--shadow-chalk);
 }
 
 body.theme-parchment-cream .dash-breather-banner,
 body.theme-parchment-cream .slate-next-suggestion-card {
-  background: #fdfaf3;
-  border: 1.5px solid #2e3440 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: #FFFFFF;
+  border: 1px solid var(--border-chalk) !important;
+  box-shadow: var(--shadow-chalk);
 }
 
 body.theme-parchment-cream .dash-breather-banner {
-  background: rgba(46, 52, 64, 0.03);
+  background: #FFFFFF;
 }
 
 /* --- 8. Responsive Adjustments --- */

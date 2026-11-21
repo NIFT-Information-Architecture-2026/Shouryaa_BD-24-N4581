@@ -1,4 +1,4 @@
-﻿/**
+/**
  * CHALKFLOW — Mindful Productivity & Botanical Focus Engine
  * Refined Interactive Architecture & Handcrafted Wildflower Meadow
  * Creative Director: Shouryaa (Fashion Communication, NIFT Hyderabad)
@@ -1788,6 +1788,17 @@ function processDateCarryOvers(tasks) {
   return deduplicated;
 }
 
+function getScheduledTasksForDate(dateStr) {
+  if (!AppState || !AppState.tasks || !Array.isArray(AppState.tasks)) return [];
+  const seenIds = new Set();
+  return AppState.tasks.filter(t => {
+    if (!t || typeof t !== 'object' || !t.id) return false;
+    if (seenIds.has(t.id)) return false;
+    seenIds.add(t.id);
+    return t.targetDate === dateStr;
+  });
+}
+
 function buildInitialGardenData(todayDay) {
   const data = {};
   const samplePast = [
@@ -2030,8 +2041,9 @@ function sanitizeFocusAndGrowthData(state) {
     state.focusTimeLoggedToday = genuineTodayMins;
   }
 
-  // 4. Synchronize today's gardenData focus
+  // 4. Synchronize today's gardenData focus & planned task count
   if (state.gardenData && state.gardenData[TODAY_DAY_NUM]) {
+    delete state.gardenData[TODAY_DAY_NUM].highestPlannedCount;
     state.gardenData[TODAY_DAY_NUM].focus = state.focusTimeLoggedToday;
 
     // Strict Full Bloom check:
@@ -2103,6 +2115,11 @@ function loadState() {
       parsed.tasks = processDateCarryOvers(parsed.tasks || DEFAULT_STATE.tasks);
       if (!Array.isArray(parsed.recentlyErasedTasks)) {
         parsed.recentlyErasedTasks = [];
+      }
+      if (parsed.gardenData && parsed.gardenData[TODAY_DAY_NUM]) {
+        delete parsed.gardenData[TODAY_DAY_NUM].highestPlannedCount;
+        const todaySched = (parsed.tasks || []).filter(t => t && t.targetDate === TODAY_DATE);
+        parsed.gardenData[TODAY_DAY_NUM].planned = todaySched.length + (parsed.gardenData[TODAY_DAY_NUM].erasedTasksCount || 0);
       }
       sanitizeFocusAndGrowthData(parsed);
       return parsed;
@@ -2909,7 +2926,7 @@ function renderDashboard() {
   const circumference = 213.63; // 2 * Math.PI * 34 for r=34
 
   // 1. TOP METRICS: TASKS PROGRESS RING
-  const todayTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE);
+  const todayTasks = getScheduledTasksForDate(TODAY_DATE);
   const dayGarden = AppState.gardenData[TODAY_DAY_NUM] || {};
   const erasedCount = dayGarden.erasedTasksCount || 0;
   const completedTasks = todayTasks.filter(t => t.status === 'COMPLETED').length + erasedCount;
@@ -3048,9 +3065,10 @@ function renderDashboard() {
             showToast('Reopened task to slate');
           }
           saveState();
+          updateGlobalGrowthMetrics();
           renderTodaySlate();
           renderDashboard();
-          updateGlobalGrowthMetrics();
+          renderSidebarSummary();
         });
 
         taskStream.appendChild(item);
@@ -3088,12 +3106,13 @@ function renderDashboard() {
     if (currentStage === 4) {
       bloomHintEl.innerHTML = `<span class="chalk-font" style="color:var(--chalk-amber); font-weight:700;">🌸 Your flower is in full bloom!</span>`;
     } else {
-      const genuineBaseline = Math.max(totalTasks, todayGardenData.highestPlannedCount || 0);
-      const tasksNeeded = Math.max(0, genuineBaseline - completedTasks);
+      const tasksNeeded = Math.max(0, totalTasks - completedTasks);
       const focusNeeded = Math.max(0, 45 - currentFocus);
 
       let hintText = '';
-      if (tasksNeeded > 0 && focusNeeded > 0) {
+      if (totalTasks === 0) {
+        hintText = `Add tasks to your slate and record 45 minutes of focus to bloom.`;
+      } else if (tasksNeeded > 0 && focusNeeded > 0) {
         hintText = `${tasksNeeded} task${tasksNeeded !== 1 ? 's' : ''} and ${focusNeeded} minutes of focus to bloom.`;
       } else if (tasksNeeded > 0 && focusNeeded === 0) {
         hintText = `Focus goal reached! Finish your remaining ${tasksNeeded} task${tasksNeeded !== 1 ? 's' : ''} to bloom.`;
@@ -3226,9 +3245,10 @@ function initTodaySlate() {
 
       AppState.tasks.unshift(newTask);
       saveState();
+      updateGlobalGrowthMetrics();
       renderTodaySlate();
       renderDashboard();
-      updateGlobalGrowthMetrics();
+      renderSidebarSummary();
       AudioEngine.playChalkScratch();
 
       form.reset();
@@ -3265,9 +3285,10 @@ function initTodaySlate() {
       // Filter out completed tasks from the active slate
       AppState.tasks = AppState.tasks.filter(t => !(t.status === 'COMPLETED' && t.targetDate === TODAY_DATE));
       saveState();
+      updateGlobalGrowthMetrics();
       renderTodaySlate();
       renderDashboard();
-      updateGlobalGrowthMetrics();
+      renderSidebarSummary();
       updateUndoButtonVisibility();
       showToast(`Erased ${completedToday.length} completed task${completedToday.length > 1 ? 's' : ''} into resting soil ✨ (Undo available)`);
     });
@@ -3295,9 +3316,10 @@ function initTodaySlate() {
       const count = toRestore.length;
       AppState.recentlyErasedTasks = [];
       saveState();
+      updateGlobalGrowthMetrics();
       renderTodaySlate();
       renderDashboard();
-      updateGlobalGrowthMetrics();
+      renderSidebarSummary();
       updateUndoButtonVisibility();
       showToast(`Restored ${count} task${count > 1 ? 's' : ''} to Today's Slate ✨`);
     });
@@ -3552,9 +3574,10 @@ function createTaskCardElement(task) {
       showToast('Reopened task to slate');
     }
     saveState();
+    updateGlobalGrowthMetrics();
     renderTodaySlate();
     renderDashboard();
-    updateGlobalGrowthMetrics();
+    renderSidebarSummary();
   });
 
   // Dedicated Steps Button Handler (Expands on click, collapses on re-click)
@@ -3600,9 +3623,10 @@ function createTaskCardElement(task) {
         }
         AudioEngine.playChalkScratch();
         saveState();
+        updateGlobalGrowthMetrics();
         renderTodaySlate();
         renderDashboard();
-        updateGlobalGrowthMetrics();
+        renderSidebarSummary();
       }
     });
   });
@@ -3617,9 +3641,10 @@ function createTaskCardElement(task) {
         task.status = 'COMPLETED';
       }
       saveState();
+      updateGlobalGrowthMetrics();
       renderTodaySlate();
       renderDashboard();
-      updateGlobalGrowthMetrics();
+      renderSidebarSummary();
     });
   });
 
@@ -3638,9 +3663,10 @@ function createTaskCardElement(task) {
       }
       AudioEngine.playChalkScratch();
       saveState();
+      updateGlobalGrowthMetrics();
       renderTodaySlate();
       renderDashboard();
-      updateGlobalGrowthMetrics();
+      renderSidebarSummary();
     }
   }
 
@@ -3664,9 +3690,10 @@ function createTaskCardElement(task) {
     e.stopPropagation();
     AppState.tasks = AppState.tasks.filter(t => t.id !== task.id);
     saveState();
+    updateGlobalGrowthMetrics();
     renderTodaySlate();
     renderDashboard();
-    updateGlobalGrowthMetrics();
+    renderSidebarSummary();
   });
 
   return card;
@@ -3779,9 +3806,11 @@ function createUpcomingTaskCardElement(task) {
       }
       AudioEngine.playChalkScratch();
       saveState();
+      updateGlobalGrowthMetrics();
       renderUpcomingTasks();
       renderTodaySlate();
       renderDashboard();
+      renderSidebarSummary();
     });
   }
 
@@ -3795,9 +3824,11 @@ function createUpcomingTaskCardElement(task) {
       AudioEngine.playChalkScratch();
       emitDustParticles(moveBtn.getBoundingClientRect());
       saveState();
+      updateGlobalGrowthMetrics();
       renderUpcomingTasks();
       renderTodaySlate();
       renderDashboard();
+      renderSidebarSummary();
       showToast(`Moved "${task.title}" to Today's Slate 🌱`);
     });
   }
@@ -3820,8 +3851,11 @@ function createUpcomingTaskCardElement(task) {
       AudioEngine.playChalkScratch();
       emitDustParticles(deleteBtn.getBoundingClientRect());
       saveState();
+      updateGlobalGrowthMetrics();
       renderUpcomingTasks();
+      renderTodaySlate();
       renderDashboard();
+      renderSidebarSummary();
       showToast('Erased task from planning shelf 🧹');
     });
   }
@@ -3865,7 +3899,11 @@ function initUpcomingTasks() {
 
       AppState.tasks.push(newTask);
       saveState();
+      updateGlobalGrowthMetrics();
       renderUpcomingTasks();
+      renderTodaySlate();
+      renderDashboard();
+      renderSidebarSummary();
       form.reset();
       if (dateInput) dateInput.value = TOMORROW_DATE;
       AudioEngine.playChalkScratch();
@@ -3923,9 +3961,11 @@ function initUpcomingTasks() {
       if (submitBtn) emitDustParticles(submitBtn.getBoundingClientRect());
 
       closeEditModal();
+      updateGlobalGrowthMetrics();
       renderUpcomingTasks();
       renderTodaySlate();
       renderDashboard();
+      renderSidebarSummary();
       showToast(`Updated "${task.title}"! ✏️`);
     });
   }
@@ -3943,29 +3983,32 @@ function initUpcomingTasks() {
 function renderUpcomingTasks() {
   const listTomorrow = document.getElementById('list-tomorrow');
   const listThisWeek = document.getElementById('list-this-week');
-  const listNextWeek = document.getElementById('list-next-week');
   const listLater = document.getElementById('list-later');
   const badge = document.getElementById('upcoming-badge');
 
-  if (!listTomorrow || !listThisWeek || !listNextWeek || !listLater) return;
+  if (!listTomorrow || !listThisWeek || !listLater) return;
 
   // Dynamic Column Subtitle Labels
   const labelTomorrow = document.getElementById('date-label-tomorrow');
   const labelThisWeek = document.getElementById('date-label-this-week');
-  const labelNextWeek = document.getElementById('date-label-next-week');
   const labelLater = document.getElementById('date-label-later');
 
   if (labelTomorrow) labelTomorrow.innerText = formatShortDate(TOMORROW_DATE);
   if (labelThisWeek) labelThisWeek.innerText = `Through ${formatShortDate(THIS_WEEK_END_DATE)}`;
-  if (labelNextWeek) labelNextWeek.innerText = `${formatShortDate(NEXT_WEEK_START_DATE)} – ${formatShortDate(NEXT_WEEK_END_DATE)}`;
-  if (labelLater) labelLater.innerText = `Beyond ${formatShortDate(NEXT_WEEK_END_DATE)}`;
+  if (labelLater) labelLater.innerText = `Next week & beyond`;
 
   listTomorrow.innerHTML = '';
   listThisWeek.innerHTML = '';
-  listNextWeek.innerHTML = '';
   listLater.innerHTML = '';
 
-  const upcomingTasks = AppState.tasks.filter(t => t.targetDate > TODAY_DATE);
+  const seenIds = new Set();
+  const upcomingTasks = (AppState.tasks || []).filter(t => {
+    if (!t || typeof t !== 'object' || !t.id) return false;
+    if (seenIds.has(t.id)) return false;
+    seenIds.add(t.id);
+    return t.targetDate > TODAY_DATE;
+  });
+
   if (badge) badge.innerText = upcomingTasks.length;
 
   const unifiedEmpty = document.getElementById('upcoming-unified-empty-state');
@@ -3978,14 +4021,14 @@ function renderUpcomingTasks() {
     if (bucketsGrid) bucketsGrid.style.display = 'grid';
   }
 
-  // Priority sorting weights: HIGH -> MEDIUM -> LOW
+  // Priority sorting weights: HIGH -> MEDIUM -> LOW, and chronologically by due date
   const priorityWeight = { 'HIGH': 1, 'MEDIUM': 2, 'LOW': 3 };
   const sortedUpcoming = [...upcomingTasks].sort((a, b) => {
     if (a.targetDate !== b.targetDate) return a.targetDate.localeCompare(b.targetDate);
     return (priorityWeight[a.priority] || 2) - (priorityWeight[b.priority] || 2);
   });
 
-  let countTomorrow = 0, countThisWeek = 0, countNextWeek = 0, countLater = 0;
+  let countTomorrow = 0, countThisWeek = 0, countLater = 0;
 
   sortedUpcoming.forEach(t => {
     const card = createUpcomingTaskCardElement(t);
@@ -3996,37 +4039,44 @@ function renderUpcomingTasks() {
     } else if (t.targetDate <= THIS_WEEK_END_DATE) {
       listThisWeek.appendChild(card);
       countThisWeek++;
-    } else if (t.targetDate <= NEXT_WEEK_END_DATE) {
-      listNextWeek.appendChild(card);
-      countNextWeek++;
     } else {
       listLater.appendChild(card);
       countLater++;
     }
   });
 
-  // Peaceful chalkboard empty states
+  const colTomorrow = document.getElementById('bucket-col-tomorrow');
+  const colThisWeek = document.getElementById('bucket-col-this-week');
+  const colLater = document.getElementById('bucket-col-later');
+
+  // Peaceful chalkboard empty states and compact collapse
   if (countTomorrow === 0) {
+    if (colTomorrow) colTomorrow.classList.add('is-empty');
     listTomorrow.innerHTML = '<div class="bucket-empty-state chalk-font">No tasks scheduled</div>';
+  } else {
+    if (colTomorrow) colTomorrow.classList.remove('is-empty');
   }
+
   if (countThisWeek === 0) {
+    if (colThisWeek) colThisWeek.classList.add('is-empty');
     listThisWeek.innerHTML = '<div class="bucket-empty-state chalk-font">No tasks scheduled</div>';
+  } else {
+    if (colThisWeek) colThisWeek.classList.remove('is-empty');
   }
-  if (countNextWeek === 0) {
-    listNextWeek.innerHTML = '<div class="bucket-empty-state chalk-font">No tasks scheduled</div>';
-  }
+
   if (countLater === 0) {
+    if (colLater) colLater.classList.add('is-empty');
     listLater.innerHTML = '<div class="bucket-empty-state chalk-font">No tasks scheduled</div>';
+  } else {
+    if (colLater) colLater.classList.remove('is-empty');
   }
 
   const countTomEl = document.getElementById('count-tomorrow');
   const countWeekEl = document.getElementById('count-this-week');
-  const countNextEl = document.getElementById('count-next-week');
   const countLaterEl = document.getElementById('count-later');
 
   if (countTomEl) countTomEl.innerText = countTomorrow;
   if (countWeekEl) countWeekEl.innerText = countThisWeek;
-  if (countNextEl) countNextEl.innerText = countNextWeek;
   if (countLaterEl) countLaterEl.innerText = countLater;
 }
 
@@ -6016,30 +6066,74 @@ function initDeepFocus() {
     }
   }
 
-  document.querySelectorAll('.time-preset-btn').forEach(btn => {
+  // Duration Segmented Pill Group (25 min | 45 min | 60 min | Custom)
+  const durationBtns = document.querySelectorAll('.duration-pill-btn:not(#btn-duration-custom)');
+  const customBtn = document.getElementById('btn-duration-custom');
+  const customWrap = document.getElementById('custom-duration-input-wrap');
+  const customInput = document.getElementById('input-custom-duration');
+  const setCustomBtn = document.getElementById('btn-set-custom-duration');
+  const cancelCustomBtn = document.getElementById('btn-cancel-custom-duration');
+
+  durationBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.time-preset-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.duration-pill-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const mins = parseInt(btn.dataset.minutes, 10);
+      if (customWrap) customWrap.style.display = 'none';
+      if (customBtn) customBtn.innerText = 'Custom';
+      const mins = parseInt(btn.dataset.minutes, 10) || 25;
       setTimerDuration(mins);
+      showToast(`Timer duration set to ${mins} minutes ⏱️`);
     });
   });
 
-  const minus5Btn = document.getElementById('btn-time-minus-5');
-  const minus1Btn = document.getElementById('btn-time-minus-1');
-  const plus1Btn = document.getElementById('btn-time-plus-1');
-  const plus5Btn = document.getElementById('btn-time-plus-5');
+  if (customBtn) {
+    customBtn.addEventListener('click', () => {
+      document.querySelectorAll('.duration-pill-btn').forEach(b => b.classList.remove('active'));
+      customBtn.classList.add('active');
+      if (customWrap) {
+        customWrap.style.display = 'flex';
+        if (customInput) {
+          customInput.focus();
+          customInput.select();
+        }
+      }
+    });
+  }
 
-  if (minus5Btn) minus5Btn.addEventListener('click', () => adjustTimerMinutes(-5));
-  if (minus1Btn) minus1Btn.addEventListener('click', () => adjustTimerMinutes(-1));
-  if (plus1Btn) plus1Btn.addEventListener('click', () => adjustTimerMinutes(1));
-  if (plus5Btn) plus5Btn.addEventListener('click', () => adjustTimerMinutes(5));
+  function applyCustomDuration() {
+    if (!customInput) return;
+    let val = parseInt(customInput.value, 10);
+    if (isNaN(val) || val < 1) val = 1;
+    if (val > 180) val = 180;
+    customInput.value = val;
+    setTimerDuration(val);
+    if (customWrap) customWrap.style.display = 'none';
+    if (customBtn) {
+      customBtn.classList.add('active');
+      customBtn.innerText = `${val} min`;
+    }
+    showToast(`Custom timer set to ${val} minutes ⏱️`);
+  }
 
-  function adjustTimerMinutes(delta) {
-    if (FocusTimer.isRunning) return;
-    const curMins = Math.floor(FocusTimer.durationSeconds / 60);
-    const newMins = Math.max(1, Math.min(120, curMins + delta));
-    setTimerDuration(newMins);
+  if (setCustomBtn) {
+    setCustomBtn.addEventListener('click', applyCustomDuration);
+  }
+
+  if (customInput) {
+    customInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        applyCustomDuration();
+      } else if (e.key === 'Escape') {
+        if (customWrap) customWrap.style.display = 'none';
+      }
+    });
+  }
+
+  if (cancelCustomBtn) {
+    cancelCustomBtn.addEventListener('click', () => {
+      if (customWrap) customWrap.style.display = 'none';
+    });
   }
 
   function setTimerDuration(mins) {
@@ -6323,25 +6417,21 @@ function getStageEvolutionAnimClass(stage) {
 }
 
 function updateGlobalGrowthMetrics() {
-  const todayTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE);
+  const todayTasks = getScheduledTasksForDate(TODAY_DATE);
   const activeCompleted = todayTasks.filter(t => t.status === 'COMPLETED').length;
   const dayGarden = AppState.gardenData[TODAY_DAY_NUM] || {};
   const erasedCount = dayGarden.erasedTasksCount || 0;
   const completedCount = activeCompleted + erasedCount;
   const activePlanned = todayTasks.length + erasedCount;
-
-  // Genuine baseline planned: track the highest planned count ever recorded today
-  // to prevent accidental or intentional task deletions from falsely triggering Full Bloom
-  dayGarden.highestPlannedCount = Math.max(dayGarden.highestPlannedCount || 0, activePlanned, dayGarden.planned || 0);
-  const genuineBaseline = dayGarden.highestPlannedCount;
-  const effectivePlanned = Math.max(activePlanned, genuineBaseline, completedCount);
   const focusMins = AppState.focusTimeLoggedToday || 0;
+
+  delete dayGarden.highestPlannedCount;
 
   // 1. Separate Progress Garden & Habit Ledger:
   // Botanical growth depends ONLY on completed daily tasks and Deep Focus minutes.
   // Habit rhythms are tracked independently in Habit Ledger.
   let calculatedStage = 0;
-  const allTasksDone = activePlanned > 0 && completedCount >= activePlanned && completedCount >= genuineBaseline;
+  const allTasksDone = activePlanned > 0 && completedCount >= activePlanned;
 
   if (completedCount === 0 && focusMins === 0) {
     calculatedStage = 0; // Stage 0: Resting Seed
@@ -6389,11 +6479,11 @@ function updateGlobalGrowthMetrics() {
     AppState.gardenData[TODAY_DAY_NUM] = { specimen: BOTANICAL_SPECIMENS[TODAY_DAY_NUM - 1] || 'Sunburst Dahlia', tasks: 0, planned: 0, focus: 0, stage: 0 };
   }
   AppState.gardenData[TODAY_DAY_NUM].tasks = completedCount;
-  AppState.gardenData[TODAY_DAY_NUM].planned = effectivePlanned;
+  AppState.gardenData[TODAY_DAY_NUM].planned = activePlanned;
   AppState.gardenData[TODAY_DAY_NUM].focus = focusMins;
   AppState.gardenData[TODAY_DAY_NUM].stage = earnedStage;
   AppState.gardenData[TODAY_DAY_NUM].highestEarnedStage = earnedStage;
-  AppState.gardenData[TODAY_DAY_NUM].highestPlannedCount = genuineBaseline;
+  delete AppState.gardenData[TODAY_DAY_NUM].highestPlannedCount;
 
   if (!AppState.monthlyGardens) AppState.monthlyGardens = {};
   AppState.monthlyGardens[CurrentDateInfo.monthKey] = AppState.gardenData;

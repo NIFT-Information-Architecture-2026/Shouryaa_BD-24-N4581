@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -522,11 +522,11 @@
             </div>
           </div>
 
-          <!-- Upcoming Date Columns (4 Buckets: Tomorrow, Later This Week, Next Week, Later) -->
+          <!-- Upcoming Date Columns (3 Groups: Tomorrow, This Week, Later) -->
           <div class="upcoming-buckets-grid">
             
             <!-- Bucket 1: Tomorrow -->
-            <div class="bucket-column chalk-card">
+            <div class="bucket-column chalk-card" id="bucket-col-tomorrow">
               <div class="bucket-header">
                 <div class="bucket-title-wrap">
                   <h4 class="chalk-font">Tomorrow</h4>
@@ -537,14 +537,13 @@
               <div class="bucket-task-list" id="list-tomorrow">
                 <!-- Dynamically Populated -->
               </div>
-
             </div>
 
-            <!-- Bucket 2: Later This Week -->
-            <div class="bucket-column chalk-card">
+            <!-- Bucket 2: This Week (Remaining days of current week, excluding tomorrow) -->
+            <div class="bucket-column chalk-card" id="bucket-col-this-week">
               <div class="bucket-header">
                 <div class="bucket-title-wrap">
-                  <h4 class="chalk-font">Later This Week</h4>
+                  <h4 class="chalk-font">This Week</h4>
                   <span class="bucket-sub-date" id="date-label-this-week"></span>
                 </div>
                 <span class="bucket-count" id="count-this-week">0</span>
@@ -554,26 +553,12 @@
               </div>
             </div>
 
-            <!-- Bucket 3: Next Week -->
-            <div class="bucket-column chalk-card">
-              <div class="bucket-header">
-                <div class="bucket-title-wrap">
-                  <h4 class="chalk-font">Next Week</h4>
-                  <span class="bucket-sub-date" id="date-label-next-week"></span>
-                </div>
-                <span class="bucket-count" id="count-next-week">0</span>
-              </div>
-              <div class="bucket-task-list" id="list-next-week">
-                <!-- Dynamically Populated -->
-              </div>
-            </div>
-
-            <!-- Bucket 4: Later (Beyond Next Week) -->
-            <div class="bucket-column chalk-card">
+            <!-- Bucket 3: Later (Next week and beyond) -->
+            <div class="bucket-column chalk-card" id="bucket-col-later">
               <div class="bucket-header">
                 <div class="bucket-title-wrap">
                   <h4 class="chalk-font">Later</h4>
-                  <span class="bucket-sub-date" id="date-label-later">Beyond next week</span>
+                  <span class="bucket-sub-date" id="date-label-later">Next week & beyond</span>
                 </div>
                 <span class="bucket-count" id="count-later">0</span>
               </div>
@@ -866,7 +851,7 @@
                 <!-- Centerpiece: Circular Dashed Countdown Clock -->
                 <div class="focus-clock-centerpiece" id="focus-clock-centerpiece">
                   
-                  <!-- Circular Dashed Ring Countdown -->
+                  <!-- Botanical Dash (Circular Dashed Ring Countdown) -->
                   <div class="clock-display-wrapper" id="botanical-dash-wrapper">
                     <div class="clock-ring-svg-container">
                       <svg class="clock-progress-ring" viewBox="0 0 460 460" id="clock-dial-svg">
@@ -885,15 +870,21 @@
                       </div>
                     </div>
                   </div>
-<!-- Time Adjustment Controls Row (+ / - & Presets) -->
-                  <div class="timer-adjuster-row" id="timer-adjuster-row">
-                    <button class="adjust-btn chalk-font" id="btn-time-minus-5" title="Minus 5 minutes">-5m</button>
-                    <button class="adjust-btn chalk-font" id="btn-time-minus-1" title="Minus 1 minute">-1m</button>
-                    <button class="time-preset-btn active chalk-font" data-minutes="25">25m</button>
-                    <button class="time-preset-btn chalk-font" data-minutes="45">45m</button>
-                    <button class="time-preset-btn chalk-font" data-minutes="60">60m</button>
-                    <button class="adjust-btn chalk-font" id="btn-time-plus-1" title="Plus 1 minute">+1m</button>
-                    <button class="adjust-btn chalk-font" id="btn-time-plus-5" title="Plus 5 minutes">+5m</button>
+
+                  <!-- Duration Controls: Segmented Preset Pills (25 min | 45 min | 60 min | Custom) -->
+                  <div class="timer-duration-wrap" id="timer-duration-wrap">
+                    <div class="duration-segmented-control" role="group" aria-label="Timer Duration Presets">
+                      <button type="button" class="duration-pill-btn active chalk-font" data-minutes="25">25 min</button>
+                      <button type="button" class="duration-pill-btn chalk-font" data-minutes="45">45 min</button>
+                      <button type="button" class="duration-pill-btn chalk-font" data-minutes="60">60 min</button>
+                      <button type="button" class="duration-pill-btn chalk-font" id="btn-duration-custom">Custom</button>
+                    </div>
+                    <div class="custom-duration-inline-input-wrap" id="custom-duration-input-wrap" style="display: none;">
+                      <input type="number" id="input-custom-duration" class="chalk-input custom-duration-input" min="1" max="180" value="30" placeholder="min" aria-label="Custom minutes (1-180)">
+                      <span class="custom-min-suffix chalk-font">min</span>
+                      <button type="button" class="chalk-btn primary-btn custom-duration-set-btn chalk-font" id="btn-set-custom-duration">Set</button>
+                      <button type="button" class="chalk-btn secondary-btn custom-duration-cancel-btn chalk-font" id="btn-cancel-custom-duration">Cancel</button>
+                    </div>
                   </div>
 
                   <!-- Primary Action Buttons: Start/Pause/Resume, End Session, Reset -->
@@ -1004,16 +995,6 @@
 
       </main>
     </div>
-
-    <!-- Wooden Chalk Ledge Tray at Bottom with Resting Chalk Sticks -->
-    <footer class="wooden-chalk-ledge">
-      <div class="chalk-stick ivory-chalk" title="Ivory Chalk Stick"></div>
-      <div class="chalk-stick mint-chalk" title="Mint Chalk Stick"></div>
-      <div class="chalk-stick coral-chalk" title="Coral Chalk Stick"></div>
-      <div class="felt-eraser-wood-block" title="Classroom Felt Eraser">
-        <span class="eraser-felt-pad"></span>
-      </div>
-    </footer>
 
   </div>
 
