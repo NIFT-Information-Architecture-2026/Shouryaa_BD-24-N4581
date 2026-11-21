@@ -73,20 +73,8 @@
           </button>
         </nav>
 
-        <!-- Bottom Sidebar Controls: Mascot Companion, User Profile & Theme Switcher -->
+        <!-- Bottom Sidebar Controls: User Profile & Theme Switcher -->
         <div class="side-nav-footer">
-          <!-- Interactive Panda Companion Badge -->
-          <div class="mascot-companion-strip" id="mascot-companion-strip" role="button" tabindex="0" title="Chalky the Study Panda • Click for mindful encouragement & chalk dust!">
-            <div class="mascot-avatar-wrap" id="mascot-avatar-wrap">
-              <!-- Handcrafted Vector Chalk Mascot Panda rendered by JS -->
-            </div>
-            <div class="mascot-info">
-              <span class="mascot-name chalk-font">Chalky Panda</span>
-              <span class="mascot-role">Study Companion</span>
-            </div>
-            <span class="mascot-interactive-sparkle" aria-hidden="true">✨</span>
-          </div>
-
           <!-- User Profile Strip (Click to change name) -->
           <div class="user-profile-strip" id="user-profile-strip" title="Click to customize your name">
             <div class="user-avatar-circle chalk-font" id="user-avatar-initial">S</div>
@@ -887,9 +875,24 @@
                   <p class="focus-calming-whisper chalk-font" id="focus-calming-whisper">Just this moment.</p>
                 </div>
 
-                <!-- Center: Round Chalk Clock with Segmented Dashed Ring & Centered Countdown -->
-                <div class="focus-clock-centerpiece">
-                  <div class="clock-display-wrapper">
+                <!-- Timer Style Selector (Botanical Dash vs Minimal Flip Clock) -->
+                <div class="timer-style-control-wrap" id="timer-style-control-wrap">
+                  <span class="timer-style-label chalk-font"><i class="fa-solid fa-stopwatch"></i> Timer Style:</span>
+                  <div class="timer-style-pill-group">
+                    <button type="button" class="timer-style-pill active chalk-font" data-style="botanical-dash" id="style-btn-dash" title="Botanical Dash (Circular Dashed Countdown)">
+                      <i class="fa-solid fa-circle-notch"></i> Botanical Dash
+                    </button>
+                    <button type="button" class="timer-style-pill chalk-font" data-style="minimal-flip" id="style-btn-flip" title="Minimal Flip Clock">
+                      <i class="fa-solid fa-table-columns"></i> Minimal Flip
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Centerpiece: Clock with Botanical Dash and Minimal Flip Styles -->
+                <div class="focus-clock-centerpiece style-botanical-dash" id="focus-clock-centerpiece">
+                  
+                  <!-- Style 1: Botanical Dash (Circular Dashed Ring Countdown) -->
+                  <div class="clock-display-wrapper" id="botanical-dash-wrapper">
                     <div class="clock-ring-svg-container">
                       <svg class="clock-progress-ring" viewBox="0 0 460 460" id="clock-dial-svg">
                         <!-- 60 Segmented Rounded Dashes (Populated by JS: Inactive muted grey-green & Active soft mint) -->
@@ -905,6 +908,49 @@
                           </svg>
                         </div>
                       </div>
+                    </div>
+                  </div>
+
+                  <!-- Style 2: Minimal Flip Clock (Split-Flap Minutes & Seconds Panels) -->
+                  <div class="flip-clock-wrapper" id="flip-clock-wrapper" style="display: none;">
+                    <!-- Minutes Unit -->
+                    <div class="flip-card-unit" id="flip-unit-minutes" title="Minutes Remaining">
+                      <div class="flip-card-plate">
+                        <div class="flip-plate-half flip-plate-top">
+                          <span class="flip-digit-text" id="flip-min-top">25</span>
+                        </div>
+                        <div class="flip-divider-line">
+                          <span class="flip-hinge-notch left"></span>
+                          <span class="flip-hinge-notch right"></span>
+                        </div>
+                        <div class="flip-plate-half flip-plate-bottom">
+                          <span class="flip-digit-text" id="flip-min-bottom">25</span>
+                        </div>
+                      </div>
+                      <span class="flip-unit-sublabel chalk-font">MINUTES</span>
+                    </div>
+
+                    <!-- Separator Dots -->
+                    <div class="flip-clock-separator" aria-hidden="true">
+                      <span class="flip-sep-dot"></span>
+                      <span class="flip-sep-dot"></span>
+                    </div>
+
+                    <!-- Seconds Unit -->
+                    <div class="flip-card-unit" id="flip-unit-seconds" title="Seconds Remaining">
+                      <div class="flip-card-plate">
+                        <div class="flip-plate-half flip-plate-top">
+                          <span class="flip-digit-text" id="flip-sec-top">00</span>
+                        </div>
+                        <div class="flip-divider-line">
+                          <span class="flip-hinge-notch left"></span>
+                          <span class="flip-hinge-notch right"></span>
+                        </div>
+                        <div class="flip-plate-half flip-plate-bottom">
+                          <span class="flip-digit-text" id="flip-sec-bottom">00</span>
+                        </div>
+                      </div>
+                      <span class="flip-unit-sublabel chalk-font">SECONDS</span>
                     </div>
                   </div>
 

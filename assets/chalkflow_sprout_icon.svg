@@ -2,8 +2,8 @@
   <defs>
     <!-- Soft chalk dust gradient for tactile blackboard depth -->
     <radialGradient id="chalkHalo" cx="50%" cy="48%" r="48%">
-      <stop offset="0%" stop-color="#5EB88A" stop-opacity="0.18" />
-      <stop offset="45%" stop-color="#FAF8F5" stop-opacity="0.04" />
+      <stop offset="0%" stop-color="#5EB88A" stop-opacity="0.22" />
+      <stop offset="50%" stop-color="#FAF8F5" stop-opacity="0.04" />
       <stop offset="100%" stop-color="#121514" stop-opacity="0" />
     </radialGradient>
     
@@ -17,48 +17,38 @@
   <!-- Dark Chalkboard Squircle Tile -->
   <rect x="2" y="2" width="124" height="124" rx="28" ry="28" fill="#121514" stroke="rgba(250, 248, 245, 0.12)" stroke-width="1.5" />
   
-  <!-- Subtle Soft Atmospheric Glow Behind Sprout -->
+  <!-- Soft Atmospheric Vignette -->
   <rect x="2" y="2" width="124" height="124" rx="28" ry="28" fill="url(#chalkHalo)" />
-  <ellipse cx="64" cy="62" rx="42" ry="34" fill="#FAF8F5" opacity="0.025" />
+  <ellipse cx="64" cy="62" rx="38" ry="32" fill="#FAF8F5" opacity="0.025" />
 
-  <!-- Handcrafted Chalk Sprout & Flowing Loop Baseline -->
+  <!-- Compact Hand-Drawn Sprout Symbol (Pure sprout & base loop, no squeezed wavy line) -->
   <g transform="translate(64, 62) scale(1.18) translate(-50, -50)" filter="url(#chalkTexture)">
-    <!-- Left Leaf (Sage/Mint Chalk Fill) -->
-    <path d="M 49 48.5 C 44 41, 37 34, 21.5 37.5 C 19 44.5, 27 52, 47.5 52 Z" 
-          fill="#5EB88A" opacity="0.92" />
-    <!-- Left Leaf Outer Chalk Contour -->
-    <path d="M 48.5 48.5 C 44 41, 37 34, 21.5 37.5 C 19 44.5, 27 52, 47.5 52" 
+    <!-- Left Leaf (Angled up-left, soft sage fill with chalk contour) -->
+    <path d="M 48.5 54 C 44 45, 37 38, 22 42 C 20 48, 28 56, 47.5 56 Z" 
+          fill="#5EB88A" opacity="0.94" />
+    <path d="M 48.5 54 C 44 45, 37 38, 22 42 C 20 48, 28 56, 47.5 56" 
           fill="none" stroke="#FAF8F5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-    <!-- Left Leaf Chalk Central Vein -->
-    <path d="M 46.5 50 C 38.5 46, 30.5 41.5, 23 38" 
-          fill="none" stroke="#FAF8F5" stroke-width="1.4" stroke-linecap="round" opacity="0.95" />
 
-    <!-- Right Leaf (Slightly larger, sweeping upward) -->
-    <!-- Right Leaf Chalk Fill -->
-    <path d="M 50.5 47.5 C 58.5 36.5, 66 28.5, 79 24.5 C 81 33.5, 72 45.5, 51.5 51.5 Z" 
-          fill="#5EB88A" opacity="0.92" />
-    <!-- Right Leaf Outer Chalk Contour -->
-    <path d="M 50.5 47.5 C 58.5 36.5, 66 28.5, 79 24.5 C 81 33.5, 72 45.5, 51.5 51.5" 
+    <!-- Right Leaf (Taller, longer, sweeping up-right with sharp pointed tip) -->
+    <path d="M 50.5 53 C 58 40, 66 31, 80 26 C 82 35, 73 48, 51.5 55.5 Z" 
+          fill="#5EB88A" opacity="0.94" />
+    <path d="M 50.5 53 C 58 40, 66 31, 80 26 C 82 35, 73 48, 51.5 55.5" 
           fill="none" stroke="#FAF8F5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-    <!-- Right Leaf Chalk Central Vein -->
-    <path d="M 51.5 50 C 61 40.5, 70.5 32.5, 77.5 25.5" 
-          fill="none" stroke="#FAF8F5" stroke-width="1.4" stroke-linecap="round" opacity="0.95" />
 
-    <!-- Slender Upright Bud Shoot -->
-    <path d="M 50 48.5 L 50 36.5" 
-          stroke="#5EB88A" stroke-width="3.2" stroke-linecap="round" />
-    <path d="M 49.6 48 L 49.6 37.5" 
-          stroke="#FAF8F5" stroke-width="1.1" stroke-linecap="round" opacity="0.85" />
+    <!-- Slender Upright Bud / Center Shoot -->
+    <path d="M 49.6 54 L 49.6 42" 
+          stroke="#5EB88A" stroke-width="3" stroke-linecap="round" />
+    <path d="M 49.6 54 L 49.6 42" 
+          stroke="#FAF8F5" stroke-width="1.2" stroke-linecap="round" opacity="0.85" />
 
-    <!-- Curving Stem -->
-    <path d="M 50 48.5 C 49.5 57, 48.5 65.5, 47.2 72.5" 
-          fill="none" stroke="#5EB88A" stroke-width="3.6" stroke-linecap="round" />
-    <path d="M 49.8 48.5 C 49.3 57, 48.3 65.5, 47 72.5" 
-          fill="none" stroke="#FAF8F5" stroke-width="1.2" stroke-linecap="round" opacity="0.75" />
+    <!-- Vertical Stem -->
+    <path d="M 49.5 54 L 49.5 76" 
+          stroke="#5EB88A" stroke-width="3.4" stroke-linecap="round" />
+    <path d="M 49.5 54 L 49.5 76" 
+          stroke="#FAF8F5" stroke-width="1.2" stroke-linecap="round" opacity="0.8" />
 
-    <!-- Organic Flowing Chalk Ground Line with Loop Swirl -->
-    <!-- Sweeps gently from left, curves through stem base, rises into graceful cursive loop, and tapers off -->
-    <path d="M 16 70.5 C 27 61.5, 37.5 66.5, 47.2 72.5 C 52 75.5, 60.5 76, 67.5 73 C 73.5 70, 78 64, 76 59 C 74 54, 68 54.5, 66.5 60.5 C 65.5 66.5, 70.5 72.5, 76.5 73.5 C 81 74, 85.5 72.5, 89.5 66.5" 
-          fill="none" stroke="#FAF8F5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Organic Stem Base Loop (From continuous-line illustration) -->
+    <path d="M 49.5 76 C 49 81, 46 84, 43 82 C 40 79, 42 74, 48 74 C 54 74, 57 79, 54 83 C 51 86, 46 85, 43 81" 
+          fill="none" stroke="#FAF8F5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
   </g>
 </svg>

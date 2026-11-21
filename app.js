@@ -1280,12 +1280,14 @@ const ChalkBotanicals = {
 
 
 // ==========================================================================
-// 1.0 CHALKFLOW BRAND IDENTITY (HANDCRAFTED SPROUT & FLOWING CHALK WORDMARK)
+// 1.0 CHALKFLOW BRAND IDENTITY (HAND-DRAWN SPROUT & REFINED LETTERING)
 // ==========================================================================
 const ChalkflowBrand = {
+  // Compact sprout-only symbol (for sidebar compact, favicon, and maximized focus header)
+  // Two leaves, upright center shoot, stem, and root base loop (no wide wavy line squeezed in)
   renderSproutIconSVG(size = 46, isDarkTile = false) {
     return `
-      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="chalkflow-sprout-icon" aria-label="Chalkflow Sprout Emblem" style="overflow:visible;">
+      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="chalkflow-sprout-icon" aria-label="Chalkflow Sprout Symbol" style="overflow:visible;">
         <defs>
           <radialGradient id="sproutHaloGrad" cx="50%" cy="48%" r="48%">
             <stop offset="0%" stop-color="var(--logo-leaf-fill, #52B795)" stop-opacity="0.18" />
@@ -1294,7 +1296,7 @@ const ChalkflowBrand = {
           </radialGradient>
           <filter id="sproutChalkGrain" x="-10%" y="-10%" width="120%" height="120%">
             <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.7" xChannelSelector="R" yChannelSelector="G" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.65" xChannelSelector="R" yChannelSelector="G" />
           </filter>
         </defs>
         ${isDarkTile ? `
@@ -1302,45 +1304,42 @@ const ChalkflowBrand = {
           <rect x="2" y="2" width="96" height="96" rx="22" ry="22" fill="url(#sproutHaloGrad)" />
         ` : ''}
         <g filter="url(#sproutChalkGrain)">
-          <!-- Left Leaf -->
-          <path d="M 49 48.5 C 44 41, 37 34, 21.5 37.5 C 19 44.5, 27 52, 47.5 52 Z" 
+          <!-- Left Leaf (Angled up-left, organic soft green fill with chalk contour) -->
+          <path d="M 48.5 54 C 44 45, 37 38, 22 42 C 20 48, 28 56, 47.5 56 Z" 
                 class="chalk-leaf-fill" />
-          <path d="M 48.5 48.5 C 44 41, 37 34, 21.5 37.5 C 19 44.5, 27 52, 47.5 52" 
+          <path d="M 48.5 54 C 44 45, 37 38, 22 42 C 20 48, 28 56, 47.5 56" 
                 fill="none" class="chalk-leaf-stroke" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M 46.5 50 C 38.5 46, 30.5 41.5, 23 38" 
-                fill="none" class="chalk-vein-stroke" stroke-width="1.3" stroke-linecap="round" />
 
-          <!-- Right Leaf (Slightly larger, sweeping upward) -->
-          <path d="M 50.5 47.5 C 58.5 36.5, 66 28.5, 79 24.5 C 81 33.5, 72 45.5, 51.5 51.5 Z" 
+          <!-- Right Leaf (Taller, longer, sweeping up-right with sharp pointed tip) -->
+          <path d="M 50.5 53 C 58 40, 66 31, 80 26 C 82 35, 73 48, 51.5 55.5 Z" 
                 class="chalk-leaf-fill" />
-          <path d="M 50.5 47.5 C 58.5 36.5, 66 28.5, 79 24.5 C 81 33.5, 72 45.5, 51.5 51.5" 
+          <path d="M 50.5 53 C 58 40, 66 31, 80 26 C 82 35, 73 48, 51.5 55.5" 
                 fill="none" class="chalk-leaf-stroke" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M 51.5 50 C 61 40.5, 70.5 32.5, 77.5 25.5" 
-                fill="none" class="chalk-vein-stroke" stroke-width="1.3" stroke-linecap="round" />
 
-          <!-- Slender Upright Bud Shoot -->
-          <path d="M 50 48.5 L 50 36.5" 
-                class="chalk-bud-fill" stroke-width="3.2" stroke-linecap="round" />
-          <path d="M 49.6 48 L 49.6 37.5" 
-                class="chalk-bud-highlight" stroke-width="1.1" stroke-linecap="round" />
+          <!-- Slender Upright Bud / Center Shoot -->
+          <path d="M 49.6 54 L 49.6 42" 
+                class="chalk-bud-fill" stroke-width="3" stroke-linecap="round" />
+          <path d="M 49.6 54 L 49.6 42" 
+                class="chalk-bud-highlight" stroke-width="1.2" stroke-linecap="round" opacity="0.8" />
 
-          <!-- Curving Stem -->
-          <path d="M 50 48.5 C 49.5 57, 48.5 65.5, 47.2 72.5" 
-                fill="none" class="chalk-stem-fill" stroke-width="3.6" stroke-linecap="round" />
-          <path d="M 49.8 48.5 C 49.3 57, 48.3 65.5, 47 72.5" 
-                fill="none" class="chalk-stem-highlight" stroke-width="1.2" stroke-linecap="round" opacity="0.75" />
+          <!-- Vertical Stem -->
+          <path d="M 49.5 54 L 49.5 76" 
+                fill="none" class="chalk-stem-fill" stroke-width="3.4" stroke-linecap="round" />
+          <path d="M 49.5 54 L 49.5 76" 
+                fill="none" class="chalk-stem-highlight" stroke-width="1.2" stroke-linecap="round" opacity="0.8" />
 
-          <!-- Organic Flowing Ground Line with Signature Loop Swirl -->
-          <path d="M 16 70.5 C 27 61.5, 37.5 66.5, 47.2 72.5 C 52 75.5, 60.5 76, 67.5 73 C 73.5 70, 78 64, 76 59 C 74 54, 68 54.5, 66.5 60.5 C 65.5 66.5, 70.5 72.5, 76.5 73.5 C 81 74, 85.5 72.5, 89.5 66.5" 
-                fill="none" class="chalk-baseline-stroke" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+          <!-- Organic Stem Base Loop (From continuous hand-drawn illustration) -->
+          <path d="M 49.5 76 C 49 81, 46 84, 43 82 C 40 79, 42 74, 48 74 C 54 74, 57 79, 54 83 C 51 86, 46 85, 43 81" 
+                fill="none" class="chalk-baseline-stroke" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
         </g>
       </svg>
     `;
   },
 
-  renderPrimaryLogoSVG(width = 208, height = 48) {
+  // Primary horizontal logo: Refined sprout on the left + "Chalkflow" wordmark + continuous ground line with loops
+  renderPrimaryLogoSVG(width = 212, height = 50) {
     return `
-      <svg width="${width}" height="${height}" viewBox="0 0 216 52" class="chalkflow-primary-logo" aria-label="Chalkflow Brand Logo" style="overflow:visible;">
+      <svg width="${width}" height="${height}" viewBox="0 0 240 54" class="chalkflow-primary-logo" aria-label="Chalkflow Brand Logo" style="overflow:visible;">
         <defs>
           <filter id="primaryLogoChalkGrain" x="-10%" y="-10%" width="120%" height="120%">
             <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" result="noise" />
@@ -1348,108 +1347,42 @@ const ChalkflowBrand = {
           </filter>
         </defs>
         
-        <!-- Left Sprout (x: 2 to 44, y: 4 to 46) -->
-        <g transform="translate(2, 2) scale(0.64)" filter="url(#primaryLogoChalkGrain)">
+        <!-- Left Sprout (x: 4 to 46, y: 4 to 48) -->
+        <g transform="translate(6, 4) scale(0.62)" filter="url(#primaryLogoChalkGrain)">
           <!-- Left Leaf -->
-          <path d="M 49 48.5 C 44 41, 37 34, 21.5 37.5 C 19 44.5, 27 52, 47.5 52 Z" 
+          <path d="M 48.5 54 C 44 45, 37 38, 22 42 C 20 48, 28 56, 47.5 56 Z" 
                 class="chalk-leaf-fill" />
-          <path d="M 48.5 48.5 C 44 41, 37 34, 21.5 37.5 C 19 44.5, 27 52, 47.5 52" 
+          <path d="M 48.5 54 C 44 45, 37 38, 22 42 C 20 48, 28 56, 47.5 56" 
                 fill="none" class="chalk-leaf-stroke" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M 46.5 50 C 38.5 46, 30.5 41.5, 23 38" 
-                fill="none" class="chalk-vein-stroke" stroke-width="1.3" stroke-linecap="round" />
 
           <!-- Right Leaf -->
-          <path d="M 50.5 47.5 C 58.5 36.5, 66 28.5, 79 24.5 C 81 33.5, 72 45.5, 51.5 51.5 Z" 
+          <path d="M 50.5 53 C 58 40, 66 31, 80 26 C 82 35, 73 48, 51.5 55.5 Z" 
                 class="chalk-leaf-fill" />
-          <path d="M 50.5 47.5 C 58.5 36.5, 66 28.5, 79 24.5 C 81 33.5, 72 45.5, 51.5 51.5" 
+          <path d="M 50.5 53 C 58 40, 66 31, 80 26 C 82 35, 73 48, 51.5 55.5" 
                 fill="none" class="chalk-leaf-stroke" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M 51.5 50 C 61 40.5, 70.5 32.5, 77.5 25.5" 
-                fill="none" class="chalk-vein-stroke" stroke-width="1.3" stroke-linecap="round" />
 
-          <!-- Bud Shoot -->
-          <path d="M 50 48.5 L 50 36.5" 
-                class="chalk-bud-fill" stroke-width="3" stroke-linecap="round" />
-          <path d="M 49.6 48 L 49.6 37.5" 
-                class="chalk-bud-highlight" stroke-width="1.1" stroke-linecap="round" />
+          <!-- Center Shoot -->
+          <path d="M 49.6 54 L 49.6 42" stroke="var(--logo-leaf-fill, #52B795)" stroke-width="3" stroke-linecap="round" />
+          <path d="M 49.6 54 L 49.6 42" stroke="var(--logo-chalk-stroke, #FAF8F5)" stroke-width="1.2" stroke-linecap="round" opacity="0.8" />
 
           <!-- Stem -->
-          <path d="M 50 48.5 C 49.5 57, 48.5 65.5, 47.2 72.5" 
-                fill="none" class="chalk-stem-fill" stroke-width="3.6" stroke-linecap="round" />
-          <path d="M 49.8 48.5 C 49.3 57, 48.3 65.5, 47 72.5" 
-                fill="none" class="chalk-stem-highlight" stroke-width="1.2" stroke-linecap="round" opacity="0.75" />
+          <path d="M 49.5 54 L 49.5 76" stroke="var(--logo-leaf-fill, #52B795)" stroke-width="3.4" stroke-linecap="round" />
+          <path d="M 49.5 54 L 49.5 76" stroke="var(--logo-chalk-stroke, #FAF8F5)" stroke-width="1.2" stroke-linecap="round" opacity="0.8" />
 
-          <!-- Left Wave of Flowing Baseline -->
-          <path d="M 16 70.5 C 27 61.5, 37.5 66.5, 47.2 72.5" 
-                fill="none" class="chalk-baseline-stroke" stroke-width="2.4" stroke-linecap="round" />
+          <!-- Left Wave Leading Into Stem Root Loop -->
+          <path d="M 10 74 C 20 70, 32 72, 42 75 C 47 76, 49 79, 46 82 C 43 85, 38 82, 40 76 C 42 71, 48 72, 54 75" 
+                fill="none" class="chalk-baseline-stroke" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
         </g>
 
-        <!-- Chalkflow Handwritten Wordmark -->
-        <text x="56" y="32" 
+        <!-- Chalkflow Thoughtfully Refined Handwritten Wordmark -->
+        <text x="62" y="32" 
               class="chalk-brand-wordmark chalk-font">Chalkflow</text>
 
-        <!-- Continuous Flowing Ground Line Connecting from Sprout Base under Chalkflow with Signature Loop -->
+        <!-- Continuous Flowing Ground Line Connecting Across with Signature Flourish Loop -->
         <g filter="url(#primaryLogoChalkGrain)">
-          <path d="M 32.2 48.4 C 40 50.5, 48 51, 62 49 C 74 47.5, 84 47, 94 48 C 100 46, 106 43, 104 39.5 C 102 36, 97 37, 96 40 C 95 44, 98.5 48, 105 48.5 C 117 49, 132 47.5, 148 46 C 160 45, 172 46, 182 44.5" 
-                fill="none" class="chalk-baseline-stroke" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M 38 49 C 48 51, 62 50.5, 80 48.5 C 98 46.5, 116 47, 134 48 C 146 47.5, 154 44, 151 39 C 148 34, 142 36, 141 40 C 140 45, 146 49, 156 49.5 C 172 50, 192 48.5, 214 46" 
+                fill="none" class="chalk-baseline-stroke" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" opacity="0.88" />
         </g>
-      </svg>
-    `;
-  }
-};
-
-// ==========================================================================
-// 1.1 CHALK MASCOT & PANORAMIC BOTANICAL MEADOW ARTWORK (VECTOR CHALK CRAFT)
-// ==========================================================================
-const ChalkMascot = {
-  renderPandaSVG(size = 46) {
-    return `
-      <svg width="${size}" height="${size}" viewBox="0 0 100 100" class="chalk-mascot-svg" aria-label="Chalkflow Panda Mascot">
-        <!-- Subtle chalk dust ring -->
-        <circle cx="50" cy="50" r="46" fill="none" stroke="var(--border-chalk)" stroke-width="1.2" stroke-dasharray="3,4" opacity="0.35" />
-        
-        <!-- Panda Ears (Fuzzy dark ears with chalk highlights) -->
-        <circle cx="26" cy="24" r="14" fill="#181A1D" stroke="#FAF0CA" stroke-width="2" />
-        <path d="M 21 18 Q 28 22 24 30" stroke="rgba(250, 240, 202, 0.45)" stroke-width="1.2" fill="none" />
-        <circle cx="74" cy="24" r="14" fill="#181A1D" stroke="#FAF0CA" stroke-width="2" />
-        <path d="M 79 18 Q 72 22 76 30" stroke="rgba(250, 240, 202, 0.45)" stroke-width="1.2" fill="none" />
-        
-        <!-- Panda Head (Fluffy chalk contour) -->
-        <circle cx="50" cy="50" r="34" fill="var(--bg-surface-elevated)" stroke="#FAF0CA" stroke-width="2.6" />
-        <path d="M 44 18 Q 50 14 56 18" stroke="#FAF0CA" stroke-width="1.5" stroke-linecap="round" fill="none" />
-        
-        <!-- Big Panda Eye Patches -->
-        <ellipse cx="36" cy="46" rx="9.5" ry="12" transform="rotate(-18 36 46)" fill="#181A1D" stroke="#FAF0CA" stroke-width="1.2" />
-        <ellipse cx="64" cy="46" rx="9.5" ry="12" transform="rotate(18 64 46)" fill="#181A1D" stroke="#FAF0CA" stroke-width="1.2" />
-        
-        <!-- Expressive Sparkly Eyes -->
-        <circle cx="37" cy="46" r="4.2" fill="#FAF0CA" />
-        <circle cx="35" cy="44" r="1.6" fill="#FFFFFF" />
-        <circle cx="38" cy="48" r="0.8" fill="#FFFFFF" />
-        
-        <circle cx="63" cy="46" r="4.2" fill="#FAF0CA" />
-        <circle cx="61" cy="44" r="1.6" fill="#FFFFFF" />
-        <circle cx="64" cy="48" r="0.8" fill="#FFFFFF" />
-        
-        <!-- Rosy Blush Cheeks -->
-        <ellipse cx="24" cy="58" rx="6.5" ry="3.8" fill="#FFAAA6" opacity="0.65" />
-        <ellipse cx="76" cy="58" rx="6.5" ry="3.8" fill="#FFAAA6" opacity="0.65" />
-        
-        <!-- Button Nose & Smiling Mouth -->
-        <path d="M 47 52 Q 50 50 53 52 Q 50 55 47 52 Z" fill="#181A1D" stroke="#FAF0CA" stroke-width="1.2" />
-        <path d="M 44 56 Q 47 60 50 57.5 Q 53 60 56 56" fill="none" stroke="#FAF0CA" stroke-width="2" stroke-linecap="round" />
-        
-        <!-- Paws holding white chalk stick -->
-        <ellipse cx="37" cy="78" rx="7.5" ry="8.5" fill="#181A1D" stroke="#FAF0CA" stroke-width="1.6" />
-        <ellipse cx="63" cy="78" rx="7.5" ry="8.5" fill="#181A1D" stroke="#FAF0CA" stroke-width="1.6" />
-        
-        <!-- White Chalk Stick (Cradled between paws) -->
-        <rect x="44" y="66" width="12" height="23" rx="3.5" transform="rotate(10 50 78)" fill="#FAF0CA" stroke="#FFFFFF" stroke-width="1.8" />
-        <path d="M 51 64 L 54 61 L 57 65" stroke="var(--chalk-amber)" stroke-width="1.4" stroke-linecap="round" fill="none" />
-        
-        <!-- Tiny Chalk Sprout & Mushroom Accents -->
-        <path d="M 16 82 Q 20 72 26 80" stroke="var(--chalk-mint)" stroke-width="1.8" stroke-linecap="round" fill="none" />
-        <path d="M 83 82 C 81 76 90 76 90 82 Z" fill="#FFAAA6" stroke="#FAF0CA" stroke-width="1.4" />
-        <line x1="85.5" y1="82" x2="85.5" y2="86" stroke="#FAF0CA" stroke-width="1.4" />
       </svg>
     `;
   }
@@ -2411,7 +2344,7 @@ const AudioEngine = new SoundscapeEngine();
 document.addEventListener('DOMContentLoaded', () => {
   syncDateDisplays();
   initTheme();
-  initBrandMascot();
+  initBrandIdentity();
   initUserProfile();
   initNavigation();
   initDashboard();
@@ -2691,7 +2624,7 @@ function navigateToSurface(surfaceId, linkedTaskId = null) {
   }
 }
 
-function initBrandMascot() {
+function initBrandIdentity() {
   const wrap = document.getElementById('brand-avatar-wrap');
   if (wrap) {
     wrap.innerHTML = ChalkflowBrand.renderPrimaryLogoSVG(208, 48);
@@ -2706,26 +2639,6 @@ function initBrandMascot() {
   const focusBrandAvatar = document.getElementById('focus-brand-avatar');
   if (focusBrandAvatar) {
     focusBrandAvatar.innerHTML = ChalkflowBrand.renderSproutIconSVG(30);
-  }
-
-  const mascotAvatar = document.getElementById('mascot-avatar-wrap');
-  const mascotStrip = document.getElementById('mascot-companion-strip');
-  if (mascotAvatar) {
-    mascotAvatar.innerHTML = ChalkMascot.renderPandaSVG(34);
-  }
-  if (mascotStrip) {
-    mascotStrip.addEventListener('click', () => {
-      AudioEngine.playChalkScratch();
-      emitDustParticles(mascotStrip.getBoundingClientRect());
-      const companionNotes = [
-        "🐼 Chalky: 'Small consistent steps grow the biggest gardens!'",
-        "🐼 Chalky: 'Take a deep breath. Focus is a quiet, steady rhythm.'",
-        "🐼 Chalky: 'Every completed stroke brings you closer to your goal.'",
-        "🐼 Chalky: 'Mindful focus isn\'t about perfection, it\'s about showing up.'"
-      ];
-      const msg = companionNotes[Math.floor(Math.random() * companionNotes.length)];
-      showToast(msg);
-    });
   }
 }
 
@@ -5980,6 +5893,66 @@ function renderSidebarSummary() {
   }
 }
 
+// ==========================================================================
+// DEEP FOCUS TIMER STYLES: BOTANICAL DASH & MINIMAL FLIP CLOCK
+// ==========================================================================
+let activeTimerStyle = 'botanical-dash';
+try {
+  activeTimerStyle = localStorage.getItem('chalkflow_timer_style') || 'botanical-dash';
+} catch (e) {
+  activeTimerStyle = 'botanical-dash';
+}
+
+function initTimerStyles() {
+  const dashBtn = document.getElementById('style-btn-dash');
+  const flipBtn = document.getElementById('style-btn-flip');
+
+  if (dashBtn) {
+    dashBtn.addEventListener('click', () => applyTimerStyle('botanical-dash'));
+  }
+  if (flipBtn) {
+    flipBtn.addEventListener('click', () => applyTimerStyle('minimal-flip'));
+  }
+
+  applyTimerStyle(activeTimerStyle, false);
+}
+
+function applyTimerStyle(style, save = true) {
+  activeTimerStyle = style;
+  if (save) {
+    try {
+      localStorage.setItem('chalkflow_timer_style', style);
+    } catch (e) {
+      console.warn('LocalStorage error:', e);
+    }
+  }
+
+  const dashBtn = document.getElementById('style-btn-dash');
+  const flipBtn = document.getElementById('style-btn-flip');
+  const dashWrapper = document.getElementById('botanical-dash-wrapper') || document.querySelector('.clock-display-wrapper');
+  const flipWrapper = document.getElementById('flip-clock-wrapper');
+  const centerpiece = document.getElementById('focus-clock-centerpiece');
+
+  if (dashBtn) dashBtn.classList.toggle('active', style === 'botanical-dash');
+  if (flipBtn) flipBtn.classList.toggle('active', style === 'minimal-flip');
+
+  if (centerpiece) {
+    centerpiece.classList.toggle('style-botanical-dash', style === 'botanical-dash');
+    centerpiece.classList.toggle('style-minimal-flip', style === 'minimal-flip');
+  }
+
+  if (dashWrapper) {
+    dashWrapper.style.display = (style === 'botanical-dash') ? 'flex' : 'none';
+  }
+  if (flipWrapper) {
+    flipWrapper.style.display = (style === 'minimal-flip') ? 'flex' : 'none';
+  }
+
+  if (typeof updateDisplay === 'function') {
+    updateDisplay();
+  }
+}
+
 function initDeepFocus() {
   const display = document.getElementById('timer-display');
   const toggleBtn = document.getElementById('btn-timer-toggle');
@@ -5999,6 +5972,9 @@ function initDeepFocus() {
 
   // Generate 60 precision clock dial ticks inside the centerpiece dial
   generateClockDialTicks();
+
+  // Initialize Timer Styles (Botanical Dash & Minimal Flip Clock)
+  initTimerStyles();
 
   // Maximize Fullscreen Focus Handler
   if (maximizeBtn) {
@@ -6137,13 +6113,47 @@ function initDeepFocus() {
   function updateDisplay() {
     const mins = Math.floor(FocusTimer.remainingSeconds / 60);
     const secs = FocusTimer.remainingSeconds % 60;
-    if (display) display.innerText = `${mins < 10 ? '0' + mins : mins}:${secs < 10 ? '0' + secs : secs}`;
+    const minsStr = mins < 10 ? '0' + mins : String(mins);
+    const secsStr = secs < 10 ? '0' + secs : String(secs);
 
+    // 1. Update text readout (used by Botanical Dash & accessibility)
+    if (display) display.innerText = `${minsStr}:${secsStr}`;
+
+    // 2. Update Style 2: Minimal Flip Clock
+    const flipMinTop = document.getElementById('flip-min-top');
+    const flipMinBottom = document.getElementById('flip-min-bottom');
+    const flipSecTop = document.getElementById('flip-sec-top');
+    const flipSecBottom = document.getElementById('flip-sec-bottom');
+    const unitMin = document.getElementById('flip-unit-minutes');
+    const unitSec = document.getElementById('flip-unit-seconds');
+
+    if (flipMinTop) {
+      if (flipMinTop.innerText !== minsStr) {
+        flipMinTop.innerText = minsStr;
+        if (flipMinBottom) flipMinBottom.innerText = minsStr;
+        if (unitMin && FocusTimer.isRunning) {
+          unitMin.classList.add('flip-tick');
+          setTimeout(() => unitMin.classList.remove('flip-tick'), 280);
+        }
+      }
+    }
+
+    if (flipSecTop) {
+      if (flipSecTop.innerText !== secsStr) {
+        flipSecTop.innerText = secsStr;
+        if (flipSecBottom) flipSecBottom.innerText = secsStr;
+        if (unitSec && FocusTimer.isRunning) {
+          unitSec.classList.add('flip-tick');
+          setTimeout(() => unitSec.classList.remove('flip-tick'), 280);
+        }
+      }
+    }
+
+    // 3. Update Style 1: Botanical Dash Segmented Circular Ring
     const progress = FocusTimer.durationSeconds > 0 
       ? (FocusTimer.durationSeconds - FocusTimer.remainingSeconds) / FocusTimer.durationSeconds 
       : 0;
 
-    // Segmented Rounded Dashes: 60 dashes around circle starting at 12 o'clock
     const activeFloat = progress * 60;
     const fullActive = Math.floor(activeFloat);
     const fracLeading = activeFloat - fullActive;
@@ -6153,15 +6163,12 @@ function initDeepFocus() {
       if (!dash) continue;
 
       if (progress > 0 && i < fullActive) {
-        // Fully completed progress dash: soft mint
         dash.setAttribute('class', `timer-dash active ${i === 0 ? 'dash-12' : ''}`);
         dash.style.opacity = '1';
       } else if (progress > 0 && i === fullActive) {
-        // Leading edge dash smoothly illuminated based on actual elapsed focus time
         dash.setAttribute('class', `timer-dash active leading ${i === 0 ? 'dash-12' : ''}`);
         dash.style.opacity = (0.35 + 0.65 * fracLeading).toFixed(2);
       } else {
-        // Inactive dash: muted grey-green
         dash.setAttribute('class', `timer-dash inactive ${i === 0 ? 'dash-12' : ''}`);
         dash.style.opacity = (i === 0 && progress === 0) ? '1' : '';
       }
