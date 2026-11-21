@@ -2895,100 +2895,659 @@ body.theme-white-board .habit-card-bar-track {
 }
 
 /* --------------------------------------------------------------------------
-   11. SURFACE 5: DEEP FOCUS (WITH MAXIMIZE / FULLSCREEN OPTION)
+   11. SURFACE 5: DEEP FOCUS (SPACIOUS, TIMER-CENTRED EXPERIENCE)
    -------------------------------------------------------------------------- */
+#view-deep-focus {
+  width: 100%;
+  min-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+}
+
 .deep-focus-fullscreen-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 22px 28px 48px 28px;
-  min-height: auto;
+  padding: 18px 24px 36px 24px;
+  min-height: calc(100vh - 150px);
   justify-content: flex-start;
-  gap: 12px;
-  margin-bottom: 40px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 24px auto;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   box-sizing: border-box;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   transition: all 0.3s ease;
 }
 
-/* Base styling for cohesive focus cluster in standard view */
-.focus-main-cluster {
+/* 1. Top Bar: Heading & Fullscreen Button Only */
+.focus-top-bar {
   width: 100%;
-  max-width: 620px;
+  max-width: 640px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  padding: 0 4px;
+  margin-bottom: clamp(14px, 2.4vh, 24px);
+  position: relative;
+  z-index: 10;
   box-sizing: border-box;
-  z-index: 5;
+  flex-shrink: 0;
 }
 
-.focus-calming-whisper {
-  display: block;
-  font-family: 'Kalam', cursive !important;
-  font-size: clamp(13px, 1.8vh, 15px);
-  color: var(--text-muted);
-  opacity: 0.85;
-  margin: 4px 0 0 0;
-  font-style: italic;
-  font-weight: 400;
-  text-align: center;
-  letter-spacing: 0.2px;
+.focus-screen-heading {
+  font-family: 'Caveat', cursive, var(--font-chalk);
+  font-size: clamp(24px, 3.2vh, 30px);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: 0.5px;
 }
 
-/* Sound drawer toggle and header controls */
-.sound-drawer-toggle-btn {
-  background: transparent;
-  border: none;
+.maximize-focus-btn {
+  background: var(--bg-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--border-chalk);
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 11.5px;
+  padding: 5px 13px;
+  border-radius: 20px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
-  padding: 3px 6px;
-  border-radius: 12px;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.sound-drawer-toggle-btn:hover {
+.maximize-focus-btn:hover {
   color: var(--text-primary);
+  border-color: var(--text-primary);
+  background: var(--bg-hover);
 }
 
-.sound-drawer-title {
-  color: var(--text-muted);
+body.theme-parchment-cream .maximize-focus-btn {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(45, 55, 72, 0.18);
+  color: #4A5568;
 }
 
-.active-sound-pill {
-  color: var(--chalk-mint);
-  font-weight: 600;
+body.theme-parchment-cream .maximize-focus-btn:hover {
+  color: #2D3748;
+  border-color: #2D3748;
 }
 
-.sound-drawer-chevron {
+/* 2. Cohesive Timer Cluster */
+.focus-main-cluster {
+  width: 100%;
+  max-width: 580px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  box-sizing: border-box;
+  z-index: 5;
+}
+
+/* 3. Task Anchor Pill Neatly Positioned Above Timer */
+.focus-task-headline-wrap {
+  margin: 0 0 clamp(16px, 2.6vh, 24px) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  z-index: 10;
+}
+
+.focus-task-pill-selector {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-chalk);
+  border-radius: 24px;
+  padding: 5px 18px 5px 14px;
+  max-width: 90vw;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.focus-task-pill-selector:hover {
+  border-color: #52B795;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+body.theme-parchment-cream .focus-task-pill-selector {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(45, 55, 72, 0.18);
+}
+
+body.theme-parchment-cream .focus-task-pill-selector:hover {
+  border-color: #2E8B66;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.focus-task-icon {
+  font-size: 12.5px;
+  color: #52B795;
+}
+
+body.theme-parchment-cream .focus-task-icon {
+  color: #2E8B66;
+}
+
+.focus-task-select {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 20px;
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Kalam', cursive, var(--font-chalk);
+}
+
+.focus-select-chevron {
+  position: absolute;
+  right: 12px;
   font-size: 10px;
-  transition: transform 0.25s ease;
+  color: var(--text-muted);
+  pointer-events: none;
 }
 
-.focus-soundscapes-bottom-bar.drawer-open .sound-drawer-chevron {
+/* 4. Large Dashed Circular Timer in Visual Centre */
+.focus-clock-centerpiece {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.clock-display-wrapper {
+  position: relative;
+  width: clamp(270px, 38vh, 330px);
+  height: clamp(270px, 38vh, 330px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+/* Center atmospheric radial glow behind the timer */
+.clock-display-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 125%;
+  height: 125%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(82, 183, 149, 0.08) 0%, rgba(30, 56, 44, 0.035) 48%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.theme-dark-slate .clock-display-wrapper::before {
+  background: radial-gradient(circle, rgba(82, 183, 149, 0.065) 0%, rgba(24, 38, 30, 0.03) 50%, transparent 70%);
+}
+
+body.theme-vintage-green .clock-display-wrapper::before {
+  background: radial-gradient(circle, rgba(82, 183, 149, 0.09) 0%, rgba(35, 65, 48, 0.045) 50%, transparent 70%);
+}
+
+body.theme-parchment-cream .clock-display-wrapper::before {
+  background: radial-gradient(circle, rgba(46, 139, 102, 0.06) 0%, rgba(46, 139, 102, 0.02) 50%, transparent 70%);
+}
+
+.clock-ring-svg-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clock-progress-ring {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.clock-time-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  width: 100%;
+  user-select: none;
+}
+
+.time-readout {
+  font-family: 'Caveat', cursive, var(--font-chalk) !important;
+  font-size: clamp(52px, 8vh, 72px);
+  font-weight: 700;
+  letter-spacing: 0px;
+  line-height: 1;
+  color: var(--text-primary);
+  text-shadow: none !important;
+}
+
+.time-label-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.time-label {
+  font-family: 'Caveat', cursive, var(--font-chalk) !important;
+  font-size: clamp(16px, 2.2vh, 20px);
+  font-weight: 600;
+  color: #52B795;
+  margin: 0;
+  letter-spacing: 0.4px;
+}
+
+body.theme-parchment-cream .time-label {
+  color: #2E8B66;
+}
+
+.time-status-underline {
+  width: 68px;
+  height: 8px;
+  color: #52B795;
+  margin-top: 1px;
+}
+
+body.theme-parchment-cream .time-status-underline {
+  color: #2E8B66;
+}
+
+/* 5. Primary Controls (Directly Below Timer) */
+.focus-primary-controls-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: clamp(20px, 2.8vh, 30px);
+  margin-bottom: clamp(14px, 2vh, 22px);
+  position: relative;
+  z-index: 5;
+}
+
+.play-btn {
+  background: #52B795 !important;
+  color: #0b1410 !important;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  border: none;
+  border-radius: 28px;
+  padding: clamp(9px, 1.3vh, 11px) clamp(24px, 3vw, 30px);
+  font-size: 13.5px;
+  letter-spacing: 0.2px;
+  box-shadow: 0 4px 18px rgba(82, 183, 149, 0.28);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.play-btn:hover {
+  background: #5EC4A1 !important;
+  box-shadow: 0 6px 22px rgba(82, 183, 149, 0.4);
+  transform: translateY(-1px);
+}
+
+.play-btn.running {
+  background: #4EA888 !important;
+  color: #0E1412 !important;
+}
+
+body.theme-parchment-cream .play-btn {
+  background: #2E8B66 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(46, 139, 102, 0.25);
+}
+
+body.theme-parchment-cream .play-btn:hover {
+  background: #277958 !important;
+}
+
+.end-btn {
+  border-radius: 28px;
+  padding: clamp(8px, 1.2vh, 10px) clamp(16px, 2vw, 20px);
+  font-size: 12.5px;
+  font-weight: 600;
+  background: transparent;
+  border: 1px solid var(--border-chalk, rgba(255, 255, 255, 0.2));
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.end-btn:hover {
+  background: rgba(239, 71, 111, 0.12);
+  border-color: var(--chalk-coral);
+  color: var(--chalk-coral);
+}
+
+body:not(.focus-session-active) .end-btn {
+  display: none !important;
+}
+
+body.focus-session-active .end-btn {
+  display: inline-flex !important;
+}
+
+/* 6. Secondary Options: Compact Horizontal Control Row (Focus To-Do Style) */
+.focus-secondary-control-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 2px;
+  position: relative;
+  z-index: 25;
+}
+
+.focus-control-tab-item {
+  position: relative;
+}
+
+.focus-control-tab {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-chalk);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.focus-control-tab:hover {
+  color: var(--text-primary);
+  border-color: #52B795;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.focus-control-tab.active,
+.focus-control-tab[aria-expanded="true"] {
+  color: #52B795;
+  border-color: #52B795;
+  background: rgba(82, 183, 149, 0.12);
+}
+
+body.theme-parchment-cream .focus-control-tab {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(45, 55, 72, 0.18);
+  color: #4A5568;
+}
+
+body.theme-parchment-cream .focus-control-tab:hover,
+body.theme-parchment-cream .focus-control-tab.active,
+body.theme-parchment-cream .focus-control-tab[aria-expanded="true"] {
+  color: #2E8B66;
+  border-color: #2E8B66;
+  background: rgba(46, 139, 102, 0.1);
+}
+
+.tab-chevron {
+  font-size: 9px;
+  transition: transform 0.2s ease;
+  opacity: 0.7;
+}
+
+.focus-control-tab[aria-expanded="true"] .tab-chevron {
   transform: rotate(180deg);
 }
 
-.sound-quick-mute-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  font-size: 13px;
-  cursor: pointer;
-  padding: 2px 5px;
-  display: inline-flex;
-  align-items: center;
-  transition: color 0.2s ease;
+/* 7. Floating Popover Panels (Closed by Default) */
+.focus-popover-panel {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-surface-elevated, #171E1A);
+  border: 1px solid var(--border-chalk);
+  border-radius: 16px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  padding: 14px 16px;
+  z-index: 100;
+  box-sizing: border-box;
+  animation: popover-fade-up 0.2s ease-out;
 }
 
-.sound-quick-mute-btn:hover {
+@keyframes popover-fade-up {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 6px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.focus-popover-panel::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: var(--border-chalk) transparent transparent transparent;
+}
+
+body.theme-parchment-cream .focus-popover-panel {
+  background: #FAF7F0;
+  border-color: rgba(45, 55, 72, 0.16);
+  box-shadow: 0 12px 32px rgba(45, 55, 72, 0.18);
+}
+
+body.theme-parchment-cream .focus-popover-panel::after {
+  border-color: rgba(45, 55, 72, 0.16) transparent transparent transparent;
+}
+
+#popover-duration {
+  width: min(90vw, 320px);
+}
+
+#popover-sound {
+  width: min(90vw, 360px);
+}
+
+#popover-settings {
+  width: min(90vw, 320px);
+}
+
+.popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--border-chalk);
+}
+
+.popover-title {
+  font-size: 13px;
+  font-weight: 600;
   color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.popover-title i {
+  color: #52B795;
+  font-size: 12px;
+}
+
+body.theme-parchment-cream .popover-title i {
+  color: #2E8B66;
+}
+
+.popover-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: color 0.15s ease;
+}
+
+.popover-close-btn:hover {
+  color: var(--text-primary);
+}
+
+/* Duration Segmented Controls inside Popover */
+#popover-duration .duration-segmented-control {
+  display: flex;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-chalk);
+  border-radius: 14px;
+  padding: 3px;
+  gap: 3px;
+}
+
+#popover-duration .duration-pill-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  padding: 6px 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+#popover-duration .duration-pill-btn:hover {
+  color: var(--text-primary);
+}
+
+#popover-duration .duration-pill-btn.active {
+  background: #52B795;
+  color: #0b1410;
+  font-weight: 700;
+}
+
+body.theme-parchment-cream #popover-duration .duration-segmented-control {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(45, 55, 72, 0.18);
+}
+
+body.theme-parchment-cream #popover-duration .duration-pill-btn.active {
+  background: #2E8B66;
+  color: #FFFFFF;
+}
+
+/* Soundscapes inside Popover */
+#popover-sound .soundscapes-horizontal-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+#popover-sound .sound-pill {
+  font-size: 11.5px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-chalk);
+  border-radius: 12px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#popover-sound .sound-pill:hover {
+  border-color: #52B795;
+  background: rgba(82, 183, 149, 0.1);
+}
+
+#popover-sound .sound-pill.active {
+  background: rgba(82, 183, 149, 0.18);
+  border-color: #52B795;
+  color: #52B795;
+  font-weight: 600;
+}
+
+body.theme-parchment-cream #popover-sound .sound-pill {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(45, 55, 72, 0.15);
+  color: #2D3748;
+}
+
+body.theme-parchment-cream #popover-sound .sound-pill.active {
+  background: rgba(46, 139, 102, 0.14);
+  border-color: #2E8B66;
+  color: #2E8B66;
+}
+
+/* Settings Body inside Popover */
+.popover-settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-reset-group .reset-action-btn {
+  width: 100%;
+  padding: 7px 12px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 10px;
 }
 
 /* ==========================================================================
@@ -3642,283 +4201,85 @@ body.theme-parchment-cream .time-status-underline {
   color: #2E8B66;
 }
 
-/* 7. Simplified Session Duration Controls */
-body.focus-maximized .timer-duration-wrap {
-  margin: 0;
-  gap: 8px;
+/* 7. Maximized Deep Focus Hierarchy & Scaling */
+body.focus-maximized .clock-display-wrapper {
+  width: clamp(300px, 46vh, 420px);
+  height: clamp(300px, 46vh, 420px);
 }
 
-body.focus-maximized .duration-segmented-control {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 3px;
-  border-radius: 20px;
+body.focus-maximized .time-readout {
+  font-size: clamp(58px, 9vh, 84px);
 }
 
-body.focus-maximized .duration-pill-btn {
-  font-size: 13px;
-  padding: 5px 14px;
-  color: var(--text-muted);
+body.focus-maximized .time-label {
+  font-size: clamp(17px, 2.4vh, 22px);
 }
 
-body.focus-maximized .duration-pill-btn:hover {
-  color: #FFFFFF;
+body.focus-maximized .focus-primary-controls-wrap {
+  margin-top: clamp(22px, 3.2vh, 34px);
+  margin-bottom: clamp(16px, 2.2vh, 24px);
 }
 
-body.focus-maximized .duration-pill-btn.active {
-  border-color: #52B795 !important;
-  color: #0b1410 !important;
-  background: #52B795 !important;
-  font-weight: 700;
-}
-
-body.focus-maximized.theme-parchment-cream .duration-segmented-control {
-  background: rgba(255, 255, 255, 0.7);
-  border-color: rgba(45, 55, 72, 0.18);
-}
-
-body.focus-maximized.theme-parchment-cream .duration-pill-btn.active {
-  border-color: #2E8B66 !important;
-  color: #ffffff !important;
-  background: #2E8B66 !important;
-}
-
-body.focus-maximized .custom-duration-inline-input-wrap {
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-body.focus-maximized .custom-duration-input {
-  background: rgba(255, 255, 255, 0.08);
-  color: #FFFFFF;
-}
-
-body.focus-maximized .timer-action-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 2px;
-}
-
-/* Soft Mint Primary Button for Begin, Pause, Resume */
 body.focus-maximized .play-btn {
-  background: #52B795 !important;
-  color: #0b1410 !important;
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  border: none;
-  border-radius: 26px;
-  padding: clamp(7px, 1.1vh, 9px) clamp(18px, 2.2vw, 24px);
-  font-size: clamp(12.5px, 1.5vh, 13.5px);
-  letter-spacing: 0.2px;
-  box-shadow: 0 2px 14px rgba(82, 183, 149, 0.24);
-  transition: all 0.25s ease;
-  cursor: pointer;
+  padding: clamp(10px, 1.4vh, 12px) clamp(26px, 3.2vw, 34px);
+  font-size: 14px;
 }
 
-body.focus-maximized .play-btn:hover {
-  background: #5EC4A1 !important;
-  box-shadow: 0 4px 18px rgba(82, 183, 149, 0.35);
-  transform: translateY(-1px);
-}
-
-body.focus-maximized .play-btn.running {
-  background: #4EA888 !important;
-  color: #0E1412 !important;
-}
-
-body.focus-maximized.theme-parchment-cream .play-btn {
-  background: #2E8B66 !important;
-  color: #FFFFFF !important;
-  box-shadow: 0 2px 10px rgba(46, 139, 102, 0.2);
-}
-
-body.focus-maximized.theme-parchment-cream .play-btn:hover {
-  background: #277958 !important;
-}
-
-/* Secondary Button for End Session */
-body.focus-maximized .end-btn {
-  border-radius: 26px;
-  padding: clamp(7px, 1.1vh, 9px) clamp(16px, 2vw, 22px);
-  font-size: clamp(12px, 1.5vh, 13px);
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--text-primary);
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-body.focus-maximized .end-btn:hover {
-  background: rgba(239, 71, 111, 0.15);
-  border-color: var(--chalk-coral);
-  color: var(--chalk-coral);
-}
-
-body.theme-parchment-cream #btn-timer-end {
-  border-color: rgba(45, 55, 72, 0.22);
-}
-
-/* Tertiary Button for Reset */
-body.focus-maximized .reset-btn {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: var(--text-primary);
-  border-radius: 26px;
-  padding: clamp(7px, 1.1vh, 9px) clamp(14px, 1.8vw, 18px);
-  font-size: clamp(12px, 1.5vh, 13px);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-body.focus-maximized .reset-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.35);
-  color: var(--text-primary);
-}
-
-/* Hide End Session before session starts */
-body.focus-maximized:not(.focus-session-active) .end-btn {
-  display: none;
-}
-
-/* Hide duration presets & custom input during active OR paused session */
-body.focus-session-active #timer-duration-wrap {
-  display: none !important;
-}
-
-body.focus-maximized.focus-session-active .reset-btn {
-  opacity: 0.55;
-  font-size: 11px;
-  padding: 6px 12px;
-}
-
-/* 8. Ambient Sound Control & Sound Options in Maximized Mode */
-body.focus-maximized .focus-soundscapes-bottom-bar {
-  border-top: none !important;
-  padding-top: 0;
-  margin: 0;
-  width: 100%;
-  max-width: min(94vw, 760px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(4px, 0.8vh, 8px);
-}
-
-body.focus-maximized .sound-bar-header {
-  width: 100%;
-  max-width: 440px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.32);
-  border: 1px solid var(--border-chalk);
-  border-radius: 24px;
-  padding: clamp(3px, 0.6vh, 5px) clamp(10px, 1.4vw, 16px);
-  margin-bottom: 0;
-  box-sizing: border-box;
-}
-
-body.theme-parchment-cream.focus-maximized .sound-bar-header {
-  background: rgba(255, 255, 255, 0.65);
-}
-
-body.focus-maximized .sound-drawer-title {
-  color: var(--text-muted);
-  font-size: clamp(11px, 1.35vh, 12px);
-}
-
-body.focus-maximized .active-sound-pill {
-  color: #52B795;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  font-size: clamp(11.5px, 1.4vh, 12.5px);
-}
-
-body.focus-maximized.theme-parchment-cream .active-sound-pill {
-  color: #3D8C6E;
-}
-
-/* Sound Options are directly visible under sound in maximized mode */
-body.focus-maximized .soundscapes-horizontal-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: clamp(4px, 0.8vw, 8px);
-  margin-top: 2px;
-  padding: 2px 0;
-  background: transparent;
-  border: none;
-  width: 100%;
-  max-width: 760px;
-  box-sizing: border-box;
-}
-
-body.focus-maximized .soundscapes-horizontal-row .sound-pill {
-  font-size: clamp(10.5px, 1.35vh, 11.5px);
-  padding: clamp(4px, 0.7vh, 6px) clamp(8px, 1.1vw, 12px);
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--border-chalk);
-  border-radius: 20px;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: all 0.2s ease;
-}
-
-body.focus-maximized .soundscapes-horizontal-row .sound-pill:hover {
-  border-color: #52B795;
-  background: rgba(82, 183, 149, 0.12);
-}
-
-body.focus-maximized .soundscapes-horizontal-row .sound-pill.active {
-  background: rgba(82, 183, 149, 0.2);
-  border-color: #52B795;
-  color: #52B795;
-}
-
-body.theme-parchment-cream.focus-maximized .soundscapes-horizontal-row .sound-pill {
-  background: rgba(255, 255, 255, 0.7);
-  border-color: rgba(45, 55, 72, 0.18);
-  color: #2D3748;
-}
-
-body.theme-parchment-cream.focus-maximized .soundscapes-horizontal-row .sound-pill.active {
-  background: rgba(46, 139, 102, 0.15);
-  border-color: #2E8B66;
-  color: #2E8B66;
+body.focus-maximized .focus-secondary-control-bar {
+  margin-top: 4px;
 }
 
 /* Height-based responsive adaptations for compact viewports */
 @media (max-height: 720px) {
+  .deep-focus-fullscreen-container,
   body.focus-maximized .deep-focus-fullscreen-container {
-    padding: 24px 20px !important;
+    padding: 16px 16px 20px 16px !important;
+    gap: 6px;
   }
+  .focus-top-bar,
+  body.focus-maximized .focus-top-bar {
+    margin-bottom: 8px !important;
+  }
+  .focus-task-headline-wrap,
+  body.focus-maximized .focus-task-headline-wrap {
+    margin-bottom: 10px !important;
+  }
+  .clock-display-wrapper,
   body.focus-maximized .clock-display-wrapper {
-    width: clamp(200px, 30vh, 240px);
-    height: clamp(200px, 30vh, 240px);
+    width: clamp(210px, 32vh, 250px) !important;
+    height: clamp(210px, 32vh, 250px) !important;
   }
-  body.focus-maximized .focus-main-cluster {
-    gap: 5px;
+  .time-readout,
+  body.focus-maximized .time-readout {
+    font-size: clamp(44px, 7vh, 56px) !important;
+  }
+  .focus-primary-controls-wrap,
+  body.focus-maximized .focus-primary-controls-wrap {
+    margin-top: 12px !important;
+    margin-bottom: 8px !important;
   }
 }
 
 @media (max-height: 620px) {
+  .deep-focus-fullscreen-container,
   body.focus-maximized .deep-focus-fullscreen-container {
-    padding: 16px 16px !important;
+    padding: 10px 12px 14px 12px !important;
   }
+  .clock-display-wrapper,
   body.focus-maximized .clock-display-wrapper {
-    width: clamp(180px, 28vh, 210px);
-    height: clamp(180px, 28vh, 210px);
+    width: clamp(170px, 26vh, 200px) !important;
+    height: clamp(170px, 26vh, 200px) !important;
   }
-  body.focus-maximized .focus-calming-whisper {
-    display: none;
+  .time-readout,
+  body.focus-maximized .time-readout {
+    font-size: clamp(38px, 6vh, 46px) !important;
+  }
+  .time-label-wrap {
+    margin-top: 1px !important;
+  }
+  .focus-task-pill-selector {
+    padding: 3px 12px !important;
+    font-size: 12px !important;
   }
 }
 

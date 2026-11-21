@@ -6045,9 +6045,98 @@ function initDeepFocus() {
   if (donePrefBtn) donePrefBtn.addEventListener('click', closePreferences);
   if (prefBackdrop) prefBackdrop.addEventListener('click', closePreferences);
 
+  // Focus To-Do Secondary Controls & Floating Popovers
+  const tabBtnDuration = document.getElementById('tab-btn-duration');
+  const tabBtnSound = document.getElementById('tab-btn-sound');
+  const tabBtnSettings = document.getElementById('tab-btn-settings');
+  const popoverDuration = document.getElementById('popover-duration');
+  const popoverSound = document.getElementById('popover-sound');
+  const popoverSettings = document.getElementById('popover-settings');
+  const labelDuration = document.getElementById('label-current-duration');
+  const labelSound = document.getElementById('label-current-sound');
+  const tabSoundIcon = document.getElementById('tab-sound-icon');
+
+  const closeAllFocusPopovers = () => {
+    if (popoverDuration) popoverDuration.style.display = 'none';
+    if (popoverSound) popoverSound.style.display = 'none';
+    if (popoverSettings) popoverSettings.style.display = 'none';
+    if (tabBtnDuration) {
+      tabBtnDuration.classList.remove('active');
+      tabBtnDuration.setAttribute('aria-expanded', 'false');
+    }
+    if (tabBtnSound) {
+      tabBtnSound.classList.remove('active');
+      tabBtnSound.setAttribute('aria-expanded', 'false');
+    }
+    if (tabBtnSettings) {
+      tabBtnSettings.classList.remove('active');
+      tabBtnSettings.setAttribute('aria-expanded', 'false');
+    }
+  };
+
+  const toggleFocusPopover = (tabBtn, targetPopover) => {
+    if (!targetPopover || !tabBtn) return;
+    const isCurrentlyOpen = targetPopover.style.display === 'block';
+    closeAllFocusPopovers();
+    if (!isCurrentlyOpen) {
+      targetPopover.style.display = 'block';
+      tabBtn.classList.add('active');
+      tabBtn.setAttribute('aria-expanded', 'true');
+    }
+  };
+
+  if (tabBtnDuration) {
+    tabBtnDuration.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleFocusPopover(tabBtnDuration, popoverDuration);
+    });
+  }
+
+  if (tabBtnSound) {
+    tabBtnSound.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleFocusPopover(tabBtnSound, popoverSound);
+    });
+  }
+
+  if (tabBtnSettings) {
+    tabBtnSettings.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleFocusPopover(tabBtnSettings, popoverSettings);
+    });
+  }
+
+  // Popover close buttons (x)
+  document.querySelectorAll('.popover-close-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeAllFocusPopovers();
+    });
+  });
+
+  // Clicking inside popovers should not bubble out and trigger outside-close
+  [popoverDuration, popoverSound, popoverSettings].forEach(p => {
+    if (p) {
+      p.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    }
+  });
+
+  // Clicking outside closes all popovers
+  document.addEventListener('click', (e) => {
+    const controlBar = document.getElementById('focus-secondary-control-bar');
+    if (controlBar && !controlBar.contains(e.target)) {
+      closeAllFocusPopovers();
+    }
+  });
+
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && prefPanel && prefPanel.style.display !== 'none') {
-      closePreferences();
+    if (e.key === 'Escape') {
+      if (prefPanel && prefPanel.style.display !== 'none') {
+        closePreferences();
+      }
+      closeAllFocusPopovers();
     }
   });
 
@@ -6256,6 +6345,9 @@ function initDeepFocus() {
     FocusTimer.remainingSeconds = FocusTimer.durationSeconds;
     FocusTimer.elapsedSeconds = 0;
     FocusTimer.creditedMinutes = 0;
+    if (labelDuration) {
+      labelDuration.innerText = `${mins} min`;
+    }
     updateSessionActiveState();
     updateDisplay();
   }
@@ -6351,6 +6443,7 @@ function initDeepFocus() {
         iconState.className = 'fa-solid fa-pause';
         if (liveDot) liveDot.style.display = 'inline-block';
         if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Resting & recharging...' : 'Focus in progress';
+        closeAllFocusPopovers();
         
         // Hide sidebar by default when focus session is running to keep timer centered
         setSidebarCollapsed(true);
@@ -6414,6 +6507,7 @@ function initDeepFocus() {
       if (liveDot) liveDot.style.display = 'none';
       if (statusLabel) statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to focus';
       document.body.classList.remove('focus-session-active');
+      closeAllFocusPopovers();
       syncCalmingFocusMessage(true);
       updateDisplay();
     });
@@ -6438,6 +6532,13 @@ function initDeepFocus() {
   let prevSoundType = 'rain';
   let prevSoundName = 'Steady Rain';
 
+  const updateSoundTabDisplay = (sName, sType) => {
+    if (labelSound) labelSound.innerText = sName;
+    if (tabSoundIcon) {
+      tabSoundIcon.className = (sType === 'none') ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
+    }
+  };
+
   soundPills.forEach(pill => {
     pill.addEventListener('click', () => {
       soundPills.forEach(p => p.classList.remove('active'));
@@ -6447,6 +6548,7 @@ function initDeepFocus() {
       const soundName = sNameEl ? sNameEl.innerText : soundType;
 
       if (currentSoundName) currentSoundName.innerText = soundName;
+      updateSoundTabDisplay(soundName, soundType);
       if (soundType !== 'none') {
         prevSoundType = soundType;
         prevSoundName = soundName;
@@ -6467,6 +6569,7 @@ function initDeepFocus() {
         AudioEngine.playSoundscape('none');
         soundPills.forEach(p => p.classList.toggle('active', p.dataset.sound === 'none'));
         if (currentSoundName) currentSoundName.innerText = 'Mute';
+        updateSoundTabDisplay('Mute', 'none');
         if (volumeIcon) volumeIcon.className = 'fa-solid fa-volume-xmark';
         showToast('Ambient sound muted');
       } else {
@@ -6474,6 +6577,7 @@ function initDeepFocus() {
         AudioEngine.playSoundscape(prevSoundType);
         soundPills.forEach(p => p.classList.toggle('active', p.dataset.sound === prevSoundType));
         if (currentSoundName) currentSoundName.innerText = prevSoundName;
+        updateSoundTabDisplay(prevSoundName, prevSoundType);
         if (volumeIcon) volumeIcon.className = 'fa-solid fa-volume-low';
         showToast(`Restored sound: ${prevSoundName}`);
       }

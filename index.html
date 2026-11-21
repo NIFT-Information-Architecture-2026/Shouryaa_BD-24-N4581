@@ -808,66 +808,60 @@
 
             </div>
             
-            <!-- Top Bar: Brand Badge, Return, Mode Toggle & Maximize/Exit Option -->
+            <!-- Top Bar: Deep Focus Heading & Fullscreen Toggle Only -->
             <div class="focus-top-bar">
-              <!-- Left: Brand Identity in Maximized Mode -->
-              <div class="focus-brand-wrap" id="focus-brand-wrap">
+              <!-- Preserved Brand & Return for script compatibility -->
+              <div class="focus-brand-wrap" id="focus-brand-wrap" style="display: none;">
                 <div class="brand-avatar-mini" id="focus-brand-avatar"></div>
                 <div class="brand-text-mini">
                   <span class="brand-title-mini chalk-font">Chalkflow</span>
                   <span class="brand-sub-mini">MINDFUL PRODUCTIVITY</span>
                 </div>
               </div>
-
-              <!-- Standard Return Button (Visible in Normal Mode) -->
-              <button class="chalk-btn secondary-btn chalk-font return-focus-btn" id="btn-focus-return" title="Leave or end session and return">
+              <button class="chalk-btn secondary-btn chalk-font return-focus-btn" id="btn-focus-return" title="Leave or end session and return" style="display: none;">
                 <i class="fa-solid fa-arrow-left"></i> <span id="btn-focus-return-label">Return to Tasks</span>
               </button>
 
-              <!-- Center: Deep Focus Heading -->
+              <!-- Center/Left: Deep Focus Heading -->
               <div class="focus-heading-wrap">
                 <h2 class="focus-screen-heading chalk-font">Deep Focus</h2>
               </div>
 
-              <!-- Right: Preferences Settings, Sidebar Toggle & Maximize/Exit Focus View Button -->
+              <!-- Right: Fullscreen Button -->
               <div class="focus-top-actions">
-                <button type="button" class="chalk-btn secondary-btn chalk-font focus-settings-btn" id="btn-focus-preferences" title="Session Preferences" aria-label="Session Preferences">
-                  <i class="fa-solid fa-sliders"></i> <span class="hide-mobile">Preferences</span>
-                </button>
-                <button class="chalk-btn secondary-btn chalk-font toggle-sidebar-header-btn" id="btn-header-toggle-sidebar" title="Toggle Today's Summary & Records">
-                  <i class="fa-solid fa-chart-simple"></i> <span class="hide-mobile">Summary</span>
+                <button class="chalk-btn secondary-btn chalk-font toggle-sidebar-header-btn" id="btn-header-toggle-sidebar" style="display: none;" title="Toggle Today's Summary">
+                  <i class="fa-solid fa-chart-simple"></i>
                 </button>
                 <button class="chalk-btn secondary-btn chalk-font maximize-focus-btn" id="btn-focus-maximize" title="Toggle Fullscreen Focus Mode">
-                  <i class="fa-solid fa-expand" id="maximize-icon"></i> <span id="maximize-label">Maximize</span>
+                  <i class="fa-solid fa-expand" id="maximize-icon"></i> <span id="maximize-label">Fullscreen</span>
                 </button>
               </div>
             </div>
 
-            <!-- Focus Body Layout: Center Cluster + Optional Right Collapsible Sidebar -->
+            <!-- Focus Body Layout: Spacious, Timer-Centred Experience -->
             <div class="focus-body-layout" id="focus-body-layout">
               <!-- Cohesive Main Focus Cluster -->
               <div class="focus-main-cluster" id="focus-main-cluster">
                 
-                <!-- Task Selector Pill & Calming Message -->
+                <!-- 1. Currently Selected Task Neatly Positioned Above Timer -->
                 <div class="focus-task-headline-wrap" id="focus-task-headline-wrap">
-                  <div class="focus-task-pill-selector">
+                  <div class="focus-task-pill-selector" title="Choose task anchor for this focus session">
+                    <i class="fa-solid fa-bullseye focus-task-icon"></i>
                     <select id="focus-linked-task-select" class="focus-task-select chalk-font" aria-label="Task Anchor">
                       <option value="">Free Mindful Focus</option>
                     </select>
                     <i class="fa-solid fa-chevron-down focus-select-chevron"></i>
                   </div>
                   <h2 class="focus-task-title-text chalk-font" id="focus-task-title-display" style="display: none;">Free Mindful Focus</h2>
-                  <p class="focus-calming-whisper chalk-font" id="focus-calming-whisper">Just this moment.</p>
+                  <p class="focus-calming-whisper chalk-font" id="focus-calming-whisper" style="display: none;">Just this moment.</p>
                 </div>
 
-                <!-- Centerpiece: Circular Dashed Countdown Clock -->
+                <!-- 2. Large Dashed Circular Countdown Clock (Centerpiece) -->
                 <div class="focus-clock-centerpiece" id="focus-clock-centerpiece">
-                  
-                  <!-- Botanical Dash (Circular Dashed Ring Countdown) -->
                   <div class="clock-display-wrapper" id="botanical-dash-wrapper">
                     <div class="clock-ring-svg-container">
                       <svg class="clock-progress-ring" viewBox="0 0 460 460" id="clock-dial-svg">
-                        <!-- 60 Segmented Rounded Dashes (Populated by JS: Inactive muted grey-green & Active soft mint) -->
+                        <!-- 60 Segmented Rounded Dashes (Populated by JS: Inactive muted & Active soft mint) -->
                         <g class="clock-dashes-group" id="clock-dashes-group"></g>
                       </svg>
                       
@@ -882,167 +876,172 @@
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <!-- Primary Action Buttons: Start/Pause/Resume, End Session, Reset -->
-                  <div class="timer-action-row" id="timer-action-row">
-                    <button class="chalk-btn timer-btn play-btn chalk-font" id="btn-timer-toggle">
-                      <i class="fa-solid fa-play" id="timer-icon-state"></i> <span id="timer-action-text">Begin Session</span>
+                <!-- 3. Primary Action Buttons (Begin Focus directly below timer) -->
+                <div class="focus-primary-controls-wrap" id="focus-primary-controls-wrap">
+                  <button class="chalk-btn timer-btn play-btn chalk-font" id="btn-timer-toggle">
+                    <i class="fa-solid fa-play" id="timer-icon-state"></i> <span id="timer-action-text">Begin Focus</span>
+                  </button>
+                  <button class="chalk-btn timer-btn end-btn chalk-font" id="btn-timer-end" title="End session and record completed focus minutes">
+                    <i class="fa-solid fa-flag"></i> End Session
+                  </button>
+                </div>
+
+                <!-- 4. Compact Horizontal Control Row (Focus To-Do Style) -->
+                <div class="focus-secondary-control-bar" id="focus-secondary-control-bar">
+                  
+                  <!-- Tab A: Duration Control & Compact Popover -->
+                  <div class="focus-control-tab-item" id="tab-item-duration">
+                    <button type="button" class="focus-control-tab chalk-font" id="tab-btn-duration" aria-expanded="false" aria-controls="popover-duration" title="Adjust Duration">
+                      <i class="fa-regular fa-clock"></i>
+                      <span id="label-current-duration">25 min</span>
+                      <i class="fa-solid fa-chevron-up tab-chevron"></i>
                     </button>
-                    <button class="chalk-btn timer-btn end-btn chalk-font" id="btn-timer-end" title="End session and record completed focus minutes">
-                      <i class="fa-solid fa-flag"></i> End Session
-                    </button>
-                    <button class="chalk-btn timer-btn reset-btn chalk-font" id="btn-timer-reset" title="Reset Session">
-                      <i class="fa-solid fa-rotate-left"></i> Reset
-                    </button>
+                    
+                    <div class="focus-popover-panel chalk-card" id="popover-duration" style="display: none;">
+                      <div class="popover-header">
+                        <span class="popover-title chalk-font"><i class="fa-regular fa-clock"></i> Duration</span>
+                        <button type="button" class="popover-close-btn" data-close="duration" aria-label="Close duration panel">&times;</button>
+                      </div>
+                      <div class="timer-duration-wrap" id="timer-duration-wrap">
+                        <div class="duration-segmented-control" role="group" aria-label="Timer Duration Presets">
+                          <button type="button" class="duration-pill-btn active chalk-font" data-minutes="25">25 min</button>
+                          <button type="button" class="duration-pill-btn chalk-font" data-minutes="45">45 min</button>
+                          <button type="button" class="duration-pill-btn chalk-font" data-minutes="60">60 min</button>
+                          <button type="button" class="duration-pill-btn chalk-font" id="btn-duration-custom">Custom</button>
+                        </div>
+                        
+                        <div class="custom-duration-inline-input-wrap" id="custom-duration-input-wrap" style="display: none;">
+                          <div class="custom-duration-stepper-row">
+                            <button type="button" class="chalk-btn secondary-btn duration-step-btn" id="btn-time-minus-5" title="-5 minutes">-5m</button>
+                            <button type="button" class="chalk-btn secondary-btn duration-step-btn" id="btn-time-minus-1" title="-1 minute">-1m</button>
+                            <input type="number" id="input-custom-duration" class="chalk-input custom-duration-input" min="1" max="180" value="25" placeholder="min" aria-label="Custom minutes (1-180)">
+                            <button type="button" class="chalk-btn secondary-btn duration-step-btn" id="btn-time-plus-1" title="+1 minute">+1m</button>
+                            <button type="button" class="chalk-btn secondary-btn duration-step-btn" id="btn-time-plus-5" title="+5 minutes">+5m</button>
+                          </div>
+                          <div class="custom-duration-actions-row">
+                            <button type="button" class="chalk-btn primary-btn custom-duration-set-btn chalk-font" id="btn-set-custom-duration">Apply</button>
+                            <button type="button" class="chalk-btn secondary-btn custom-duration-cancel-btn chalk-font" id="btn-cancel-custom-duration">Cancel</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+
+                  <!-- Tab B: Ambient Soundscape Control & Compact Popover -->
+                  <div class="focus-control-tab-item" id="tab-item-sound">
+                    <button type="button" class="focus-control-tab chalk-font" id="tab-btn-sound" aria-expanded="false" aria-controls="popover-sound" title="Ambient Soundscape">
+                      <i class="fa-solid fa-volume-high" id="tab-sound-icon"></i>
+                      <span id="label-current-sound">Steady Rain</span>
+                      <i class="fa-solid fa-chevron-up tab-chevron"></i>
+                    </button>
+                    
+                    <div class="focus-popover-panel chalk-card" id="popover-sound" style="display: none;">
+                      <div class="popover-header">
+                        <span class="popover-title chalk-font"><i class="fa-solid fa-volume-high"></i> Soundscape</span>
+                        <span class="active-sound-pill chalk-font" id="current-sound-name">Steady Rain</span>
+                        <button type="button" class="popover-close-btn" data-close="sound" aria-label="Close sound panel">&times;</button>
+                      </div>
+                      <div class="soundscapes-horizontal-row" id="soundscapes-row">
+                        <button class="sound-pill active" data-sound="rain">
+                          <span class="s-icon">🌧️</span> <span class="s-name chalk-font">Steady Rain</span>
+                        </button>
+                        <button class="sound-pill" data-sound="campfire">
+                          <span class="s-icon">🔥</span> <span class="s-name chalk-font">Campfire</span>
+                        </button>
+                        <button class="sound-pill" data-sound="forest">
+                          <span class="s-icon">🌲</span> <span class="s-name chalk-font">Forest Wind</span>
+                        </button>
+                        <button class="sound-pill" data-sound="library">
+                          <span class="s-icon">📚</span> <span class="s-name chalk-font">Quiet Library</span>
+                        </button>
+                        <button class="sound-pill" data-sound="brown-noise">
+                          <span class="s-icon">🌊</span> <span class="s-name chalk-font">Brown Noise</span>
+                        </button>
+                        <button class="sound-pill" data-sound="none">
+                          <span class="s-icon">🔇</span> <span class="s-name chalk-font">Mute</span>
+                        </button>
+                      </div>
+                      <div class="pref-volume-row">
+                        <button class="sound-quick-mute-btn" id="btn-sound-quick-mute" type="button" title="Mute/Unmute sound">
+                          <i class="fa-solid fa-volume-low" id="sound-volume-icon"></i>
+                        </button>
+                        <input type="range" id="sound-volume" min="0" max="1" step="0.05" value="0.5" class="chalk-slider" aria-label="Ambient volume">
+                        <i class="fa-solid fa-volume-high" style="color:var(--text-muted); font-size:12px;"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Tab C: Session Settings Control & Compact Popover -->
+                  <div class="focus-control-tab-item" id="tab-item-settings">
+                    <button type="button" class="focus-control-tab chalk-font" id="tab-btn-settings" aria-expanded="false" aria-controls="popover-settings" title="Session Settings">
+                      <i class="fa-solid fa-sliders"></i>
+                      <span>Settings</span>
+                      <i class="fa-solid fa-chevron-up tab-chevron"></i>
+                    </button>
+                    
+                    <div class="focus-popover-panel chalk-card" id="popover-settings" style="display: none;">
+                      <div class="popover-header">
+                        <span class="popover-title chalk-font"><i class="fa-solid fa-sliders"></i> Session Settings</span>
+                        <button type="button" class="popover-close-btn" data-close="settings" aria-label="Close settings panel">&times;</button>
+                      </div>
+                      <div class="popover-settings-body">
+                        <!-- Mode Selector: Deep Focus vs Gentle Rest -->
+                        <div class="settings-group">
+                          <label class="pref-section-label chalk-font">Session Mode</label>
+                          <div class="focus-mode-toggle pref-mode-toggle">
+                            <button class="mode-pill active chalk-font" id="mode-btn-focus" data-mode="FOCUS" title="Deep Focus Session">
+                              <i class="fa-solid fa-brain"></i> Deep Focus
+                            </button>
+                            <button class="mode-pill chalk-font" id="mode-btn-rest" data-mode="REST" title="Gentle 5-Minute Recharge">
+                              <i class="fa-solid fa-mug-hot"></i> Gentle Rest (5m)
+                            </button>
+                          </div>
+                          <p class="pref-note-text">Gentle Rest gives a quick 5-minute break without counting toward daily garden bloom.</p>
+                        </div>
+                        
+                        <!-- Reset Controls inside Settings -->
+                        <div class="settings-group settings-reset-group">
+                          <label class="pref-section-label chalk-font">Session Controls</label>
+                          <button class="chalk-btn secondary-btn chalk-font reset-action-btn" id="btn-timer-reset" title="Reset Session Timer">
+                            <i class="fa-solid fa-rotate-left"></i> Reset Timer
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
 
               </div>
 
-              <!-- Collapsible Right Sidebar: Today's Focus, Tasks & Records -->
-              <aside class="focus-right-sidebar collapsed" id="focus-right-sidebar" aria-label="Today's Focus Summary">
-                <!-- Collapsible Toggle Tab on Sidebar Left Edge -->
-                <button class="focus-sidebar-toggle-tab" id="btn-toggle-focus-sidebar" type="button" title="Toggle Today's Summary & Records">
+              <!-- Collapsible Right Sidebar: Kept for DOM & JS Compatibility -->
+              <aside class="focus-right-sidebar collapsed" id="focus-right-sidebar" style="display: none;" aria-label="Today's Focus Summary">
+                <button class="focus-sidebar-toggle-tab" id="btn-toggle-focus-sidebar" type="button" style="display: none;" title="Toggle Today's Summary & Records">
                   <i class="fa-solid fa-chevron-left" id="sidebar-tab-chevron"></i>
                 </button>
-
                 <div class="sidebar-cards-scroll">
-                  <!-- Card 1: Focus Time Today -->
                   <div class="sidebar-focus-card">
-                    <div class="card-title-row">
-                      <i class="fa-regular fa-clock"></i>
-                      <span class="card-title">Focus Time Today</span>
-                    </div>
-                    <div class="card-metric-value">
-                      <span class="metric-num" id="sidebar-focus-minutes-display">0</span>
-                      <span class="metric-unit">m</span>
-                    </div>
+                    <span class="metric-num" id="sidebar-focus-minutes-display">0</span>
                   </div>
-
-                  <!-- Card 2: Today's Tasks -->
                   <div class="sidebar-focus-card">
-                    <div class="card-title-row">
-                      <i class="fa-regular fa-square-check"></i>
-                      <span class="card-title">Today</span>
-                    </div>
-                    <div class="sidebar-tasks-list" id="sidebar-tasks-list">
-                      <!-- Populated dynamically from genuine AppState.tasks -->
-                    </div>
+                    <div class="sidebar-tasks-list" id="sidebar-tasks-list"></div>
                   </div>
-
-                  <!-- Card 3: Today's Focus Records (Mini Bar Chart) -->
                   <div class="sidebar-focus-card">
-                    <div class="card-title-row">
-                      <i class="fa-solid fa-chart-simple"></i>
-                      <span class="card-title">Today's Focus Records</span>
-                    </div>
-                    <div class="sidebar-chart-container" id="sidebar-chart-container">
-                      <!-- Rendered dynamically from genuine AppState.focusSessions -->
-                    </div>
+                    <div class="sidebar-chart-container" id="sidebar-chart-container"></div>
                   </div>
                 </div>
               </aside>
 
             </div>
 
-            <!-- Collapsible Session Preferences Panel & Backdrop -->
-            <div class="focus-preferences-backdrop" id="focus-preferences-backdrop" style="display: none;"></div>
-            <div class="focus-preferences-panel chalk-card" id="focus-preferences-panel" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="pref-modal-title">
-              <div class="pref-panel-header">
-                <div class="pref-title-wrap">
-                  <i class="fa-solid fa-sliders pref-header-icon"></i>
-                  <h3 class="chalk-font pref-title" id="pref-modal-title">Session Preferences</h3>
-                </div>
-                <button type="button" class="pref-close-btn chalk-icon-btn" id="btn-close-preferences" aria-label="Close preferences">
-                  <i class="fa-solid fa-xmark"></i>
-                </button>
-              </div>
-
-              <div class="pref-panel-body">
-                <!-- Section 1: Session Mode -->
-                <div class="pref-section">
-                  <label class="pref-section-label chalk-font">Session Mode</label>
-                  <div class="focus-mode-toggle pref-mode-toggle">
-                    <button class="mode-pill active chalk-font" id="mode-btn-focus" data-mode="FOCUS" title="Deep Focus Session">
-                      <i class="fa-solid fa-brain"></i> Deep Focus
-                    </button>
-                    <button class="mode-pill chalk-font" id="mode-btn-rest" data-mode="REST" title="Gentle 5-Minute Recharge">
-                      <i class="fa-solid fa-mug-hot"></i> Gentle Rest (5m)
-                    </button>
-                  </div>
-                  <p class="pref-note-text">Gentle Rest gives a quick 5-minute break and does not count toward focus bloom goals.</p>
-                </div>
-
-                <!-- Section 2: Duration Presets & Custom Duration -->
-                <div class="pref-section">
-                  <label class="pref-section-label chalk-font">Timer Duration</label>
-                  <div class="timer-duration-wrap" id="timer-duration-wrap">
-                    <div class="duration-segmented-control" role="group" aria-label="Timer Duration Presets">
-                      <button type="button" class="duration-pill-btn active chalk-font" data-minutes="25">25 min</button>
-                      <button type="button" class="duration-pill-btn chalk-font" data-minutes="45">45 min</button>
-                      <button type="button" class="duration-pill-btn chalk-font" data-minutes="60">60 min</button>
-                      <button type="button" class="duration-pill-btn chalk-font" id="btn-duration-custom">Custom</button>
-                    </div>
-                    
-                    <div class="custom-duration-inline-input-wrap" id="custom-duration-input-wrap" style="display: none;">
-                      <div class="custom-duration-stepper-row">
-                        <button type="button" class="chalk-btn secondary-btn duration-step-btn" id="btn-time-minus-5" title="-5 minutes">-5m</button>
-                        <button type="button" class="chalk-btn secondary-btn duration-step-btn" id="btn-time-minus-1" title="-1 minute">-1m</button>
-                        <input type="number" id="input-custom-duration" class="chalk-input custom-duration-input" min="1" max="180" value="25" placeholder="min" aria-label="Custom minutes (1-180)">
-                        <button type="button" class="chalk-btn secondary-btn duration-step-btn" id="btn-time-plus-1" title="+1 minute">+1m</button>
-                        <button type="button" class="chalk-btn secondary-btn duration-step-btn" id="btn-time-plus-5" title="+5 minutes">+5m</button>
-                      </div>
-                      <div class="custom-duration-actions-row">
-                        <button type="button" class="chalk-btn primary-btn custom-duration-set-btn chalk-font" id="btn-set-custom-duration">Apply</button>
-                        <button type="button" class="chalk-btn secondary-btn custom-duration-cancel-btn chalk-font" id="btn-cancel-custom-duration">Cancel</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Section 3: Ambient Soundscape & Volume -->
-                <div class="pref-section">
-                  <div class="pref-section-header-row">
-                    <label class="pref-section-label chalk-font">Ambient Soundscape</label>
-                    <span class="active-sound-pill chalk-font" id="current-sound-name">Steady Rain</span>
-                  </div>
-                  
-                  <div class="soundscapes-horizontal-row" id="soundscapes-row">
-                    <button class="sound-pill active" data-sound="rain">
-                      <span class="s-icon">🌧️</span> <span class="s-name chalk-font">Steady Rain</span>
-                    </button>
-                    <button class="sound-pill" data-sound="campfire">
-                      <span class="s-icon">🔥</span> <span class="s-name chalk-font">Campfire</span>
-                    </button>
-                    <button class="sound-pill" data-sound="forest">
-                      <span class="s-icon">🌲</span> <span class="s-name chalk-font">Forest Wind</span>
-                    </button>
-                    <button class="sound-pill" data-sound="library">
-                      <span class="s-icon">📚</span> <span class="s-name chalk-font">Quiet Library</span>
-                    </button>
-                    <button class="sound-pill" data-sound="brown-noise">
-                      <span class="s-icon">🌊</span> <span class="s-name chalk-font">Brown Noise</span>
-                    </button>
-                    <button class="sound-pill" data-sound="none">
-                      <span class="s-icon">🔇</span> <span class="s-name chalk-font">Mute</span>
-                    </button>
-                  </div>
-
-                  <div class="pref-volume-row">
-                    <button class="sound-quick-mute-btn" id="btn-sound-quick-mute" type="button" title="Mute/Unmute sound">
-                      <i class="fa-solid fa-volume-low" id="sound-volume-icon"></i>
-                    </button>
-                    <input type="range" id="sound-volume" min="0" max="1" step="0.05" value="0.5" class="chalk-slider" aria-label="Ambient volume">
-                    <i class="fa-solid fa-volume-high" style="color:var(--text-muted); font-size:12px;"></i>
-                  </div>
-                </div>
-              </div>
-
-              <div class="pref-panel-footer">
-                <button type="button" class="chalk-btn primary-btn pref-done-btn chalk-font" id="btn-done-preferences">
-                  Ready to Focus
-                </button>
-              </div>
+            <!-- Backwards-Compatible Preference Panel Hooks for Tests -->
+            <button type="button" id="btn-focus-preferences" style="display: none;" aria-hidden="true"></button>
+            <div class="focus-preferences-backdrop" id="focus-preferences-backdrop" style="display: none;" aria-hidden="true"></div>
+            <div class="focus-preferences-panel chalk-card" id="focus-preferences-panel" style="display: none;" aria-hidden="true">
+              <button type="button" id="btn-close-preferences" style="display: none;"></button>
+              <button type="button" id="btn-done-preferences" style="display: none;"></button>
             </div>
 
           </div>
