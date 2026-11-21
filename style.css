@@ -2912,29 +2912,46 @@ body.theme-white-board .habit-card-bar-track {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 18px 24px 36px 24px;
-  min-height: calc(100vh - 150px);
+  padding: 24px 28px 44px 28px;
+  min-height: calc(100vh - 160px);
   justify-content: flex-start;
   width: 100%;
-  max-width: 800px;
+  max-width: 820px;
   margin: 0 auto 24px auto;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   box-sizing: border-box;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-chalk);
+  border-radius: var(--radius-md, 18px);
+  box-shadow: var(--shadow-chalk, 0 4px 20px rgba(0, 0, 0, 0.25));
   transition: all 0.3s ease;
 }
 
-/* 1. Top Bar: Heading & Fullscreen Button Only */
+body.theme-parchment-cream .deep-focus-fullscreen-container {
+  background: #FAF7F0 !important;
+  border-color: rgba(45, 55, 72, 0.15) !important;
+  box-shadow: 0 4px 16px rgba(45, 55, 72, 0.06) !important;
+}
+
+body.theme-vintage-green .deep-focus-fullscreen-container {
+  background: #192C21;
+  border-color: rgba(82, 183, 149, 0.2);
+}
+
+body.theme-dark-slate .deep-focus-fullscreen-container {
+  background: #1B2320;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 1. Top Bar: Heading, Summary & Fullscreen Actions */
 .focus-top-bar {
   width: 100%;
-  max-width: 640px;
+  max-width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 4px;
+  padding: 0 6px;
   margin-bottom: clamp(14px, 2.4vh, 24px);
   position: relative;
   z-index: 10;
@@ -3832,27 +3849,39 @@ body.focus-maximized .focus-mode-toggle {
 }
 
 .toggle-sidebar-header-btn {
-  display: none;
-}
-
-body.focus-maximized .toggle-sidebar-header-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--bg-surface, rgba(255, 255, 255, 0.04));
   border: 1px solid var(--border-chalk);
   color: var(--text-muted);
-  font-size: 11px;
-  padding: 5px 12px;
+  font-size: 11.5px;
+  padding: 5px 13px;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
+  position: relative;
+  z-index: 95;
 }
 
-body.focus-maximized .toggle-sidebar-header-btn:hover {
+.toggle-sidebar-header-btn:hover,
+.toggle-sidebar-header-btn.active {
   color: var(--text-primary);
   background: var(--bg-hover);
-  border-color: var(--text-primary);
+  border-color: #52B795;
+}
+
+body.theme-parchment-cream .toggle-sidebar-header-btn {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(45, 55, 72, 0.18);
+  color: #4A5568;
+}
+
+body.theme-parchment-cream .toggle-sidebar-header-btn:hover,
+body.theme-parchment-cream .toggle-sidebar-header-btn.active {
+  color: #2E8B66;
+  border-color: #2E8B66;
+  background: rgba(46, 139, 102, 0.1);
 }
 
 body.focus-maximized .maximize-focus-btn {
@@ -4287,24 +4316,29 @@ body.focus-maximized .focus-secondary-control-bar {
    COLLAPSIBLE RIGHT SIDEBAR: TODAY'S FOCUS, TASKS & RECORDS
    ========================================================================== */
 .focus-right-sidebar {
-  display: none;
-}
-
-body.focus-maximized .focus-right-sidebar {
   display: flex;
   flex-direction: column;
   position: fixed;
   right: 28px;
-  top: 74px;
+  top: 130px;
   bottom: 24px;
   width: 310px;
   max-width: 85vw;
-  z-index: 50;
+  z-index: 90;
   transition: transform 0.38s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-sizing: border-box;
 }
 
-body.focus-maximized .focus-right-sidebar.collapsed {
+body.focus-maximized .focus-right-sidebar {
+  top: 74px;
+}
+
+.focus-right-sidebar.collapsed {
   transform: translateX(calc(100% + 28px));
+}
+
+.focus-right-sidebar.collapsed .sidebar-cards-scroll {
+  pointer-events: none;
 }
 
 .focus-sidebar-toggle-tab {

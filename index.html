@@ -827,10 +827,10 @@
                 <h2 class="focus-screen-heading chalk-font">Deep Focus</h2>
               </div>
 
-              <!-- Right: Fullscreen Button -->
+              <!-- Right: Summary & Fullscreen Buttons -->
               <div class="focus-top-actions">
-                <button class="chalk-btn secondary-btn chalk-font toggle-sidebar-header-btn" id="btn-header-toggle-sidebar" style="display: none;" title="Toggle Today's Summary">
-                  <i class="fa-solid fa-chart-simple"></i>
+                <button class="chalk-btn secondary-btn chalk-font toggle-sidebar-header-btn" id="btn-header-toggle-sidebar" title="Toggle Today's Summary & Records">
+                  <i class="fa-solid fa-chart-simple"></i> <span>Summary</span>
                 </button>
                 <button class="chalk-btn secondary-btn chalk-font maximize-focus-btn" id="btn-focus-maximize" title="Toggle Fullscreen Focus Mode">
                   <i class="fa-solid fa-expand" id="maximize-icon"></i> <span id="maximize-label">Fullscreen</span>
@@ -1016,20 +1016,46 @@
 
               </div>
 
-              <!-- Collapsible Right Sidebar: Kept for DOM & JS Compatibility -->
-              <aside class="focus-right-sidebar collapsed" id="focus-right-sidebar" style="display: none;" aria-label="Today's Focus Summary">
-                <button class="focus-sidebar-toggle-tab" id="btn-toggle-focus-sidebar" type="button" style="display: none;" title="Toggle Today's Summary & Records">
+              <!-- Collapsible Right Sidebar: Today's Focus, Tasks & Records -->
+              <aside class="focus-right-sidebar collapsed" id="focus-right-sidebar" aria-label="Today's Focus Summary">
+                <!-- Collapsible Toggle Tab on Sidebar Left Edge -->
+                <button class="focus-sidebar-toggle-tab" id="btn-toggle-focus-sidebar" type="button" title="Toggle Today's Summary & Records">
                   <i class="fa-solid fa-chevron-left" id="sidebar-tab-chevron"></i>
                 </button>
+
                 <div class="sidebar-cards-scroll">
+                  <!-- Card 1: Focus Time Today -->
                   <div class="sidebar-focus-card">
-                    <span class="metric-num" id="sidebar-focus-minutes-display">0</span>
+                    <div class="card-title-row">
+                      <i class="fa-regular fa-clock"></i>
+                      <span class="card-title">Focus Time Today</span>
+                    </div>
+                    <div class="card-metric-value">
+                      <span class="metric-num" id="sidebar-focus-minutes-display">0</span>
+                      <span class="metric-unit">m</span>
+                    </div>
                   </div>
+
+                  <!-- Card 2: Today's Tasks -->
                   <div class="sidebar-focus-card">
-                    <div class="sidebar-tasks-list" id="sidebar-tasks-list"></div>
+                    <div class="card-title-row">
+                      <i class="fa-regular fa-square-check"></i>
+                      <span class="card-title">Today's Slate</span>
+                    </div>
+                    <div class="sidebar-tasks-list" id="sidebar-tasks-list">
+                      <!-- Populated dynamically from AppState.tasks -->
+                    </div>
                   </div>
+
+                  <!-- Card 3: Today's Focus Records (Mini Bar Chart) -->
                   <div class="sidebar-focus-card">
-                    <div class="sidebar-chart-container" id="sidebar-chart-container"></div>
+                    <div class="card-title-row">
+                      <i class="fa-solid fa-chart-simple"></i>
+                      <span class="card-title">Today's Focus Records</span>
+                    </div>
+                    <div class="sidebar-chart-container" id="sidebar-chart-container">
+                      <!-- Populated dynamically by JS -->
+                    </div>
                   </div>
                 </div>
               </aside>
