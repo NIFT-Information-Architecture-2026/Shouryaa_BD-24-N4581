@@ -2011,6 +2011,7 @@ const DEFAULT_STATE = {
     { id: 'h-4', name: 'Evening Walk / Rest', icon: '🌿', type: 'CHECK', current: 0, target: 1, unit: '', completions: Math.min(12, TODAY_DAY_NUM) }
   ],
   focusTimeLoggedToday: 0,
+  completedFocusSessionsToday: 0,
   focusSessions: [],
   habitHistory: {},
   gardenData: buildInitialGardenData(TODAY_DAY_NUM),
@@ -2036,6 +2037,11 @@ function sanitizeFocusAndGrowthData(state) {
     state.focusSessions = [];
   }
 
+  // Ensure completedFocusSessionsToday is initialized
+  if (typeof state.completedFocusSessionsToday !== 'number') {
+    state.completedFocusSessionsToday = (state.gardenData && state.gardenData[TODAY_DAY_NUM] && state.gardenData[TODAY_DAY_NUM].completedSessions) || 0;
+  }
+
   // 3. Compute genuine focus minutes earned today from recorded sessions
   const genuineTodaySessions = state.focusSessions.filter(s => s && s.date === TODAY_DATE);
   const genuineTodayMins = genuineTodaySessions.reduce((sum, s) => sum + (Number(s.durationMins) || 0), 0);
@@ -2052,13 +2058,22 @@ function sanitizeFocusAndGrowthData(state) {
   if (state.gardenData && state.gardenData[TODAY_DAY_NUM]) {
     delete state.gardenData[TODAY_DAY_NUM].highestPlannedCount;
     state.gardenData[TODAY_DAY_NUM].focus = state.focusTimeLoggedToday;
+    state.gardenData[TODAY_DAY_NUM].completedSessions = state.completedFocusSessionsToday;
 
     // Strict Full Bloom check:
-    // If today's flower was awarded Full Bloom (Stage 4) using fake focus data, correct it down to Stage 3 or lower
-    if (state.gardenData[TODAY_DAY_NUM].stage === 4 || state.gardenData[TODAY_DAY_NUM].highestEarnedStage === 4) {
-      if (state.focusTimeLoggedToday < 45) {
-        state.gardenData[TODAY_DAY_NUM].stage = Math.min(3, state.gardenData[TODAY_DAY_NUM].stage || 3);
-        state.gardenData[TODAY_DAY_NUM].highestEarnedStage = Math.min(3, state.gardenData[TODAY_DAY_NUM].highestEarnedStage || 3);
+    // Full bloom strictly requires BOTH 100% planned daily tasks completed AND >= 45m genuine focus recorded today.
+    // If either condition is not met, cap at Stage 3.
+    const todayTasks = (state.tasks || []).filter(t => t && t.targetDate === TODAY_DATE);
+    const dayGarden = state.gardenData[TODAY_DAY_NUM];
+    const erasedCount = (dayGarden && dayGarden.erasedTasksCount) || 0;
+    const completedTasksCount = todayTasks.filter(t => t.status === 'COMPLETED').length + erasedCount;
+    const plannedTasksCount = todayTasks.length + erasedCount;
+    const allTasksDone = plannedTasksCount > 0 && completedTasksCount >= plannedTasksCount;
+
+    if (dayGarden.stage === 4 || dayGarden.highestEarnedStage === 4) {
+      if (!allTasksDone || state.focusTimeLoggedToday < 45) {
+        dayGarden.stage = Math.min(3, dayGarden.stage || 3);
+        dayGarden.highestEarnedStage = Math.min(3, dayGarden.highestEarnedStage || 3);
       }
     }
   }
@@ -2457,8 +2472,12 @@ function checkDailyRollover() {
     }
   }
 
-  // 4. Sanitize focus to reflect 0 completed minutes today
+  // 4. Sanitize focus to reflect 0 completed minutes and 0 sessions today
   if (AppState) {
+    AppState.completedFocusSessionsToday = 0;
+    if (AppState.gardenData && AppState.gardenData[TODAY_DAY_NUM]) {
+      AppState.gardenData[TODAY_DAY_NUM].completedSessions = 0;
+    }
     sanitizeFocusAndGrowthData(AppState);
     saveState();
   }
@@ -5696,6 +5715,7 @@ function openFocusSession(taskId = null) {
 }
 
 function endFocusSession() {
+  dismissDeepFocusCelebration();
   if (FocusTimer.isRunning) {
     clearInterval(FocusTimer.intervalId);
     FocusTimer.isRunning = false;
@@ -5765,6 +5785,73 @@ function endFocusSession() {
         setTimeout(() => taskCard.classList.remove('task-card-highlighted'), 2000);
       }
     }, 150);
+  }
+}
+
+let celebrationDismissTimer = null;
+
+function triggerDeepFocusCompletionCelebration() {
+  const container = document.getElementById('focus-celebration-container');
+  const clockContent = document.querySelector('.clock-time-content');
+  if (!container) return;
+
+  if (celebrationDismissTimer) {
+    clearTimeout(celebrationDismissTimer);
+    celebrationDismissTimer = null;
+  }
+
+  // Play subtle chalk scratch sound
+  if (typeof AudioEngine !== 'undefined' && AudioEngine.playChalkScratch) {
+    AudioEngine.playChalkScratch();
+  }
+
+  // Hide standard time readout
+  if (clockContent) {
+    clockContent.classList.add('celebration-active');
+  }
+
+  // Reset and activate celebration overlay
+  container.classList.remove('is-celebrating');
+  void container.offsetWidth; // trigger reflow for smooth re-animation
+  container.classList.add('is-celebrating');
+
+  // Auto-dismiss smoothly after 5.5 seconds and reset timer back to initial ready state
+  celebrationDismissTimer = setTimeout(() => {
+    dismissDeepFocusCelebration();
+  }, 5500);
+
+  // Allow clicking directly on celebration overlay to dismiss
+  container.onclick = () => {
+    dismissDeepFocusCelebration();
+  };
+}
+
+function dismissDeepFocusCelebration() {
+  const container = document.getElementById('focus-celebration-container');
+  const clockContent = document.querySelector('.clock-time-content');
+  if (celebrationDismissTimer) {
+    clearTimeout(celebrationDismissTimer);
+    celebrationDismissTimer = null;
+  }
+  if (container) {
+    container.classList.remove('is-celebrating');
+    container.onclick = null;
+  }
+  if (clockContent) {
+    clockContent.classList.remove('celebration-active');
+  }
+  // If timer ended at 0, reset cleanly to ready duration
+  if (FocusTimer.remainingSeconds <= 0 && !FocusTimer.isRunning) {
+    FocusTimer.remainingSeconds = FocusTimer.durationSeconds;
+    FocusTimer.elapsedSeconds = 0;
+    FocusTimer.creditedMinutes = 0;
+    const statusLabel = document.getElementById('timer-status-label');
+    if (statusLabel) {
+      statusLabel.innerText = FocusTimer.mode === 'REST' ? 'Gentle Rest & Recharge' : 'Ready to focus';
+    }
+    if (typeof updateDisplay === 'function') {
+      updateDisplay();
+    }
   }
 }
 
@@ -6342,6 +6429,7 @@ function initDeepFocus() {
   }
 
   function setTimerDuration(mins) {
+    dismissDeepFocusCelebration();
     FocusTimer.durationSeconds = mins * 60;
     FocusTimer.remainingSeconds = FocusTimer.durationSeconds;
     FocusTimer.elapsedSeconds = 0;
@@ -6436,6 +6524,12 @@ function initDeepFocus() {
         updateSessionActiveState();
       } else {
         // Start or resume timer
+        dismissDeepFocusCelebration();
+        if (FocusTimer.remainingSeconds <= 0) {
+          FocusTimer.remainingSeconds = FocusTimer.durationSeconds;
+          FocusTimer.elapsedSeconds = 0;
+          FocusTimer.creditedMinutes = 0;
+        }
         AudioEngine.initContext();
         FocusTimer.isRunning = true;
         FocusTimer.lastTickTimestamp = Date.now();
@@ -6484,6 +6578,24 @@ function initDeepFocus() {
               syncCalmingFocusMessage(true);
 
               if (FocusTimer.mode === 'FOCUS') {
+                // One completed focus session contributes the same growth value as one completed task
+                AppState.completedFocusSessionsToday = (AppState.completedFocusSessionsToday || 0) + 1;
+                if (!AppState.gardenData[TODAY_DAY_NUM]) {
+                  AppState.gardenData[TODAY_DAY_NUM] = {
+                    specimen: BOTANICAL_SPECIMENS[TODAY_DAY_NUM - 1] || 'Sunburst Dahlia',
+                    tasks: 0,
+                    planned: 0,
+                    focus: 0,
+                    stage: 0
+                  };
+                }
+                AppState.gardenData[TODAY_DAY_NUM].completedSessions = AppState.completedFocusSessionsToday;
+                saveState();
+                updateGlobalGrowthMetrics();
+
+                // Trigger subtle celebratory animation directly on Deep Focus screen
+                triggerDeepFocusCompletionCelebration();
+
                 showToast(`🌸 Focus complete! ${FocusTimer.creditedMinutes}m credited to today's garden flower.`);
               } else {
                 showToast('🌱 Gentle rest complete. Mind refreshed & centered!');
@@ -6497,6 +6609,7 @@ function initDeepFocus() {
 
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
+      dismissDeepFocusCelebration();
       clearInterval(FocusTimer.intervalId);
       FocusTimer.isRunning = false;
       FocusTimer.remainingSeconds = FocusTimer.durationSeconds;
@@ -6644,40 +6757,34 @@ function updateGlobalGrowthMetrics() {
   const completedCount = activeCompleted + erasedCount;
   const activePlanned = todayTasks.length + erasedCount;
   const focusMins = AppState.focusTimeLoggedToday || 0;
+  const completedSessions = AppState.completedFocusSessionsToday || (dayGarden.completedSessions || 0);
 
   delete dayGarden.highestPlannedCount;
 
   // 1. Separate Progress Garden & Habit Ledger:
-  // Botanical growth depends ONLY on completed daily tasks and Deep Focus minutes.
-  // Habit rhythms are tracked independently in Habit Ledger.
+  // Botanical growth depends on completed daily tasks and completed Deep Focus sessions/minutes.
+  // One completed focus session contributes the same growth value as one completed task, regardless of session duration.
+  const growthUnits = completedCount + completedSessions;
   let calculatedStage = 0;
   const allTasksDone = activePlanned > 0 && completedCount >= activePlanned;
 
-  if (completedCount === 0 && focusMins === 0) {
+  if (growthUnits === 0 && focusMins === 0) {
     calculatedStage = 0; // Stage 0: Resting Seed
   } else if (allTasksDone && focusMins >= 45) {
     // Stage 4: Full Bloom strictly requires BOTH: 100% planned tasks completed AND >= 45m genuine focus recorded today.
-    // Completing all tasks without focus must not bloom; reaching 45m focus without all tasks must not bloom.
+    // Completing all tasks without 45m focus must not bloom; completing focus sessions without completing all tasks must NEVER bloom.
     calculatedStage = 4;
-  } else if (
-    allTasksDone ||
-    focusMins >= 45 ||
-    (activePlanned > 0 && (completedCount / activePlanned) >= 0.6) ||
-    completedCount >= 3 ||
-    (completedCount >= 2 && focusMins >= 25)
-  ) {
-    // Stage 3: Swelling Bud (Significant progress; or one condition for bloom met but not both)
+  } else if (growthUnits >= 3 || allTasksDone) {
+    // Stage 3: Swelling Bud (3+ units of tasks/sessions, or all tasks completed awaiting 45m focus requirement)
     calculatedStage = 3;
-  } else if (
-    completedCount >= 2 ||
-    focusMins >= 25 ||
-    (completedCount >= 1 && focusMins >= 10)
-  ) {
-    // Stage 2: Branching Stem (Further progress)
+  } else if (growthUnits >= 2) {
+    // Stage 2: Branching Stem (2 units of tasks/sessions)
     calculatedStage = 2;
-  } else {
-    // Stage 1: The Sprout (First momentum: at least 1 task completed or any focus > 0)
+  } else if (growthUnits >= 1 || focusMins > 0) {
+    // Stage 1: The Sprout (1 unit of task or session, or focus started)
     calculatedStage = 1;
+  } else {
+    calculatedStage = 0;
   }
 
   // 2. Strict Full Bloom Preservation Policy:
@@ -6701,6 +6808,7 @@ function updateGlobalGrowthMetrics() {
   AppState.gardenData[TODAY_DAY_NUM].tasks = completedCount;
   AppState.gardenData[TODAY_DAY_NUM].planned = activePlanned;
   AppState.gardenData[TODAY_DAY_NUM].focus = focusMins;
+  AppState.gardenData[TODAY_DAY_NUM].completedSessions = completedSessions;
   AppState.gardenData[TODAY_DAY_NUM].stage = earnedStage;
   AppState.gardenData[TODAY_DAY_NUM].highestEarnedStage = earnedStage;
   delete AppState.gardenData[TODAY_DAY_NUM].highestPlannedCount;
