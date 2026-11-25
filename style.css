@@ -2936,7 +2936,7 @@ body.theme-white-board .habit-card-bar-track {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 40px 30px 46px 30px;
+  padding: 24px 30px 24px 30px;
   min-height: calc(100vh - 160px);
   justify-content: flex-start;
   width: 100%;
@@ -2976,7 +2976,7 @@ body.theme-dark-slate .deep-focus-fullscreen-container {
   justify-content: space-between;
   align-items: center;
   padding: 0 6px;
-  margin-bottom: clamp(18px, 2.8vh, 28px);
+  margin-bottom: 0;
   position: relative;
   z-index: 10;
   box-sizing: border-box;
@@ -3027,6 +3027,7 @@ body.theme-parchment-cream .maximize-focus-btn:hover {
 .focus-main-cluster {
   width: 100%;
   max-width: 580px;
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3036,14 +3037,15 @@ body.theme-parchment-cream .maximize-focus-btn:hover {
   z-index: 5;
 }
 
-/* 3. Task Anchor Pill Neatly Positioned Above Timer */
+/* 3. Task Anchor Pill Neatly Positioned Above Timer (32-40px spacing to timer) */
 .focus-task-headline-wrap {
-  margin: 0 0 clamp(18px, 2.8vh, 26px) 0;
+  margin: 0 0 36px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   z-index: 10;
+  width: 100%;
 }
 
 .focus-task-pill-selector {
@@ -3226,14 +3228,14 @@ body.theme-parchment-cream .time-status-underline {
   color: #2E8B66;
 }
 
-/* 5. Primary Controls (Directly Below Timer) */
+/* 5. Primary Controls (Directly Below Timer - approx 32px spacing) */
 .focus-primary-controls-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-top: clamp(20px, 2.8vh, 30px);
-  margin-bottom: clamp(14px, 2vh, 22px);
+  margin-top: 32px;
+  margin-bottom: 0;
   position: relative;
   z-index: 5;
 }
@@ -3306,13 +3308,14 @@ body.focus-session-active .end-btn {
   display: inline-flex !important;
 }
 
-/* 6. Secondary Options: Compact Horizontal Control Row (Focus To-Do Style) */
+/* 6. Secondary Options: Compact Horizontal Control Row (20-24px spacing from button) */
 .focus-secondary-control-bar {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 2px;
+  margin-top: 22px;
+  margin-bottom: 0;
   position: relative;
   z-index: 25;
 }
@@ -3781,14 +3784,14 @@ body.focus-maximized .deep-focus-fullscreen-container {
   height: 100vh !important;
   height: 100dvh !important;
   max-width: 100vw !important;
-  padding: clamp(32px, 4.5vh, 40px) clamp(24px, 3.5vw, 44px) !important;
+  padding: clamp(20px, 3vh, 32px) clamp(24px, 3.5vw, 44px) !important;
   margin: 0 !important;
   border: none !important;
   background: transparent !important;
   box-shadow: none !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: flex-start !important;
+  justify-content: space-between !important;
   align-items: center !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
@@ -3844,7 +3847,7 @@ body.focus-maximized .focus-top-bar {
   align-items: center;
   border-bottom: none !important;
   padding: 0;
-  margin-bottom: clamp(10px, 1.8vh, 18px);
+  margin-bottom: 0 !important;
   position: relative;
   z-index: 10;
   flex-shrink: 0;
@@ -3928,46 +3931,54 @@ body.focus-maximized .maximize-focus-btn:hover {
 
 /* 5. Centered Cohesive Experience Cluster & Layout */
 .focus-body-layout {
+  flex: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   position: relative;
   box-sizing: border-box;
+  min-height: 0;
+  padding-top: 28px;
+  padding-bottom: 0;
 }
 
 body.focus-maximized .focus-body-layout {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 0;
-  width: 100%;
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  padding-top: clamp(20px, 3vh, 32px) !important;
+  padding-bottom: 0 !important;
 }
 
 body.focus-maximized .focus-main-cluster {
-  margin: auto;
-  width: 100%;
-  max-width: min(94vw, 780px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(6px, 1.2vh, 12px);
-  flex-shrink: 1;
+  margin: auto !important;
+  width: 100% !important;
+  max-width: min(94vw, 840px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  flex-shrink: 0 !important;
   z-index: 5;
 }
 
 /* Task Header & Task Selector Pill */
 body.focus-maximized .focus-task-headline-wrap {
-  margin: 0;
+  margin: 0 0 clamp(32px, 4.2vh, 40px) 0 !important;
   max-width: 440px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 4px;
   flex-shrink: 0;
+  width: 100%;
 }
 
 .focus-task-pill-selector {
@@ -4053,8 +4064,8 @@ body.focus-maximized .focus-clock-centerpiece {
 /* 6. Clock Display Wrapper & Segmented Dashed Ring Dial */
 .clock-display-wrapper {
   position: relative;
-  width: 255px;
-  height: 255px;
+  width: 270px;
+  height: 270px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4063,8 +4074,8 @@ body.focus-maximized .focus-clock-centerpiece {
 
 .clock-ring-svg-container {
   position: relative;
-  width: 255px;
-  height: 255px;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4077,10 +4088,12 @@ body.focus-maximized .focus-clock-centerpiece {
   transform: none !important;
 }
 
-/* Maximized Mode: responsive dashed ring scaled to browser height */
+/* Maximized Mode: responsive dashed ring scaled to browser height and width */
 body.focus-maximized .clock-display-wrapper {
-  width: clamp(265px, 38vh, 380px);
-  height: clamp(265px, 38vh, 380px);
+  width: min(440px, 46vh, 50vw);
+  height: min(440px, 46vh, 50vw);
+  min-width: 280px;
+  min-height: 280px;
   margin: 0 auto;
   position: relative;
   filter: none !important;
@@ -4250,30 +4263,39 @@ body.theme-parchment-cream .time-status-underline {
 
 /* 7. Maximized Deep Focus Hierarchy & Scaling */
 body.focus-maximized .clock-display-wrapper {
-  width: clamp(300px, 46vh, 420px);
-  height: clamp(300px, 46vh, 420px);
+  width: min(440px, 46vh, 50vw) !important;
+  height: min(440px, 46vh, 50vw) !important;
+  min-width: 280px !important;
+  min-height: 280px !important;
+  margin: 0 auto !important;
+}
+
+body.focus-maximized .clock-ring-svg-container {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 body.focus-maximized .time-readout {
-  font-size: clamp(58px, 9vh, 84px);
+  font-size: clamp(66px, 10.5vh, 96px) !important;
 }
 
 body.focus-maximized .time-label {
-  font-size: clamp(17px, 2.4vh, 22px);
+  font-size: clamp(16px, 2.4vh, 22px) !important;
 }
 
 body.focus-maximized .focus-primary-controls-wrap {
-  margin-top: clamp(22px, 3.2vh, 34px);
-  margin-bottom: clamp(16px, 2.2vh, 24px);
+  margin-top: clamp(24px, 3.6vh, 34px) !important;
+  margin-bottom: 0 !important;
 }
 
 body.focus-maximized .play-btn {
-  padding: clamp(10px, 1.4vh, 12px) clamp(26px, 3.2vw, 34px);
-  font-size: 14px;
+  padding: clamp(10px, 1.4vh, 12px) clamp(28px, 3.2vw, 36px) !important;
+  font-size: 14.5px !important;
 }
 
 body.focus-maximized .focus-secondary-control-bar {
-  margin-top: 4px;
+  margin-top: clamp(16px, 2.4vh, 22px) !important;
+  margin-bottom: 0 !important;
 }
 
 /* Height-based responsive adaptations for compact viewports */
@@ -4718,14 +4740,7 @@ body.theme-parchment-cream .chart-bar-fill {
   padding: 5px 12px;
 }
 
-.focus-task-headline-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 14px;
-  margin-bottom: 4px;
-  max-width: 680px;
-}
+
 
 .focus-task-badge {
   display: inline-flex;
@@ -4755,14 +4770,7 @@ body.theme-parchment-cream .chart-bar-fill {
   margin-top: 8px;
 }
 
-.focus-top-bar {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 14px;
-  border-bottom: 1px dashed var(--border-chalk);
-}
+
 
 .focus-heading-wrap {
   display: flex;
@@ -4848,19 +4856,7 @@ body.mode-gentle-rest .ring-progress {
   font-size: 11px;
 }
 
-.focus-clock-centerpiece {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 6px 0 10px 0;
-}
 
-.clock-display-wrapper {
-  position: relative;
-  width: 255px;
-  height: 255px;
-  margin-bottom: 8px;
-}
 
 .clock-progress-ring {
   width: 100%;
@@ -7182,7 +7178,8 @@ body.theme-parchment-cream .rhythm-ring-percentage {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 16px 0 18px 0;
+  margin: 0;
+  width: 100%;
 }
 
 .clock-display-wrapper {
@@ -7190,12 +7187,15 @@ body.theme-parchment-cream .rhythm-ring-percentage {
   align-items: center;
   justify-content: center;
   position: relative;
+  width: 270px;
+  height: 270px;
+  margin: 0 auto;
 }
 
 .clock-ring-svg-container {
   position: relative;
-  width: 270px;
-  height: 270px;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
