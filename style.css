@@ -44,7 +44,7 @@
   --logo-text-color: #FAF8F5;
   --logo-sub-color: #8E9E96;
 
-  --nav-width: clamp(220px, 18vw, 300px);
+  --nav-width: 18vw;
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 18px;
@@ -216,7 +216,7 @@ body {
 .side-nav {
   width: var(--nav-width);
   min-width: 220px;
-  max-width: 300px;
+  max-width: none;
   height: 100vh;
   height: 100dvh;
   max-height: 100dvh;
@@ -240,8 +240,8 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  padding-bottom: 12px;
-  margin-bottom: 10px;
+  padding-bottom: 14px;
+  margin-bottom: 12px;
   border-bottom: 1px dashed var(--border-chalk);
   text-align: center;
   flex-shrink: 0;
@@ -249,7 +249,7 @@ body {
 
 .brand-primary-logo-link {
   width: 100%;
-  max-width: 220px;
+  max-width: 260px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -272,7 +272,7 @@ body {
 .chalkflow-primary-logo {
   width: 100%;
   height: auto;
-  max-height: 50px;
+  max-height: 56px;
   background: transparent !important;
   box-shadow: none !important;
   filter: none !important;
@@ -406,14 +406,14 @@ body {
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 12px;
-  min-height: 44px;
-  height: 44px;
+  gap: 14px;
+  padding: 0 14px;
+  min-height: 48px;
+  height: 48px;
   box-sizing: border-box;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -433,14 +433,14 @@ body {
 }
 
 .nav-icon {
-  font-size: 20px;
-  width: 24px;
+  font-size: 22px;
+  width: 26px;
   text-align: center;
   flex-shrink: 0;
 }
 
 .nav-label {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   flex-grow: 1;
 }
@@ -448,9 +448,9 @@ body {
 .nav-badge {
   background: var(--bg-hover);
   color: var(--chalk-amber);
-  font-size: 12px;
-  padding: 2px 7px;
-  border-radius: 10px;
+  font-size: 12.5px;
+  padding: 2px 8px;
+  border-radius: 12px;
   border: 1px solid var(--border-chalk);
 }
 
@@ -479,14 +479,14 @@ body {
 .user-profile-strip {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 10px;
-  min-height: 40px;
+  gap: 12px;
+  padding: 8px 12px;
+  min-height: 46px;
   box-sizing: border-box;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
-  border-radius: var(--radius-sm);
-  margin-bottom: 8px;
+  border-radius: 10px;
+  margin-bottom: 10px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -498,8 +498,8 @@ body {
 }
 
 .user-avatar-circle {
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(255, 209, 102, 0.25), rgba(224, 122, 95, 0.25));
   border: 1.5px solid var(--chalk-amber);
@@ -507,7 +507,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13.5px;
+  font-size: 15px;
   font-weight: 700;
   flex-shrink: 0;
   text-shadow: 0 0 6px rgba(255, 209, 102, 0.4);
@@ -521,7 +521,7 @@ body {
 }
 
 .user-profile-name {
-  font-size: 13.5px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--text-primary);
   white-space: nowrap;
@@ -530,7 +530,7 @@ body {
 }
 
 .user-profile-role {
-  font-size: 11.5px;
+  font-size: 12.5px;
   color: var(--text-muted);
 }
 
@@ -538,7 +538,7 @@ body {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 11px;
+  font-size: 12px;
   padding: 2px 4px;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -553,10 +553,10 @@ body {
 }
 
 .section-micro-label {
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--text-muted);
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
 
 .theme-options-group {
@@ -568,15 +568,15 @@ body {
 .theme-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 10px;
-  min-height: 32px;
+  gap: 10px;
+  padding: 7px 12px;
+  min-height: 36px;
   box-sizing: border-box;
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-muted);
-  font-size: 12.5px;
+  font-size: 13.5px;
   cursor: pointer;
   transition: all 0.2s;
   text-align: left;
@@ -594,8 +594,8 @@ body {
 }
 
 .theme-swatch {
-  width: 13px;
-  height: 13px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.25);
   flex-shrink: 0;
@@ -721,10 +721,10 @@ body {
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
-  font-size: 15px;
-  padding: 0 14px;
-  min-height: 42px;
-  height: 42px;
+  font-size: 15.5px;
+  padding: 0 16px;
+  min-height: 44px;
+  height: 44px;
   box-sizing: border-box;
   outline: none;
   flex-grow: 1;
@@ -740,21 +740,21 @@ body {
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  padding: 0 12px;
-  min-height: 40px;
-  height: 40px;
+  font-size: 14.5px;
+  padding: 0 14px;
+  min-height: 42px;
+  height: 42px;
   box-sizing: border-box;
   outline: none;
 }
 
 .chalk-btn {
-  padding: 0 20px;
-  min-height: 42px;
-  height: 42px;
+  padding: 0 22px;
+  min-height: 44px;
+  height: 44px;
   box-sizing: border-box;
   border-radius: var(--radius-sm);
-  font-size: 15px;
+  font-size: 15.5px;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
@@ -832,8 +832,8 @@ body {
 .quick-add-form .primary-btn {
   min-height: 44px;
   height: 44px;
-  padding: 0 20px;
-  font-size: 15px;
+  padding: 0 22px;
+  font-size: 15.5px;
   font-weight: 600;
   white-space: nowrap;
   box-sizing: border-box;
@@ -918,8 +918,8 @@ body {
   background: var(--bg-surface);
   border: 1px solid var(--border-chalk);
   border-radius: var(--radius-md);
-  padding: 12px 20px;
-  min-height: 64px;
+  padding: 14px 22px;
+  min-height: 66px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1039,7 +1039,7 @@ body {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 4px;
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--text-muted);
 }
 
@@ -1047,7 +1047,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 13px;
+  font-size: 13.5px;
 }
 
 .task-actions {
@@ -1330,14 +1330,14 @@ body {
 .upcoming-buckets-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
+  gap: 18px;
 }
 
 .bucket-column {
   min-height: 280px;
   display: flex;
   flex-direction: column;
-  padding: 18px 20px;
+  padding: 20px 22px;
   border-radius: var(--radius-md);
   transition: min-height 0.2s ease, opacity 0.2s ease;
 }
@@ -1363,7 +1363,7 @@ body {
 }
 
 .bucket-header h4 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
@@ -1371,7 +1371,7 @@ body {
 }
 
 .bucket-sub-date {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--text-muted);
   font-family: 'Inter', -apple-system, sans-serif;
   letter-spacing: 0.2px;
@@ -1382,7 +1382,7 @@ body {
   border: 1px solid var(--border-chalk);
   padding: 4px 10px;
   border-radius: 12px;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--text-muted);
 }
@@ -1412,8 +1412,8 @@ body {
 
 /* Compact Upcoming Task Card with proportional spacing */
 .upcoming-task-card {
-  padding: 12px 16px;
-  min-height: 56px;
+  padding: 14px 18px;
+  min-height: 58px;
   gap: 8px;
 }
 
@@ -1439,7 +1439,7 @@ body {
 }
 
 .upcoming-task-card .task-title {
-  font-size: 15px;
+  font-size: 15.5px;
   font-weight: 600;
   line-height: 1.3;
   color: var(--text-primary);
@@ -1455,7 +1455,7 @@ body {
 
 .upcoming-task-card .meta-pill {
   padding: 3px 8px;
-  font-size: 12px;
+  font-size: 12.5px;
 }
 
 /* Quick Date Picker Pill on Upcoming Task Cards */
@@ -1522,7 +1522,7 @@ body {
    9. SURFACE 3: PROGRESS GARDEN (RICH WILDFLOWER MEADOW & BEES)
    -------------------------------------------------------------------------- */
 .hero-meadow-card {
-  padding: 20px;
+  padding: 20px 24px;
   margin-bottom: 20px;
 }
 
@@ -1589,13 +1589,13 @@ body {
 }
 
 .meadow-heading {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .meadow-subtext {
-  font-size: 13.5px;
+  font-size: 14px;
   color: var(--text-muted);
   margin-top: 3px;
 }
@@ -1611,13 +1611,13 @@ body {
 }
 
 .stat-val {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--chalk-mint);
 }
 
 .stat-lbl {
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -2446,7 +2446,7 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
 }
 
 .habit-overview-card {
-  padding: 16px 20px;
+  padding: 20px 24px;
 }
 
 .habit-overview-header {
@@ -2457,13 +2457,13 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
 }
 
 .habit-overview-header h3 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .habit-overview-subtext {
-  font-size: 13.5px;
+  font-size: 14px;
   color: var(--text-muted);
   margin-top: 2px;
 }
@@ -2497,10 +2497,10 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
    HABIT CONSISTENCY LINE GRAPH CARD
    -------------------------------------------------------------------------- */
 .habit-graph-card {
-  padding: 12px 16px;
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
 }
 
 .habit-graph-header {
@@ -2518,7 +2518,7 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
 }
 
 .habit-graph-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text-primary);
   display: flex;
@@ -2528,7 +2528,7 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
 }
 
 .habit-graph-subtext {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--text-muted);
 }
 
@@ -2731,14 +2731,14 @@ body.theme-white-board .habit-graph-viewport-wrap {
 }
 
 .habit-header-row h4 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
 }
 
 .habit-subtext {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--text-muted);
 }
 
@@ -2753,8 +2753,8 @@ body.theme-white-board .habit-graph-viewport-wrap {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   border-radius: var(--radius-md);
-  padding: 12px 18px;
-  min-height: 60px;
+  padding: 14px 20px;
+  min-height: 64px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -2778,22 +2778,22 @@ body.theme-white-board .habit-graph-viewport-wrap {
 .habit-info-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex: 1;
   min-width: 0;
 }
 
 .habit-icon {
-  font-size: 18px;
+  font-size: 22px;
   flex-shrink: 0;
-  width: 24px;
+  width: 28px;
   text-align: center;
 }
 
 .habit-text-wrap {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   min-width: 0;
 }
 
@@ -2804,7 +2804,7 @@ body.theme-white-board .habit-graph-viewport-wrap {
 }
 
 .habit-name {
-  font-size: 15px;
+  font-size: 15.5px;
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
@@ -2813,7 +2813,7 @@ body.theme-white-board .habit-graph-viewport-wrap {
 }
 
 .habit-tally {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 
@@ -2828,16 +2828,16 @@ body.theme-white-board .habit-graph-viewport-wrap {
 .habit-stepper-wrap {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: var(--bg-hover);
   border: 1px solid var(--border-chalk);
   border-radius: 20px;
-  padding: 3px 8px;
+  padding: 4px 10px;
 }
 
 .habit-step-btn {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: 1px solid var(--border-chalk);
   background: var(--bg-surface-elevated);
@@ -2845,7 +2845,7 @@ body.theme-white-board .habit-graph-viewport-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
   transition: all 0.18s ease;
 }
@@ -3076,7 +3076,7 @@ body.theme-dark-slate .deep-focus-fullscreen-container {
 
 .focus-screen-heading {
   font-family: 'Caveat', cursive, var(--font-chalk);
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
@@ -3216,8 +3216,8 @@ body.theme-parchment-cream .focus-task-icon {
 
 .clock-display-wrapper {
   position: relative;
-  width: clamp(270px, 38vh, 330px);
-  height: clamp(270px, 38vh, 330px);
+  width: clamp(360px, 44vh, 420px);
+  height: clamp(360px, 44vh, 420px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3282,7 +3282,7 @@ body.theme-parchment-cream .clock-display-wrapper::before {
 
 .time-readout {
   font-family: 'Caveat', cursive, var(--font-chalk) !important;
-  font-size: clamp(52px, 8vh, 72px);
+  font-size: clamp(78px, 9vh, 92px);
   font-weight: 700;
   letter-spacing: 0px;
   line-height: 1;
@@ -4183,8 +4183,8 @@ body.focus-maximized .focus-clock-centerpiece {
 /* 6. Clock Display Wrapper & Segmented Dashed Ring Dial */
 .clock-display-wrapper {
   position: relative;
-  width: clamp(360px, 42vh, 400px);
-  height: clamp(360px, 42vh, 400px);
+  width: clamp(360px, 44vh, 420px);
+  height: clamp(360px, 44vh, 420px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4335,7 +4335,7 @@ body.theme-parchment-cream.mode-gentle-rest .timer-dash.active {
 
 .time-readout {
   font-family: 'Caveat', cursive, var(--font-chalk) !important;
-  font-size: clamp(76px, 8.5vh, 88px);
+  font-size: clamp(78px, 9vh, 92px);
   font-weight: 700;
   letter-spacing: 0px;
   line-height: 1;
@@ -4418,56 +4418,56 @@ body.focus-maximized .focus-secondary-control-bar {
 }
 
 /* Height-based responsive adaptations for compact viewports */
-@media (max-height: 720px) {
+@media (max-height: 600px) {
   .deep-focus-fullscreen-container,
   body.focus-maximized .deep-focus-fullscreen-container {
-    padding: 16px 16px 20px 16px !important;
+    padding: 14px 16px 16px 16px !important;
     gap: 6px;
   }
   .focus-top-bar,
   body.focus-maximized .focus-top-bar {
-    margin-bottom: 8px !important;
+    margin-bottom: 6px !important;
   }
   .focus-task-headline-wrap,
   body.focus-maximized .focus-task-headline-wrap {
-    margin-bottom: 10px !important;
+    margin-bottom: 8px !important;
   }
   .clock-display-wrapper,
   body.focus-maximized .clock-display-wrapper {
-    width: clamp(210px, 32vh, 250px) !important;
-    height: clamp(210px, 32vh, 250px) !important;
+    width: clamp(260px, 38vh, 300px) !important;
+    height: clamp(260px, 38vh, 300px) !important;
   }
   .time-readout,
   body.focus-maximized .time-readout {
-    font-size: clamp(44px, 7vh, 56px) !important;
+    font-size: clamp(56px, 8vh, 68px) !important;
   }
   .focus-primary-controls-wrap,
   body.focus-maximized .focus-primary-controls-wrap {
-    margin-top: 12px !important;
-    margin-bottom: 8px !important;
+    margin-top: 10px !important;
+    margin-bottom: 6px !important;
   }
 }
 
-@media (max-height: 620px) {
+@media (max-height: 500px) {
   .deep-focus-fullscreen-container,
   body.focus-maximized .deep-focus-fullscreen-container {
-    padding: 10px 12px 14px 12px !important;
+    padding: 8px 10px 10px 10px !important;
   }
   .clock-display-wrapper,
   body.focus-maximized .clock-display-wrapper {
-    width: clamp(170px, 26vh, 200px) !important;
-    height: clamp(170px, 26vh, 200px) !important;
+    width: clamp(200px, 30vh, 230px) !important;
+    height: clamp(200px, 30vh, 230px) !important;
   }
   .time-readout,
   body.focus-maximized .time-readout {
-    font-size: clamp(38px, 6vh, 46px) !important;
+    font-size: clamp(42px, 6.5vh, 52px) !important;
   }
   .time-label-wrap {
     margin-top: 1px !important;
   }
   .focus-task-pill-selector {
     padding: 3px 12px !important;
-    font-size: 12px !important;
+    font-size: 13px !important;
   }
 }
 
@@ -4999,46 +4999,37 @@ body.mode-gentle-rest .ring-progress {
   align-items: center;
 }
 
-.time-readout {
-  font-size: 38px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-}
-
-.time-label {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
 .timer-duration-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   margin-bottom: 12px;
 }
 
 .duration-segmented-control {
   display: inline-flex;
   align-items: center;
-  padding: 3px;
+  padding: 4px;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   border-radius: 20px;
-  gap: 2px;
+  gap: 4px;
 }
 
 .duration-pill-btn {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
-  padding: 5px 12px;
+  padding: 6px 16px;
+  min-height: 36px;
   border-radius: 16px;
   cursor: pointer;
   transition: all 0.18s ease;
   user-select: none;
+  box-sizing: border-box;
 }
 
 .duration-pill-btn:hover {
@@ -5056,18 +5047,19 @@ body.mode-gentle-rest .ring-progress {
 .custom-duration-inline-input-wrap {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: 16px;
   animation: fadeIn 0.18s ease;
 }
 
 .custom-duration-input {
-  width: 52px;
-  padding: 3px 6px;
-  font-size: 13px;
+  width: 58px;
+  height: 36px;
+  padding: 0 6px;
+  font-size: 14px;
   text-align: center;
   border-radius: 6px;
   border: 1px solid var(--border-chalk);
@@ -5076,34 +5068,20 @@ body.mode-gentle-rest .ring-progress {
 }
 
 .custom-min-suffix {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 
 .custom-duration-set-btn,
 .custom-duration-cancel-btn {
-  padding: 3px 8px;
-  font-size: 11px;
+  padding: 6px 14px;
+  font-size: 13.5px;
   border-radius: 10px;
 }
 
 .timer-action-row {
   display: flex;
-  gap: 10px;
-}
-
-.timer-btn {
-  padding: 9px 20px;
-  font-size: 13px;
-}
-
-.play-btn {
-  background: var(--chalk-mint);
-  color: #181A1B;
-}
-
-.play-btn.running {
-  background: var(--chalk-amber);
+  gap: 12px;
 }
 
 .timer-btn.end-btn {
@@ -6117,7 +6095,7 @@ body.theme-vintage-green .ring-bg {
 }
 
 .metric-title {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 2px 0;
@@ -6172,7 +6150,7 @@ body.theme-vintage-green .ring-bg {
 }
 
 .dash-box-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text-primary);
   display: flex;
@@ -6375,9 +6353,9 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-flower-display {
-  width: 150px;
-  height: 150px;
-  border-radius: 18px;
+  width: 170px;
+  height: 170px;
+  border-radius: 20px;
   background: var(--bg-surface-elevated);
   display: flex;
   align-items: center;
@@ -6418,7 +6396,7 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-growth-quote {
-  font-size: 14px;
+  font-size: 14.5px;
   font-style: italic;
   color: var(--text-muted);
   line-height: 1.5;
@@ -6432,11 +6410,11 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-bloom-hint {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--chalk-amber);
   background: rgba(255, 209, 102, 0.08);
   border: 1px dashed rgba(255, 209, 102, 0.35);
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 8px;
   display: inline-flex;
   align-items: center;
@@ -6450,9 +6428,9 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 6px;
-  margin-top: 14px;
-  padding: 12px 18px;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 14px 20px;
   background: var(--bg-surface-elevated);
   border-radius: 12px;
   border: 1px solid var(--border-chalk);
@@ -6462,7 +6440,7 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 .dash-stages-stepper::before {
   content: '';
   position: absolute;
-  top: 18px;
+  top: 20px;
   left: 24px;
   right: 24px;
   height: 2px;
@@ -6475,13 +6453,13 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
-  font-size: 12px;
+  gap: 6px;
+  font-size: 12.5px;
   color: var(--text-faint);
   position: relative;
   z-index: 1;
   transition: all 0.2s ease;
-  min-width: 48px;
+  min-width: 52px;
 }
 
 .stepper-step .step-dot {
@@ -6548,16 +6526,16 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 
 .dash-plant-card {
   width: 100%;
-  min-height: 175px;
+  min-height: 180px;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   border-radius: 14px;
-  padding: 16px 14px;
+  padding: 18px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 10px;
+  gap: 12px;
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.2s ease, box-shadow 0.2s ease;
   box-sizing: border-box;
 }
@@ -6569,15 +6547,15 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-plant-svg-wrap {
-  width: 72px;
-  height: 72px;
+  width: 76px;
+  height: 76px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .dash-plant-name {
-  font-size: 15px;
+  font-size: 15.5px;
   font-weight: 700;
   color: var(--text-primary);
   white-space: nowrap;
@@ -6587,13 +6565,13 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-plant-meta {
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--text-muted);
 }
 
 .dash-plant-badge {
-  font-size: 11px;
-  padding: 4px 10px;
+  font-size: 11.5px;
+  padding: 4px 12px;
   border-radius: 10px;
   background: rgba(6, 214, 160, 0.12);
   color: var(--chalk-mint);
@@ -7022,12 +7000,12 @@ body.theme-parchment-cream .dash-breather-pill-btn:hover {
 .slate-next-suggestion-card {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 12px 18px;
-  margin-bottom: 14px;
+  gap: 10px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
   background: var(--bg-surface);
   border: 1.5px solid var(--border-chalk);
-  border-radius: 11px;
+  border-radius: var(--radius-md);
 }
 
 .suggestion-card-left {
@@ -7038,20 +7016,20 @@ body.theme-parchment-cream .dash-breather-pill-btn:hover {
 }
 
 .suggestion-sparkle-tag {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--chalk-amber);
   letter-spacing: 0.3px;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
 .suggestion-task-title {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 1px 0 3px 0;
+  margin: 2px 0 4px 0;
   line-height: 1.3;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -7061,8 +7039,8 @@ body.theme-parchment-cream .dash-breather-pill-btn:hover {
 .suggestion-meta-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 11.5px;
+  gap: 12px;
+  font-size: 13.5px;
   color: var(--text-muted);
   flex-wrap: wrap;
 }
@@ -7070,32 +7048,42 @@ body.theme-parchment-cream .dash-breather-pill-btn:hover {
 .suggestion-meta-pill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
+  font-size: 13px;
 }
 
 .suggestion-meta-dot {
   opacity: 0.5;
-  font-size: 8px;
+  font-size: 9px;
 }
 
 .suggestion-actions-row {
   display: flex;
   align-items: center;
-  gap: 9px;
-  margin-top: 4px;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .btn-suggestion-focus {
-  padding: 5px 15px;
-  font-size: 12px;
-  border-radius: 8px;
+  min-height: 42px;
+  height: 42px;
+  padding: 0 20px;
+  font-size: 14.5px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .btn-suggestion-cycle {
-  padding: 4px 12px;
-  font-size: 11.5px;
-  border-radius: 8px;
+  min-height: 42px;
+  height: 42px;
+  padding: 0 16px;
+  font-size: 14px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
 }
 
 .slate-tasks-section-header {
@@ -7107,7 +7095,7 @@ body.theme-parchment-cream .dash-breather-pill-btn:hover {
 }
 
 .slate-tasks-heading {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
@@ -7177,32 +7165,33 @@ body.theme-parchment-cream .carried-mini-indicator {
 .bucket-column {
   position: relative;
   overflow: hidden;
-  min-height: 180px;
+  min-height: 220px;
+  padding: 20px 22px;
 }
 
 /* --- 3. Habit Ledger: Clean Minimal Circular Progress Ring Summary Card --- */
 .habit-overview-card {
-  padding: 14px 18px;
+  padding: 20px 24px;
 }
 
 .habit-rhythm-layout {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 20px;
 }
 
 .habit-rhythm-left {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
   min-width: 0;
 }
 
 .rhythm-ring-wrapper {
   position: relative;
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7211,14 +7200,14 @@ body.theme-parchment-cream .carried-mini-indicator {
 
 .rhythm-ring-svg {
   transform: rotate(-90deg);
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
 }
 
 .rhythm-ring-bg {
   fill: none;
   stroke: rgba(247, 245, 235, 0.08);
-  stroke-width: 3.5;
+  stroke-width: 4;
 }
 
 body.theme-parchment-cream .rhythm-ring-bg {
@@ -7236,10 +7225,10 @@ body.theme-vintage-green .rhythm-ring-bg {
 .rhythm-ring-bar {
   fill: none;
   stroke: var(--chalk-mint);
-  stroke-width: 3.5;
+  stroke-width: 4;
   stroke-linecap: round;
-  stroke-dasharray: 175.93;
-  stroke-dashoffset: 175.93;
+  stroke-dasharray: 213.63;
+  stroke-dashoffset: 213.63;
   transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -7256,7 +7245,7 @@ body.theme-vintage-green .rhythm-ring-bg {
 }
 
 .rhythm-ring-percentage {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--chalk-mint);
   letter-spacing: -0.3px;
@@ -7270,12 +7259,12 @@ body.theme-parchment-cream .rhythm-ring-percentage {
 .habit-rhythm-info {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   min-width: 0;
 }
 
 .rhythm-title {
-  font-size: 16.5px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
@@ -7283,7 +7272,7 @@ body.theme-parchment-cream .rhythm-ring-percentage {
 }
 
 .rhythm-subtext {
-  font-size: 12px;
+  font-size: 13.5px;
   color: var(--text-muted);
   margin: 0;
   line-height: 1.4;
@@ -7295,8 +7284,10 @@ body.theme-parchment-cream .rhythm-ring-percentage {
 }
 
 .btn-header-new-habit {
-  font-size: 12px;
-  padding: 6px 13px;
+  font-size: 14px;
+  padding: 0 18px;
+  min-height: 40px;
+  height: 40px;
   border-radius: 8px;
   white-space: nowrap;
 }
@@ -7316,8 +7307,8 @@ body.theme-parchment-cream .rhythm-ring-percentage {
   align-items: center;
   justify-content: center;
   position: relative;
-  width: 270px;
-  height: 270px;
+  width: clamp(360px, 44vh, 420px);
+  height: clamp(360px, 44vh, 420px);
   margin: 0 auto;
 }
 
@@ -7339,62 +7330,62 @@ body.theme-parchment-cream .rhythm-ring-percentage {
 }
 
 .time-readout {
-  font-family: 'Kalam', cursive;
-  font-size: 52px;
+  font-family: 'Caveat', cursive, var(--font-chalk) !important;
+  font-size: clamp(78px, 9vh, 92px) !important;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1;
-  letter-spacing: 2px;
+  letter-spacing: 0px;
 }
 
 .time-label {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--chalk-mint);
   margin-top: 4px;
   letter-spacing: 0.5px;
 }
 
-/* --- 5. Dashboard: Calm & Compact Hierarchy --- */
+/* --- 5. Dashboard: Calm & Balanced Hierarchy --- */
 .dash-breather-banner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  padding: 8px 16px;
-  margin-bottom: 12px;
-  background: rgba(247, 245, 235, 0.03);
+  gap: 16px;
+  padding: 14px 20px;
+  margin-bottom: 16px;
+  background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
 }
 
 .breather-banner-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
 }
 
 .breather-wind-badge {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: rgba(6, 214, 160, 0.12);
+  background: rgba(6, 214, 160, 0.14);
   color: var(--chalk-mint);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 16px;
   flex-shrink: 0;
 }
 
 .breather-banner-text h4 {
-  font-size: 13px;
+  font-size: 15.5px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
 }
 
 .breather-banner-text p {
-  font-size: 11.5px;
+  font-size: 13.5px;
   color: var(--text-muted);
   margin: 0;
 }
@@ -7402,13 +7393,15 @@ body.theme-parchment-cream .rhythm-ring-percentage {
 .dash-breather-pill-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 14px;
+  gap: 8px;
+  padding: 0 18px;
+  min-height: 38px;
+  height: 38px;
   background: rgba(6, 214, 160, 0.15);
   color: var(--chalk-mint);
   border: 1px solid var(--chalk-mint);
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 13.5px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -7422,34 +7415,9 @@ body.theme-parchment-cream .rhythm-ring-percentage {
   box-shadow: 0 2px 8px rgba(6, 214, 160, 0.25);
 }
 
-/* Metric Cards Refinement */
+/* Metric Cards: Unified 20px 24px padding across all cards */
 .metric-card {
-  padding: 12px 14px;
-}
-
-.metric-focus-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-  margin-bottom: 2px;
-}
-
-.metric-bloom-badge {
-  font-size: 10px;
-  padding: 2px 7px;
-  border-radius: 10px;
-  background: rgba(255, 209, 102, 0.15);
-  color: var(--chalk-amber);
-  border: 1px solid rgba(255, 209, 102, 0.3);
-  white-space: nowrap;
-  font-weight: 600;
-}
-
-.metric-bloom-badge.met {
-  background: rgba(6, 214, 160, 0.15);
-  color: var(--chalk-mint);
-  border: 1px solid rgba(6, 214, 160, 0.35);
+  padding: 20px 24px;
 }
 
 /* --- 6. Progress Garden: Completed Flower Visibility & Journal Readability --- */
