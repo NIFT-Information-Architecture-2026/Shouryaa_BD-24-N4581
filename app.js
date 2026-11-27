@@ -4943,14 +4943,15 @@ function renderHabitConsistencyGraph() {
   const todayEntry = days.find(d => d.isToday) || days[days.length - 1];
   updateHabitGraphInspection(todayEntry);
 
-  const svgWidth = 680;
-  const svgHeight = 128; // Reduced height (~18%) to bring active habit routines higher up
-  const padLeft = 40;
-  const padRight = 18;
-  const padTop = 14;
-  const padBottom = 22;
-  const graphW = svgWidth - padLeft - padRight;
-  const graphH = svgHeight - padTop - padBottom;
+  const containerWidth = container.clientWidth || 800;
+  const svgWidth = Math.max(containerWidth, 680);
+  const svgHeight = 280;
+  const padLeft = 52;
+  const padRight = 24;
+  const padTop = 22;
+  const padBottom = 38;
+  const graphW = Math.max(10, svgWidth - padLeft - padRight);
+  const graphH = Math.max(10, svgHeight - padTop - padBottom);
 
   // Generate subtle horizontal grid lines & percentage labels
   let gridLinesSVG = '';
@@ -4958,7 +4959,7 @@ function renderHabitConsistencyGraph() {
     const y = padTop + graphH * (1 - p / 100);
     gridLinesSVG += `
       <line x1="${padLeft}" y1="${y}" x2="${svgWidth - padRight}" y2="${y}" stroke="var(--border-chalk)" stroke-width="1" stroke-dasharray="3,3" opacity="0.28" />
-      <text x="${padLeft - 8}" y="${y + 3.5}" font-family="'Inter', sans-serif" font-size="9.5" fill="var(--text-muted)" text-anchor="end" opacity="0.8">${p}%</text>
+      <text x="${padLeft - 10}" y="${y + 4.5}" font-family="'Inter', sans-serif" font-size="12" fill="var(--text-muted)" text-anchor="end" opacity="0.85">${p}%</text>
     `;
   });
 
@@ -5013,12 +5014,12 @@ function renderHabitConsistencyGraph() {
       const labelFill = d.isToday ? 'var(--chalk-amber)' : (d.isFuture ? 'var(--text-muted)' : 'var(--text-primary)');
       const labelWeight = d.isToday ? '700' : '500';
       xLabelsSVG += `
-        <text x="${d.x}" y="${svgHeight - 6}" font-family="'Inter', sans-serif" font-size="${isWeekly ? 10.5 : 9.5}" fill="${labelFill}" font-weight="${labelWeight}" text-anchor="middle" opacity="${d.isFuture ? 0.45 : 0.9}">${d.label}</text>
+        <text x="${d.x}" y="${padTop + graphH + 22}" font-family="'Inter', sans-serif" font-size="${isWeekly ? 13 : 11.5}" fill="${labelFill}" font-weight="${labelWeight}" text-anchor="middle" opacity="${d.isFuture ? 0.45 : 0.9}">${d.label}</text>
       `;
     } else {
       // Small subtle tick mark
       xLabelsSVG += `
-        <line x1="${d.x}" y1="${padTop + graphH}" x2="${d.x}" y2="${padTop + graphH + 4}" stroke="var(--border-chalk)" stroke-width="1" opacity="0.3" />
+        <line x1="${d.x}" y1="${padTop + graphH}" x2="${d.x}" y2="${padTop + graphH + 6}" stroke="var(--border-chalk)" stroke-width="1" opacity="0.3" />
       `;
     }
   });
@@ -5039,18 +5040,18 @@ function renderHabitConsistencyGraph() {
     const d = pt.day;
     const isToday = d.isToday;
     const halo = isToday ? `
-      <circle cx="${pt.x}" cy="${pt.y}" r="7.5" fill="none" stroke="var(--chalk-amber)" stroke-width="1.2" stroke-dasharray="2.5,2" opacity="0.75" />
+      <circle cx="${pt.x}" cy="${pt.y}" r="8.5" fill="none" stroke="var(--chalk-amber)" stroke-width="1.4" stroke-dasharray="3,2" opacity="0.8" />
     ` : '';
 
     pointsSVG += `
       <g class="graph-point-group ${isToday ? 'is-today' : ''}" data-idx="${ptIdx}" style="cursor: pointer;" tabindex="0" role="button" aria-label="${d.fullDate}: ${d.stats.fullyMetCount || 0} of ${d.stats.totalScheduled || 0} daily goals met (${d.stats.percentage || 0}%)">
-        <circle cx="${pt.x}" cy="${pt.y}" r="14" fill="transparent" class="graph-point-hitbox" />
+        <circle cx="${pt.x}" cy="${pt.y}" r="16" fill="transparent" class="graph-point-hitbox" />
         ${halo}
-        <circle cx="${pt.x}" cy="${pt.y}" r="${isToday ? 5 : 3.8}"
+        <circle cx="${pt.x}" cy="${pt.y}" r="${isToday ? 5.8 : 4.8}"
                 class="graph-point-circle ${isToday ? 'is-today' : ''}"
                 fill="${isToday ? 'var(--chalk-amber)' : 'var(--bg-surface-elevated)'}"
                 stroke="${isToday ? 'var(--chalk-amber)' : 'var(--chalk-mint)'}"
-                stroke-width="2" />
+                stroke-width="2.2" />
       </g>
     `;
   });
@@ -5325,6 +5326,23 @@ function initHabitLedger() {
         if (editModal) editModal.style.display = 'none';
         showToast(`Deleted habit "${h.name}"`);
       }
+    });
+  }
+
+  // Dynamic resize observer so the graph recalculates dimensions whenever its container resizes
+  const graphContainer = document.getElementById('habit-graph-viewport');
+  if (graphContainer && window.ResizeObserver) {
+    let resizeTimer = null;
+    const ro = new ResizeObserver(() => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        renderHabitConsistencyGraph();
+      }, 80);
+    });
+    ro.observe(graphContainer);
+  } else {
+    window.addEventListener('resize', () => {
+      renderHabitConsistencyGraph();
     });
   }
 
