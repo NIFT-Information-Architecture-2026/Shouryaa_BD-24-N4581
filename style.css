@@ -138,16 +138,18 @@ body.theme-parchment-cream {
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: var(--bg-outer);
+  background-color: var(--bg-base);
   color: var(--text-primary);
   min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
   font-size: 14px;
   line-height: 1.45;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: clamp(14px, 2vw, 24px);
+  flex-direction: column;
   position: relative;
+  overflow-x: hidden;
   transition: background-color 0.3s ease;
 }
 
@@ -155,20 +157,21 @@ body {
   font-family: 'Kalam', cursive, sans-serif;
 }
 
-/* Outer Refined Digital Board Wrapper with Thin Subtle Border */
+/* Outer Refined Digital Board Wrapper with Edge-to-Edge Desktop Layout */
 .blackboard-frame-wrapper {
   width: 100%;
-  max-width: 1440px;
-  min-height: 94vh;
+  max-width: 100%;
+  min-height: 100vh;
+  flex-grow: 1;
   background-color: var(--bg-base);
-  border: 1px solid var(--frame-border);
-  border-radius: 14px;
-  box-shadow: var(--frame-shadow);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
   position: relative;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease;
 }
 
 /* Subtle Matte Chalk Wash Texture */
@@ -197,12 +200,16 @@ body {
 .app-layout {
   display: flex;
   flex-grow: 1;
+  width: 100%;
+  min-height: 100vh;
   position: relative;
   z-index: 10;
 }
 
 .side-nav {
   width: var(--nav-width);
+  flex-shrink: 0;
+  min-height: 100vh;
   background: var(--bg-surface);
   border-right: 1px dashed var(--border-chalk-dashed);
   display: flex;
@@ -210,6 +217,7 @@ body {
   padding: 18px 14px;
   overflow-y: auto;
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .brand-container {
@@ -572,9 +580,12 @@ body {
    -------------------------------------------------------------------------- */
 .main-content {
   flex-grow: 1;
-  padding: clamp(24px, 2.5vw, 36px) clamp(28px, 3.2vw, 44px);
-  max-width: 1200px;
+  min-width: 0;
+  width: calc(100% - var(--nav-width));
+  padding: clamp(20px, 2.2vw, 32px) clamp(24px, 3.2vw, 52px);
   overflow-y: auto;
+  min-height: 100vh;
+  box-sizing: border-box;
   transition: all 0.3s ease;
 }
 
@@ -2940,7 +2951,7 @@ body.theme-white-board .habit-card-bar-track {
   min-height: calc(100vh - 160px);
   justify-content: flex-start;
   width: 100%;
-  max-width: 980px;
+  max-width: min(100%, 1180px);
   margin: 0 auto 24px auto;
   position: relative;
   overflow: hidden;
@@ -5846,14 +5857,14 @@ body.theme-parchment-cream .btn-take-breather:hover {
 .dashboard-metrics-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: clamp(12px, 1.2vw, 18px);
 }
 
 .metric-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-chalk);
   border-radius: 12px;
-  padding: 12px 14px;
+  padding: clamp(12px, 1vw, 16px) clamp(14px, 1.2vw, 20px);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
@@ -6002,7 +6013,7 @@ body.theme-vintage-green .ring-bg {
 .dashboard-main-grid {
   display: grid;
   grid-template-columns: 1.18fr 0.82fr;
-  gap: 14px;
+  gap: clamp(14px, 1.4vw, 22px);
   align-items: stretch;
 }
 
@@ -6010,7 +6021,7 @@ body.theme-vintage-green .ring-bg {
   background: var(--bg-surface);
   border: 1px solid var(--border-chalk);
   border-radius: 12px;
-  padding: 14px 16px;
+  padding: clamp(14px, 1.2vw, 18px) clamp(16px, 1.4vw, 22px);
   display: flex;
   flex-direction: column;
   gap: 10px;
