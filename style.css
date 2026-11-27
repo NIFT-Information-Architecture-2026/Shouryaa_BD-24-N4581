@@ -44,7 +44,7 @@
   --logo-text-color: #FAF8F5;
   --logo-sub-color: #8E9E96;
 
-  --nav-width: 256px;
+  --nav-width: 280px;
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 18px;
@@ -144,7 +144,7 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.5;
   display: flex;
   flex-direction: column;
@@ -221,7 +221,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 22px 16px;
+  padding: 24px 18px;
   overflow-y: auto;
   overflow-x: hidden;
   transition: all 0.3s ease;
@@ -243,7 +243,7 @@ body {
 
 .brand-primary-logo-link {
   width: 100%;
-  max-width: 228px;
+  max-width: 244px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -389,15 +389,15 @@ body {
 .nav-menu {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
   flex-grow: 1;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 11px 14px;
+  gap: 13px;
+  padding: 12px 16px;
   background: transparent;
   border: 1px solid transparent;
   border-radius: 10px;
@@ -420,13 +420,13 @@ body {
 }
 
 .nav-icon {
-  font-size: 17px;
+  font-size: 18px;
   width: 22px;
   text-align: center;
 }
 
 .nav-label {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   flex-grow: 1;
 }
@@ -434,8 +434,8 @@ body {
 .nav-badge {
   background: var(--bg-hover);
   color: var(--chalk-amber);
-  font-size: 12px;
-  padding: 2px 7px;
+  font-size: 12.5px;
+  padding: 2px 8px;
   border-radius: 10px;
   border: 1px solid var(--border-chalk);
 }
@@ -466,7 +466,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
+  padding: 11px 14px;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   border-radius: var(--radius-md);
@@ -482,8 +482,8 @@ body {
 }
 
 .user-avatar-circle {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(255, 209, 102, 0.25), rgba(224, 122, 95, 0.25));
   border: 1.5px solid var(--chalk-amber);
@@ -491,7 +491,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   flex-shrink: 0;
   text-shadow: 0 0 6px rgba(255, 209, 102, 0.4);
@@ -505,7 +505,7 @@ body {
 }
 
 .user-profile-name {
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--text-primary);
   white-space: nowrap;
@@ -514,7 +514,7 @@ body {
 }
 
 .user-profile-role {
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--text-muted);
 }
 
@@ -537,7 +537,7 @@ body {
 }
 
 .section-micro-label {
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--text-muted);
   display: block;
   margin-bottom: 8px;
@@ -553,12 +553,12 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 7px 10px;
+  padding: 8px 12px;
   border-radius: var(--radius-sm);
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-muted);
-  font-size: 12.5px;
+  font-size: 13px;
   cursor: pointer;
   transition: all 0.2s;
   text-align: left;
@@ -576,8 +576,8 @@ body {
 }
 
 .theme-swatch {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.25);
 }
@@ -612,14 +612,14 @@ body {
 }
 
 .current-screen-title {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.3px;
 }
 
 .current-date-badge {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--text-muted);
   display: block;
   margin-top: 3px;
@@ -646,14 +646,14 @@ body {
 }
 
 .top-growth-stage {
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--chalk-mint);
   display: block;
 }
 
 .top-growth-meta {
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--text-muted);
 }
 
@@ -691,7 +691,7 @@ body {
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
-  font-size: 14.5px;
+  font-size: 15.5px;
   padding: 10px 14px;
   outline: none;
   flex-grow: 1;
@@ -707,7 +707,7 @@ body {
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
+  font-size: 13.5px;
   padding: 8px 12px;
   outline: none;
 }
@@ -715,7 +715,7 @@ body {
 .chalk-btn {
   padding: 9px 18px;
   border-radius: var(--radius-sm);
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
@@ -765,7 +765,7 @@ body {
 }
 
 .chalk-prefix-glyph {
-  font-size: 18px;
+  font-size: 19px;
   line-height: 1;
   user-select: none;
 }
@@ -774,7 +774,7 @@ body {
   flex: 1;
   height: 42px;
   padding: 8px 14px;
-  font-size: 15px;
+  font-size: 16px;
   background: var(--bg-surface);
   border: 1px solid var(--border-chalk);
   border-radius: var(--radius-sm);
@@ -790,7 +790,7 @@ body {
 .quick-add-form .primary-btn {
   height: 42px;
   padding: 8px 18px;
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -811,7 +811,7 @@ body {
 }
 
 .control-label {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text-muted);
   font-weight: 500;
   user-select: none;
@@ -829,7 +829,7 @@ body {
   justify-content: center;
   width: 26px;
   height: 26px;
-  font-size: 11.5px;
+  font-size: 12px;
   background: var(--bg-surface-elevated);
   border-radius: 50%;
   border: 1px solid var(--border-chalk);
@@ -852,7 +852,7 @@ body {
 .quick-add-form .chalk-select {
   height: 32px;
   padding: 4px 10px;
-  font-size: 12.5px;
+  font-size: 13px;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   border-radius: var(--radius-sm);
@@ -956,7 +956,7 @@ body {
 }
 
 .task-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--text-primary);
   word-break: break-word;
@@ -973,7 +973,7 @@ body {
 
 /* Neutral Carried Over Label */
 .carried-over-badge {
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--text-muted);
   background: var(--bg-surface-elevated);
@@ -993,7 +993,7 @@ body {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 4px;
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 
@@ -1018,7 +1018,7 @@ body {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   color: var(--chalk-sky);
-  font-size: 12px;
+  font-size: 12.5px;
   padding: 4px 10px;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -1042,7 +1042,7 @@ body {
 }
 
 .subtasks-toggle-btn .steps-count {
-  font-size: 11px;
+  font-size: 11.5px;
   opacity: 0.85;
 }
 
@@ -1051,7 +1051,7 @@ body {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   color: var(--chalk-amber);
-  font-size: 12px;
+  font-size: 12.5px;
   padding: 4px 10px;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -1222,7 +1222,7 @@ body {
   color: var(--text-primary);
   padding: 8px 18px;
   border-radius: var(--radius-sm);
-  font-size: 13.5px;
+  font-size: 14px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -1243,7 +1243,7 @@ body {
   color: var(--chalk-sky);
   padding: 8px 16px;
   border-radius: var(--radius-sm);
-  font-size: 13.5px;
+  font-size: 14px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -1313,14 +1313,14 @@ body {
 }
 
 .bucket-header h4 {
-  font-size: 17px;
+  font-size: 18px;
   color: var(--text-primary);
   margin: 0;
   line-height: 1.25;
 }
 
 .bucket-sub-date {
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--text-muted);
   font-family: 'Inter', -apple-system, sans-serif;
   letter-spacing: 0.2px;
@@ -1331,7 +1331,7 @@ body {
   border: 1px solid var(--border-chalk);
   padding: 3px 8px;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--text-muted);
 }
@@ -1538,13 +1538,13 @@ body {
 }
 
 .meadow-heading {
-  font-size: 21px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .meadow-subtext {
-  font-size: 13.5px;
+  font-size: 14px;
   color: var(--text-muted);
   margin-top: 3px;
 }
@@ -1560,13 +1560,13 @@ body {
 }
 
 .stat-val {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--chalk-mint);
 }
 
 .stat-lbl {
-  font-size: 10.5px;
+  font-size: 11px;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -2384,11 +2384,18 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
 .habit-ledger-layout {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.habit-ledger-layout .chalk-card {
+  margin-bottom: 0;
 }
 
 .habit-overview-card {
-  padding: 18px 20px;
+  padding: 14px 18px;
 }
 
 .habit-overview-header {
@@ -2459,7 +2466,7 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
 }
 
 .habit-graph-title {
-  font-size: 18px;
+  font-size: 16.5px;
   color: var(--text-primary);
   display: flex;
   align-items: center;
@@ -2468,7 +2475,7 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
 }
 
 .habit-graph-subtext {
-  font-size: 12.5px;
+  font-size: 11.5px;
   color: var(--text-muted);
 }
 
@@ -2485,8 +2492,8 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 12px;
-  padding: 4px 12px;
+  font-size: 11.5px;
+  padding: 3px 10px;
   border-radius: calc(var(--radius-sm) - 2px);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -2510,8 +2517,9 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
   background: rgba(0, 0, 0, 0.12);
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-chalk);
-  padding: 8px 6px 4px 6px;
+  padding: 6px 4px 2px 4px;
   overflow: hidden;
+  max-height: 200px;
 }
 
 body.theme-white-board .habit-graph-viewport-wrap {
@@ -2691,10 +2699,10 @@ body.theme-white-board .habit-graph-viewport-wrap {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   border-radius: var(--radius-sm);
-  padding: 9px 14px;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   transition: all 0.2s ease;
 }
 
@@ -2708,40 +2716,40 @@ body.theme-white-board .habit-graph-viewport-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
 }
 
 .habit-info-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex: 1;
   min-width: 0;
 }
 
 .habit-icon {
-  font-size: 20px;
+  font-size: 18px;
   flex-shrink: 0;
-  width: 28px;
+  width: 24px;
   text-align: center;
 }
 
 .habit-text-wrap {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
   min-width: 0;
 }
 
 .habit-title-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .habit-name {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
@@ -2757,7 +2765,7 @@ body.theme-white-board .habit-graph-viewport-wrap {
 .habit-action-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-shrink: 0;
 }
 
@@ -2765,16 +2773,16 @@ body.theme-white-board .habit-graph-viewport-wrap {
 .habit-stepper-wrap {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   background: var(--bg-hover);
   border: 1px solid var(--border-chalk);
   border-radius: 20px;
-  padding: 3px 8px;
+  padding: 2px 6px;
 }
 
 .habit-step-btn {
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   border: 1px solid var(--border-chalk);
   background: var(--bg-surface-elevated);
@@ -2782,7 +2790,7 @@ body.theme-white-board .habit-graph-viewport-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 10px;
   cursor: pointer;
   transition: all 0.18s ease;
 }
@@ -2802,16 +2810,16 @@ body.theme-white-board .habit-graph-viewport-wrap {
 .habit-amount-display {
   display: flex;
   align-items: baseline;
-  gap: 3px;
-  min-width: 64px;
+  gap: 2px;
+  min-width: 52px;
   justify-content: center;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .habit-amount-display .amount-target {
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--text-muted);
   font-weight: normal;
 }
@@ -2819,13 +2827,13 @@ body.theme-white-board .habit-graph-viewport-wrap {
 /* Slim Horizontal Progress Bar for Measurable Habits */
 .habit-card-bar-wrap {
   width: 100%;
-  padding-left: 40px; /* aligned precisely with habit text, indented past the icon */
+  padding-left: 34px; /* aligned precisely with habit text, indented past the icon */
 }
 
 .habit-card-bar-track {
   width: 100%;
-  max-width: 260px;
-  height: 5px;
+  max-width: 200px;
+  height: 4px;
   background: rgba(0, 0, 0, 0.22);
   border: 1px solid var(--border-chalk);
   border-radius: 3px;
@@ -2852,11 +2860,11 @@ body.theme-white-board .habit-card-bar-track {
 .habit-chalk-checkbox {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 7px;
   background: var(--bg-hover);
   border: 1px solid var(--border-chalk);
   border-radius: 20px;
-  padding: 6px 14px;
+  padding: 4px 10px;
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -2868,14 +2876,14 @@ body.theme-white-board .habit-card-bar-track {
 }
 
 .habit-chalk-checkbox .chalk-check-box {
-  width: 20px;
-  height: 20px;
-  border: 1.8px solid var(--border-chalk);
+  width: 17px;
+  height: 17px;
+  border: 1.5px solid var(--border-chalk);
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 10px;
   background: var(--bg-surface-elevated);
   color: transparent;
   transition: all 0.2s ease;
@@ -2893,7 +2901,7 @@ body.theme-white-board .habit-card-bar-track {
 }
 
 .habit-chalk-checkbox .chalk-check-label {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
 }
 
@@ -2903,15 +2911,15 @@ body.theme-white-board .habit-card-bar-track {
 
 /* Goal Met & Exceeded Badges */
 .habit-badge-exceeded {
-  font-size: 10px;
+  font-size: 9.5px;
   background: rgba(255, 209, 102, 0.18);
   color: var(--chalk-amber);
   border: 1px solid var(--chalk-amber);
-  padding: 2px 7px;
-  border-radius: 12px;
+  padding: 1.5px 6px;
+  border-radius: 10px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   white-space: nowrap;
 }
 
@@ -5698,7 +5706,7 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
 }
 
 .greeting-title {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 4px;
@@ -5769,7 +5777,7 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
 }
 
 .greeting-supportive-msg {
-  font-size: 14px;
+  font-size: 14.5px;
   font-style: italic;
   color: var(--text-muted);
   letter-spacing: 0.1px;
@@ -5802,7 +5810,7 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
   align-items: center;
   gap: 8px;
   padding: 8px 18px;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 600;
   border-radius: 20px;
   background: rgba(6, 214, 160, 0.1);
@@ -5981,7 +5989,7 @@ body.theme-vintage-green .ring-bg {
 }
 
 .metric-bloom-badge {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   padding: 2.5px 8px;
   border-radius: 6px;
@@ -6003,7 +6011,7 @@ body.theme-vintage-green .ring-bg {
 }
 
 .metric-micro-tag {
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.9px;
   text-transform: uppercase;
@@ -6011,7 +6019,7 @@ body.theme-vintage-green .ring-bg {
 }
 
 .metric-title {
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 2px 0;
@@ -6019,7 +6027,7 @@ body.theme-vintage-green .ring-bg {
 }
 
 .metric-caption {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -6063,7 +6071,7 @@ body.theme-vintage-green .ring-bg {
 }
 
 .dash-box-title {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
   color: var(--text-primary);
   display: flex;
@@ -6073,7 +6081,7 @@ body.theme-vintage-green .ring-bg {
 }
 
 .dash-box-badge {
-  font-size: 11.5px;
+  font-size: 12px;
   padding: 2px 8px;
   border-radius: 8px;
   background: var(--bg-surface-elevated);
@@ -6082,7 +6090,7 @@ body.theme-vintage-green .ring-bg {
 }
 
 .dash-box-stage-pill {
-  font-size: 11.5px;
+  font-size: 12px;
   padding: 3px 10px;
   border-radius: 10px;
   background: rgba(6, 214, 160, 0.12);
@@ -6095,7 +6103,7 @@ body.theme-vintage-green .ring-bg {
 }
 
 .dash-nav-link {
-  font-size: 12px;
+  font-size: 12.5px;
   padding: 4px 11px;
   border-radius: 12px;
   display: inline-flex;
@@ -6230,7 +6238,7 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-task-text {
-  font-size: 14.5px;
+  font-size: 15.5px;
   font-weight: 500;
   color: var(--text-primary);
   white-space: nowrap;
@@ -6240,7 +6248,7 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-task-pill {
-  font-size: 11px;
+  font-size: 12px;
   padding: 2px 8px;
   border-radius: 8px;
   background: var(--bg-surface);
@@ -6298,7 +6306,7 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-species-title {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--chalk-amber);
   margin: 0;
@@ -6308,7 +6316,7 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-growth-quote {
-  font-size: 13px;
+  font-size: 13.5px;
   font-style: italic;
   color: var(--text-muted);
   line-height: 1.45;
@@ -6322,7 +6330,7 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-bloom-hint {
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--chalk-amber);
   background: rgba(255, 209, 102, 0.08);
   border: 1px dashed rgba(255, 209, 102, 0.35);
@@ -6417,7 +6425,7 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-collection-desc {
-  font-size: 13.5px;
+  font-size: 14px;
   color: var(--text-muted);
   margin-top: 2px;
 }
@@ -6465,7 +6473,7 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-plant-name {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text-primary);
   white-space: nowrap;
@@ -6475,12 +6483,12 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-plant-meta {
-  font-size: 11px;
+  font-size: 11.5px;
   color: var(--text-muted);
 }
 
 .dash-plant-badge {
-  font-size: 10px;
+  font-size: 10.5px;
   padding: 3px 9px;
   border-radius: 10px;
   background: rgba(6, 214, 160, 0.12);
@@ -7070,27 +7078,27 @@ body.theme-parchment-cream .carried-mini-indicator {
 
 /* --- 3. Habit Ledger: Clean Minimal Circular Progress Ring Summary Card --- */
 .habit-overview-card {
-  padding: 14px 20px;
+  padding: 14px 18px;
 }
 
 .habit-rhythm-layout {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
 }
 
 .habit-rhythm-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   min-width: 0;
 }
 
 .rhythm-ring-wrapper {
   position: relative;
-  width: 68px;
-  height: 68px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7099,8 +7107,8 @@ body.theme-parchment-cream .carried-mini-indicator {
 
 .rhythm-ring-svg {
   transform: rotate(-90deg);
-  width: 68px;
-  height: 68px;
+  width: 60px;
+  height: 60px;
 }
 
 .rhythm-ring-bg {
@@ -7144,7 +7152,7 @@ body.theme-vintage-green .rhythm-ring-bg {
 }
 
 .rhythm-ring-percentage {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--chalk-mint);
   letter-spacing: -0.3px;
@@ -7158,12 +7166,12 @@ body.theme-parchment-cream .rhythm-ring-percentage {
 .habit-rhythm-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   min-width: 0;
 }
 
 .rhythm-title {
-  font-size: 17px;
+  font-size: 16.5px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
@@ -7171,7 +7179,7 @@ body.theme-parchment-cream .rhythm-ring-percentage {
 }
 
 .rhythm-subtext {
-  font-size: 12.5px;
+  font-size: 12px;
   color: var(--text-muted);
   margin: 0;
   line-height: 1.4;
@@ -7184,7 +7192,7 @@ body.theme-parchment-cream .rhythm-ring-percentage {
 
 .btn-header-new-habit {
   font-size: 12px;
-  padding: 6px 14px;
+  padding: 6px 13px;
   border-radius: 8px;
   white-space: nowrap;
 }
