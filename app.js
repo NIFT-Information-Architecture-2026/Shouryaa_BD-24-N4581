@@ -3560,6 +3560,7 @@ function createTaskCardElement(task) {
 
       <!-- Actions -->
       <div class="task-actions">
+        <span class="task-priority-badge priority-${(task.priority || 'medium').toLowerCase()}">${(task.priority || 'medium').charAt(0) + (task.priority || 'medium').slice(1).toLowerCase()}</span>
         <!-- Dedicated Steps Button (Collapsed by default, toggles drawer) -->
         <button class="subtasks-toggle-btn chalk-font ${task.isExpanded ? 'expanded' : ''}" title="View & add micro-steps" data-subtasks-toggle="${task.id}">
           <i class="fa-solid fa-list-check"></i> Steps ${subtasksCount > 0 ? `<span class="steps-count">(${subtasksCompleted}/${subtasksCount})</span>` : ''}
@@ -3805,6 +3806,7 @@ function createUpcomingTaskCardElement(task) {
 
       <!-- Action Controls -->
       <div class="task-actions upcoming-task-actions">
+        <span class="task-priority-badge priority-${(task.priority || 'medium').toLowerCase()}">${(task.priority || 'medium').charAt(0) + (task.priority || 'medium').slice(1).toLowerCase()}</span>
         <!-- Edit Button -->
         <button type="button" class="icon-action-btn edit-task-btn" title="Edit task details" data-edit-id="${task.id}">
           <i class="fa-solid fa-pen"></i>

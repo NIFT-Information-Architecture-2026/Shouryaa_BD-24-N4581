@@ -44,7 +44,7 @@
   --logo-text-color: #FAF8F5;
   --logo-sub-color: #8E9E96;
 
-  --nav-width: 280px;
+  --nav-width: 250px;
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 18px;
@@ -221,7 +221,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 24px 18px;
+  padding: 20px 14px;
   overflow-y: auto;
   overflow-x: hidden;
   transition: all 0.3s ease;
@@ -234,16 +234,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding-bottom: 16px;
-  margin-bottom: 16px;
+  gap: 5px;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
   border-bottom: 1px dashed var(--border-chalk);
   text-align: center;
 }
 
 .brand-primary-logo-link {
   width: 100%;
-  max-width: 244px;
+  max-width: 218px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -389,18 +389,18 @@ body {
 .nav-menu {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
   flex-grow: 1;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 13px;
-  padding: 12px 16px;
+  gap: 12px;
+  padding: 10px 14px;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -414,19 +414,26 @@ body {
 }
 
 .nav-item.active {
-  background: var(--bg-surface-elevated);
+  background: rgba(255, 255, 255, 0.08);
   color: var(--text-primary);
-  border: 1px dashed var(--border-chalk-dashed);
+  border: 1px solid rgba(123, 185, 153, 0.35);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+body.theme-parchment-cream .nav-item.active {
+  background: rgba(46, 139, 102, 0.12);
+  border-color: rgba(46, 139, 102, 0.35);
 }
 
 .nav-icon {
-  font-size: 18px;
-  width: 22px;
+  font-size: 16px;
+  width: 20px;
   text-align: center;
+  color: inherit;
 }
 
 .nav-label {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   flex-grow: 1;
 }
@@ -434,8 +441,8 @@ body {
 .nav-badge {
   background: var(--bg-hover);
   color: var(--chalk-amber);
-  font-size: 12.5px;
-  padding: 2px 8px;
+  font-size: 11.5px;
+  padding: 2px 7px;
   border-radius: 10px;
   border: 1px solid var(--border-chalk);
 }
@@ -772,12 +779,12 @@ body {
 
 #task-title-input {
   flex: 1;
-  height: 42px;
-  padding: 8px 14px;
+  height: 48px;
+  padding: 10px 16px;
   font-size: 16px;
   background: var(--bg-surface);
   border: 1px solid var(--border-chalk);
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   color: var(--text-primary);
   outline: none;
   transition: border-color 0.15s ease;
@@ -788,10 +795,11 @@ body {
 }
 
 .quick-add-form .primary-btn {
-  height: 42px;
-  padding: 8px 18px;
-  font-size: 14.5px;
+  height: 48px;
+  padding: 10px 22px;
+  font-size: 15px;
   font-weight: 600;
+  border-radius: 10px;
   white-space: nowrap;
 }
 
@@ -871,9 +879,9 @@ body {
 .task-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-chalk);
-  border-radius: var(--radius-md);
-  padding: 12px 18px;
-  min-height: 50px;
+  border-radius: 12px;
+  padding: 14px 18px;
+  min-height: 56px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -905,8 +913,8 @@ body {
 .custom-chalk-checkbox {
   width: 22px;
   height: 22px;
-  border: 1.5px dashed var(--border-chalk-dashed);
-  border-radius: 5px;
+  border: 1.5px solid var(--border-chalk-dashed);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -927,8 +935,40 @@ body {
   background: var(--chalk-mint);
   border-color: var(--chalk-mint);
   border-style: solid;
+  border-radius: 50%;
   color: #ffffff;
   transform: scale(1.02);
+}
+
+/* Priority Badge Pills */
+.task-priority-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2.5px 9px;
+  border-radius: 10px;
+  letter-spacing: 0.2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.task-priority-badge.priority-high {
+  background: rgba(224, 122, 95, 0.15);
+  color: var(--chalk-terracotta);
+  border: 1px solid rgba(224, 122, 95, 0.35);
+}
+
+.task-priority-badge.priority-medium {
+  background: rgba(242, 204, 143, 0.15);
+  color: var(--chalk-amber);
+  border: 1px solid rgba(242, 204, 143, 0.35);
+}
+
+.task-priority-badge.priority-low {
+  background: rgba(123, 185, 153, 0.15);
+  color: var(--chalk-mint);
+  border: 1px solid rgba(123, 185, 153, 0.35);
 }
 
 .task-body-interactive {
@@ -946,13 +986,7 @@ body {
 }
 
 .task-priority-dot {
-  font-size: 12px;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  user-select: none;
+  display: none;
 }
 
 .task-title {
@@ -1280,8 +1314,8 @@ body {
 
 .upcoming-buckets-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 
 .bucket-column {
@@ -2445,10 +2479,10 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
    HABIT CONSISTENCY LINE GRAPH CARD
    -------------------------------------------------------------------------- */
 .habit-graph-card {
-  padding: 12px 16px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .habit-graph-header {
@@ -2698,11 +2732,12 @@ body.theme-white-board .habit-graph-viewport-wrap {
 .habit-card {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
+  border-radius: 12px;
+  padding: 13px 18px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  min-height: 54px;
   transition: all 0.2s ease;
 }
 
@@ -2716,29 +2751,29 @@ body.theme-white-board .habit-graph-viewport-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
   width: 100%;
 }
 
 .habit-info-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex: 1;
   min-width: 0;
 }
 
 .habit-icon {
-  font-size: 18px;
+  font-size: 20px;
   flex-shrink: 0;
-  width: 24px;
+  width: 26px;
   text-align: center;
 }
 
 .habit-text-wrap {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   min-width: 0;
 }
 
@@ -2749,7 +2784,7 @@ body.theme-white-board .habit-graph-viewport-wrap {
 }
 
 .habit-name {
-  font-size: 13.5px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
@@ -2758,7 +2793,7 @@ body.theme-white-board .habit-graph-viewport-wrap {
 }
 
 .habit-tally {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
 }
 
@@ -2773,16 +2808,16 @@ body.theme-white-board .habit-graph-viewport-wrap {
 .habit-stepper-wrap {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   background: var(--bg-hover);
   border: 1px solid var(--border-chalk);
   border-radius: 20px;
-  padding: 2px 6px;
+  padding: 3px 8px;
 }
 
 .habit-step-btn {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   border: 1px solid var(--border-chalk);
   background: var(--bg-surface-elevated);
@@ -2790,7 +2825,7 @@ body.theme-white-board .habit-graph-viewport-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 11px;
   cursor: pointer;
   transition: all 0.18s ease;
 }
@@ -2810,16 +2845,16 @@ body.theme-white-board .habit-graph-viewport-wrap {
 .habit-amount-display {
   display: flex;
   align-items: baseline;
-  gap: 2px;
-  min-width: 52px;
+  gap: 3px;
+  min-width: 60px;
   justify-content: center;
-  font-size: 12.5px;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .habit-amount-display .amount-target {
-  font-size: 10.5px;
+  font-size: 11px;
   color: var(--text-muted);
   font-weight: normal;
 }
@@ -2860,12 +2895,13 @@ body.theme-white-board .habit-card-bar-track {
 .habit-chalk-checkbox {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   background: var(--bg-hover);
   border: 1px solid var(--border-chalk);
   border-radius: 20px;
-  padding: 4px 10px;
+  padding: 6px 14px;
   color: var(--text-primary);
+  font-size: 13px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -2876,10 +2912,10 @@ body.theme-white-board .habit-card-bar-track {
 }
 
 .habit-chalk-checkbox .chalk-check-box {
-  width: 17px;
-  height: 17px;
+  width: 18px;
+  height: 18px;
   border: 1.5px solid var(--border-chalk);
-  border-radius: 4px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2887,6 +2923,12 @@ body.theme-white-board .habit-card-bar-track {
   background: var(--bg-surface-elevated);
   color: transparent;
   transition: all 0.2s ease;
+}
+
+.habit-chalk-checkbox.is-checked .chalk-check-box {
+  background: var(--chalk-mint);
+  border-color: var(--chalk-mint);
+  color: #ffffff;
 }
 
 .habit-chalk-checkbox.is-checked {
@@ -5882,14 +5924,15 @@ body.theme-parchment-cream .btn-take-breather:hover {
 .dashboard-metrics-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  gap: 18px;
+  margin-bottom: 22px;
 }
 
 .metric-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-chalk);
   border-radius: 14px;
-  padding: 18px 22px;
+  padding: 18px 20px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
@@ -6034,12 +6077,13 @@ body.theme-vintage-green .ring-bg {
   text-overflow: ellipsis;
 }
 
-/* Row 2: 2 Main Sections Grid (Balanced Spacing, Tasks Slightly More Prominent) */
+/* Row 2: 2 Main Sections Grid (Equal 50/50 Balanced Proportions) */
 .dashboard-main-grid {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 22px;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
   align-items: stretch;
+  margin-bottom: 22px;
 }
 
 .dash-big-box {
@@ -6273,9 +6317,9 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-flower-display {
-  width: 136px;
-  height: 136px;
-  border-radius: 16px;
+  width: 148px;
+  height: 148px;
+  border-radius: 14px;
   background: var(--bg-surface-elevated);
   display: flex;
   align-items: center;
@@ -7320,7 +7364,7 @@ body.theme-parchment-cream .rhythm-ring-percentage {
 
 /* Metric Cards Refinement */
 .metric-card {
-  padding: 12px 14px;
+  padding: 18px 20px;
 }
 
 .metric-focus-header {
