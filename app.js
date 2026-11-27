@@ -2645,7 +2645,6 @@ function navigateToSurface(surfaceId, linkedTaskId = null) {
   saveState();
 
   if (surfaceId === 'dashboard') renderDashboard();
-  if (surfaceId === 'today-slate') renderTodaySlate();
   if (surfaceId === 'progress-garden') renderProgressGarden();
   if (surfaceId === 'habit-ledger') renderHabitLedger();
 
@@ -3468,30 +3467,8 @@ function renderTodaySlate() {
 
   const todayTasks = AppState.tasks.filter(t => t.targetDate === TODAY_DATE);
   const pendingCount = todayTasks.filter(t => t.status !== 'COMPLETED').length;
-  const completedCount = todayTasks.filter(t => t.status === 'COMPLETED').length;
   if (badge) badge.innerText = pendingCount;
   renderSlateNextSuggestion(todayTasks);
-
-  // Focus To-Do Style 4-Column Horizontal Summary Metrics
-  const estMinsTotal = todayTasks.reduce((sum, t) => sum + (parseInt(t.estTime, 10) || 0), 0);
-  const formatMins = (mins) => {
-    if (!mins || mins <= 0) return '0m';
-    const h = Math.floor(mins / 60);
-    const m = mins % 60;
-    if (h > 0 && m > 0) return `${h}h ${m}m`;
-    if (h > 0) return `${h}h`;
-    return `${m}m`;
-  };
-
-  const statEstEl = document.getElementById('slate-stat-est-time');
-  const statTodoEl = document.getElementById('slate-stat-todo-count');
-  const statFocusEl = document.getElementById('slate-stat-focus-time');
-  const statDoneEl = document.getElementById('slate-stat-done-count');
-
-  if (statEstEl) statEstEl.innerText = formatMins(estMinsTotal);
-  if (statTodoEl) statTodoEl.innerText = pendingCount;
-  if (statFocusEl) statFocusEl.innerText = formatMins(AppState.focusTimeLoggedToday || 0);
-  if (statDoneEl) statDoneEl.innerText = completedCount;
 
   if (todayTasks.length === 0) {
     taskList.innerHTML = `
@@ -6861,7 +6838,6 @@ function updateGlobalGrowthMetrics() {
 
   renderDashboard();
   renderProgressGarden();
-  renderTodaySlate();
 
   // 3. Trigger Botanical Organic Growth Animation when genuine new stage is achieved
   if (hasGrown && !isSystemInitializing) {
