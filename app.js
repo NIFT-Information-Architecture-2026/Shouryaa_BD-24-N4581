@@ -4220,7 +4220,7 @@ function initProgressGarden() {
         const curStage = GardenView.isCurrentMonth
           ? (AppState.gardenData[day]?.stage ?? 0)
           : (AppState.monthlyGardens?.[GardenView.monthKey]?.[day]?.stage ?? 0);
-        modalFlowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(curStage, 90, day, '', newName);
+        modalFlowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(curStage, 150, day, '', newName);
       }
       if (renameBox) renameBox.style.display = 'none';
       showToast(`🌸 Renamed Day ${day}'s flower to "${newName}"!`);
@@ -4547,7 +4547,7 @@ function openGardenDayModal(day, dayData, stageName = null) {
 
   if (speciesNameEl) speciesNameEl.innerText = `🌸 ${specimenName}`;
   if (dateTitleEl) dateTitleEl.innerText = `${GardenView.monthName} ${day}, ${GardenView.year}`;
-  if (flowerVisualEl) flowerVisualEl.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 90, day, '', specimenName);
+  if (flowerVisualEl) flowerVisualEl.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 150, day, '', specimenName);
   if (growthStageEl) growthStageEl.innerText = currentStageName;
   if (tasksRatioEl) tasksRatioEl.innerText = tasksRatio;
   if (habitsRatioEl) habitsRatioEl.innerText = habitsRatio;
