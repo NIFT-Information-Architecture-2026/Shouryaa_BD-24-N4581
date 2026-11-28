@@ -15,8 +15,8 @@
   --bg-hover: #26312D;
   
   --text-primary: #F2F5F3;
-  --text-muted: #A3B5AC;
-  --text-faint: #788B81;
+  --text-muted: #B5C7BD;
+  --text-faint: #8A9D93;
   
   /* Delicate Borders & Minimal Shadows */
   --border-chalk: rgba(255, 255, 255, 0.07);
@@ -59,8 +59,8 @@ body.theme-vintage-green {
   --bg-hover: #283C31;
   
   --text-primary: #F4F6F2;
-  --text-muted: #ADC2B5;
-  --text-faint: #7E9486;
+  --text-muted: #B7CCC0;
+  --text-faint: #8FA698;
   
   /* Delicate Borders & Minimal Shadows */
   --border-chalk: rgba(255, 255, 255, 0.07);
@@ -97,8 +97,8 @@ body.theme-parchment-cream {
   --bg-hover: #DFDBD2;
   
   --text-primary: #262D2A;
-  --text-muted: #4B5550;
-  --text-faint: #6A7670;
+  --text-muted: #38423E;
+  --text-faint: #55625B;
   
   /* Delicate Borders & Minimal Shadows */
   --border-chalk: rgba(38, 45, 42, 0.08);
@@ -684,18 +684,21 @@ body {
   display: none;
   animation: fadeIn 0.25s ease-out;
   width: 100%;
+  max-width: 1600px;
+  margin: 0;
 }
 
 .surface-view.active {
   display: block;
 }
 
+#view-dashboard,
 #view-today-slate,
 #view-upcoming-tasks,
 #view-progress-garden,
 #view-habit-ledger {
   width: 100%;
-  max-width: 100%;
+  max-width: 1600px;
   margin: 0;
 }
 
@@ -1810,7 +1813,7 @@ body.theme-vintage-green .meadow-scenery-container::after {
 
 .meadow-panorama-svg {
   display: block;
-  height: 260px;
+  height: 280px;
   user-select: none;
 }
 
@@ -2288,8 +2291,8 @@ svg.anim-unfurl-bloom .plant-stage-label {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   border-radius: var(--radius-sm);
-  padding: 6px 7px 7px 7px;
-  min-height: 78px;
+  padding: 10px 8px;
+  min-height: 112px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -2329,14 +2332,14 @@ body.theme-parchment-cream .calendar-day-tile.is-today {
 .tile-top .day-num {
   font-weight: 700;
   color: var(--text-primary);
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1;
 }
 
 .is-today .tile-top .day-num {
   color: #181A1D;
   background: var(--chalk-amber);
-  padding: 1px 5px;
+  padding: 2px 6px;
   border-radius: 4px;
   font-weight: 800;
   line-height: 1.15;
@@ -2348,9 +2351,9 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
 }
 
 .tile-artwork-svg {
-  width: 32px;
-  height: 32px;
-  margin: 1px 0;
+  width: 44px;
+  height: 44px;
+  margin: 4px 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2362,7 +2365,7 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
 }
 
 .tile-bottom {
-  font-size: 12px;
+  font-size: 13.5px;
   color: var(--text-muted);
   text-align: center;
   white-space: nowrap;
@@ -2375,8 +2378,8 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
 .stage-tag {
   font-size: 12px;
   font-family: 'Inter', -apple-system, sans-serif;
-  padding: 1px 6px;
-  border-radius: 4px;
+  padding: 2px 7px;
+  border-radius: 6px;
   font-weight: 600;
   white-space: nowrap;
   line-height: 1.2;
@@ -2849,8 +2852,8 @@ body.theme-white-board .habit-graph-viewport-wrap {
 }
 
 .habit-step-btn {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: 1px solid var(--border-chalk);
   background: var(--bg-surface-elevated);
@@ -2858,7 +2861,7 @@ body.theme-white-board .habit-graph-viewport-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.18s ease;
 }
@@ -2879,15 +2882,15 @@ body.theme-white-board .habit-graph-viewport-wrap {
   display: flex;
   align-items: baseline;
   gap: 3px;
-  min-width: 60px;
+  min-width: 64px;
   justify-content: center;
-  font-size: 15px;
+  font-size: 15.5px;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .habit-amount-display .amount-target {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--text-muted);
   font-weight: normal;
 }
@@ -2900,11 +2903,11 @@ body.theme-white-board .habit-graph-viewport-wrap {
 
 .habit-card-bar-track {
   width: 100%;
-  max-width: 240px;
-  height: 7px;
+  max-width: 260px;
+  height: 8px;
   background: rgba(0, 0, 0, 0.22);
   border: 1px solid var(--border-chalk);
-  border-radius: 4px;
+  border-radius: 5px;
   overflow: hidden;
 }
 
@@ -3037,14 +3040,35 @@ body.theme-white-board .habit-card-bar-track {
   position: relative;
 }
 
+/* Deep Focus Active Viewport Optimization (Zero vertical scroll on 720p/768p/900p/1080p) */
+body.surface-deep-focus-active #main-workspace-header,
+body:has(#view-deep-focus.active) #main-workspace-header {
+  display: none !important;
+}
+
+body.surface-deep-focus-active .main-content,
+body:has(#view-deep-focus.active) .main-content {
+  padding: 16px 24px;
+  overflow-y: hidden;
+}
+
+#view-deep-focus.active {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: calc(100dvh - 32px);
+}
+
 .deep-focus-fullscreen-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 24px 30px;
-  min-height: calc(100vh - 140px);
-  justify-content: flex-start;
+  padding: 16px 28px;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  justify-content: space-between;
   width: 100%;
   max-width: 100%;
   margin: 0;
@@ -3143,9 +3167,9 @@ body.theme-parchment-cream .maximize-focus-btn:hover {
   z-index: 5;
 }
 
-/* 3. Task Anchor Pill Neatly Positioned Above Timer (32-40px spacing to timer) */
+/* 3. Task Anchor Pill Neatly Positioned Above Timer */
 .focus-task-headline-wrap {
-  margin: 0 0 36px 0;
+  margin: 0 0 16px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3231,8 +3255,8 @@ body.theme-parchment-cream .focus-task-icon {
 
 .clock-display-wrapper {
   position: relative;
-  width: clamp(360px, 44vh, 420px);
-  height: clamp(360px, 44vh, 420px);
+  width: clamp(300px, 38vh, 360px);
+  height: clamp(300px, 38vh, 360px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3297,7 +3321,7 @@ body.theme-parchment-cream .clock-display-wrapper::before {
 
 .time-readout {
   font-family: 'Caveat', cursive, var(--font-chalk) !important;
-  font-size: clamp(78px, 9vh, 92px);
+  font-size: clamp(70px, 8.5vh, 80px);
   font-weight: 700;
   letter-spacing: 0px;
   line-height: 1;
@@ -3340,7 +3364,7 @@ body.theme-parchment-cream .time-status-underline {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 16px;
   margin-bottom: 0;
   position: relative;
   z-index: 5;
@@ -3363,7 +3387,6 @@ body.theme-parchment-cream .time-status-underline {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
   gap: 8px;
   cursor: pointer;
   transition: all 0.25s ease;
@@ -3425,7 +3448,7 @@ body.focus-session-active .end-btn {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin-top: 16px;
+  margin-top: 14px;
   margin-bottom: 0;
   position: relative;
   z-index: 25;
@@ -4199,8 +4222,8 @@ body.focus-maximized .focus-clock-centerpiece {
 /* 6. Clock Display Wrapper & Segmented Dashed Ring Dial */
 .clock-display-wrapper {
   position: relative;
-  width: clamp(360px, 44vh, 420px);
-  height: clamp(360px, 44vh, 420px);
+  width: clamp(300px, 38vh, 360px);
+  height: clamp(300px, 38vh, 360px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4351,7 +4374,7 @@ body.theme-parchment-cream.mode-gentle-rest .timer-dash.active {
 
 .time-readout {
   font-family: 'Caveat', cursive, var(--font-chalk) !important;
-  font-size: clamp(78px, 9vh, 92px);
+  font-size: clamp(70px, 8.5vh, 80px);
   font-weight: 700;
   letter-spacing: 0px;
   line-height: 1;
@@ -5977,7 +6000,8 @@ body.theme-parchment-cream .btn-take-breather:hover {
   background: var(--bg-surface);
   border: 1px solid var(--border-chalk);
   border-radius: 16px;
-  padding: 20px 24px;
+  padding: 18px 22px;
+  min-height: 118px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   transition: transform 0.15s ease, border-color 0.15s ease;
   width: 100%;
@@ -5998,8 +6022,8 @@ body.theme-parchment-cream .btn-take-breather:hover {
 
 .ring-progress-wrapper {
   position: relative;
-  width: 90px;
-  height: 90px;
+  width: 86px;
+  height: 86px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6008,8 +6032,8 @@ body.theme-parchment-cream .btn-take-breather:hover {
 
 .progress-ring-svg {
   transform: rotate(-90deg);
-  width: 90px;
-  height: 90px;
+  width: 86px;
+  height: 86px;
 }
 
 .ring-bg {
@@ -6111,7 +6135,7 @@ body.theme-vintage-green .ring-bg {
 }
 
 .metric-title {
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 2px 0;
@@ -6225,7 +6249,8 @@ body.theme-vintage-green .ring-bg {
   flex-direction: column;
   gap: 8px;
   overflow-y: auto;
-  max-height: 280px;
+  max-height: 380px;
+  min-height: auto;
   padding-right: 6px;
   scrollbar-width: thin;
   scrollbar-color: rgba(247, 245, 235, 0.22) transparent;
@@ -6369,9 +6394,9 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-flower-display {
-  width: 170px;
-  height: 170px;
-  border-radius: 20px;
+  width: 180px;
+  height: 180px;
+  border-radius: 18px;
   background: var(--bg-surface-elevated);
   display: flex;
   align-items: center;
@@ -6445,8 +6470,8 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-top: 16px;
-  padding: 14px 20px;
+  margin-top: 14px;
+  padding: 12px 18px;
   background: var(--bg-surface-elevated);
   border-radius: 12px;
   border: 1px solid var(--border-chalk);
@@ -6456,7 +6481,7 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 .dash-stages-stepper::before {
   content: '';
   position: absolute;
-  top: 20px;
+  top: 18px;
   left: 24px;
   right: 24px;
   height: 2px;
@@ -6469,13 +6494,13 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  font-size: 12.5px;
+  gap: 5px;
+  font-size: 13px;
   color: var(--text-faint);
   position: relative;
   z-index: 1;
   transition: all 0.2s ease;
-  min-width: 52px;
+  min-width: 50px;
 }
 
 .stepper-step .step-dot {
@@ -6542,7 +6567,7 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 
 .dash-plant-card {
   width: 100%;
-  min-height: 180px;
+  min-height: 190px;
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   border-radius: 14px;
@@ -6563,15 +6588,15 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-plant-svg-wrap {
-  width: 76px;
-  height: 76px;
+  width: 84px;
+  height: 84px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .dash-plant-name {
-  font-size: 15.5px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-primary);
   white-space: nowrap;
@@ -6581,7 +6606,7 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-plant-meta {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 

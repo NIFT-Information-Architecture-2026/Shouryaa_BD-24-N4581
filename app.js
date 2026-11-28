@@ -1535,7 +1535,7 @@ const ChalkMeadowPanorama = {
     }
 
     const svgHTML = `
-      <svg viewBox="0 0 ${totalWidth} 260" class="meadow-panorama-svg" style="width:${totalWidth}px; min-width:${totalWidth}px; height:260px;" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 ${totalWidth} 280" class="meadow-panorama-svg" style="width:${totalWidth}px; min-width:${totalWidth}px; height:280px;" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <filter id="chalk-glow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="3" result="blur" />
@@ -2641,6 +2641,7 @@ function navigateToSurface(surfaceId, linkedTaskId = null) {
 
   navItems.forEach(item => item.classList.toggle('active', item.dataset.surface === surfaceId));
   views.forEach(v => v.classList.toggle('active', v.id === `view-${surfaceId}`));
+  document.body.classList.toggle('surface-deep-focus-active', surfaceId === 'deep-focus');
   if (pageTitle) pageTitle.innerText = titles[surfaceId] || "Dashboard";
   saveState();
 
@@ -3127,7 +3128,7 @@ function renderDashboard() {
 
   const animClass = (activeStageEvolutionDay === TODAY_DAY_NUM && activeStageEvolutionClass) ? activeStageEvolutionClass : '';
   if (stagePill) stagePill.innerText = stageNames[currentStage];
-  if (flowerVisual) flowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 96, TODAY_DAY_NUM, animClass, specimenName);
+  if (flowerVisual) flowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 120, TODAY_DAY_NUM, animClass, specimenName);
   if (specimenTitle) specimenTitle.innerText = `🌸 ${specimenName}`;
   if (quoteEl) quoteEl.innerText = stageQuotes[currentStage];
 
@@ -3215,7 +3216,7 @@ function renderDashboard() {
         card.title = `Click to inspect or rename ${plant.name}`;
         card.innerHTML = `
           <div class="dash-plant-svg-wrap">
-            ${ChalkBotanicals.getBotanicalSVG(4, 56, plant.day, '', plant.name)}
+            ${ChalkBotanicals.getBotanicalSVG(4, 70, plant.day, '', plant.name)}
           </div>
           <div class="dash-plant-name chalk-font">${plant.name}</div>
           <div class="dash-plant-meta">${plant.tasks} tasks • ${plant.focus}m focus</div>
@@ -4219,7 +4220,7 @@ function initProgressGarden() {
         const curStage = GardenView.isCurrentMonth
           ? (AppState.gardenData[day]?.stage ?? 0)
           : (AppState.monthlyGardens?.[GardenView.monthKey]?.[day]?.stage ?? 0);
-        modalFlowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(curStage, 74, day, '', newName);
+        modalFlowerVisual.innerHTML = ChalkBotanicals.getBotanicalSVG(curStage, 90, day, '', newName);
       }
       if (renameBox) renameBox.style.display = 'none';
       showToast(`🌸 Renamed Day ${day}'s flower to "${newName}"!`);
@@ -4489,7 +4490,7 @@ function renderProgressGarden() {
           <span class="day-num">${day < 10 ? '0' + day : day}</span>
           <span class="stage-tag stage-${currentStage} ${isToday ? 'today-tag' : ''} ${isFuture ? 'future-tag' : ''}">${stageTagText}</span>
         </div>
-        <div class="tile-artwork-svg">${ChalkBotanicals.getBotanicalSVG(currentStage, 34, day, '', dayData.specimen)}</div>
+        <div class="tile-artwork-svg">${ChalkBotanicals.getBotanicalSVG(currentStage, 44, day, '', dayData.specimen)}</div>
         <div class="tile-bottom chalk-font" title="${dayData.specimen}">${dayData.specimen}</div>
       `;
 
@@ -4546,7 +4547,7 @@ function openGardenDayModal(day, dayData, stageName = null) {
 
   if (speciesNameEl) speciesNameEl.innerText = `🌸 ${specimenName}`;
   if (dateTitleEl) dateTitleEl.innerText = `${GardenView.monthName} ${day}, ${GardenView.year}`;
-  if (flowerVisualEl) flowerVisualEl.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 74, day, '', specimenName);
+  if (flowerVisualEl) flowerVisualEl.innerHTML = ChalkBotanicals.getBotanicalSVG(currentStage, 90, day, '', specimenName);
   if (growthStageEl) growthStageEl.innerText = currentStageName;
   if (tasksRatioEl) tasksRatioEl.innerText = tasksRatio;
   if (habitsRatioEl) habitsRatioEl.innerText = habitsRatio;
@@ -4958,8 +4959,8 @@ function renderHabitConsistencyGraph() {
   [100, 75, 50, 25, 0].forEach(p => {
     const y = padTop + graphH * (1 - p / 100);
     gridLinesSVG += `
-      <line x1="${padLeft}" y1="${y}" x2="${svgWidth - padRight}" y2="${y}" stroke="var(--border-chalk)" stroke-width="1" stroke-dasharray="3,3" opacity="0.28" />
-      <text x="${padLeft - 10}" y="${y + 4.5}" font-family="'Inter', sans-serif" font-size="12" fill="var(--text-muted)" text-anchor="end" opacity="0.85">${p}%</text>
+      <line x1="${padLeft}" y1="${y}" x2="${svgWidth - padRight}" y2="${y}" stroke="var(--border-chalk)" stroke-width="1" stroke-dasharray="3,3" opacity="0.45" />
+      <text x="${padLeft - 10}" y="${y + 4.5}" font-family="'Inter', sans-serif" font-size="12.5" fill="var(--text-muted)" text-anchor="end" opacity="0.95">${p}%</text>
     `;
   });
 
@@ -6844,7 +6845,7 @@ function updateGlobalGrowthMetrics() {
   const topStage = document.getElementById('top-growth-stage');
   const topMeta = document.getElementById('top-growth-meta');
   const finalStage = AppState.gardenData[TODAY_DAY_NUM].stage;
-  if (topIcon) topIcon.innerHTML = ChalkBotanicals.getBotanicalSVG(finalStage, 28, TODAY_DAY_NUM, '', AppState.gardenData[TODAY_DAY_NUM]?.specimen);
+  if (topIcon) topIcon.innerHTML = ChalkBotanicals.getBotanicalSVG(finalStage, 34, TODAY_DAY_NUM, '', AppState.gardenData[TODAY_DAY_NUM]?.specimen);
   if (topStage) topStage.innerText = stageNames[finalStage];
   if (topMeta) topMeta.innerText = `${completedCount} tasks • ${focusMins}m focus`;
 
