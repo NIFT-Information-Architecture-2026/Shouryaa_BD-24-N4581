@@ -5378,7 +5378,7 @@ body.theme-parchment-cream .focus-preferences-panel {
   align-items: center;
   gap: 6px;
   padding: 5px 14px;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
   border-radius: 14px;
   background: var(--bg-surface-elevated);
@@ -5887,7 +5887,7 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
 }
 
 .greeting-supportive-msg {
-  font-size: 14.5px;
+  font-size: 14px;
   font-style: italic;
   color: var(--text-muted);
   letter-spacing: 0.1px;
@@ -5944,7 +5944,7 @@ body.theme-parchment-cream .btn-take-breather:hover {
 }
 
 .greeting-subtitle {
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 
@@ -6105,7 +6105,7 @@ body.theme-vintage-green .ring-bg {
 }
 
 .metric-bloom-badge {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   padding: 3px 9px;
   border-radius: 6px;
@@ -6127,9 +6127,9 @@ body.theme-vintage-green .ring-bg {
 }
 
 .metric-micro-tag {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -6143,11 +6143,12 @@ body.theme-vintage-green .ring-bg {
 }
 
 .metric-caption {
-  font-size: 13.5px;
+  font-size: 13px;
   color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.4;
 }
 
 /* Row 2: 2 Main Sections Grid (58:42 Column Ratio) */
@@ -6190,13 +6191,15 @@ body.theme-vintage-green .ring-bg {
 }
 
 .dash-box-title {
-  font-size: 22px;
+  font-family: 'Kalam', cursive, var(--font-chalk);
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 8px;
   margin: 0;
+  letter-spacing: 0.2px;
 }
 
 .dash-box-badge {
@@ -6368,7 +6371,8 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-task-pill {
-  font-size: 12.5px;
+  font-size: 13px;
+  font-weight: 500;
   padding: 3px 10px;
   border-radius: 8px;
   background: var(--bg-surface);
@@ -6381,7 +6385,8 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
   text-align: center;
   padding: 24px 10px;
   color: var(--text-muted);
-  font-size: 12.5px;
+  font-size: 14px;
+  line-height: 1.45;
 }
 
 /* Big Box 2: Growth Progress (Large Visually Appealing Daily Flower) */
@@ -6427,17 +6432,19 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-species-title {
-  font-size: 22px;
+  font-family: 'Kalam', cursive, var(--font-chalk);
+  font-size: 20px;
   font-weight: 700;
   color: var(--chalk-amber);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: 0.2px;
 }
 
 .dash-growth-quote {
-  font-size: 14.5px;
+  font-size: 14px;
   font-style: italic;
   color: var(--text-muted);
   line-height: 1.5;
@@ -6451,7 +6458,8 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-bloom-hint {
-  font-size: 13.5px;
+  font-size: 14px;
+  font-weight: 500;
   color: var(--chalk-amber);
   background: rgba(255, 209, 102, 0.08);
   border: 1px dashed rgba(255, 209, 102, 0.35);
@@ -6496,7 +6504,8 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
   align-items: center;
   gap: 5px;
   font-size: 13px;
-  color: var(--text-faint);
+  color: var(--text-muted);
+  font-weight: 500;
   position: relative;
   z-index: 1;
   transition: all 0.2s ease;
@@ -6513,7 +6522,8 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .stepper-step.completed {
-  color: var(--text-muted);
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .stepper-step.completed .step-dot {
@@ -6548,7 +6558,8 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .dash-collection-desc {
-  font-size: 14.5px;
+  font-size: 14px;
+  line-height: 1.45;
   color: var(--text-muted);
   margin-top: 2px;
 }
@@ -6607,11 +6618,12 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 
 .dash-plant-meta {
   font-size: 13px;
+  font-weight: 500;
   color: var(--text-muted);
 }
 
 .dash-plant-badge {
-  font-size: 12px;
+  font-size: 13px;
   padding: 4px 12px;
   border-radius: 10px;
   background: rgba(6, 214, 160, 0.12);
@@ -6653,14 +6665,16 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .empty-banner-title {
-  font-size: 16.5px;
+  font-family: 'Kalam', cursive, var(--font-chalk);
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
+  letter-spacing: 0.2px;
 }
 
 .empty-banner-sub {
-  font-size: 13.5px;
+  font-size: 14px;
   color: var(--text-muted);
   line-height: 1.45;
   margin: 0;
@@ -6887,7 +6901,7 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 
 /* --- 1. Dashboard Enhancements --- */
 .dash-date-heading {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.6px;
@@ -6949,16 +6963,19 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .breather-banner-text h4 {
-  font-size: 13.5px;
+  font-family: 'Kalam', cursive, var(--font-chalk);
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 2px 0;
+  letter-spacing: 0.2px;
 }
 
 .breather-banner-text p {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
   margin: 0;
+  line-height: 1.45;
 }
 
 .dash-breather-pill-btn {
@@ -7419,16 +7436,19 @@ body.theme-parchment-cream .rhythm-ring-percentage {
 }
 
 .breather-banner-text h4 {
-  font-size: 15.5px;
+  font-family: 'Kalam', cursive, var(--font-chalk);
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
+  letter-spacing: 0.2px;
 }
 
 .breather-banner-text p {
-  font-size: 13.5px;
+  font-size: 14px;
   color: var(--text-muted);
   margin: 0;
+  line-height: 1.45;
 }
 
 .dash-breather-pill-btn {
