@@ -4945,7 +4945,7 @@ function renderHabitConsistencyGraph() {
   updateHabitGraphInspection(todayEntry);
 
   const containerWidth = container.clientWidth || 800;
-  const svgWidth = Math.max(containerWidth, 400);
+  const svgWidth = Math.max(containerWidth, 680);
   const svgHeight = 280;
   const padLeft = 52;
   const padRight = 24;
@@ -4960,7 +4960,7 @@ function renderHabitConsistencyGraph() {
     const y = padTop + graphH * (1 - p / 100);
     gridLinesSVG += `
       <line x1="${padLeft}" y1="${y}" x2="${svgWidth - padRight}" y2="${y}" stroke="var(--border-chalk)" stroke-width="1" stroke-dasharray="3,3" opacity="0.45" />
-      <text x="${padLeft - 10}" y="${y + 4.5}" font-family="'Inter', sans-serif" font-size="13" fill="var(--text-muted)" text-anchor="end" opacity="0.95">${p}%</text>
+      <text x="${padLeft - 10}" y="${y + 4.5}" font-family="'Inter', sans-serif" font-size="12.5" fill="var(--text-muted)" text-anchor="end" opacity="0.95">${p}%</text>
     `;
   });
 
@@ -5015,7 +5015,7 @@ function renderHabitConsistencyGraph() {
       const labelFill = d.isToday ? 'var(--chalk-amber)' : (d.isFuture ? 'var(--text-muted)' : 'var(--text-primary)');
       const labelWeight = d.isToday ? '700' : '500';
       xLabelsSVG += `
-        <text x="${d.x}" y="${padTop + graphH + 22}" font-family="'Inter', sans-serif" font-size="${isWeekly ? 13 : 12.5}" fill="${labelFill}" font-weight="${labelWeight}" text-anchor="middle" opacity="${d.isFuture ? 0.5 : 0.95}">${d.label}</text>
+        <text x="${d.x}" y="${padTop + graphH + 22}" font-family="'Inter', sans-serif" font-size="${isWeekly ? 13 : 11.5}" fill="${labelFill}" font-weight="${labelWeight}" text-anchor="middle" opacity="${d.isFuture ? 0.45 : 0.9}">${d.label}</text>
       `;
     } else {
       // Small subtle tick mark

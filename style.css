@@ -42,7 +42,7 @@
   --logo-leaf-fill: #52B795;
   --logo-chalk-stroke: #FAF8F5;
   --logo-text-color: #FAF8F5;
-  --logo-sub-color: #B5C7BD;
+  --logo-sub-color: #8E9E96;
 
   --nav-width: 18vw;
   --radius-sm: 8px;
@@ -85,7 +85,7 @@ body.theme-vintage-green {
   --logo-leaf-fill: #6EC49B;
   --logo-chalk-stroke: #FAF6ED;
   --logo-text-color: #FAF6ED;
-  --logo-sub-color: #B7CCC0;
+  --logo-sub-color: #98ADA0;
 }
 
 /* Theme 3: Studio White Board (Muted Warm Ivory #F4F1EA & Cream Cards #EAE7DF) */
@@ -684,7 +684,7 @@ body {
   display: none;
   animation: fadeIn 0.25s ease-out;
   width: 100%;
-  max-width: 1600px;
+  max-width: 100%;
   margin: 0;
 }
 
@@ -698,7 +698,7 @@ body {
 #view-progress-garden,
 #view-habit-ledger {
   width: 100%;
-  max-width: 1600px;
+  max-width: 100%;
   margin: 0;
 }
 
@@ -792,9 +792,42 @@ body {
 /* --------------------------------------------------------------------------
    7. SURFACE 1: TODAY'S SLATE (UNIFIED PRIORITY STREAM)
    -------------------------------------------------------------------------- */
+#view-today-slate {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 24px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+#view-today-slate.active {
+  display: flex;
+}
+
+.slate-next-suggestion-card {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0;
+}
+
+.slate-tasks-section-header {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0;
+}
+
 .quick-add-card {
   padding: 20px 24px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.slate-task-workspace {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .quick-add-form {
@@ -1097,8 +1130,8 @@ body {
 }
 
 .subtasks-toggle-btn .steps-count {
-  font-size: 12.5px;
-  opacity: 0.95;
+  font-size: 12px;
+  opacity: 0.9;
 }
 
 /* Focus Button */
@@ -1132,8 +1165,8 @@ body {
   cursor: pointer;
   padding: 6px 8px;
   font-size: 15px;
-  min-width: 36px;
-  min-height: 36px;
+  min-width: 34px;
+  min-height: 34px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1193,16 +1226,15 @@ body {
 }
 
 .nested-checkbox {
-  width: 16px;
-  height: 16px;
-  font-size: 11px;
-  border-radius: 4px;
+  width: 14px;
+  height: 14px;
+  font-size: 9px;
+  border-radius: 3px;
   flex-shrink: 0;
 }
 
 .subtask-text {
   flex: 1 1 auto;
-  font-size: 14px;
   color: var(--text-primary);
   line-height: 1.3;
 }
@@ -1219,9 +1251,9 @@ body {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 4px 6px;
-  font-size: 13px;
-  opacity: 0.6;
+  padding: 2px 4px;
+  font-size: 11px;
+  opacity: 0.5;
   transition: opacity 0.15s ease, color 0.15s ease;
 }
 
@@ -1332,6 +1364,20 @@ body {
 /* --------------------------------------------------------------------------
    8. SURFACE 2: UPCOMING TASKS SPECIFICS
    -------------------------------------------------------------------------- */
+#view-upcoming-tasks {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 24px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+#view-upcoming-tasks.active {
+  display: flex;
+}
+
 .upcoming-header-info {
   display: flex;
   align-items: center;
@@ -1342,10 +1388,18 @@ body {
   font-size: 26px;
 }
 
+.upcoming-unified-empty-state {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0;
+}
+
 .upcoming-buckets-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .bucket-column {
@@ -1355,6 +1409,9 @@ body {
   padding: 20px 22px;
   border-radius: var(--radius-md);
   transition: min-height 0.2s ease, opacity 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0;
 }
 
 .bucket-column.is-empty {
@@ -1536,9 +1593,31 @@ body {
 /* --------------------------------------------------------------------------
    9. SURFACE 3: PROGRESS GARDEN (RICH WILDFLOWER MEADOW & BEES)
    -------------------------------------------------------------------------- */
+#view-progress-garden {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 24px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+#view-progress-garden.active {
+  display: flex;
+}
+
 .hero-meadow-card {
   padding: 20px 24px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.calendar-grid-wrapper {
+  margin-bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .meadow-header {
@@ -1562,10 +1641,10 @@ body {
 }
 
 .month-nav-btn {
-  width: 32px;
-  height: 32px;
-  font-size: 13px;
-  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  font-size: 11px;
+  border-radius: 4px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1661,14 +1740,14 @@ body {
 }
 
 .meadow-scroll-btn {
-  width: 32px;
-  height: 32px;
-  font-size: 13px;
+  width: 28px;
+  height: 28px;
+  font-size: 11.5px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--border-chalk);
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--bg-surface);
   color: var(--text-primary);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1770,10 +1849,10 @@ body.theme-vintage-green .meadow-scenery-container::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 14px;
+  padding: 5px 12px;
   background: var(--bg-surface-elevated);
   border-bottom: 1px dashed var(--border-chalk);
-  font-size: 13px;
+  font-size: 11px;
   color: var(--text-muted);
   user-select: none;
 }
@@ -2285,7 +2364,9 @@ svg.anim-unfurl-bloom .plant-stage-label {
 .botanical-calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .calendar-day-tile {
@@ -2327,7 +2408,7 @@ body.theme-parchment-cream .calendar-day-tile.is-today {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 12.5px;
+  font-size: 11px;
 }
 
 .tile-top .day-num {
@@ -2447,10 +2528,24 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
 /* --------------------------------------------------------------------------
    10. SURFACE 4: HABIT LEDGER (DAILY HABIT RHYTHMS & WATER TRACKER)
    -------------------------------------------------------------------------- */
+#view-habit-ledger {
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 24px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+#view-habit-ledger.active {
+  display: flex;
+}
+
 .habit-ledger-layout {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 20px;
   width: 100%;
   max-width: 100%;
   margin: 0;
@@ -2458,10 +2553,14 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
 
 .habit-ledger-layout .chalk-card {
   margin-bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .habit-overview-card {
   padding: 20px 24px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .habit-overview-header {
@@ -2560,10 +2659,8 @@ body.theme-parchment-cream .is-today .tile-top .day-num {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 600;
-  padding: 5px 12px;
-  min-height: 32px;
+  font-size: 11.5px;
+  padding: 3px 10px;
   border-radius: calc(var(--radius-sm) - 2px);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -2671,14 +2768,14 @@ body.theme-white-board .habit-graph-viewport-wrap {
   background: rgba(6, 214, 160, 0.18);
   color: var(--chalk-mint);
   border: 1px solid var(--chalk-mint);
-  padding: 3px 9px;
+  padding: 2px 8px;
   border-radius: 12px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
 }
 
 .inspection-hint {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-muted);
   font-style: italic;
 }
@@ -2934,12 +3031,12 @@ body.theme-white-board .habit-card-bar-track {
 .habit-chalk-checkbox {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   background: var(--bg-hover);
   border: 1px solid var(--border-chalk);
   border-radius: 20px;
-  padding: 6px 16px;
-  min-height: 40px;
+  padding: 6px 14px;
+  min-height: 38px;
   box-sizing: border-box;
   color: var(--text-primary);
   cursor: pointer;
@@ -3051,7 +3148,7 @@ body:has(#view-deep-focus.active) #main-workspace-header {
 
 body.surface-deep-focus-active .main-content,
 body:has(#view-deep-focus.active) .main-content {
-  padding: 16px 24px;
+  padding: 24px;
   overflow-y: hidden;
 }
 
@@ -3059,7 +3156,10 @@ body:has(#view-deep-focus.active) .main-content {
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-height: calc(100dvh - 32px);
+  max-height: calc(100dvh - 48px);
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
 }
 
 .deep-focus-fullscreen-container {
@@ -3067,7 +3167,7 @@ body:has(#view-deep-focus.active) .main-content {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 16px 28px;
+  padding: 20px 28px;
   height: 100%;
   max-height: 100%;
   min-height: 0;
@@ -3159,7 +3259,9 @@ body.theme-parchment-cream .maximize-focus-btn:hover {
 /* 2. Cohesive Timer Cluster */
 .focus-main-cluster {
   width: 100%;
-  max-width: 580px;
+  max-width: 100%;
+  flex: 1;
+  min-width: 0;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -3168,6 +3270,7 @@ body.theme-parchment-cream .maximize-focus-btn:hover {
   gap: 0;
   box-sizing: border-box;
   z-index: 5;
+  transition: all 0.35s ease;
 }
 
 /* 3. Task Anchor Pill Neatly Positioned Above Timer */
@@ -3633,9 +3736,8 @@ body.theme-parchment-cream .popover-title i {
   background: transparent;
   border: none;
   border-radius: 10px;
-  padding: 8px 6px;
-  font-size: 13.5px;
-  font-weight: 500;
+  padding: 6px 4px;
+  font-size: 12px;
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -3666,22 +3768,20 @@ body.theme-parchment-cream #popover-duration .duration-pill-btn.active {
 #popover-sound .soundscapes-horizontal-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 10px;
 }
 
 #popover-sound .sound-pill {
-  font-size: 14px;
-  padding: 8px 14px;
-  min-height: 40px;
-  box-sizing: border-box;
+  font-size: 13px;
+  padding: 6px 12px;
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid var(--border-chalk);
   border-radius: 12px;
   color: var(--text-primary);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -3725,11 +3825,8 @@ body.theme-parchment-cream #popover-sound .sound-pill.active {
 
 .settings-reset-group .reset-action-btn {
   width: 100%;
-  padding: 8px 14px;
-  min-height: 38px;
-  box-sizing: border-box;
-  font-size: 13.5px;
-  font-weight: 500;
+  padding: 7px 12px;
+  font-size: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3977,8 +4074,8 @@ body.focus-maximized .focus-brand-wrap {
 }
 
 .brand-sub-mini {
-  font-size: 12px;
-  letter-spacing: 0.8px;
+  font-size: 8.5px;
+  letter-spacing: 1.2px;
   color: var(--text-muted);
   text-transform: uppercase;
   font-family: 'Inter', sans-serif;
@@ -4923,25 +5020,23 @@ body.theme-parchment-cream .chart-bar-fill {
 .return-focus-btn {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 6px 14px;
-  min-height: 36px;
-  box-sizing: border-box;
-  border-radius: 18px;
+  gap: 6px;
+  font-size: 12px;
+  padding: 5px 12px;
 }
+
+
 
 .focus-task-badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--chalk-amber);
   background: var(--bg-surface-elevated);
-  padding: 3px 10px;
+  padding: 2px 10px;
   border-radius: 12px;
   border: 1px solid var(--border-chalk);
   margin-bottom: 6px;
@@ -4960,6 +5055,8 @@ body.theme-parchment-cream .chart-bar-fill {
   margin-top: 8px;
 }
 
+
+
 .focus-heading-wrap {
   display: flex;
   align-items: center;
@@ -4968,27 +5065,23 @@ body.theme-parchment-cream .chart-bar-fill {
 
 .focus-screen-heading {
   margin: 0;
-  font-family: 'Caveat', cursive, var(--font-chalk);
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 600;
   color: var(--text-primary);
   letter-spacing: 0.5px;
 }
 
 body.focus-maximized .focus-screen-heading {
-  font-size: clamp(26px, 3.5vh, 32px);
+  font-size: clamp(20px, 3vh, 26px);
 }
 
 .focus-settings-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  min-height: 40px;
-  box-sizing: border-box;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 20px;
+  gap: 7px;
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -5467,16 +5560,13 @@ body.theme-parchment-cream .focus-preferences-panel {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   color: var(--text-primary);
-  padding: 8px 16px;
-  min-height: 38px;
-  box-sizing: border-box;
+  padding: 6px 12px;
   border-radius: 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13.5px;
-  font-weight: 500;
+  gap: 6px;
+  font-size: 11px;
   transition: all 0.2s;
 }
 
@@ -5543,14 +5633,14 @@ body.theme-parchment-cream .focus-preferences-panel {
   background: var(--bg-surface-elevated);
   border: 1px dashed var(--border-chalk);
   color: var(--text-muted);
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 11px;
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
@@ -5877,9 +5967,9 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
   background: var(--bg-surface-elevated);
   border: 1px solid var(--border-chalk);
   color: var(--text-muted);
-  font-size: 13px;
-  width: 28px;
-  height: 28px;
+  font-size: 11px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
@@ -5930,9 +6020,7 @@ body.theme-parchment-cream .side-nav .nav-item.active .nav-badge {
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-faint);
-  font-size: 13px;
-  min-width: 26px;
-  min-height: 26px;
+  font-size: 11px;
   cursor: pointer;
   padding: 3px 6px;
   border-radius: 4px;
@@ -6982,19 +7070,16 @@ body.theme-parchment-cream .dash-tasks-stream::-webkit-scrollbar-thumb {
 }
 
 .breather-banner-text h4 {
-  font-family: 'Kalam', cursive, var(--font-chalk);
-  font-size: 20px;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 2px 0;
-  letter-spacing: 0.2px;
 }
 
 .breather-banner-text p {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-muted);
   margin: 0;
-  line-height: 1.45;
 }
 
 .dash-breather-pill-btn {
@@ -7341,7 +7426,7 @@ body.theme-parchment-cream .rhythm-ring-percentage {
 }
 
 .rhythm-title {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
@@ -7455,19 +7540,16 @@ body.theme-parchment-cream .rhythm-ring-percentage {
 }
 
 .breather-banner-text h4 {
-  font-family: 'Kalam', cursive, var(--font-chalk);
-  font-size: 20px;
+  font-size: 15.5px;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
-  letter-spacing: 0.2px;
 }
 
 .breather-banner-text p {
-  font-size: 14px;
+  font-size: 13.5px;
   color: var(--text-muted);
   margin: 0;
-  line-height: 1.45;
 }
 
 .dash-breather-pill-btn {
